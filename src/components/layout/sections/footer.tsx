@@ -54,7 +54,7 @@ const footerSections: FooterSectionProps[] = [
 
 const socialLinks: FooterLinkProps[] = [
    /* {
-        href: "https://github.com/indieceo/IndieSaas-STARTER",
+        href: "https://github.com/indieceo/Indiesaas",
         label: "GitHub",
         icon: <Github className="size-5" />,
         external: true

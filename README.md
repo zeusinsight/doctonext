@@ -27,7 +27,7 @@ A modern, production-ready Next.js starter template with comprehensive authentic
 
 ### 1. Clone the Repository
 ```bash
-git clone https://github.com/indieceo/IndieSaas-STARTER
+git clone https://github.com/indieceo/Indiesaas
 cd indiesaas-starter
 ```
 

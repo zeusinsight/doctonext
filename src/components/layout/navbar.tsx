@@ -175,7 +175,7 @@ export const Navbar = () => {
                             className="size-10 rounded-full"
                         >
                             <Link
-                                href="https://github.com/indieceo/IndieSaas-STARTER"
+                                href="https://github.com/indieceo/Indiesaas"
                                 target="_blank"
                                 aria-label="View on GitHub"
                             >
@@ -367,7 +367,7 @@ export const Navbar = () => {
                                                 variant="ghost"
                                             >
                                                 <Link
-                                                    href="https://github.com/indieceo/IndieSaas-STARTER"
+                                                    href="https://github.com/indieceo/Indiesaas"
                                                     target="_blank"
                                                     aria-label="View on GitHub"
                                                     onClick={() =>

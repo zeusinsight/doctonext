@@ -15,7 +15,7 @@ export const metadata = {
     description: "Boilerplate Template with Postgres(neon.tech), Drizzle, BetterAuth UI, shadcn/ui and Tanstack Query",
     openGraph: {
         type: "website",
-        url: "https://github.com/indieceo/IndieSaas-STARTER",
+        url: "https://github.com/indieceo/Indiesaas",
         title: "Indie Saas",
         description: "Boilerplate for Indie-Hackers",
         images: [
@@ -29,11 +29,11 @@ export const metadata = {
     },
     twitter: {
         card: "summary_large_image",
-        site: "https://github.com/indieceo/IndieSaas-STARTER",
+        site: "https://github.com/indieceo/Indiesaas",
         title: "Indie Saas",
         description: "Boilerplate for Indie-Hackers",
         images: [
-            "https://res.cloudinary.com/dbzv9xfjp/image/upload/v1723499276/og-images/shadcn-vue.jpg"
+            "/logo.svg"
         ]
     }
 }

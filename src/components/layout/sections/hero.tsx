@@ -49,7 +49,7 @@ export const HeroSection = () => {
                             className="w-5/6 font-bold md:w-1/4"
                         >
                             <Link
-                                href="https://github.com/indieceo/IndieSaas-STARTER"
+                                href="https://github.com/indieceo/Indiesaas"
                                 target="_blank"
                             >
                                 Github respository
