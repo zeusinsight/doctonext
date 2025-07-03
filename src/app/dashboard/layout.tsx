@@ -24,7 +24,7 @@ export default function ProtectedPage({
         <>
             <RedirectToSignUp />
             <SignedIn>
-                <SidebarProvider>
+                <SidebarProvider defaultOpen={false}>
                     <AppSidebar />
                     <SidebarInset>
                         <div className="@container">
