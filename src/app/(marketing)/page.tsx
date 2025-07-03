@@ -15,9 +15,9 @@ export const metadata = {
     description: "Boilerplate Template with Postgres(neon.tech), Drizzle, BetterAuth UI, shadcn/ui and Tanstack Query",
     openGraph: {
         type: "website",
-        url: "https://github.com/indieceo/Indiesaas",
+        url: "https://indiesaas.vercel.app",
         title: "Indie Saas",
-        description: "Boilerplate for Indie-Hackers",
+        description: "Boilerplate Template with Postgres, Drizzle, BetterAuth, shadcn/ui and Tanstack Query",
         images: [
             {
                 url: "https://res.cloudinary.com/dbzv9xfjp/image/upload/v1723499276/og-images/shadcn-vue.jpg",
@@ -29,11 +29,11 @@ export const metadata = {
     },
     twitter: {
         card: "summary_large_image",
-        site: "https://github.com/indieceo/Indiesaas",
+        site: "https://indiesaas.vercel.app",
         title: "Indie Saas",
-        description: "Boilerplate for Indie-Hackers",
+        description: "Boilerplate Template with Postgres, Drizzle, BetterAuth, shadcn/ui and Tanstack Query",
         images: [
-            "/logo.svg"
+            "/logo.png"
         ]
     }
 }
