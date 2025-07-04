@@ -7,8 +7,9 @@
   </h1>
 </div>
 
+## About
 
-A modern, production-ready Next.js starter template with comprehensive authentication built on Better Auth, featuring a beautiful UI with shadcn/ui components and a robust tech stack.
+A modern, Next.js Saas boilerplate with comprehensive authentication built on Better Auth, featuring a beautiful UI with shadcn/ui components and a robust tech stack.
 
 ## Tech Stack
 
