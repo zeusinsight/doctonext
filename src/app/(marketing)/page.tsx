@@ -11,16 +11,16 @@ import { TestimonialSection } from "@/components/layout/sections/testimonial"
 import Trusted from "@/components/layout/sections/trusted"
 
 export const metadata = {
-    title: "Indie Saas",
-    description: "Boilerplate Template with Postgres(neon.tech), Drizzle, BetterAuth UI, shadcn/ui and Tanstack Query",
+    title: "Indie Saas Starter",
+    description: "Open Source Next.js Saas Starter. Built with Better Auth UI, Shadcn/Ui, Drizzle ORM, UploadThing and Tanstack Query",
     openGraph: {
         type: "website",
         url: "https://indiesaas.vercel.app",
-        title: "Indie Saas",
-        description: "Boilerplate Template with Postgres, Drizzle, BetterAuth, shadcn/ui and Tanstack Query",
+        title: "Indie Saas Starter",
+        description: "Open Source Next.js Saas Starter. Built with Better Auth UI, Shadcn/Ui, Drizzle ORM, UploadThing and Tanstack Query",
         images: [
             {
-                url: "/dash.png",
+                url: "/demo-img.png",
                 width: 1200,
                 height: 630,
                 alt: "Indie Saas"
@@ -30,8 +30,8 @@ export const metadata = {
     twitter: {
         card: "summary_large_image",
         site: "https://indiesaas.vercel.app",
-        title: "Indie Saas",
-        description: "Boilerplate Template with Postgres, Drizzle, BetterAuth, shadcn/ui and Tanstack Query",
+        title: "Indie Saas Starter",
+        description: "Open Source Next.js Saas Starter. Built with Better Auth UI, Shadcn/Ui, Drizzle ORM, UploadThing and Tanstack Query",
         images: [
             "/logo.png"
         ]
