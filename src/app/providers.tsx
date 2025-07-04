@@ -32,6 +32,10 @@ export function Providers({ children }: { children: ReactNode }) {
                 settings={{
                     url: "/dashboard/settings"
                 }}
+                // social={{
+                //     providers: ["github", "google", "twitter"]
+                // }}
+                
                 avatar={{
                     upload: async (file: File) => {
                         const uploadRes = await startUpload([file])
