@@ -101,7 +101,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ---
 
-<div >
+<div align="center" >
   <p><strong>Sponsored by Posthyve</strong></p>
   <a href="https://posthyve.com" style="text-decoration: none; display: inline-flex; align-items: center; gap: 8px;">
     <img src="https://posthyve.com/logo.svg" alt="Posthyve" width="32" height="32">
@@ -110,8 +110,5 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 </div>
 
 <div>
-  <p><small>© 2025 IndieSaas Starter. Built with Next.js and Better Auth UI.</small></p>
-
   **Made with ❤️ by [@indieceo](https://x.com/indieceo)**
-
 </div>
