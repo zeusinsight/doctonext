@@ -2,7 +2,7 @@
   <img src="public/logo.svg" alt="IndieSaas Starter Logo" width="80" height="80">
   <h1>
     <picture>
-      <img src="https://readme-typing-svg.demolab.com?font=Poppins&weight=600&size=42&duration=1&pause=1000&color=D14424&center=true&vCenter=true&width=435&lines=IndieSaas+Starter" alt="IndieSaas Starter" />
+      <img src="https://readme-typing-svg.demolab.com?font=Poppins&weight=600&size=42&duration=1&pause=1000&center=true&vCenter=true&width=435&lines=IndieSaas+Starter" alt="IndieSaas Starter" />
     </picture>
   </h1>
 </div>
