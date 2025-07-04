@@ -109,6 +109,8 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
   <p><em>All-in-One Social Media Management Platform</em></p>
 </div>
 
-<div>
+<div align="center">
+
   **Made with ❤️ by [@indieceo](https://x.com/indieceo)**
+
 </div>
