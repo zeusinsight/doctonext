@@ -3,7 +3,7 @@
 A modern, production-ready Next.js starter template with comprehensive authentication built on Better Auth, featuring a beautiful UI with shadcn/ui components and a robust tech stack.
 
 ## Tech Stack
-- **Better Auth** - Modern, type-safe authentication library
+
 - **Better Auth UI** - Pre-built authentication components
 - **shadcn/ui** - Beautiful, accessible component library
 - **Framer Motion** - Smooth animations and transitions
@@ -13,6 +13,7 @@ A modern, production-ready Next.js starter template with comprehensive authentic
 - **Drizzle ORM** - Type-safe database queries
 
 
+##  Quick start
 
 ### 1. Clone the Repository
 ```bash
@@ -65,7 +66,7 @@ npm run dev
 pnpm dev
 ```
 
-## 🔧 Configuration
+##  Configuration
 
 ### Better Auth Configuration
 The authentication is configured in `src/lib/auth.ts`. You can customize:
@@ -87,7 +88,7 @@ The UI is built with shadcn/ui components and can be customized:
 - Component variants in individual component files
 
 
-## 📄 License
+## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
@@ -101,4 +102,12 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 **Made with ❤️ by [@indieceo](https://x.com/indieceo)**
 
-**Sponsored by my tool [@Posthyve](https://posthyve.com)**
+---
+
+<div align="center">
+  <p><strong>Sponsored by</strong></p>
+  <a href="https://posthyve.com">
+    <img src="https://posthyve.com/logo.svg" alt="Posthyve" width="120" height="40">
+  </a>
+  <p><em>All-in-One Social Media Management Platform</em></p>
+</div>
