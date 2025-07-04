@@ -110,7 +110,7 @@ export const Navbar = () => {
                                         <div className="grid w-[600px] grid-cols-2 gap-6 p-6">
                                             <div className="relative overflow-hidden rounded-lg">
                                                 <Image
-                                                    src="/demo-img.jpg"
+                                                    src="/demo-img.png"
                                                     alt="Product Demo"
                                                     className="h-full w-full object-cover"
                                                     width={300}

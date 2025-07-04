@@ -20,7 +20,7 @@ export const metadata = {
         description: "Boilerplate Template with Postgres, Drizzle, BetterAuth, shadcn/ui and Tanstack Query",
         images: [
             {
-                url: "https://res.cloudinary.com/dbzv9xfjp/image/upload/v1723499276/og-images/shadcn-vue.jpg",
+                url: "/dash.png",
                 width: 1200,
                 height: 630,
                 alt: "Indie Saas"

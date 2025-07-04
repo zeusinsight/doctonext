@@ -1,5 +1,5 @@
 "use client"
-import { ArrowRight } from "lucide-react"
+import { ArrowRight, Lock } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
 import { useTheme } from "next-themes"
@@ -38,7 +38,10 @@ export const HeroSection = () => {
                     </p>
 
                     <div className="space-y-4 md:space-x-4 md:space-y-0">
-                        <Button asChild className="group/arrow w-5/6 font-bold md:w-1/4">
+                        <Button
+                            asChild
+                            className="group/arrow w-5/6 font-bold md:w-1/4"
+                        >
                             <Link href="/auth/sign-up">
                                 Get Started
                                 <ArrowRight className="ml-2 size-5 transition-transform group-hover/arrow:translate-x-1" />
@@ -62,14 +65,34 @@ export const HeroSection = () => {
 
                 <div className="group relative mt-14">
                     <div className="lg:-top-8 -translate-x-1/2 absolute top-2 left-1/2 mx-auto h-24 w-[90%] transform rounded-full bg-primary/50 blur-3xl lg:h-80" />
+
+                    {/* Browser Navigation Bar */}
+                    <div className="relative mx-auto w-full md:w-[1200px]">
+                        <div className="flex h-10 items-center rounded-t-lg bg-sidebar px-4">
+                            {/* Traffic Light Buttons */}
+                            <div className="flex space-x-2">
+                                <div className="h-3 w-3 rounded-full bg-red-500" />
+                                <div className="h-3 w-3 rounded-full bg-yellow-500" />
+                                <div className="h-3 w-3 rounded-full bg-green-500" />
+                            </div>
+                            {/* URL Bar */}
+                            <div className="-translate-x-1/2 -translate-y-1/2 absolute top-1/2 left-1/2 w-1/3">
+                                <div className="flex h-6 items-center justify-center rounded-md bg-secondary/50 px-3">
+                                    <Lock className="mr-1.5 size-3 text-muted-foreground" />
+                                    <div className="text-muted-foreground text-xs">
+                                        app.indiesaas.com
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     <Image
                         width={1200}
                         height={1200}
-                        className="rouded-lg relative mx-auto flex w-full items-center rounded-lg border border-secondary border-t-2 border-t-primary/30 leading-none md:w-[1200px]"
+                        className="relative mx-auto flex w-full items-center rounded-b-lg "
                         src={
-                            theme === "light"
-                                ? "/demo-light.png"
-                                : "/demo.png"
+                            theme === "light" ? "/dash-light.png" : "/dash.png"
                         }
                         alt="dashboard"
                     />

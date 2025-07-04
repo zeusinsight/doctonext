@@ -7,7 +7,7 @@ import {
     UpdateAvatarCard
 } from "@daveyplate/better-auth-ui"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { User, Shield, AlertTriangle } from "lucide-react"
+import { RiUser3Line, RiShieldLine, RiAlarmWarningLine } from "@remixicon/react"
 import { PageHeader } from "@/components/layout/page-header"
 import type { Metadata } from "next"
 
@@ -32,7 +32,7 @@ export default function SettingsPage() {
                         value="account"
                         className="flex-1 justify-center gap-2 rounded-lg px-3 py-2 text-center text-sm data-[state=active]:bg-secondary lg:flex-none lg:justify-start lg:text-left lg:text-base"
                     >
-                        <User className="h-4 w-4" />
+                        <RiUser3Line className="h-4 w-4" />
                         <span className="hidden sm:inline">Account</span>
                         <span className="sm:hidden">Account</span>
                     </TabsTrigger>
@@ -40,7 +40,7 @@ export default function SettingsPage() {
                         value="security"
                         className="flex-1 justify-center gap-2 rounded-lg px-3 py-2 text-center text-sm data-[state=active]:bg-secondary lg:flex-none lg:justify-start lg:text-left lg:text-base"
                     >
-                        <Shield className="h-4 w-4" />
+                        <RiShieldLine className="h-4 w-4" />
                         <span className="hidden sm:inline">Security</span>
                         <span className="sm:hidden">Security</span>
                     </TabsTrigger>
@@ -48,7 +48,7 @@ export default function SettingsPage() {
                         value="danger"
                         className="flex-1 justify-center gap-2 rounded-lg px-3 py-2 text-center text-sm data-[state=active]:bg-secondary lg:flex-none lg:justify-start lg:text-left lg:text-base"
                     >
-                        <AlertTriangle className="h-4 w-4" />
+                        <RiAlarmWarningLine className="h-4 w-4" />
                         <span className="hidden sm:inline">Danger Zone</span>
                         <span className="sm:hidden">Danger</span>
                     </TabsTrigger>

@@ -4,7 +4,7 @@ import { Building2, Clock, Mail, Phone } from "lucide-react"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card"
+import { Card, CardContent, CardFooter } from "@/components/ui/card"
 import {
     Form,
     FormControl,
@@ -116,8 +116,7 @@ export const ContactSection = () => {
                 </div>
 
                 <Card className="bg-muted/60 dark:bg-card">
-                    <CardHeader className="text-2xl text-primary"> </CardHeader>
-                    <CardContent>
+                    <CardContent className="p-4">
                         <Form {...form}>
                             <form
                                 onSubmit={form.handleSubmit(onSubmit)}
@@ -134,7 +133,7 @@ export const ContactSection = () => {
                                                 </FormLabel>
                                                 <FormControl>
                                                     <Input
-                                                        placeholder="Leopoldo"
+                                                        placeholder="Indie"
                                                         {...field}
                                                     />
                                                 </FormControl>
@@ -150,7 +149,7 @@ export const ContactSection = () => {
                                                 <FormLabel>Last Name</FormLabel>
                                                 <FormControl>
                                                     <Input
-                                                        placeholder="Miranda"
+                                                        placeholder="CEO"
                                                         {...field}
                                                     />
                                                 </FormControl>
@@ -170,7 +169,7 @@ export const ContactSection = () => {
                                                 <FormControl>
                                                     <Input
                                                         type="email"
-                                                        placeholder="leomirandadev@gmail.com"
+                                                        placeholder="me@indieceo.com"
                                                         {...field}
                                                     />
                                                 </FormControl>
@@ -244,7 +243,7 @@ export const ContactSection = () => {
                                     />
                                 </div>
 
-                                <Button className="mt-4">Send message</Button>
+                                <Button className="mt-4 w-fit">Send message</Button>
                             </form>
                         </Form>
                     </CardContent>

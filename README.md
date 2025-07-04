@@ -119,7 +119,6 @@ This project is licensed under the MIT License. You are free to use, modify, and
 
 ## 🙏 Credits
 
-This project was inspired by nobruf [shadcn landing page](https://github.com/nobruf/shadcn-landing-page), and daveyplate [Better Auth Next.js starter](https://github.com/daveyplate/better-auth-nextjs-starter).
 
 - [Better Auth Ui](https://better-auth-ui.com) - Pre-built authentication components
 - [shadcn landing page](https://github.com/nobruf/shadcn-landing-page) - landing page used for this project
