@@ -38,9 +38,11 @@ export const HeroSection = () => {
                     </p>
 
                     <div className="space-y-4 md:space-x-4 md:space-y-0">
-                        <Button className="group/arrow w-5/6 font-bold md:w-1/4">
-                            Get Started
-                            <ArrowRight className="ml-2 size-5 transition-transform group-hover/arrow:translate-x-1" />
+                        <Button asChild className="group/arrow w-5/6 font-bold md:w-1/4">
+                            <Link href="/auth/sign-up">
+                                Get Started
+                                <ArrowRight className="ml-2 size-5 transition-transform group-hover/arrow:translate-x-1" />
+                            </Link>
                         </Button>
 
                         <Button
@@ -66,8 +68,8 @@ export const HeroSection = () => {
                         className="rouded-lg relative mx-auto flex w-full items-center rounded-lg border border-secondary border-t-2 border-t-primary/30 leading-none md:w-[1200px]"
                         src={
                             theme === "light"
-                                ? "/hero-image-light.jpeg"
-                                : "/hero-image-dark.jpeg"
+                                ? "/demo-light.png"
+                                : "/demo.png"
                         }
                         alt="dashboard"
                     />

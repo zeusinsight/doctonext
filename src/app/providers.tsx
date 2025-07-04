@@ -8,9 +8,11 @@ import type { ReactNode } from "react"
 import NextTopLoader from 'nextjs-toploader';
 import { Toaster } from "sonner"
 import { authClient } from "@/lib/auth-client"
+import { useUploadThing } from "@/lib/uploadthing"
 
 export function Providers({ children }: { children: ReactNode }) {
     const router = useRouter()
+    const { startUpload } = useUploadThing("avatarUploader")
 
     return (
         <ThemeProvider
@@ -32,16 +34,9 @@ export function Providers({ children }: { children: ReactNode }) {
                 }}
                 avatar={{
                     upload: async (file: File) => {
-                        const formData = new FormData()
-                        formData.append("avatar", file)
-
-                        const res = await fetch("/api/uploadAvatar", {
-                            method: "POST",
-                            body: formData,
-                        })
-
-                        const { data } = await res.json()
-                        return data.url
+                        const uploadRes = await startUpload([file])
+                        if (!uploadRes?.[0]) throw new Error("Upload failed")
+                        return uploadRes[0].ufsUrl
                     }
                 }}
                 Link={Link}

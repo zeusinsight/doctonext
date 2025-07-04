@@ -19,6 +19,7 @@ A modern, production-ready Next.js starter template with comprehensive authentic
 - **Turborepo** - Monorepo build system
 - **PostgreSQL** - Robust, production-ready database
 - **Drizzle ORM** - Type-safe database queries
+- **UploadThing** - Modern file uploads with built-in storage
 
 
 ##  Quick start
@@ -45,6 +46,9 @@ BETTER_AUTH_SECRET="your-secret-key-here"
 
 # Required: PostgreSQL connection string
 DATABASE_URL="postgresql://username:password@localhost:5432/your-database"
+
+# Required for avatars upload: UploadThing API keys (get from https://uploadthing.com/dashboard)
+UPLOADTHING_TOKEN="" 
 
 # Optional: OAuth providers (configure as needed)
 # GOOGLE_CLIENT_ID=""
@@ -98,11 +102,11 @@ The UI is built with shadcn/ui components and can be customized:
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License
 
 ## 🙏 Credits
 
-- [Better Auth Ui](https://better-auth-ui.com) - ready authentication component
+- [Better Auth Ui](https://better-auth-ui.com) - Pre-built authentication components
 - [shadcn landing page](https://github.com/nobruf/shadcn-landing-page) - landing page used for this boilerplate
 
 

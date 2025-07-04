@@ -1,4 +1,4 @@
-import {  Linkedin, Mail, Twitter } from "lucide-react"
+import { Github, Linkedin, Mail, Twitter } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
@@ -53,14 +53,14 @@ const footerSections: FooterSectionProps[] = [
 ]
 
 const socialLinks: FooterLinkProps[] = [
-   /* {
+    {
         href: "https://github.com/indieceo/Indiesaas",
         label: "GitHub",
         icon: <Github className="size-5" />,
         external: true
-    }, */
+    },
     {
-        href: "https://twitter.com",
+        href: "https://x.com/IndieCEO",
         label: "Twitter",
         icon: <Twitter className="size-5" />,
         external: true
@@ -263,17 +263,26 @@ export const FooterSection = () => {
                                 </p>
                             </div>
 
-                            <div className="flex items-center gap-2 text-muted-foreground text-sm">
-                                <span>Built with</span>
-                                <span className="text-red-500">♥</span>
-                                <span>by</span>
-                                <Link
-                                    target="_blank"
-                                    href="https://x.com/IndieCEO"
-                                    className="font-medium text-primary underline underline-offset-4 transition-colors hover:text-primary/80"
-                                >
-                                    IndieCEO
-                                </Link>
+                            <div className="flex flex-col items-center gap-3 lg:flex-row lg:gap-6">
+                               
+                                
+                                <div className="flex items-center gap-2 text-muted-foreground text-sm">
+                                    <span>Sponsored by</span>
+                                    <Link
+                                        target="_blank"
+                                        href="https://posthyve.com"
+                                        className="flex items-center gap-1 font-semibold"
+                                    >
+                                        <Image
+                                            src="https://posthyve.com/logo.svg"
+                                            alt="Posthyve"
+                                            width={16}
+                                            height={16}
+                                            className="inline-block"
+                                        />
+                                        Posthyve
+                                    </Link>
+                                </div>
                             </div>
                         </div>
                     </div>

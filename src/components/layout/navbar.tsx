@@ -1,6 +1,6 @@
 "use client"
 import { SignedIn, SignedOut, UserButton } from "@daveyplate/better-auth-ui"
-import { Menu, X } from "lucide-react"
+import { Github, Menu, X } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
 import React from "react"
@@ -168,7 +168,7 @@ export const Navbar = () => {
                     {/* Desktop Actions */}
                     <div className="hidden items-center gap-2 lg:flex">
                         <ModeToggle />
-                        {/* <Button
+                        { <Button
                             asChild
                             variant="outline"
                             size="icon"
@@ -181,7 +181,7 @@ export const Navbar = () => {
                             >
                                 <Github className="size-5" />
                             </Link>
-                        </Button> */}
+                        </Button> }
                         <SignedOut>
                             <Button
                                 asChild
