@@ -21,18 +21,10 @@ A modern, production-ready Next.js starter template with comprehensive authentic
 - **UploadThing** - Modern file uploads with built-in storage
 
 
-## 🗺️ Roadmap
+## Roadmap
 
 - [x] Authentication with Better Auth
-  - Email/Password
-  - OAuth (Google, GitHub)
-  - User management
 - [x] Dashboard
-  - Modern UI with shadcn/ui
-  - Responsive design
-  - Dark/Light mode
-  - Setting page
-
 - [ ] Stripe/Polar.sh Payment
 - [ ] SEO Optimization
 - [ ] Blog System
