@@ -106,8 +106,15 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 <div align="center">
   <p><strong>Sponsored by</strong></p>
-  <a href="https://posthyve.com">
-    <img src="https://posthyve.com/logo.svg" alt="Posthyve" width="120" height="40">
+  <a href="https://posthyve.com" style="text-decoration: none; display: inline-flex; align-items: center; gap: 8px;">
+    <img src="https://posthyve.com/logo.svg" alt="Posthyve" width="32" height="32">
+    <span style="font-size: 18px; font-weight: 600; color: #333;">Posthyve</span>
   </a>
   <p><em>All-in-One Social Media Management Platform</em></p>
+</div>
+
+---
+
+<div align="center">
+  <p><small>© 2025 IndieSaas Starter. Built with Next.js and Better Auth UI.</small></p>
 </div>
