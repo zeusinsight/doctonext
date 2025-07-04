@@ -1,6 +1,6 @@
 <div align="center">
 
-# IndieSaas Starter
+IndieSaas Starter
 
   <img src="public/logo.svg" alt="IndieSaas Starter Logo" width="80" height="80">
 
@@ -10,7 +10,7 @@
 A modern, production-ready Next.js starter template with comprehensive authentication built on Better Auth, featuring a beautiful UI with shadcn/ui components and a robust tech stack.
 
 <div align="center">
-  <img src="/demo-img.jpg" alt="IndieSaas Starter Demo" width="800" style="border-radius: 8px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
+  <img src="public/demo-img.jpg" alt="IndieSaas Starter Demo" width="800" style="border-radius: 8px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
 </div>
 
 ## Tech Stack
