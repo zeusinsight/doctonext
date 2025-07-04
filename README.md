@@ -7,7 +7,6 @@
   </h1>
 </div>
 
-## About
 
 A modern, Next.js Saas boilerplate with comprehensive authentication built on Better Auth, featuring a beautiful UI with shadcn/ui components and a robust tech stack.
 
