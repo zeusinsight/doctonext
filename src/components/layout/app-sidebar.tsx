@@ -3,15 +3,15 @@
 import {
     RiCodeSSlashLine,
     RiLineChartLine,
-    RiNavigationLine,
+    RiToolsFill,
     RiSettingsLine,
-    RiSlowDownLine
+    RiSpeedUpLine
 } from "@remixicon/react"
 import Image from "next/image"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import type * as React from "react"
-import { NavUser } from "@/components/nav-user"
+import { NavUser } from "@/components/layout/nav-user"
 import {
     Sidebar,
     SidebarContent,
@@ -30,9 +30,9 @@ const data = {
         {
             title: "General",
             items: [
-                {title: "Dashboard",url: "/dashboard",icon: RiSlowDownLine},
+                {title: "Dashboard",url: "/dashboard",icon: RiSpeedUpLine},
                 {title: "Analytics",url: "/dashboard/analytics",icon: RiLineChartLine},
-                {title: "Metrics",url: "/dashboard/metrics",icon: RiNavigationLine},
+                {title: "Integrations",url: "/dashboard/integrations",icon: RiToolsFill},
                 {title: "Settings",url: "/dashboard/settings",icon: RiSettingsLine},
                 {title: "API",url: "/dashboard/api",icon: RiCodeSSlashLine},
             ]

@@ -8,7 +8,7 @@ import {
 } from "@daveyplate/better-auth-ui"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { User, Shield, AlertTriangle } from "lucide-react"
-import { PageHeader } from "@/components/page-header"
+import { PageHeader } from "@/components/layout/page-header"
 import type { Metadata } from "next"
 
 export const metadata: Metadata = {
@@ -27,7 +27,7 @@ export default function SettingsPage() {
                 defaultValue="account"
                 className="mx-auto flex max-w-6xl flex-col gap-6 lg:flex-row lg:gap-8"
             >
-                <TabsList className="flex gap-2 h-auto w-full flex-row justify-start bg-transparent p-0 lg:w-64 lg:flex-col lg:items-start lg:justify-start">
+                <TabsList className="flex h-auto w-full flex-row justify-start gap-2 bg-transparent p-0 lg:w-64 lg:flex-col lg:items-start lg:justify-start">
                     <TabsTrigger
                         value="account"
                         className="flex-1 justify-center gap-2 rounded-lg px-3 py-2 text-center text-sm data-[state=active]:bg-secondary lg:flex-none lg:justify-start lg:text-left lg:text-base"

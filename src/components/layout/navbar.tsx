@@ -1,10 +1,11 @@
 "use client"
 import { SignedIn, SignedOut, UserButton } from "@daveyplate/better-auth-ui"
-import { Github, Menu, X } from "lucide-react"
+import { Menu, X } from "lucide-react"
+import { RiGithubFill } from "@remixicon/react"
 import Image from "next/image"
 import Link from "next/link"
 import React from "react"
-import { ModeToggle } from "../mode-toggle"
+import { ModeToggle } from "./mode-toggle"
 import { Button } from "../ui/button"
 import {
     NavigationMenu,
@@ -76,8 +77,8 @@ export const Navbar = () => {
     const [isOpen, setIsOpen] = React.useState(false)
 
     return (
-        <div className="sticky top-3 z-50 mx-auto w-[85%] max-w-7xl px-4">
-            <nav className="rounded-2xl border border-border/50 bg-card shadow-black/5 shadow-lg backdrop-blur-md transition-all duration-300 hover:shadow-black/10 hover:shadow-xl">
+        <div className="sticky top-2 z-50 mx-auto w-[97%] max-w-7xl px-4">
+            <nav className="rounded-xl border border-border/50 bg-card shadow-black/5 shadow-lg backdrop-blur-md transition-all duration-300 hover:shadow-black/10 hover:shadow-xl">
                 <div className="flex items-center justify-between px-4 py-3 lg:px-6">
                     {/* Logo */}
                     <Link
@@ -167,8 +168,7 @@ export const Navbar = () => {
 
                     {/* Desktop Actions */}
                     <div className="hidden items-center gap-2 lg:flex">
-                        <ModeToggle />
-                        { <Button
+                    <Button
                             asChild
                             variant="outline"
                             size="icon"
@@ -179,9 +179,11 @@ export const Navbar = () => {
                                 target="_blank"
                                 aria-label="View on GitHub"
                             >
-                                <Github className="size-5" />
+                                <RiGithubFill className="size-5 fill-foreground" />
                             </Link>
-                        </Button> }
+                        </Button>
+                        <ModeToggle />
+                        
                         <SignedOut>
                             <Button
                                 asChild
@@ -217,19 +219,33 @@ export const Navbar = () => {
 
                     {/* Mobile Menu Button */}
                     <div className="flex items-center gap-2 lg:hidden">
+                        <Button
+                            asChild
+                            variant="outline"
+                            size="icon"
+                            className="size-10 rounded-full"
+                        >
+                            <Link
+                                href="https://github.com/indieceo/Indiesaas"
+                                target="_blank"
+                                aria-label="View on GitHub"
+                            >
+                                <RiGithubFill className="size-5 fill-foreground" />
+                            </Link>
+                        </Button>
                         <ModeToggle />
                         <Sheet open={isOpen} onOpenChange={setIsOpen}>
                             <SheetTrigger asChild>
                                 <Button
-                                    variant="ghost"
+                                    variant="outline"
                                     size="sm"
-                                    className="hover:bg-accent/50"
+                                    className="rounded-lg hover:bg-accent/50"
                                     aria-label="Toggle menu"
                                 >
                                     {isOpen ? (
-                                        <X className="size-5" />
+                                        <X className="size-4" />
                                     ) : (
-                                        <Menu className="size-5" />
+                                        <Menu className="size-4" />
                                     )}
                                 </Button>
                             </SheetTrigger>
@@ -262,11 +278,8 @@ export const Navbar = () => {
                                     <Separator className="mb-4" />
 
                                     {/* Mobile Navigation Links */}
-                                    <div className="flex flex-1 flex-col gap-2">
+                                    <div className="flex flex-1 flex-col">
                                         <div className="space-y-1">
-                                            <h4 className="px-3 py-2 font-semibold text-muted-foreground text-sm">
-                                                Navigation
-                                            </h4>
                                             {routeList.map(
                                                 ({ href, label }) => (
                                                     <Button
@@ -276,7 +289,7 @@ export const Navbar = () => {
                                                         }
                                                         asChild
                                                         variant="ghost"
-                                                        className="h-auto justify-start px-3 py-3 font-medium text-base hover:bg-accent/50"
+                                                        className="h-auto w-full justify-start px-3 py-2.5 font-medium hover:bg-accent/50"
                                                     >
                                                         <Link href={href}>
                                                             {label}
@@ -285,47 +298,10 @@ export const Navbar = () => {
                                                 )
                                             )}
                                         </div>
-
-                                        <Separator className="my-4" />
-
-                                        <div className="space-y-1">
-                                            <h4 className="px-3 py-2 font-semibold text-muted-foreground text-sm">
-                                                Solutions
-                                            </h4>
-                                            {featureList.map(
-                                                ({ title, description }) => (
-                                                    <Button
-                                                        key={title}
-                                                        onClick={() =>
-                                                            setIsOpen(false)
-                                                        }
-                                                        asChild
-                                                        variant="ghost"
-                                                        className="h-auto justify-start px-3 py-3 hover:bg-accent/50"
-                                                    >
-                                                        <Link
-                                                            href="#features"
-                                                            className="text-left"
-                                                        >
-                                                            <div>
-                                                                <p className="font-medium text-sm">
-                                                                    {title}
-                                                                </p>
-                                                                <p className="mt-1 line-clamp-2 text-muted-foreground text-xs">
-                                                                    {
-                                                                        description
-                                                                    }
-                                                                </p>
-                                                            </div>
-                                                        </Link>
-                                                    </Button>
-                                                )
-                                            )}
-                                        </div>
                                     </div>
 
                                     {/* Mobile Actions */}
-                                    <SheetFooter className="flex-col gap-2 border-border/50 border-t pt-4">
+                                    <SheetFooter className="flex-row gap-2 border-border/50 border-t pt-4">
                                         <SignedOut>
                                             <Button
                                                 asChild
@@ -358,31 +334,10 @@ export const Navbar = () => {
                                                     Dashboard
                                                 </Link>
                                             </Button>
-                                        </SignedIn>
-                                        <div className="flex justify-center gap-2 pt-2">
-                                           
-                                           {/* <Button
-                                                asChild
-                                                size="sm"
-                                                variant="ghost"
-                                            >
-                                                <Link
-                                                    href="https://github.com/indieceo/Indiesaas"
-                                                    target="_blank"
-                                                    aria-label="View on GitHub"
-                                                    onClick={() =>
-                                                        setIsOpen(false)
-                                                    }
-                                                >
-                                                    <Github className="mr-2 size-4" />
-                                                    View on GitHub
-                                                </Link>
-                                            </Button>
-                                            */}
-                                            <SignedIn>
+                                            <div className="flex justify-end pt-2">
                                                 <UserButton size="icon" />
-                                            </SignedIn>
-                                        </div>
+                                            </div>
+                                        </SignedIn>
                                     </SheetFooter>
                                 </div>
                             </SheetContent>

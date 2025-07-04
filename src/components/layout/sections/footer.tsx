@@ -1,4 +1,8 @@
-import { Github, Linkedin, Mail, Twitter } from "lucide-react"
+import { Mail } from "lucide-react"
+import XIcon from "@/components/icons/x-icon"
+import GithubIcon from "@/components/icons/github-icon"
+import LinkedInIcon from "@/components/icons/linkedin-icon"
+
 import Image from "next/image"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
@@ -56,19 +60,19 @@ const socialLinks: FooterLinkProps[] = [
     {
         href: "https://github.com/indieceo/Indiesaas",
         label: "GitHub",
-        icon: <Github className="size-5" />,
+        icon: <GithubIcon className="size-5 fill-foreground" />,
         external: true
     },
     {
         href: "https://x.com/IndieCEO",
         label: "Twitter",
-        icon: <Twitter className="size-5" />,
+        icon: <XIcon className="size-5 fill-foreground" />,
         external: true
     },
     {
         href: "https://linkedin.com",
         label: "LinkedIn",
-        icon: <Linkedin className="size-5" />,
+        icon: <LinkedInIcon className="size-5 fill-foreground" />,
         external: true
     },
     {
@@ -81,8 +85,8 @@ const socialLinks: FooterLinkProps[] = [
 export const FooterSection = () => {
     return (
         <footer id="footer">
-            <div className="mx-auto w-[92%] max-w-7xl px-4 py-16">
-                <div className="relative overflow-hidden rounded-3xl border border-border/50 bg-card/60 shadow-xl backdrop-blur-sm">
+            <div className="mx-auto max-w-7xl px-4 py-16">
+                <div className="relative overflow-hidden rounded-2xl border border-border/50 bg-card/60 shadow-xl backdrop-blur-sm">
                     <div className="relative p-8 lg:p-12">
                         {/* Main Footer Content */}
                         <div className="space-y-8 lg:space-y-0">
@@ -92,7 +96,7 @@ export const FooterSection = () => {
                                 <div className="col-span-2">
                                     <Link
                                         href="/"
-                                        className="group mb-4 flex items-center gap-2 font-bold"
+                                        className="group mb-4 flex gap-2 font-bold"
                                     >
                                         <div className="relative">
                                             <Image
@@ -171,10 +175,10 @@ export const FooterSection = () => {
                             {/* Mobile/Tablet Layout: Stacked */}
                             <div className="lg:hidden">
                                 {/* Brand Section Mobile */}
-                                <div className="mb-8 text-center">
+                                <div className="mb-8">
                                     <Link
                                         href="/"
-                                        className="group mb-4 flex items-center justify-center gap-2 font-bold"
+                                        className="group mb-4 flex gap-2 font-bold"
                                     >
                                         <div className="relative">
                                             <Image
@@ -195,7 +199,7 @@ export const FooterSection = () => {
                                     </p>
 
                                     {/* Social Links Mobile */}
-                                    <div className="flex justify-center gap-2">
+                                    <div className="flex gap-2">
                                         {socialLinks.map((social) => (
                                             <Button
                                                 key={social.label}
@@ -256,7 +260,7 @@ export const FooterSection = () => {
                         <Separator className="my-8 bg-border/50" />
 
                         {/* Bottom Section */}
-                        <div className="flex flex-col items-center justify-between gap-4 lg:flex-row">
+                        <div className="flex flex-col justify-between gap-4 lg:flex-row">
                             <div className="flex flex-col items-center gap-4 text-muted-foreground text-sm sm:flex-row">
                                 <p>
                                     &copy; 2025 Indie Saas. All rights reserved.
@@ -288,9 +292,6 @@ export const FooterSection = () => {
                     </div>
                 </div>
             </div>
-
-            {/* Background decoration */}
-            <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-muted/10 to-transparent" />
         </footer>
     )
 }

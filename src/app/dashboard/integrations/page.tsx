@@ -1,15 +1,15 @@
-import { PageHeader } from "@/components/page-header"
+import { PageHeader } from "@/components/layout/page-header"
 import type { Metadata } from "next"
 
 export const metadata: Metadata = {
-    title: "Metrics"
+    title: "Integrations"
 }
 
-export default function MetricsPage() {
+export default function IntegrationsPage() {
     return (
         <div className="space-y-6">
             <PageHeader 
-                title="Metrics page"
+                title="Integrations page"
                 description="Track and monitor your key performance metrics."
             />
         </div>

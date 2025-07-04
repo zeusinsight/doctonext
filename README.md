@@ -14,12 +14,29 @@ A modern, production-ready Next.js starter template with comprehensive authentic
 
 - **Better Auth UI** - Pre-built authentication components
 - **shadcn/ui** - Beautiful, accessible component library
-- **Framer Motion** - Smooth animations and transitions
 - **Biome** - Fast linter and formatter
 - **Turborepo** - Monorepo build system
 - **PostgreSQL** - Robust, production-ready database
 - **Drizzle ORM** - Type-safe database queries
 - **UploadThing** - Modern file uploads with built-in storage
+
+
+## 🗺️ Roadmap
+
+- [x] Authentication with Better Auth
+  - Email/Password
+  - OAuth (Google, GitHub)
+  - User management
+- [x] Dashboard
+  - Modern UI with shadcn/ui
+  - Responsive design
+  - Dark/Light mode
+  - Setting page
+
+- [ ] Stripe/Polar.sh Payment
+- [ ] SEO Optimization
+- [ ] Blog System
+
 
 
 ##  Quick start
@@ -44,7 +61,7 @@ Create a `.env.local` file in the root directory:
 # Required: Generate at https://www.better-auth.com/docs/installation#set-environment-variables
 BETTER_AUTH_SECRET="your-secret-key-here"
 
-# Required: PostgreSQL connection string
+# Required: PostgreSQL connection 
 DATABASE_URL="postgresql://username:password@localhost:5432/your-database"
 
 # Required for avatars upload: UploadThing API keys (get from https://uploadthing.com/dashboard)
@@ -100,14 +117,20 @@ The UI is built with shadcn/ui components and can be customized:
 - Component variants in individual component files
 
 
+## Usage
+
+Feel free to use and customize this template as per your requirements. You can modify the components, styles, and content to create your unique website.
+
 ## License
 
-This project is licensed under the MIT License
+This project is licensed under the MIT License. You are free to use, modify, and distribute it as you wish.
 
 ## 🙏 Credits
 
+This project was inspired by nobruf [shadcn landing page](https://github.com/nobruf/shadcn-landing-page), and daveyplate [Better Auth Next.js starter](https://github.com/daveyplate/better-auth-nextjs-starter).
+
 - [Better Auth Ui](https://better-auth-ui.com) - Pre-built authentication components
-- [shadcn landing page](https://github.com/nobruf/shadcn-landing-page) - landing page used for this boilerplate
+- [shadcn landing page](https://github.com/nobruf/shadcn-landing-page) - landing page used for this project
 
 
 

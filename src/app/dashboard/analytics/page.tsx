@@ -1,4 +1,4 @@
-import { PageHeader } from "@/components/page-header"
+import { PageHeader } from "@/components/layout/page-header"
 import type { Metadata } from "next"
 
 export const metadata: Metadata = {
