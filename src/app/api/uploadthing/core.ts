@@ -1,6 +1,15 @@
 import { createUploadthing, type FileRouter } from "uploadthing/next"
+import { UploadThingError } from "uploadthing/server"
 
-const f = createUploadthing()
+const f = createUploadthing({
+    errorFormatter: (err) => {
+        console.error("Upload error:", err)
+        return {
+            message: err.message || "Failed to upload file",
+            cause: err.cause instanceof Error ? err.cause.message : undefined
+        }
+    },
+})
 
 export const ourFileRouter = {
     // Define avatar upload route
@@ -10,7 +19,7 @@ export const ourFileRouter = {
             maxFileCount: 1
         }
     })
-        .middleware(async () => {
+        .middleware(async ({ req }) => {
             try {
                 // Generate a unique filename with timestamp
                 const date = new Date().toISOString().split('T')[0]
@@ -22,11 +31,16 @@ export const ourFileRouter = {
                 }
             } catch (error) {
                 console.error("Error in upload middleware:", error)
-                throw new Error("Unauthorized")
+                throw new UploadThingError("Failed to process upload")
             }
         })
         .onUploadComplete(async ({ file }) => {
-            return { ufsUrl: file.ufsUrl }
+            try {
+                return { ufsUrl: file.ufsUrl }
+            } catch (error) {
+                console.error("Error in onUploadComplete:", error)
+                throw new UploadThingError("Failed to complete upload")
+            }
         })
 } satisfies FileRouter
 
