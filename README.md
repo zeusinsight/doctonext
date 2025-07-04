@@ -1,10 +1,5 @@
 # IndieSaas Starter
 
-[![Demo](https://img.shields.io/badge/Live%20Demo-View%20Here-blue?style=for-the-badge)](https://nextjs.better-auth-starter.com)
-[![Next.js](https://img.shields.io/badge/Next.js-15.3.4-black?style=for-the-badge&logo=next.js)](https://nextjs.org)
-[![Better Auth](https://img.shields.io/badge/Better%20Auth-1.2.9-orange?style=for-the-badge)](https://better-auth.com)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.8.3-blue?style=for-the-badge&logo=typescript)](https://www.typescriptlang.org)
-
 A modern, production-ready Next.js starter template with comprehensive authentication built on Better Auth, featuring a beautiful UI with shadcn/ui components and a robust tech stack.
 
 ## Tech Stack
@@ -18,17 +13,11 @@ A modern, production-ready Next.js starter template with comprehensive authentic
 - **Drizzle ORM** - Type-safe database queries
 
 
-## 🚀 Quick Start
-
-### Prerequisites
-- Node.js 18+ 
-- PostgreSQL database (neon.tech)
-- pnpm (recommended) or npm/yarn
 
 ### 1. Clone the Repository
 ```bash
 git clone https://github.com/indieceo/Indiesaas
-cd indiesaas-starter
+cd indiesaas
 ```
 
 ### 2. Install Dependencies
@@ -94,23 +83,9 @@ Database connection and schema are managed through:
 ### UI Customization
 The UI is built with shadcn/ui components and can be customized:
 - Theme colors in `src/styles/globals.css`
+- Custom styles in `src/styles/custom.css`
 - Component variants in individual component files
-- Global styles in `src/styles/`
 
-## 🚀 Deployment
-
-### Vercel (Recommended)
-1. Push your code to GitHub
-2. Connect your repository to Vercel
-3. Add environment variables in Vercel dashboard
-4. Deploy automatically on push
-
-### Other Platforms
-This starter works with any platform that supports Next.js:
-- Netlify
-- Railway
-- DigitalOcean App Platform
-- AWS Amplify
 
 ## 📄 License
 
@@ -122,12 +97,8 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - [shadcn landing page](https://github.com/nobruf/shadcn-landing-page) - landing page used for this boilerplate
 
 
-## ☕️ Support the Project
-
-If this starter helps you build something amazing, consider supporting the development:
-
-[![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-FFDD00?style=for-the-badge&logo=buy-me-a-coffee&logoColor=black)](https://buymeacoffee.com/daveycodez)
-
 ---
 
 **Made with ❤️ by [@indieceo](https://x.com/indieceo)**
+
+**Sponsored by my tool [@Posthyve](https://posthyve.com)**
