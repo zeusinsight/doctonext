@@ -1,3 +1,7 @@
+<div align="center">
+  <img src="public/logo.svg" alt="IndieSaas Starter Logo" width="80" height="80">
+</div>
+
 # IndieSaas Starter
 
 A modern, Next.js Saas boilerplate with comprehensive authentication built on Better Auth, featuring a beautiful UI with shadcn/ui components and a robust tech stack.
