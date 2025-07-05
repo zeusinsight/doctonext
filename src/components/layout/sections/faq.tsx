@@ -13,30 +13,28 @@ interface FAQProps {
 
 const FAQList: FAQProps[] = [
     {
-        question: "Is this template free?",
-        answer: "Yes. It is a free NextJS template.",
+        question: "Is it really free?",
+        answer: "Yes! Free forever with MIT license. Use it for any project, commercial or personal.",
         value: "item-1"
     },
     {
-        question: "Duis aute irure dolor in reprehenderit in voluptate velit?",
-        answer: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sint labore quidem quam consectetur sapiente, iste rerum reiciendis animi nihil nostrum sit quo, modi quod.",
+        question: "What's included?",
+        answer: "Authentication with social login, modern UI components, file uploads, and a ready-to-use dashboard. Plus, we're adding Stripe payments and blog system soon.",
         value: "item-2"
     },
     {
-        question:
-            "Lorem ipsum dolor sit amet Consectetur natus dolor minus quibusdam?",
-        answer: "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Labore qui nostrum reiciendis veritatis.",
+        question: "How fast can I launch?",
+        answer: "Get your MVP running in under an hour. We handle the boring stuff so you can focus on building your unique features.",
         value: "item-3"
     },
     {
-        question: "Excepteur sint occaecat cupidata non proident sunt?",
-        answer: "Lorem ipsum dolor sit amet consectetur, adipisicing elit.",
+        question: "Can I customize the design?",
+        answer: "100%. Built with shadcn/ui components that are fully customizable. Make it match your brand perfectly.",
         value: "item-4"
     },
     {
-        question:
-            "Enim ad minim veniam, quis nostrud exercitation ullamco laboris?",
-        answer: "consectetur adipisicing elit. Sint labore.",
+        question: "Do you offer support?",
+        answer: "Yes! Join our community on GitHub. We actively maintain the project and welcome contributions.",
         value: "item-5"
     }
 ]

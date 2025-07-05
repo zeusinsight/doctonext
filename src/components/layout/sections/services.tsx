@@ -6,36 +6,36 @@ import {
     CardTitle
 } from "@/components/ui/card"
 
-enum ProService {
-    YES = 1,
-    NO = 0
+enum ServiceStatus {
+    SOON = 1,
+    READY = 0
 }
 interface ServiceProps {
     title: string
-    pro: ProService
+    pro: ServiceStatus
     description: string
 }
 const serviceList: ServiceProps[] = [
     {
-        title: "Custom Domain Integration",
+        title: "Authentication System",
         description:
-            "Lorem ipsum dolor sit, amet consectetur adipisicing elit adipisicing.",
+            "Complete auth system with email and social login support. Includes session management and user roles.",
         pro: 0
     },
     {
-        title: "Social Media Integrations",
+        title: "Dashboard & UI Kit",
         description:
-            "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Molestiae, dicta.",
+            "Ready-to-use dashboard layout and beautiful UI components. Dark mode included.",
         pro: 0
     },
     {
-        title: "Email Marketing Integrations",
-        description: "Lorem dolor sit amet adipisicing.",
+        title: "File Upload System",
+        description: "Secure file uploads with UploadThing integration for user content and avatars.",
         pro: 0
     },
     {
-        title: "SEO Optimization",
-        description: "Lorem ipsum dolor sit amet consectetur.",
+        title: "Payment Integration",
+        description: "Stripe/Polar.sh payment system for your SaaS subscriptions (coming soon).",
         pro: 1
     }
 ]
@@ -44,15 +44,15 @@ export const ServicesSection = () => {
     return (
         <section id="services" className="container mx-auto py-24 sm:py-32">
             <h2 className="mb-2 text-center text-lg text-primary tracking-wider">
-                Services
+                Core Features
             </h2>
 
             <h2 className="mb-4 text-center font-bold text-3xl md:text-4xl">
-                Grow Your Business
+                Built-in Functionality
             </h2>
             <h3 className="mx-auto mb-8 text-center text-muted-foreground text-xl md:w-1/2">
-                From marketing and sales to operations and strategy, we have the
-                expertise to help you achieve your goals.
+                Start with a solid foundation. Our starter includes essential features 
+                that every modern SaaS needs, saving you weeks of development time.
             </h3>
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3" />
 
@@ -67,11 +67,11 @@ export const ServicesSection = () => {
                             <CardDescription>{description}</CardDescription>
                         </CardHeader>
                         <Badge
-                            data-pro={ProService.YES === pro}
+                            data-soon={ServiceStatus.SOON === pro}
                             variant="secondary"
-                            className="-top-2 -right-3 absolute data-[pro=false]:hidden"
+                            className="-top-2 -right-3 absolute data-[soon=false]:hidden"
                         >
-                            PRO
+                            SOON
                         </Badge>
                     </Card>
                 ))}

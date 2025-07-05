@@ -1,49 +1,55 @@
-import type { icons } from "lucide-react"
+import {
+    RiShieldKeyholeLine,
+    RiDashboard3Line,
+    RiUploadCloud2Line,
+    RiDatabase2Line,
+    RiFireFill,
+    RiStackLine
+} from "@remixicon/react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Icon } from "@/components/ui/icon"
 
 interface FeaturesProps {
-    icon: string
+    icon: React.ReactNode
     title: string
     description: string
 }
 
 const featureList: FeaturesProps[] = [
     {
-        icon: "TabletSmartphone",
-        title: "Mobile Friendly",
+        icon: <RiShieldKeyholeLine size={24} className="text-primary" />,
+        title: "Better Auth",
         description:
-            "Lorem ipsum dolor sit amet consectetur adipisicing elit. A odio velit cum aliquam, consectetur."
+            "Complete authentication with social logins, email verification, and session management built-in."
     },
     {
-        icon: "BadgeCheck",
-        title: "Social Proof",
+        icon: <RiDashboard3Line size={24} className="text-primary" />,
+        title: "Modern UI Kit",
         description:
-            "Lorem ipsum dolor sit amet consectetur. Natus consectetur, odio ea accusamus aperiam."
+            "Beautiful, accessible components powered by shadcn/ui. Dark mode included."
     },
     {
-        icon: "Goal",
-        title: "Targeted Content",
+        icon: <RiUploadCloud2Line size={24} className="text-primary" />,
+        title: "File Uploads",
         description:
-            "Lorem ipsum dolor sit amet consectetur adipisicing elit. odio ea accusamus aperiam."
+            "Secure file upload system with UploadThing integration, perfect for user avatars and content."
     },
     {
-        icon: "PictureInPicture",
-        title: "Strong Visuals",
+        icon: <RiDatabase2Line size={24} className="text-primary" />,
+        title: "Type-Safe DB",
         description:
-            "Lorem elit. A odio velit cum aliquam. Natus consectetur dolores, odio ea accusamus aperiam."
+            "PostgreSQL database with Drizzle ORM for type-safe queries and easy schema management."
     },
     {
-        icon: "MousePointerClick",
-        title: "Clear CTA",
+        icon: <RiFireFill size={24} className="text-primary" />,
+        title: "Performance",
         description:
-            "Lorem ipsum dolor sit amet consectetur adipisicing. odio ea accusamus consectetur."
+            "Built on Next.js for lightning-fast page loads, SEO optimization, and the best developer experience."
     },
     {
-        icon: "Newspaper",
-        title: "Clear Headline",
+        icon: <RiStackLine size={24} className="text-primary" />,
+        title: "Monorepo Ready",
         description:
-            "Lorem ipsum dolor sit amet consectetur adipisicing elit. A odio velit cum aliquam. Natus consectetur."
+            "Turborepo setup for clean code organization and efficient builds as your project grows."
     }
 ]
 
@@ -55,13 +61,11 @@ export const FeaturesSection = () => {
             </h2>
 
             <h2 className="mb-4 text-center font-bold text-3xl md:text-4xl">
-                What Makes Us Different
+                Everything You Need
             </h2>
 
             <h3 className="mx-auto mb-8 text-center text-muted-foreground text-xl md:w-1/2">
-                Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-                Voluptatem fugiat, odit similique quasi sint reiciendis quidem
-                iure veritatis optio facere tenetur.
+                Launch your SaaS faster with our carefully chosen tech stack and pre-built features. Focus on your unique value proposition, not boilerplate.
             </h3>
 
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -70,12 +74,7 @@ export const FeaturesSection = () => {
                         <Card className="h-full border-0 bg-background shadow-none">
                             <CardHeader className="flex items-center justify-center">
                                 <div className="mb-4 rounded-full bg-primary/20 p-2 ring-8 ring-primary/10">
-                                    <Icon
-                                        name={icon as keyof typeof icons}
-                                        size={24}
-                                        color="var(--primary)"
-                                        className="text-primary"
-                                    />
+                                    {icon}
                                 </div>
 
                                 <CardTitle>{title}</CardTitle>

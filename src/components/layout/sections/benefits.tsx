@@ -10,28 +10,28 @@ interface BenefitsProps {
 
 const benefitList: BenefitsProps[] = [
     {
-        icon: "Blocks",
-        title: "Build Brand Trust",
+        icon: "Rocket",
+        title: "Launch Faster",
         description:
-            "Lorem ipsum dolor sit amet consectetur adipisicing elit. A odio velit cum aliquam. Natus consectetur dolores."
+            "Skip weeks of setup and boilerplate. Get a production-ready foundation with authentication, UI, and core features already built."
     },
     {
-        icon: "ChartLine",
-        title: "More Leads",
+        icon: "Code",
+        title: "Modern Stack",
         description:
-            "Lorem ipsum dolor sit amet consectetur adipisicing elit. A odio velit cum aliquam, natus consectetur."
+            "Built with Next.js, TypeScript, and industry-leading tools. Your startup deserves a tech stack that scales with your growth."
     },
     {
-        icon: "Wallet",
-        title: "Higher Conversions",
+        icon: "Palette",
+        title: "Beautiful Design",
         description:
-            "Lorem ipsum dolor sit amet consectetur adipisicing elit. Natus consectetur. A odio velit cum aliquam"
+            "Polished UI components from shadcn/ui give your SaaS a professional look from day one. Fully customizable to match your brand."
     },
     {
-        icon: "Sparkle",
-        title: "Test Marketing Ideas",
+        icon: "Shield",
+        title: "Production Ready",
         description:
-            "Lorem ipsum dolor sit amet consectetur adipisicing elit. A odio velit cum aliquam. Natus consectetur dolores."
+            "Enterprise-grade authentication, type-safe database queries, and file upload capabilities. Everything you need to go live confidently."
     }
 ]
 
@@ -45,12 +45,10 @@ export const BenefitsSection = () => {
                     </h2>
 
                     <h2 className="mb-4 font-bold text-3xl md:text-4xl">
-                        Your Shortcut to Success
+                        Why Choose This Starter
                     </h2>
                     <p className="mb-8 text-muted-foreground text-xl">
-                        Lorem ipsum dolor sit amet consectetur, adipisicing
-                        elit. Non ducimus reprehenderit architecto rerum
-                        similique facere odit deleniti necessitatibus quo quae.
+                        Stop wasting time on infrastructure. Get a battle-tested foundation that lets you focus on what matters - building your unique features and growing your business.
                     </p>
                 </div>
 

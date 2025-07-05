@@ -1,4 +1,4 @@
-import DiscordIcon from "@/components/icons/discord-icon"
+import { Github } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {
     Card,
@@ -17,29 +17,28 @@ export const CommunitySection = () => {
                     <Card className="flex flex-col items-center justify-center border-none bg-background text-center shadow-none">
                         <CardHeader>
                             <CardTitle className="flex flex-col items-center font-bold text-4xl md:text-5xl">
-                                <DiscordIcon />
+                                <Github className="h-16 w-16 mb-4" />
                                 <div>
-                                    Ready to join this
+                                    Contribute to this
                                     <span className="bg-gradient-to-r from-[#D14424] to-primary bg-clip-text pl-2 text-transparent">
-                                        Community?
+                                        Project
                                     </span>
                                 </div>
                             </CardTitle>
                         </CardHeader>
                         <CardContent className="text-muted-foreground text-xl lg:w-[80%]">
-                            Join our vibrant Discord community! Connect, share,
-                            and grow with like-minded enthusiasts. Click to dive
-                            in! 🚀
+                            Join our open-source community on GitHub! Star the repo, report issues, 
+                            contribute code, and help make this starter even better. Let's build together! 🚀
                         </CardContent>
 
                         <CardFooter>
                             <Button asChild>
                                 <a
-                                    href="https://discord.com/"
+                                    href="https://github.com/indieceo/Indiesaas"
                                     target="_blank"
                                     rel="noopener"
                                 >
-                                    Join Discord
+                                    Star on GitHub
                                 </a>
                             </Button>
                         </CardFooter>
