@@ -34,7 +34,7 @@ export const HeroSection = () => {
 
                     <p className="mx-auto max-w-screen-sm text-muted-foreground text-xl">
                         {`A complete Next.js starter with authentication, beautiful UI components, 
-            and everything you need to launch your SaaS product quickly and efficiently.`}
+            and everything you need to launch your platform quickly and efficiently.`}
                     </p>
 
                     <div className="space-y-4 md:space-x-4 md:space-y-0">
