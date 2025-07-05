@@ -30,7 +30,7 @@ const reviewList: ReviewProps[] = [
         name: "John Doe",
         userName: "Product Manager",
         comment:
-            "Wow this is awesome!. This template lets me change colors, fonts and images to match my brand identity. ",
+            "Wow this is awesome!. This Starter Kit lets me change colors, fonts and images to match my brand identity. ",
         rating: 5.0
     },
     {

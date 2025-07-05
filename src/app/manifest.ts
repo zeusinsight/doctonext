@@ -5,7 +5,7 @@ export default function manifest(): MetadataRoute.Manifest {
         name: "Indie Saas",
         short_name: "Indie Saas",
         description:
-            "Next.js Boilerplate Template with Postgres, Drizzle, BetterAuth, and shadcn/ui",
+            "Fully functional SaaS starter built with Next.js, Drizzle, ShadCN UI, and Better Auth",
         start_url: "/",
         display: "standalone",
         background_color: "#fff",

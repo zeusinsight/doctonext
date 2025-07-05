@@ -112,7 +112,7 @@ export const FooterSection = () => {
                                     </Link>
                                     <p className="mb-6 max-w-sm text-muted-foreground text-sm leading-relaxed">
                                         Build and scale your SaaS faster with
-                                        our template. From authentication to
+                                        our Starter Kit. From authentication to
                                         payments, we've got you covered.
                                     </p>
 
@@ -194,7 +194,7 @@ export const FooterSection = () => {
                                     </Link>
                                     <p className="mx-auto mb-6 max-w-sm text-muted-foreground text-sm leading-relaxed">
                                         Build and scale your SaaS faster with
-                                        our template. From authentication to
+                                        our Starter Kit. From authentication to
                                         payments, we've got you covered.
                                     </p>
 

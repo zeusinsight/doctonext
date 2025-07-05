@@ -19,7 +19,7 @@ export const HeroSection = () => {
                         <span className="mr-2 text-primary">
                             <Badge>New</Badge>
                         </span>
-                        <span> Template is out now! </span>
+                        <span> Available for free! </span>
                     </Badge>
 
                     <div className="mx-auto max-w-screen-md text-center font-bold text-4xl md:text-6xl">
