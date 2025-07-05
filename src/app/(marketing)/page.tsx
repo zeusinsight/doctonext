@@ -12,12 +12,12 @@ import Trusted from "@/components/layout/sections/trusted"
 
 export const metadata = {
     title: "Indie Saas Starter",
-    description: "Open Source Next.js Saas Starter. Built with Better Auth UI, Shadcn/Ui, Drizzle ORM, UploadThing and Tanstack Query",
+    description: "Open Source Next.js Saas Starter. Built with Better Auth UI, Shadcn/Ui, Drizzle ORM, and UploadThing",
     openGraph: {
         type: "website",
         url: "https://indiesaas.vercel.app",
         title: "Indie Saas Starter",
-        description: "Open Source Next.js Saas Starter. Built with Better Auth UI, Shadcn/Ui, Drizzle ORM, UploadThing and Tanstack Query",
+        description: "Open Source Next.js Saas Starter. Built with Better Auth UI, Shadcn/Ui, Drizzle ORM, and UploadThing",
         images: [
             {
                 url: "/demo-img.png",
@@ -31,7 +31,7 @@ export const metadata = {
         card: "summary_large_image",
         site: "https://indiesaas.vercel.app",
         title: "Indie Saas Starter",
-        description: "Open Source Next.js Saas Starter. Built with Better Auth UI, Shadcn/Ui, Drizzle ORM, UploadThing and Tanstack Query",
+        description: "Open Source Next.js Saas Starter. Built with Better Auth UI, Shadcn/Ui, Drizzle ORM, and UploadThing",
         images: [
             "/logo.png"
         ]

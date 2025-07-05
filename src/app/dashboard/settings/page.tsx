@@ -4,7 +4,8 @@ import {
     DeleteAccountCard,
     SessionsCard,
     UpdateNameCard,
-    UpdateAvatarCard
+    UpdateAvatarCard,
+    ProvidersCard
 } from "@daveyplate/better-auth-ui"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { RiUser3Line, RiShieldLine, RiAlarmWarningLine } from "@remixicon/react"
@@ -66,6 +67,7 @@ export default function SettingsPage() {
                     <TabsContent id="security" value="security">
                         <div className="space-y-4 sm:space-y-6">
                             <ChangePasswordCard />
+                            <ProvidersCard />
                             <SessionsCard />
                         </div>
                     </TabsContent>
