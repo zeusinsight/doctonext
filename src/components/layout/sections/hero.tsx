@@ -1,5 +1,6 @@
 "use client"
 import { ArrowRight, Lock } from "lucide-react"
+import { RiGithubFill } from "@remixicon/react"
 import Image from "next/image"
 import Link from "next/link"
 import { useTheme } from "next-themes"
@@ -25,7 +26,7 @@ export const HeroSection = () => {
                     <div className="mx-auto max-w-screen-md text-center font-bold text-4xl md:text-6xl">
                         <h1>
                             Experience the
-                            <span className="bg-gradient-to-r from-[#D14424] to-primary bg-clip-text px-2 text-transparent">
+                            <span className="bg-gradient-to-r from-[#da5319] to-primary bg-clip-text px-2 text-transparent">
                                 Indie Saas
                             </span>
                             Boilerplate
@@ -37,10 +38,11 @@ export const HeroSection = () => {
             and everything you need to launch your platform quickly and efficiently.`}
                     </p>
 
-                    <div className="space-y-4 md:space-x-4 md:space-y-0">
+                    <div className="flex flex-col items-center space-y-4 md:flex-row md:justify-center md:space-x-4 md:space-y-0">
                         <Button
                             asChild
-                            className="group/arrow w-5/6 font-bold md:w-1/4"
+                            size="lg"
+                            className="group/arrow rounded-full"
                         >
                             <Link href="/auth/sign-up">
                                 Get Started
@@ -50,14 +52,17 @@ export const HeroSection = () => {
 
                         <Button
                             asChild
-                            variant="secondary"
-                            className="w-5/6 font-bold md:w-1/4"
+                            variant="outline"
+                            size="lg"
+                            className="rounded-full"
                         >
                             <Link
                                 href="https://github.com/indieceo/Indiesaas"
                                 target="_blank"
+                                className="flex items-center gap-2"
                             >
-                                Github respository
+                                <RiGithubFill className="size-5 fill-foreground" />
+                                Github repository
                             </Link>
                         </Button>
                     </div>

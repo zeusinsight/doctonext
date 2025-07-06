@@ -2,14 +2,15 @@
 @import "tw-animate-css";
 @import "./custom.css";
 
+
 :root {
   --background: oklch(1.0000 0 0);
   --foreground: oklch(0.1469 0.0041 49.2499);
-  --card: oklch(0.9850 0 0);
+  --card: oklch(0.9851 0 0);
   --card-foreground: oklch(0.1469 0.0041 49.2499);
   --popover: oklch(1.0000 0 0);
   --popover-foreground: oklch(0.1469 0.0041 49.2499);
-  --primary: oklch(0.5833 0.1829 34.0627);
+  --primary: oklch(0.6150 0.1811 40.0604);
   --primary-foreground: oklch(0.9848 0.0013 106.4233);
   --secondary: oklch(0.9699 0.0013 106.4238);
   --secondary-foreground: oklch(0.2161 0.0061 56.0434);
@@ -58,7 +59,7 @@
   --card-foreground: oklch(0.9612 0 0);
   --popover: oklch(0.1469 0.0041 49.2499);
   --popover-foreground: oklch(0.9848 0.0013 106.4233);
-  --primary: oklch(0.5833 0.1829 34.0627);
+  --primary: oklch(0.6150 0.1811 40.0604);
   --primary-foreground: oklch(0.9848 0.0013 106.4233);
   --secondary: oklch(0.2685 0.0063 34.2976);
   --secondary-foreground: oklch(0.9848 0.0013 106.4233);

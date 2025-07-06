@@ -1,4 +1,4 @@
-import { Github } from "lucide-react"
+import { Github, Star } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {
     Card,
@@ -17,10 +17,10 @@ export const CommunitySection = () => {
                     <Card className="flex flex-col items-center justify-center border-none bg-background text-center shadow-none">
                         <CardHeader>
                             <CardTitle className="flex flex-col items-center font-bold text-4xl md:text-5xl">
-                                <Github className="h-16 w-16 mb-4" />
+                                <Github className="mb-4 h-16 w-16" />
                                 <div>
                                     Contribute to this
-                                    <span className="bg-gradient-to-r from-[#D14424] to-primary bg-clip-text pl-2 text-transparent">
+                                    <span className="bg-gradient-to-r from-[#da5319] to-primary bg-clip-text pl-2 text-transparent">
                                         Project
                                     </span>
                                 </div>
@@ -28,16 +28,18 @@ export const CommunitySection = () => {
                         </CardHeader>
                         <CardContent className="text-muted-foreground text-xl lg:w-[80%]">
                             Join our open-source community on GitHub! Star the repo, report issues, 
-                            contribute code, and help make this starter even better. Let's build together! 🚀
+                            contribute code, and help make this starter even better.
                         </CardContent>
 
                         <CardFooter>
-                            <Button asChild>
+                            <Button asChild variant="outline">
                                 <a
                                     href="https://github.com/indieceo/Indiesaas"
                                     target="_blank"
                                     rel="noopener"
+                                    className="flex items-center gap-2"
                                 >
+                                    <Star className="h-5 w-5" />
                                     Star on GitHub
                                 </a>
                             </Button>
