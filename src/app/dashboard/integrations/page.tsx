@@ -10,7 +10,7 @@ export default function IntegrationsPage() {
         <div className="space-y-6">
             <PageHeader 
                 title="Integrations page"
-                description="Track and monitor your key performance metrics."
+                description="Connect your apps and services to your dashboard."
             />
         </div>
     )

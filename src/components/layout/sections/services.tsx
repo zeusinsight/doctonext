@@ -63,7 +63,7 @@ export const ServicesSection = () => {
                         className="relative h-full bg-muted/60 dark:bg-card"
                     >
                         <CardHeader>
-                            <CardTitle>{title}</CardTitle>
+                            <CardTitle className="text-lg font-bold">{title}</CardTitle>
                             <CardDescription>{description}</CardDescription>
                         </CardHeader>
                         <Badge

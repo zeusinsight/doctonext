@@ -1,4 +1,3 @@
-import { Check } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {
     Card,
@@ -29,7 +28,7 @@ const plans: PlanProps[] = [
         popular: 0,
         price: 0,
         description:
-            "Lorem ipsum dolor sit, amet ipsum consectetur adipisicing elit.",
+            "Perfect for getting started with basic features and exploring our platform.",
         buttonText: "Start Free Trial",
         benefitList: [
             "1 team member",
@@ -44,7 +43,7 @@ const plans: PlanProps[] = [
         popular: 1,
         price: 45,
         description:
-            "Lorem ipsum dolor sit, amet ipsum consectetur adipisicing elit.",
+            "Ideal for growing teams that need advanced features and priority support.",
         buttonText: "Get starterd",
         benefitList: [
             "4 team member",
@@ -59,7 +58,7 @@ const plans: PlanProps[] = [
         popular: 0,
         price: 120,
         description:
-            "Lorem ipsum dolor sit, amet ipsum consectetur adipisicing elit.",
+            "Comprehensive solution for large organizations with extensive customization needs.",
         buttonText: "Contact US",
         benefitList: [
             "10 team member",
@@ -83,7 +82,7 @@ export const PricingSection = () => {
             </h2>
 
             <h3 className="mx-auto pb-14 text-center text-muted-foreground text-xl md:w-1/2">
-                Lorem ipsum dolor sit amet consectetur adipisicing reiciendis.
+                Choose the perfect plan that fits your needs and budget.
             </h3>
 
             <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3 lg:gap-4">
@@ -125,8 +124,10 @@ export const PricingSection = () => {
                             <CardContent className="flex">
                                 <div className="space-y-4">
                                     {benefitList.map((benefit) => (
-                                        <span key={benefit} className="flex">
-                                            <Check className="mr-2 text-primary" />
+                                        <span key={benefit} className="flex items-center gap-2">
+                                            <svg width="21" height="21" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg" className="flex-shrink-0 fill-primary">
+                                            <path d="M14.3589 2.6492H7.3756C4.34227 2.6492 2.53394 4.45753 2.53394 7.49087V14.4659C2.53394 17.5075 4.34227 19.3159 7.3756 19.3159H14.3506C17.3839 19.3159 19.1923 17.5075 19.1923 14.4742V7.49087C19.2006 4.45753 17.3923 2.6492 14.3589 2.6492ZM14.8506 9.06587L10.1256 13.7909C10.0089 13.9075 9.8506 13.9742 9.68394 13.9742C9.51727 13.9742 9.35894 13.9075 9.24227 13.7909L6.88394 11.4325C6.64227 11.1909 6.64227 10.7909 6.88394 10.5492C7.1256 10.3075 7.5256 10.3075 7.76727 10.5492L9.68394 12.4659L13.9673 8.18253C14.2089 7.94087 14.6089 7.94087 14.8506 8.18253C15.0923 8.4242 15.0923 8.81587 14.8506 9.06587Z" />
+                                            </svg>
                                             <h3>{benefit}</h3>
                                         </span>
                                     ))}

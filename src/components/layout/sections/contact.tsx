@@ -66,9 +66,8 @@ export const ContactSection = () => {
                         </h2>
                     </div>
                     <p className="mb-8 text-muted-foreground lg:w-5/6">
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                        Voluptatum ipsam sint enim exercitationem ex autem
-                        corrupti quas tenetur
+                        We'd love to hear from you! Get in touch with us for any questions, 
+                        inquiries, or collaboration opportunities. We're here to help.
                     </p>
 
                     <div className="flex flex-col gap-4">

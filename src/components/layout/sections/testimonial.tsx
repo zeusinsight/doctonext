@@ -38,7 +38,7 @@ const reviewList: ReviewProps[] = [
         name: "Sophia Collins",
         userName: "Cybersecurity Analyst",
         comment:
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna. ",
+            "The security implementation is top-notch. Built-in authentication and proper data validation give me confidence in the platform. ",
         rating: 4.8
     },
 
@@ -47,7 +47,7 @@ const reviewList: ReviewProps[] = [
         name: "Adam Johnson",
         userName: "Chief Technology Officer",
         comment:
-            "Lorem ipsum dolor sit amet,exercitation. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
+            "Perfect architecture and clean code structure. Our development team was able to scale quickly without technical debt issues.",
         rating: 4.9
     },
     {
@@ -55,7 +55,7 @@ const reviewList: ReviewProps[] = [
         name: "Ethan Parker",
         userName: "Data Scientist",
         comment:
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod labore et dolore magna aliqua. Ut enim ad minim veniam.",
+            "The analytics integration capabilities are excellent. Easy to implement tracking and gather meaningful insights from user behavior.",
         rating: 5.0
     },
     {
@@ -63,7 +63,7 @@ const reviewList: ReviewProps[] = [
         name: "Ava Mitchell",
         userName: "IT Project Manager",
         comment:
-            "Lorem ipsum dolor sit amet, tempor incididunt  aliqua. Ut enim ad minim veniam, quis nostrud incididunt consectetur adipiscing elit.",
+            "Streamlined our deployment process significantly. The documentation and setup guide helped our team deliver projects faster.",
         rating: 5.0
     },
     {
@@ -71,7 +71,7 @@ const reviewList: ReviewProps[] = [
         name: "Isabella Reed",
         userName: "DevOps Engineer",
         comment:
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+            "Amazing CI/CD integration and containerization support. The deployment pipeline configurations saved us weeks of setup time.",
         rating: 4.9
     }
 ]

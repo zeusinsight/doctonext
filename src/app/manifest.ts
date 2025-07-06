@@ -2,8 +2,8 @@ import type { MetadataRoute } from "next"
 
 export default function manifest(): MetadataRoute.Manifest {
     return {
-        name: "Indie Saas",
-        short_name: "Indie Saas",
+        name: "Indie Saas Starter",
+        short_name: "IndieSaaS",
         description:
             "Fully functional SaaS starter built with Next.js, Drizzle, ShadCN UI, and Better Auth",
         start_url: "/",
