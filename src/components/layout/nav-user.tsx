@@ -23,7 +23,8 @@ import {
     RiTimer2Line,
     RiHomeLine,
     RiUserLine,
-    RiLockLine
+    RiLockLine,
+    RiBankCardLine
 } from "@remixicon/react"
 
 import { authClient } from "@/lib/auth-client"
@@ -170,6 +171,16 @@ export function NavUser() {
                                     aria-hidden="true"
                                 />
                                 <span>Account</span>
+                            </DropdownMenuItem>
+                        </Link>
+                        <Link href="/dashboard/billing">
+                            <DropdownMenuItem className="gap-3 px-1">
+                                <RiBankCardLine
+                                    size={20}
+                                    className="text-muted-foreground/70"
+                                    aria-hidden="true"
+                                />
+                                <span>Billing</span>
                             </DropdownMenuItem>
                         </Link>
                         <DropdownMenuItem className="gap-3 px-1">

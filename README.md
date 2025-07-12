@@ -14,6 +14,7 @@ A modern, Next.js Saas boilerplate with comprehensive authentication built on Be
 
 - **Better Auth UI** - Pre-built authentication components
 - **shadcn/ui** - Beautiful, accessible component library
+- **Stripe** - Payment Provider
 - **Biome** - Fast linter and formatter
 - **Turborepo** - Monorepo build system
 - **PostgreSQL** - Robust, production-ready database
@@ -23,11 +24,11 @@ A modern, Next.js Saas boilerplate with comprehensive authentication built on Be
 
 ## Roadmap
 
+- [x] landing page
 - [x] Authentication with Better Auth
 - [x] Dashboard
-- [ ] Stripe/Polar.sh Payment
-- [ ] SEO Optimization
-- [ ] Blog System
+- [x] Stripe Payment
+
 
 
 
@@ -99,8 +100,7 @@ The authentication is configured in `src/lib/auth.ts`. You can customize:
 ### Database Configuration
 Database connection and schema are managed through:
 - `drizzle.config.ts` - Drizzle ORM configuration
-- `auth-schema.ts` - Better Auth schema definition
-- `src/database/` - Database utilities and queries
+- `src/database/schema.ts` - Better Auth schema definition
 
 ### UI Customization
 The UI is built with shadcn/ui components and can be customized:
