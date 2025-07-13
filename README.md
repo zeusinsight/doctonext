@@ -48,23 +48,10 @@ pnpm install
 ```
 
 ### 3. Environment Setup
-Create a `.env.local` file in the root directory:
+Copy `.env.example` to `.env.local` and update the variables.
 
 ```bash
-# Required: Generate at https://www.better-auth.com/docs/installation#set-environment-variables
-BETTER_AUTH_SECRET="your-secret-key-here"
-
-# Required: PostgreSQL connection 
-DATABASE_URL="postgresql://username:password@localhost:5432/your-database"
-
-# Required for avatars upload: UploadThing API keys (get from https://uploadthing.com/dashboard)
-UPLOADTHING_TOKEN="" 
-
-# Optional: OAuth providers (configure as needed)
-# GOOGLE_CLIENT_ID=""
-# GOOGLE_CLIENT_SECRET=""
-# GITHUB_CLIENT_ID=""
-# GITHUB_CLIENT_SECRET=""
+cp .env.example .env.local
 ```
 
 ### 4. Database Setup

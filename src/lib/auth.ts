@@ -14,8 +14,6 @@ const stripeClient = new Stripe(process.env.STRIPE_SECRET_KEY!, {
 })
 
 export const auth = betterAuth({
-    secret: process.env.BETTER_AUTH_SECRET,
-    baseURL: process.env.BETTER_AUTH_URL || "http://localhost:3000",
     database: drizzleAdapter(db, {
         provider: "pg",
         usePlural: true,
