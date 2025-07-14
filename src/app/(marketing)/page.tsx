@@ -22,7 +22,7 @@ export const metadata = {
             {
                 url: "/demo-img.png",
                 width: 1200,
-                height: 630,
+                height: 750,
                 alt: "Indie Saas"
             }
         ]
@@ -33,7 +33,12 @@ export const metadata = {
         title: "Indie Saas Starter",
         description: "Open Source Next.js Saas Starter. Built with Better Auth UI, Shadcn/Ui, Drizzle ORM, and UploadThing",
         images: [
-            "/logo.png"
+            {
+                url: "/demo-img.png",
+                width: 1200,
+                height: 750,
+                alt: "Indie Saas"
+            }
         ]
     }
 }
