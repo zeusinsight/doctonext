@@ -10,8 +10,8 @@ import { Button } from "@/components/ui/button"
 export const HeroSection = () => {
     const { theme } = useTheme()
     return (
-        <section className="container mx-auto w-full">
-            <div className="mx-auto grid place-items-center gap-8 py-20 md:py-32 lg:max-w-screen-xl">
+        <section className="container mx-auto px-4 w-full">
+            <div className="grid place-items-center gap-8 py-20 md:py-32 lg:max-w-screen-xl">
                 <div className="space-y-8 text-center">
                     <Badge
                         variant="outline"

@@ -72,7 +72,7 @@ const plans: PlanProps[] = [
 
 export const PricingSection = () => {
     return (
-        <section id="pricing" className="container mx-auto py-24 sm:py-32">
+        <section id="pricing" className="container mx-auto px-4 py-24 sm:py-32">
             <h2 className="mb-2 text-center text-lg text-primary tracking-wider">
                 Pricing
             </h2>

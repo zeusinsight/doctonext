@@ -15,20 +15,19 @@ export const CommunitySection = () => {
             <div className="container py-20 sm:py-20">
                 <div className="mx-auto lg:w-[60%]">
                     <Card className="flex flex-col items-center justify-center border-none bg-background text-center shadow-none">
-                        <CardHeader>
-                            <CardTitle className="flex flex-col items-center font-bold text-4xl md:text-5xl">
-                                <Github className="mb-4 h-16 w-16" />
-                                <div>
-                                    Contribute to this
-                                    <span className="bg-gradient-to-r from-[#da5319] to-primary bg-clip-text pl-2 text-transparent">
-                                        Project
-                                    </span>
-                                </div>
+                        <CardHeader className="flex flex-col items-center">
+                            <Github className="mb-4 h-16 w-16" />
+                            <CardTitle className="flex flex-col items-center text-center font-bold text-4xl md:text-5xl">
+                                <div className="whitespace-nowrap">Contribute to this</div>
+                                <span className="bg-gradient-to-r from-[#da5319] to-primary bg-clip-text text-transparent">
+                                    Project
+                                </span>
                             </CardTitle>
                         </CardHeader>
                         <CardContent className="text-muted-foreground text-xl lg:w-[80%]">
-                            Join our open-source community on GitHub! Star the repo, report issues, 
-                            contribute code, and help make this starter even better.
+                            Join our open-source community on GitHub! Star the
+                            repo, report issues, contribute code, and help make
+                            this starter even better.
                         </CardContent>
 
                         <CardFooter>
