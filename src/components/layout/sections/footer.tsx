@@ -85,7 +85,7 @@ const socialLinks: FooterLinkProps[] = [
 export const FooterSection = () => {
     return (
         <footer id="footer">
-            <div className="mx-auto max-w-7xl px-4 py-16">
+            <div className="mx-auto max-w-7xl pt-16 pb-0 lg:pb-16">
                 <div className="relative overflow-hidden rounded-2xl border border-border/50 bg-card/60 shadow-xl backdrop-blur-sm">
                     <div className="relative p-8 lg:p-12">
                         {/* Main Footer Content */}
@@ -110,7 +110,7 @@ export const FooterSection = () => {
                                             Indie Saas
                                         </h3>
                                     </Link>
-                                    <p className="mb-6 max-w-sm text-muted-foreground text-sm leading-relaxed">
+                                    <p className="mb-6 text-muted-foreground text-sm leading-relaxed">
                                         Build and scale your SaaS faster with
                                         our Starter Kit. From authentication to
                                         payments, we've got you covered.
@@ -192,7 +192,7 @@ export const FooterSection = () => {
                                             Indie Saas
                                         </h3>
                                     </Link>
-                                    <p className="mx-auto mb-6 max-w-sm text-muted-foreground text-sm leading-relaxed">
+                                    <p className="mb-6 max-w-sm text-muted-foreground text-sm leading-relaxed">
                                         Build and scale your SaaS faster with
                                         our Starter Kit. From authentication to
                                         payments, we've got you covered.

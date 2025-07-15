@@ -3,13 +3,7 @@ import Link from "next/link"
 import GithubIcon from "@/components/icons/github-icon"
 import LinkedInIcon from "@/components/icons/linkedin-icon"
 import XIcon from "@/components/icons/x-icon"
-import {
-    Card,
-    CardContent,
-    CardFooter,
-    CardHeader,
-    CardTitle
-} from "@/components/ui/card"
+import { Card, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 
 interface TeamProps {
     imageUrl: string
@@ -202,7 +196,7 @@ export const TeamSection = () => {
                     ) => (
                         <Card
                             key={index}
-                            className="group/hoverimg flex h-full flex-col overflow-hidden bg-muted/60 dark:bg-card"
+                            className="group/hoverimg flex h-full flex-col overflow-hidden bg-muted/60 py-0 dark:bg-card"
                         >
                             <CardHeader className="gap-0 p-0">
                                 <div className="h-full overflow-hidden">
@@ -214,28 +208,31 @@ export const TeamSection = () => {
                                         className="aspect-square size-full w-full object-cover saturate-0 transition-all duration-200 ease-linear group-hover/hoverimg:scale-[1.01] group-hover/hoverimg:saturate-100"
                                     />
                                 </div>
-                                <CardTitle className="px-6 py-6 pb-4">
+                                <CardTitle className="px-6 pt-6 pb-3">
                                     {firstName}
                                     <span className="ml-2 text-primary">
                                         {lastName}
                                     </span>
                                 </CardTitle>
                             </CardHeader>
-                            {positions.map((position, index) => (
-                                <CardContent
-                                    key={index}
-                                    className={`pb-0 text-muted-foreground ${
-                                        index === positions.length - 1 && "pb-6"
-                                    }`}
-                                >
-                                    {position}
-                                    {index < positions.length - 1 && (
-                                        <span>,</span>
-                                    )}
-                                </CardContent>
-                            ))}
 
-                            <CardFooter className="mt-auto space-x-4">
+                            <div className="flex-1 px-6 pb-4">
+                                {positions.map((position, index) => (
+                                    <div
+                                        key={index}
+                                        className={`text-muted-foreground text-sm ${
+                                            index > 0 ? "mt-1" : ""
+                                        }`}
+                                    >
+                                        {position}
+                                        {index < positions.length - 1 && (
+                                            <span>,</span>
+                                        )}
+                                    </div>
+                                ))}
+                            </div>
+
+                            <CardFooter className="gap-4 pt-0 pb-6">
                                 {socialNetworks.map(({ name, url }, index) => (
                                     <Link
                                         key={index}

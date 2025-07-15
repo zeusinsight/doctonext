@@ -19,12 +19,12 @@ const FAQList: FAQProps[] = [
     },
     {
         question: "What's included?",
-        answer: "Authentication with social login, modern UI components, file uploads, and a ready-to-use dashboard. Plus, we're adding Stripe payments and blog system soon.",
+        answer: "Modern landing page and dashboard layout, Authentication with social login, modern UI components, file uploads, and Stripe payments.",
         value: "item-2"
     },
     {
-        question: "How fast can I launch?",
-        answer: "Get your MVP running in under an hour. We handle the boring stuff so you can focus on building your unique features.",
+        question: "How fast can I launch my project?",
+        answer: "Get your SaaS project running in under an hour. We handle the boring stuff so you can focus on building your unique features.",
         value: "item-3"
     },
     {
@@ -34,7 +34,7 @@ const FAQList: FAQProps[] = [
     },
     {
         question: "Do you offer support?",
-        answer: "Yes! Join our community on GitHub. We actively maintain the project and welcome contributions.",
+        answer: "No! But you can join our community on GitHub. We actively maintain the project and welcome contributions.",
         value: "item-5"
     }
 ]

@@ -102,20 +102,20 @@ export const TestimonialSection = () => {
                             className="md:basis-1/2 lg:basis-1/3"
                         >
                             <Card className="flex h-full flex-col bg-muted/50 dark:bg-card">
-                                <CardContent className="flex flex-grow flex-col pt-6 pb-4">
-                                    <div className="flex gap-1 pb-6">
+                                <CardContent className="flex flex-grow flex-col">
+                                    <div className="flex gap-1 pb-4">
                                         <Star className="size-4 fill-primary text-primary" />
                                         <Star className="size-4 fill-primary text-primary" />
                                         <Star className="size-4 fill-primary text-primary" />
                                         <Star className="size-4 fill-primary text-primary" />
                                         <Star className="size-4 fill-primary text-primary" />
                                     </div>
-                                    <div className="flex flex-grow items-start">
+                                    <div className="flex flex-1 items-start pb-4">
                                         <p className="text-sm leading-relaxed">{`"${review.comment}"`}</p>
                                     </div>
                                 </CardContent>
 
-                                <CardHeader className="pt-4">
+                                <CardHeader >
                                     <div className="flex flex-row items-center gap-4">
                                         <Avatar>
                                             <AvatarImage
