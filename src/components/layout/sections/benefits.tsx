@@ -56,7 +56,7 @@ export const BenefitsSection = () => {
                     {benefitList.map(({ icon, title, description }, index) => (
                         <Card
                             key={title}
-                            className="group/number bg-muted/50 transition-all delay-75 hover:bg-background dark:bg-card"
+                            className="group/number transition-all delay-75 hover:bg-sidebar dark:bg-card"
                         >
                             <CardHeader>
                                 <div className="flex justify-between">

@@ -91,19 +91,6 @@ export default async function Plans() {
                                                     )}{" "}
                                                 Plan
                                             </span>
-                                            <div
-                                                className={`rounded-lg px-3 py-1 font-medium text-xs ${
-                                                    activeSub.status ===
-                                                    "active"
-                                                        ? "bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400"
-                                                        : activeSub.status ===
-                                                            "trialing"
-                                                          ? "bg-blue-100 text-blue-800 dark:bg-blue-900/20 dark:text-blue-400"
-                                                          : "bg-gray-100 text-gray-800 dark:bg-gray-900/20 dark:text-gray-400"
-                                                }`}
-                                            >
-                                                {activeSub.status}
-                                            </div>
                                         </CardTitle>
                                         <CardDescription>
                                             Your subscription details

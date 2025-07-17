@@ -85,11 +85,11 @@ html {
 
 ::selection {
   background: var(--primary);
-  color: white;
-  -webkit-text-fill-color: white;
+  color: black;
+  -webkit-text-fill-color: black;
 }
 ::-moz-selection {
   background: var(--primary);
-  color: white;
-  -webkit-text-fill-color: white;
+  color: black;
+  -webkit-text-fill-color: black;
 }

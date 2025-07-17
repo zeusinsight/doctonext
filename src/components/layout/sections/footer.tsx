@@ -86,7 +86,7 @@ export const FooterSection = () => {
     return (
         <footer id="footer">
             <div className="mx-auto max-w-7xl pt-16 pb-0 lg:pb-16">
-                <div className="relative overflow-hidden rounded-2xl border border-border/50 bg-card/60 shadow-xl backdrop-blur-sm">
+                <div className="relative overflow-hidden rounded-xl border border-border bg-card/50 shadow-xl backdrop-blur-sm">
                     <div className="relative p-8 lg:p-12">
                         {/* Main Footer Content */}
                         <div className="space-y-8 lg:space-y-0">
@@ -102,12 +102,12 @@ export const FooterSection = () => {
                                             <Image
                                                 src="/logo.svg"
                                                 alt="Indie Saas"
-                                                width={32}
-                                                height={32}
+                                                width={30}
+                                                height={30}
                                             />
                                         </div>
                                         <h3 className="font-bold text-2xl">
-                                            Indie Saas
+                                            Indie SaaS
                                         </h3>
                                     </Link>
                                     <p className="mb-6 text-muted-foreground text-sm leading-relaxed">
@@ -184,12 +184,12 @@ export const FooterSection = () => {
                                             <Image
                                                 src="/logo.svg"
                                                 alt="Indie Saas"
-                                                width={32}
-                                                height={32}
+                                                width={30}
+                                                height={30}
                                             />
                                         </div>
                                         <h3 className="font-bold text-2xl">
-                                            Indie Saas
+                                            Indie SaaS
                                         </h3>
                                     </Link>
                                     <p className="mb-6 max-w-sm text-muted-foreground text-sm leading-relaxed">

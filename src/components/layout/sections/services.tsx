@@ -1,4 +1,3 @@
-import { Badge } from "@/components/ui/badge"
 import {
     Card,
     CardDescription,
@@ -37,7 +36,7 @@ const serviceList: ServiceProps[] = [
     {
         title: "Payment Integration",
         description:
-            "Stripe/Polar.sh payment system for your SaaS subscriptions (coming soon).",
+            "Stripe payment integration for your SaaS subscriptions.",
         pro: 1
     }
 ]
@@ -63,7 +62,7 @@ export const ServicesSection = () => {
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3" />
 
             <div className="mx-auto grid w-full gap-4 sm:grid-cols-2 lg:w-[60%] lg:grid-cols-2">
-                {serviceList.map(({ title, description, pro }) => (
+                {serviceList.map(({ title, description }) => (
                     <Card
                         key={title}
                         className="relative h-full bg-muted/60 dark:bg-card"
@@ -74,13 +73,7 @@ export const ServicesSection = () => {
                             </CardTitle>
                             <CardDescription>{description}</CardDescription>
                         </CardHeader>
-                        <Badge
-                            data-soon={ServiceStatus.SOON === pro}
-                            variant="secondary"
-                            className="-top-2 -right-3 absolute data-[soon=false]:hidden"
-                        >
-                            SOON
-                        </Badge>
+                       
                     </Card>
                 ))}
             </div>

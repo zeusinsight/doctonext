@@ -77,8 +77,8 @@ export const Navbar = () => {
     const [isOpen, setIsOpen] = React.useState(false)
 
     return (
-        <div className="sticky top-2 z-50 mx-auto w-[97%] max-w-7xl px-4">
-            <nav className="rounded-xl border border-border/50 bg-card shadow-black/5 shadow-lg backdrop-blur-md transition-all duration-300 hover:shadow-black/10 hover:shadow-xl">
+        <div className="sticky top-2 z-50 mx-auto w-[98%] max-w-7xl px-4">
+            <nav className="rounded-xl border border-border bg-card/50 shadow-black/2 shadow-sm backdrop-blur-sm">
                 <div className="flex items-center justify-between px-4 py-3 lg:px-6">
                     {/* Logo */}
                     <Link
@@ -89,12 +89,12 @@ export const Navbar = () => {
                             <Image
                                 src="/logo.svg"
                                 alt="Indie Saas"
-                                width={32}
-                                height={32}
+                                width={30}
+                                height={30}
                             />
                         </div>
                         <h3 className="font-bold text-xl lg:text-2xl">
-                            Indie Saas
+                            Indie SaaS
                         </h3>
                     </Link>
 

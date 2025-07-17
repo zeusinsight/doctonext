@@ -55,12 +55,12 @@ function SidebarLogo() {
                 <Image
                     src="/logo.svg"
                     alt="Logo"
-                    width={32}
-                    height={32}
+                    width={30}
+                    height={30}
                     className="transition-transform duration-300 ease-out group-data-[collapsible=icon]:scale-110"
                 />
                 <span className="group-data-[collapsible=icon]:-ml-2 truncate font-bold text-lg transition-[margin,opacity,transform,width] duration-300 ease-out group-data-[collapsible=icon]:w-0 group-data-[collapsible=icon]:scale-95 group-data-[collapsible=icon]:opacity-0">
-                    Indie Saas
+                    Indie SaaS
                 </span>
             </Link>
         </div>

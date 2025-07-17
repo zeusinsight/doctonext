@@ -3,7 +3,7 @@ import Link from "next/link"
 import GithubIcon from "@/components/icons/github-icon"
 import LinkedInIcon from "@/components/icons/linkedin-icon"
 import XIcon from "@/components/icons/x-icon"
-import { Card, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardFooter, CardTitle } from "@/components/ui/card"
 
 interface TeamProps {
     imageUrl: string
@@ -196,49 +196,50 @@ export const TeamSection = () => {
                     ) => (
                         <Card
                             key={index}
-                            className="group/hoverimg flex h-full flex-col overflow-hidden bg-muted/60 py-0 dark:bg-card"
+                            className="group flex h-full flex-col overflow-hidden bg-muted/60 py-0 dark:bg-card"
                         >
-                            <CardHeader className="gap-0 p-0">
-                                <div className="h-full overflow-hidden">
-                                    <Image
-                                        src={imageUrl}
-                                        alt=""
-                                        width={300}
-                                        height={300}
-                                        className="aspect-square size-full w-full object-cover saturate-0 transition-all duration-200 ease-linear group-hover/hoverimg:scale-[1.01] group-hover/hoverimg:saturate-100"
-                                    />
-                                </div>
-                                <CardTitle className="px-6 pt-6 pb-3">
+                            {/* Header - Image Section */}
+                            <div className="relative overflow-hidden">
+                                <Image
+                                    src={imageUrl}
+                                    alt={`${firstName} ${lastName}`}
+                                    width={300}
+                                    height={300}
+                                    className="aspect-square w-full object-cover saturate-0 transition-all duration-300 ease-in-out group-hover:scale-105 group-hover:saturate-100"
+                                />
+                            </div>
+
+                            {/* Content - Name and Positions Section */}
+                            <div className="flex-1 px-6">
+                                <CardTitle className="mb-2 text-xl">
                                     {firstName}
-                                    <span className="ml-2 text-primary">
+                                    <span className="ml-2 font-semibold text-primary">
                                         {lastName}
                                     </span>
                                 </CardTitle>
-                            </CardHeader>
 
-                            <div className="flex-1 px-6 pb-4">
-                                {positions.map((position, index) => (
-                                    <div
-                                        key={index}
-                                        className={`text-muted-foreground text-sm ${
-                                            index > 0 ? "mt-1" : ""
-                                        }`}
-                                    >
-                                        {position}
-                                        {index < positions.length - 1 && (
-                                            <span>,</span>
-                                        )}
-                                    </div>
-                                ))}
+                                <div className="space-y-1">
+                                    {positions.map((position, index) => (
+                                        <div
+                                            key={index}
+                                            className="text-muted-foreground text-sm leading-relaxed"
+                                        >
+                                            {position}
+                                        </div>
+                                    ))}
+                                </div>
                             </div>
 
-                            <CardFooter className="gap-4 pt-0 pb-6">
+                            {/* Footer - Social Links Section */}
+                            <CardFooter className="mb-6 flex gap-3">
                                 {socialNetworks.map(({ name, url }, index) => (
                                     <Link
                                         key={index}
                                         href={url}
                                         target="_blank"
-                                        className="transition-all hover:opacity-80"
+                                        rel="noopener noreferrer"
+                                        className="transition-all duration-200 hover:scale-110 hover:opacity-80"
+                                        aria-label={`Visit ${firstName}'s ${name} profile`}
                                     >
                                         {socialIcon(name)}
                                     </Link>
