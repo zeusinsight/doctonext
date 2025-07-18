@@ -47,7 +47,7 @@ export const ContactSection = () => {
         const { firstName, lastName, email, subject, message } = values
         console.log(values)
 
-        const mailToLink = `mailto:leomirandadev@gmail.com?subject=${subject}&body=Hello I am ${firstName} ${lastName}, my Email is ${email}. %0D%0A${message}`
+        const mailToLink = `mailto:me@indieceo.com?subject=${subject}&body=Hello I am ${firstName} ${lastName}, my Email is ${email}. %0D%0A${message}`
 
         window.location.href = mailToLink
     }
@@ -62,7 +62,7 @@ export const ContactSection = () => {
                         </h2>
 
                         <h2 className="font-bold text-3xl md:text-4xl">
-                            Connect With Us
+                            Connect with us
                         </h2>
                     </div>
                     <p className="mb-8 text-muted-foreground lg:w-5/6">
@@ -94,10 +94,10 @@ export const ContactSection = () => {
                         <div>
                             <div className="mb-1 flex gap-2">
                                 <Mail />
-                                <div className="font-bold">Mail US</div>
+                                <div className="font-bold">Mail us</div>
                             </div>
 
-                            <div>leomirandadev@gmail.com</div>
+                            <div>me@indieceo.com</div>
                         </div>
 
                         <div>

@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button"
 export const HeroSection = () => {
     const { theme } = useTheme()
     return (
-        <section className="container mx-auto px-4 w-full">
+        <section className="container mx-auto w-full px-4">
             <div className="grid place-items-center gap-8 py-20 md:py-32 lg:max-w-screen-xl">
                 <div className="space-y-8 text-center">
                     <Badge
@@ -34,7 +34,7 @@ export const HeroSection = () => {
                     </div>
 
                     <p className="mx-auto max-w-screen-sm text-muted-foreground text-xl">
-                        {`A complete Next.js starter with authentication, beautiful UI components, 
+                        {`A complete SaaS starter with authentication, beautiful UI components, 
             and everything you need to launch your platform quickly and efficiently.`}
                     </p>
 
@@ -62,7 +62,7 @@ export const HeroSection = () => {
                                 className="flex items-center gap-2"
                             >
                                 <RiGithubFill className="size-5 fill-foreground" />
-                                Github repository
+                                GitHub repository
                             </Link>
                         </Button>
                     </div>

@@ -33,7 +33,7 @@ const plans: PlanProps[] = [
         benefitList: [
             "1 team member",
             "1 GB storage",
-            "Upto 2 pages",
+            "Up to 2 pages",
             "Community support",
             "AI assistance"
         ]
@@ -44,11 +44,11 @@ const plans: PlanProps[] = [
         price: 45,
         description:
             "Ideal for growing teams that need advanced features and priority support.",
-        buttonText: "Get starterd",
+        buttonText: "Get started",
         benefitList: [
             "4 team member",
             "8 GB storage",
-            "Upto 6 pages",
+            "Up to 6 pages",
             "Priority support",
             "AI assistance"
         ]
@@ -59,11 +59,11 @@ const plans: PlanProps[] = [
         price: 120,
         description:
             "Comprehensive solution for large organizations with extensive customization needs.",
-        buttonText: "Contact US",
+        buttonText: "Contact Us",
         benefitList: [
             "10 team member",
             "20 GB storage",
-            "Upto 10 pages",
+            "Up to 10 pages",
             "Phone & email support",
             "AI assistance"
         ]
@@ -78,7 +78,7 @@ export const PricingSection = () => {
             </h2>
 
             <h2 className="mb-4 text-center font-bold text-3xl md:text-4xl">
-                Get unlimitted access
+                Get unlimited access
             </h2>
 
             <h3 className="mx-auto pb-14 text-center text-muted-foreground text-xl md:w-1/2">

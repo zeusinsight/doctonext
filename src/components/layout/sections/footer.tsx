@@ -101,7 +101,7 @@ export const FooterSection = () => {
                                         <div className="relative">
                                             <Image
                                                 src="/logo.svg"
-                                                alt="Indie Saas"
+                                                alt="Indie SaaS"
                                                 width={30}
                                                 height={30}
                                             />
@@ -172,7 +172,7 @@ export const FooterSection = () => {
                                 ))}
                             </div>
 
-                            {/* Mobile/Tablet Layout: Stacked */}
+                                                            {/* Mobile/Tablet Layout: Stacked */}
                             <div className="lg:hidden">
                                 {/* Brand Section Mobile */}
                                 <div className="mb-8">
@@ -183,7 +183,7 @@ export const FooterSection = () => {
                                         <div className="relative">
                                             <Image
                                                 src="/logo.svg"
-                                                alt="Indie Saas"
+                                                alt="Indie SaaS"
                                                 width={30}
                                                 height={30}
                                             />
@@ -263,7 +263,7 @@ export const FooterSection = () => {
                         <div className="flex flex-col justify-between gap-4 lg:flex-row">
                             <div className="flex flex-col items-center gap-4 text-muted-foreground text-sm sm:flex-row">
                                 <p>
-                                    &copy; 2025 Indie Saas. All rights reserved.
+                                    &copy; 2025 Indie SaaS. All rights reserved.
                                 </p>
                             </div>
 

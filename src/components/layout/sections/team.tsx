@@ -20,22 +20,19 @@ export const TeamSection = () => {
     const teamList: TeamProps[] = [
         {
             imageUrl:
-                "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=1528&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-            firstName: "Leo",
-            lastName: "Miranda",
-            positions: ["Vue Fronted Developer", "Creator Of This Website"],
+                "/indie.png",
+            firstName: "Indie",
+            lastName: "CEO",
+            positions: ["Fullstack Developer", "Creator Of This Website"],
             socialNetworks: [
-                {
-                    name: "LinkedIn",
-                    url: "https://www.linkedin.com/in/leopoldo-miranda/"
-                },
+                
                 {
                     name: "Github",
-                    url: "https://github.com/leoMirandaa"
+                    url: "https://github.com/indieceo"
                 },
                 {
                     name: "X",
-                    url: "https://x.com/leo_mirand4"
+                    url: "https://x.com/indieceo"
                 }
             ]
         },
@@ -48,11 +45,11 @@ export const TeamSection = () => {
             socialNetworks: [
                 {
                     name: "LinkedIn",
-                    url: "https://www.linkedin.com/in/leopoldo-miranda/"
+                    url: "https://www.linkedin.com/company/posthyve"
                 },
                 {
                     name: "X",
-                    url: "https://x.com/leo_mirand4"
+                    url: "https://x.com/indieceo"
                 }
             ]
         },
@@ -65,11 +62,11 @@ export const TeamSection = () => {
             socialNetworks: [
                 {
                     name: "LinkedIn",
-                    url: "https://www.linkedin.com/in/leopoldo-miranda/"
+                    url: "https://www.linkedin.com/company/posthyve"
                 },
                 {
                     name: "Github",
-                    url: "https://github.com/leoMirandaa"
+                    url: "https://github.com/indieceo"
                 }
             ]
         },
@@ -78,19 +75,19 @@ export const TeamSection = () => {
                 "https://images.unsplash.com/photo-1573497161161-c3e73707e25c?q=80&w=1587&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
             firstName: "Sarah",
             lastName: "Robinson",
-            positions: ["Cloud Native Developer", " Kubernetes Orchestrator"],
+            positions: ["Cloud Native Developer", "Kubernetes Orchestrator"],
             socialNetworks: [
                 {
                     name: "LinkedIn",
-                    url: "https://www.linkedin.com/in/leopoldo-miranda/"
+                    url: "https://www.linkedin.com/company/posthyve"
                 },
                 {
                     name: "Github",
-                    url: "https://github.com/leoMirandaa"
+                    url: "https://github.com/indieceo"
                 },
                 {
                     name: "X",
-                    url: "https://x.com/leo_mirand4"
+                    url: "https://x.com/indieceo"
                 }
             ]
         },
@@ -103,7 +100,7 @@ export const TeamSection = () => {
             socialNetworks: [
                 {
                     name: "LinkedIn",
-                    url: "https://www.linkedin.com/in/leopoldo-miranda/"
+                    url: "https://www.linkedin.com/company/posthyve"
                 }
             ]
         },
@@ -116,11 +113,11 @@ export const TeamSection = () => {
             socialNetworks: [
                 {
                     name: "LinkedIn",
-                    url: "https://www.linkedin.com/in/leopoldo-miranda/"
+                    url: "https://www.linkedin.com/company/posthyve"
                 },
                 {
                     name: "Github",
-                    url: "https://github.com/leoMirandaa"
+                    url: "https://github.com/indieceo"
                 }
             ]
         },
@@ -133,28 +130,28 @@ export const TeamSection = () => {
             socialNetworks: [
                 {
                     name: "LinkedIn",
-                    url: "https://www.linkedin.com/in/leopoldo-miranda/"
+                    url: "https://www.linkedin.com/company/posthyve"
                 },
                 {
                     name: "Github",
-                    url: "https://github.com/leoMirandaa"
+                    url: "https://github.com/indieceo"
                 },
                 {
                     name: "X",
-                    url: "https://x.com/leo_mirand4"
+                    url: "https://x.com/indieceo"
                 }
             ]
         },
         {
             imageUrl:
-                "https://images.unsplash.com/photo-1573497019236-17f8177b81e8?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3Dhttps://images.unsplash.com/photo-1573497019236-17f8177b81e8?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                "https://images.unsplash.com/photo-1573497019236-17f8177b81e8?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
             firstName: "Pam",
             lastName: "Taylor",
             positions: ["Fullstack Developer", "UX Researcher"],
             socialNetworks: [
                 {
                     name: "X",
-                    url: "https://x.com/leo_mirand4"
+                    url: "https://x.com/indieceo"
                 }
             ]
         }
