@@ -101,7 +101,7 @@ export const FooterSection = () => {
                                     >
                                         <div className="relative">
                                             <Image
-                                                src="/logo.svg"
+                                                src={site.logo}
                                                 alt={site.name}
                                                 width={30}
                                                 height={30}
@@ -173,7 +173,7 @@ export const FooterSection = () => {
                                 ))}
                             </div>
 
-                                                            {/* Mobile/Tablet Layout: Stacked */}
+                            {/* Mobile/Tablet Layout: Stacked */}
                             <div className="lg:hidden">
                                 {/* Brand Section Mobile */}
                                 <div className="mb-8">
@@ -183,7 +183,7 @@ export const FooterSection = () => {
                                     >
                                         <div className="relative">
                                             <Image
-                                                src="/logo.svg"
+                                                src={site.logo}
                                                 alt={site.name}
                                                 width={30}
                                                 height={30}

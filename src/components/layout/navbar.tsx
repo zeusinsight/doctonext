@@ -88,7 +88,7 @@ export const Navbar = () => {
                     >
                         <div className="relative">
                             <Image
-                                src="/logo.svg"
+                                src={site.logo}
                                 alt={site.name}
                                 width={30}
                                 height={30}
@@ -264,7 +264,7 @@ export const Navbar = () => {
                                                 onClick={() => setIsOpen(false)}
                                             >
                                                 <Image
-                                                    src="/logo.svg"
+                                                    src={site.logo}
                                                     alt={site.name}
                                                     width={32}
                                                     height={32}

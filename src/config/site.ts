@@ -5,7 +5,7 @@ export const site = {
   description: "A modern SaaS starter built with Next.js, Drizzle, and Better Auth",
   url: site_url,
   ogImage: `${site_url}/og.jpg`,
-  logo: `${site_url}/logo.svg` || `${site_url}/logo.png`,
+  logo: "/logo.svg",
   mailSupport: "hello@domain.com", // Support email address
   mailFrom: process.env.MAIL_FROM || "noreply@domain.com", // Transactional email address
   links: {
@@ -13,5 +13,4 @@ export const site = {
     github: "https://github.com/indieceo/indiesaas",
     linkedin: "https://www.linkedin.com/in/indieceo/",
   }
-
 } as const;

@@ -33,7 +33,7 @@ export const auth = betterAuth({
                 from: site.mailFrom,
                 to: user.email,
                 subject: "Reset your password",
-                react: React.createElement(EmailTemplate, {
+                react: EmailTemplate({
                     heading: "Reset your password",
                     content: React.createElement(
                         React.Fragment,
@@ -53,8 +53,9 @@ export const auth = betterAuth({
                     ),
                     action: "Reset Password",
                     url,
-                    imageUrl: site.logo,
-                    siteName: site.name
+                    siteName: site.name,
+                    baseUrl: site.url,
+                    imageUrl: `${site.url}/logo.png` // svg are not supported by resend
                 })
             })
         }

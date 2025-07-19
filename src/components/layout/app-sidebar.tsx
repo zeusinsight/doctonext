@@ -52,9 +52,9 @@ function SidebarLogo() {
                 className="group/logo inline-flex items-center gap-2 transition-all duration-300 ease-out"
                 href="/dashboard"
             >
-                <span className="sr-only">Logo</span>
+                <span className="sr-only">{site.name}</span>
                 <Image
-                    src="/logo.svg"
+                    src={site.logo}
                     alt={site.name}
                     width={30}
                     height={30}
