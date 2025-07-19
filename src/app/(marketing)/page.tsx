@@ -9,35 +9,36 @@ import { ServicesSection } from "@/components/layout/sections/services"
 import { TeamSection } from "@/components/layout/sections/team"
 import { TestimonialSection } from "@/components/layout/sections/testimonial"
 import Trusted from "@/components/layout/sections/trusted"
+import { site } from "@/config/site"
 
 export const metadata = {
-    title: "Indie Saas Starter",
-    description: "Open Source Next.js Saas Starter. Built with Better Auth UI, Shadcn/Ui, Drizzle ORM, and UploadThing",
+    title: site.name,
+    description: site.description,
     openGraph: {
         type: "website",
-        url: "https://indiesaas.vercel.app",
-        title: "Indie Saas Starter",
-        description: "Open Source Next.js Saas Starter. Built with Better Auth UI, Shadcn/Ui, Drizzle ORM, and UploadThing",
+        url: site.url,
+        title: site.name,
+        description: site.description,
         images: [
             {
-                url: "/demo-img.png",
+                url: site.ogImage,
                 width: 1200,
                 height: 750,
-                alt: "Indie Saas"
+                alt: site.name
             }
         ]
     },
     twitter: {
         card: "summary_large_image",
-        site: "https://indiesaas.vercel.app",
-        title: "Indie Saas Starter",
-        description: "Open Source Next.js Saas Starter. Built with Better Auth UI, Shadcn/Ui, Drizzle ORM, and UploadThing",
+        site: site.url,
+        title: site.name,
+        description: site.description,
         images: [
             {
-                url: "/demo-img.png",
+                url: site.ogImage,
                 width: 1200,
                 height: 750,
-                alt: "Indie Saas"
+                alt: site.name
             }
         ]
     }

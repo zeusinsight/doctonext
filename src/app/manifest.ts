@@ -1,11 +1,11 @@
+import { site } from "@/config/site"
 import type { MetadataRoute } from "next"
 
 export default function manifest(): MetadataRoute.Manifest {
     return {
-        name: "Indie Saas Starter",
-        short_name: "IndieSaaS",
+        name: site.name,
         description:
-            "Fully functional SaaS starter built with Next.js, Drizzle, ShadCN UI, Stripe, and Better Auth",
+            site.description,
         start_url: "/",
         display: "standalone",
         background_color: "#fff",

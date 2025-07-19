@@ -21,6 +21,7 @@ import {
     SelectTrigger,
     SelectValue
 } from "@/components/ui/select"
+import { site } from "@/config/site"
 import { Textarea } from "@/components/ui/textarea"
 
 const formSchema = z.object({
@@ -47,7 +48,7 @@ export const ContactSection = () => {
         const { firstName, lastName, email, subject, message } = values
         console.log(values)
 
-        const mailToLink = `mailto:me@indieceo.com?subject=${subject}&body=Hello I am ${firstName} ${lastName}, my Email is ${email}. %0D%0A${message}`
+        const mailToLink = `mailto:${site.mailSupport}?subject=${subject}&body=Hello I am ${firstName} ${lastName}, my Email is ${email}. %0D%0A${message}`
 
         window.location.href = mailToLink
     }
@@ -97,7 +98,7 @@ export const ContactSection = () => {
                                 <div className="font-bold">Mail us</div>
                             </div>
 
-                            <div>me@indieceo.com</div>
+                            <div>{site.mailSupport}</div>
                         </div>
 
                         <div>
@@ -168,7 +169,7 @@ export const ContactSection = () => {
                                                 <FormControl>
                                                     <Input
                                                         type="email"
-                                                        placeholder="me@indieceo.com"
+                                                        placeholder="me@domain.com"
                                                         {...field}
                                                     />
                                                 </FormControl>

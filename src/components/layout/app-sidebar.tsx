@@ -25,6 +25,7 @@ import {
     SidebarMenuButton,
     SidebarMenuItem
 } from "@/components/ui/sidebar"
+import { site } from "@/config/site"
 
 const data = {
     navMain: [
@@ -54,13 +55,13 @@ function SidebarLogo() {
                 <span className="sr-only">Logo</span>
                 <Image
                     src="/logo.svg"
-                    alt="Logo"
+                    alt={site.name}
                     width={30}
                     height={30}
                     className="transition-transform duration-300 ease-out group-data-[collapsible=icon]:scale-110"
                 />
                 <span className="group-data-[collapsible=icon]:-ml-2 truncate font-bold text-lg transition-[margin,opacity,transform,width] duration-300 ease-out group-data-[collapsible=icon]:w-0 group-data-[collapsible=icon]:scale-95 group-data-[collapsible=icon]:opacity-0">
-                    Indie SaaS
+                    {site.name}
                 </span>
             </Link>
         </div>

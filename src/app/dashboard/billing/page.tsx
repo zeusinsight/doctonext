@@ -184,7 +184,7 @@ export default async function Plans() {
                         <div className="mx-auto mb-6 max-w-3xl rounded-lg border bg-muted/50 p-4 ">
                             <p className="font-medium">This is a demo app.</p>
                             <p className="mt-1 text-muted-foreground">
-                                IndieSaaS is a demo app that uses Stripe test
+                                This is a demo app that uses Stripe test
                                 environment. You can find a list of test card
                                 numbers on the{" "}
                                 <a

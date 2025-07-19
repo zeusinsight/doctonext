@@ -21,7 +21,6 @@ import {
     TooltipProvider,
     TooltipTrigger
 } from "@/components/ui/tooltip"
-import { useIsMobile } from "@/hooks/use-mobile"
 import { cn } from "@/lib/utils"
 
 const SIDEBAR_COOKIE_NAME = "sidebar_state"
@@ -65,7 +64,18 @@ function SidebarProvider({
     open?: boolean
     onOpenChange?: (open: boolean) => void
 }) {
-    const isMobile = useIsMobile()
+    const [isMobile, setIsMobile] = React.useState(false)
+
+    React.useEffect(() => {
+        const checkMobile = () => {
+            setIsMobile(window.innerWidth < 768)
+        }
+        
+        checkMobile()
+        window.addEventListener('resize', checkMobile)
+        return () => window.removeEventListener('resize', checkMobile)
+    }, [])
+
     const [openMobile, setOpenMobile] = React.useState(false)
 
     // Read the cookie to get the persisted state

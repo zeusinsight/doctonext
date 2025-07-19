@@ -6,6 +6,7 @@ import Link from "next/link"
 import { useTheme } from "next-themes"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
+import { site } from "@/config/site"
 
 export const HeroSection = () => {
     const { theme } = useTheme()
@@ -57,7 +58,7 @@ export const HeroSection = () => {
                             className="rounded-full"
                         >
                             <Link
-                                href="https://github.com/indieceo/Indiesaas"
+                                href={site.links.github}
                                 target="_blank"
                                 className="flex items-center gap-2"
                             >
@@ -85,7 +86,7 @@ export const HeroSection = () => {
                                 <div className="flex h-6 items-center justify-center rounded-md bg-secondary/50 px-3">
                                     <Lock className="mr-1.5 size-3 text-muted-foreground" />
                                     <div className="text-muted-foreground text-xs">
-                                        app.indiesaas.com
+                                        {site.url}
                                     </div>
                                 </div>
                             </div>

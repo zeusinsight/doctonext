@@ -3,15 +3,20 @@ import { drizzleAdapter } from "better-auth/adapters/drizzle"
 import { stripe } from "@better-auth/stripe"
 import Stripe from "stripe"
 import { headers } from "next/headers"
-
+import { Resend } from "resend"
+import { EmailTemplate } from "@daveyplate/better-auth-ui/server"
+import React from "react"
 import { db } from "@/database/db"
 import * as schema from "@/database/schema"
 import { type Plan, plans } from "@/lib/payments/plans"
+import { site } from "@/config/site"
 
 const stripeClient = new Stripe(process.env.STRIPE_SECRET_KEY!, {
     apiVersion: "2025-06-30.basil",
     typescript: true
 })
+
+const resend = new Resend(process.env.RESEND_API_KEY)
 
 export const auth = betterAuth({
     database: drizzleAdapter(db, {
@@ -20,7 +25,39 @@ export const auth = betterAuth({
         schema
     }),
     emailAndPassword: {
-        enabled: true
+        enabled: true,
+        sendResetPassword: async ({ user, url, token }, request) => {
+            const name = user.name || user.email.split("@")[0]
+
+            await resend.emails.send({
+                from: site.mailFrom,
+                to: user.email,
+                subject: "Reset your password",
+                react: React.createElement(EmailTemplate, {
+                    heading: "Reset your password",
+                    content: React.createElement(
+                        React.Fragment,
+                        null,
+                        React.createElement("p", null, `Hi ${name},`),
+                        React.createElement(
+                            "p",
+                            null,
+                            "Someone requested a password reset for your account. If this was you, ",
+                            "click the button below to reset your password."
+                        ),
+                        React.createElement(
+                            "p",
+                            null,
+                            "If you didn't request this, you can safely ignore this email."
+                        )
+                    ),
+                    action: "Reset Password",
+                    url,
+                    imageUrl: site.logo,
+                    siteName: site.name
+                })
+            })
+        }
     },
     socialProviders: {
         github: {

@@ -24,6 +24,7 @@ import {
     SheetTitle,
     SheetTrigger
 } from "../ui/sheet"
+import { site } from "@/config/site"
 
 interface RouteProps {
     href: string
@@ -88,13 +89,13 @@ export const Navbar = () => {
                         <div className="relative">
                             <Image
                                 src="/logo.svg"
-                                alt="Indie Saas"
+                                alt={site.name}
                                 width={30}
                                 height={30}
                             />
                         </div>
                         <h3 className="font-bold text-xl lg:text-2xl">
-                            Indie SaaS
+                            {site.name}
                         </h3>
                     </Link>
 
@@ -175,7 +176,7 @@ export const Navbar = () => {
                             className="size-10 rounded-full"
                         >
                             <Link
-                                href="https://github.com/indieceo/Indiesaas"
+                                href={site.links.github}
                                 target="_blank"
                                 aria-label="View on GitHub"
                             >
@@ -226,7 +227,7 @@ export const Navbar = () => {
                             className="size-10 rounded-full"
                         >
                             <Link
-                                href="https://github.com/indieceo/Indiesaas"
+                                href={site.links.github}
                                 target="_blank"
                                 aria-label="View on GitHub"
                             >
@@ -264,12 +265,12 @@ export const Navbar = () => {
                                             >
                                                 <Image
                                                     src="/logo.svg"
-                                                    alt="Indie Saas"
+                                                    alt={site.name}
                                                     width={32}
                                                     height={32}
                                                 />
                                                 <span className="font-bold text-lg">
-                                                    Indie Saas
+                                                    {site.name}
                                                 </span>
                                             </Link>
                                         </SheetTitle>

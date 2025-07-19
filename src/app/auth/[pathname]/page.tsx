@@ -1,12 +1,9 @@
 import { AuthCard, AuthLoading } from "@daveyplate/better-auth-ui"
 import { authViewPaths } from "@daveyplate/better-auth-ui/server"
 import { ArrowLeft } from "lucide-react"
-import { headers } from "next/headers"
 import Link from "next/link"
-import { redirect } from "next/navigation"
 import { WelcomeToast } from "@/components/layout/auth-loading-toast"
 import { Button } from "@/components/ui/button"
-import { auth } from "@/lib/auth"
 import type { Metadata } from "next"
 
 export const metadata: Metadata = {
@@ -24,16 +21,7 @@ export default async function AuthPage({
 }) {
     const { pathname } = await params
 
-    // **EXAMPLE** SSR route protection for /auth/settings
-    // NOTE: This opts /auth/settings out of static rendering
-    // It already handles client side protection via useAuthenticate
-    if (pathname === "settings") {
-        const sessionData = await auth.api.getSession({
-            headers: await headers()
-        })
-
-        if (!sessionData) redirect("/auth/sign-in?redirectTo=/auth/settings")
-    }
+   
 
     return (
         <main className="container mx-auto flex grow flex-col items-center justify-center gap-4 self-center bg-background py-18 sm:py-22">

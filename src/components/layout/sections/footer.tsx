@@ -7,6 +7,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
+import { site } from "@/config/site"
 
 interface FooterLinkProps {
     href: string
@@ -58,13 +59,13 @@ const footerSections: FooterSectionProps[] = [
 
 const socialLinks: FooterLinkProps[] = [
     {
-        href: "https://github.com/indieceo/Indiesaas",
+        href: site.links.github,
         label: "GitHub",
         icon: <GithubIcon className="size-5 fill-foreground" />,
         external: true
     },
     {
-        href: "https://x.com/IndieCEO",
+        href: site.links.twitter,
         label: "Twitter",
         icon: <XIcon className="size-5 fill-foreground" />,
         external: true
@@ -76,7 +77,7 @@ const socialLinks: FooterLinkProps[] = [
         external: true
     },
     {
-        href: "mailto:me@indieceo.com",
+        href: `mailto:${site.mailSupport}`,
         label: "Email",
         icon: <Mail className="size-5" />
     }
@@ -101,13 +102,13 @@ export const FooterSection = () => {
                                         <div className="relative">
                                             <Image
                                                 src="/logo.svg"
-                                                alt="Indie SaaS"
+                                                alt={site.name}
                                                 width={30}
                                                 height={30}
                                             />
                                         </div>
                                         <h3 className="font-bold text-2xl">
-                                            Indie SaaS
+                                            {site.name}
                                         </h3>
                                     </Link>
                                     <p className="mb-6 text-muted-foreground text-sm leading-relaxed">
@@ -183,13 +184,13 @@ export const FooterSection = () => {
                                         <div className="relative">
                                             <Image
                                                 src="/logo.svg"
-                                                alt="Indie SaaS"
+                                                alt={site.name}
                                                 width={30}
                                                 height={30}
                                             />
                                         </div>
                                         <h3 className="font-bold text-2xl">
-                                            Indie SaaS
+                                            {site.name}
                                         </h3>
                                     </Link>
                                     <p className="mb-6 max-w-sm text-muted-foreground text-sm leading-relaxed">
@@ -263,7 +264,7 @@ export const FooterSection = () => {
                         <div className="flex flex-col justify-between gap-4 lg:flex-row">
                             <div className="flex flex-col items-center gap-4 text-muted-foreground text-sm sm:flex-row">
                                 <p>
-                                    &copy; 2025 Indie SaaS. All rights reserved.
+                                    &copy; 2025 {site.name}. All rights reserved.
                                 </p>
                             </div>
 

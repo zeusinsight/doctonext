@@ -20,6 +20,7 @@ A modern, Next.js Saas boilerplate with comprehensive authentication built on Be
 - **PostgreSQL** - Robust, production-ready database
 - **Drizzle ORM** - Type-safe database queries
 - **UploadThing** - Modern file uploads with built-in storage
+- **Resend** - Transactional email service
 
 
 ## Roadmap
@@ -76,6 +77,13 @@ pnpm dev
 ```
 
 ##  Configuration
+
+### Site Configuration
+Customize your website settings in `src/config/site.ts`:
+- App name, description, and branding
+- Email addresses for support and system emails
+- Social media links
+- Logo and OG image paths
 
 ### Better Auth Configuration
 The authentication is configured in `src/lib/auth.ts`. You can customize:
