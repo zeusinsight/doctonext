@@ -193,7 +193,7 @@ export const TeamSection = () => {
                     ) => (
                         <Card
                             key={index}
-                            className="group flex h-full flex-col overflow-hidden bg-muted/60 py-0 dark:bg-card"
+                            className="group flex h-full flex-col overflow-hidden bg-muted/60 py-0"
                         >
                             {/* Header - Image Section */}
                             <div className="relative overflow-hidden">

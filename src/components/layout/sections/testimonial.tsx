@@ -101,7 +101,7 @@ export const TestimonialSection = () => {
                             key={review.name}
                             className="md:basis-1/2 lg:basis-1/3"
                         >
-                            <Card className="flex h-full flex-col bg-muted/50 dark:bg-card">
+                            <Card className="flex h-full flex-col bg-muted/50">
                                 <CardContent className="flex flex-grow flex-col">
                                     <div className="flex gap-1 pb-4">
                                         <Star className="size-4 fill-primary text-primary" />
