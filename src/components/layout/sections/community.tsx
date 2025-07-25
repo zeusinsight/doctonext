@@ -19,7 +19,7 @@ export const CommunitySection = () => {
                             <Github className="mb-4 h-16 w-16" />
                             <CardTitle className="flex flex-col items-center text-center font-bold text-4xl md:text-5xl">
                                 <div className="whitespace-nowrap">Contribute to this</div>
-                                <span className="bg-gradient-to-r from-[#da5319] to-primary bg-clip-text text-transparent">
+                                <span className="bg-gradient-to-r from-[#da5319] to-primary bg-clip-text text-transparent py-1">
                                     Project
                                 </span>
                             </CardTitle>
