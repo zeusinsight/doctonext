@@ -65,7 +65,7 @@ export const ServicesSection = () => {
                 {serviceList.map(({ title, description }) => (
                     <Card
                         key={title}
-                        className="relative h-full bg-muted/60 dark:bg-card"
+                        className="relative h-full bg-muted/60"
                     >
                         <CardHeader>
                             <CardTitle className="font-bold text-lg">
