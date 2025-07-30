@@ -11,8 +11,8 @@ import { site } from "@/config/site"
 export const HeroSection = () => {
     const { theme } = useTheme()
     return (
-        <section className="container mx-auto w-full px-4">
-            <div className="grid place-items-center gap-8 py-20 md:py-32 lg:max-w-screen-xl">
+        <section className="container mx-auto flex w-full justify-center px-4">
+            <div className="grid place-items-center gap-8 py-20">
                 <div className="space-y-8 text-center">
                     <Badge
                         variant="outline"
@@ -73,7 +73,7 @@ export const HeroSection = () => {
                     <div className="lg:-top-8 -translate-x-1/2 absolute top-2 left-1/2 mx-auto h-24 w-[90%] transform rounded-full bg-primary/50 blur-3xl lg:h-80" />
 
                     {/* Browser Navigation Bar */}
-                    <div className="relative mx-auto w-full md:w-[1200px]">
+                    <div className="relative mx-auto w-full max-w-5xl">
                         <div className="flex h-10 items-center rounded-t-lg bg-sidebar px-4">
                             {/* Traffic Light Buttons */}
                             <div className="flex space-x-2">
@@ -96,7 +96,7 @@ export const HeroSection = () => {
                     <Image
                         width={1200}
                         height={1200}
-                        className="relative mx-auto flex w-full items-center rounded-b-lg "
+                        className="relative mx-auto max-w-5xl flex w-full items-center rounded-b-lg "
                         src={
                             theme === "light" ? "/dash-light.png" : "/dash.png"
                         }
