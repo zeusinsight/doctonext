@@ -1,20 +1,9 @@
 "use client"
 import { SignedIn, SignedOut, UserButton } from "@daveyplate/better-auth-ui"
-import { Menu, X } from "lucide-react"
-import { RiGithubFill } from "@remixicon/react"
-import Image from "next/image"
+import { Menu, X, Home, ListOrdered, LogIn, Plus, UserPlus } from "lucide-react"
 import Link from "next/link"
 import React from "react"
-import { ModeToggle } from "./mode-toggle"
 import { Button } from "../ui/button"
-import {
-    NavigationMenu,
-    NavigationMenuContent,
-    NavigationMenuItem,
-    NavigationMenuLink,
-    NavigationMenuList,
-    NavigationMenuTrigger
-} from "../ui/navigation-menu"
 import { Separator } from "../ui/separator"
 import {
     Sheet,
@@ -24,53 +13,24 @@ import {
     SheetTitle,
     SheetTrigger
 } from "../ui/sheet"
-import { site } from "@/config/site"
 
 interface RouteProps {
     href: string
     label: string
 }
 
-interface FeatureProps {
-    title: string
-    description: string
-}
-
 const routeList: RouteProps[] = [
     {
-        href: "#features",
-        label: "Features"
+        href: "/",
+        label: "Accueil"
     },
     {
-        href: "#testimonials",
-        label: "Testimonials"
+        href: "/annonces",
+        label: "Annonces"
     },
     {
-        href: "#pricing",
-        label: "Pricing"
-    },
-    {
-        href: "#contact",
-        label: "Contact"
-    }
-]
-
-const featureList: FeatureProps[] = [
-    {
-        title: "Showcase Your Value",
-        description:
-            "Highlight how your product solves user problems effectively."
-    },
-    {
-        title: "Build Trust",
-        description:
-            "Leverage social proof elements to establish trust and credibility."
-    },
-
-    {
-        title: "Scale Fast",
-        description:
-            "Built-in tools and integrations to help you scale your business."
+        href: "/comment-ca-marche",
+        label: "Comment ça marche"
     }
 ]
 
@@ -78,163 +38,81 @@ export const Navbar = () => {
     const [isOpen, setIsOpen] = React.useState(false)
 
     return (
-        <div className="sticky top-2 z-50 mx-auto w-[98%] max-w-7xl px-4">
-            <nav className="rounded-xl border border-border bg-card/50 shadow-black/2 shadow-sm backdrop-blur-sm">
-                <div className="flex items-center justify-between px-4 py-3 lg:px-6">
+        <div className="sticky top-0 z-50 w-full bg-white border-b border-gray-200">
+            <nav className="mx-auto max-w-7xl">
+                <div className="flex items-center justify-between px-4 py-4 lg:px-8">
                     {/* Logo */}
                     <Link
                         href="/"
-                        className="group flex items-center gap-2 font-bold"
+                        className="font-bold text-2xl"
                     >
-                        <div className="relative">
-                            <Image
-                                src={site.logo}
-                                alt={site.name}
-                                width={30}
-                                height={30}
-                            />
-                        </div>
-                        <h3 className="font-bold text-xl lg:text-2xl">
-                            {site.name}
-                        </h3>
+                        <span className="text-blue-600">Docto</span>
+                        <span className="text-green-600">next</span>
                     </Link>
 
                     {/* Desktop Navigation */}
-                    <div className="hidden items-center space-x-1 lg:flex">
-                        <NavigationMenu>
-                            <NavigationMenuList className="space-x-2">
-                                <NavigationMenuItem>
-                                    <NavigationMenuTrigger className="h-auto bg-transparent px-4 py-2 font-medium text-foreground hover:bg-accent/50">
-                                        Solutions
-                                    </NavigationMenuTrigger>
-                                    <NavigationMenuContent>
-                                        <div className="grid w-[600px] grid-cols-2 gap-6 p-6">
-                                            <div className="relative overflow-hidden rounded-lg">
-                                                <Image
-                                                    src="/demo-img.png"
-                                                    alt="Product Demo"
-                                                    className="h-full w-full object-cover"
-                                                    width={300}
-                                                    height={200}
-                                                />
-                                                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
-                                            </div>
-                                            <ul className="flex flex-col gap-3">
-                                                {featureList.map(
-                                                    ({
-                                                        title,
-                                                        description
-                                                    }) => (
-                                                        <li key={title}>
-                                                            <NavigationMenuLink
-                                                                asChild
-                                                            >
-                                                                <Link
-                                                                    href="#features"
-                                                                    className="group block rounded-lg p-3 text-sm transition-colors hover:bg-accent/50"
-                                                                >
-                                                                    <p className="mb-1 font-semibold text-foreground leading-none group-hover:text-primary">
-                                                                        {title}
-                                                                    </p>
-                                                                    <p className="line-clamp-2 text-muted-foreground text-xs">
-                                                                        {
-                                                                            description
-                                                                        }
-                                                                    </p>
-                                                                </Link>
-                                                            </NavigationMenuLink>
-                                                        </li>
-                                                    )
-                                                )}
-                                            </ul>
-                                        </div>
-                                    </NavigationMenuContent>
-                                </NavigationMenuItem>
-
-                                {routeList.map(({ href, label }) => (
-                                    <NavigationMenuItem key={href}>
-                                        <NavigationMenuLink asChild>
-                                            <Link
-                                                href={href}
-                                                className="rounded-lg px-4 py-2 font-medium text-sm transition-colors hover:bg-accent/50 hover:text-primary"
-                                            >
-                                                {label}
-                                            </Link>
-                                        </NavigationMenuLink>
-                                    </NavigationMenuItem>
-                                ))}
-                            </NavigationMenuList>
-                        </NavigationMenu>
+                    <div className="hidden items-center space-x-8 lg:flex">
+                        {routeList.map(({ href, label }, index) => (
+                            <Link
+                                key={href}
+                                href={href}
+                                className="flex items-center gap-2 text-gray-600 hover:text-gray-900 font-medium"
+                            >
+                                {index === 0 && <Home className="size-4" />}
+                                {index === 1 && <ListOrdered className="size-4" />}
+                                {label}
+                            </Link>
+                        ))}
                     </div>
 
                     {/* Desktop Actions */}
-                    <div className="hidden items-center gap-2 lg:flex">
-                    <Button
-                            asChild
-                            variant="outline"
-                            size="icon"
-                            className="size-10 rounded-full"
-                        >
-                            <Link
-                                href={site.links.github}
-                                target="_blank"
-                                aria-label="View on GitHub"
-                            >
-                                <RiGithubFill className="size-5 fill-foreground" />
-                            </Link>
-                        </Button>
-                        <ModeToggle />
-                        
+                    <div className="hidden items-center gap-4 lg:flex">
                         <SignedOut>
                             <Button
                                 asChild
-                                size="sm"
-                                variant="outline"
-                                className="ml-2"
+                                variant="ghost"
+                                className="flex items-center gap-2 text-gray-600 hover:text-gray-900 font-medium"
                             >
-                                <Link href="/auth/sign-in?redirectTo=/dashboard">
-                                    Sign In
+                                <Link href="/auth/sign-in">
+                                    <LogIn className="size-4" />
+                                    Connexion
                                 </Link>
                             </Button>
                             <Button
                                 asChild
-                                size="sm"
-                                className="bg-primary hover:bg-primary/90"
+                                className="bg-blue-600 hover:bg-blue-700 text-white flex items-center gap-2"
                             >
-                                <Link href="/auth/sign-up?redirectTo=/dashboard">
-                                    Get Started
+                                <Link href="/auth/sign-up">
+                                    <UserPlus className="size-4" />
+                                    Inscription
+                                </Link>
+                            </Button>
+                            <Button
+                                asChild
+                                className="bg-green-600 hover:bg-green-700 text-white flex items-center gap-2"
+                            >
+                                <Link href="/deposer-annonce">
+                                    <Plus className="size-4" />
+                                    Déposer une annonce
                                 </Link>
                             </Button>
                         </SignedOut>
                         <SignedIn>
                             <Button
                                 asChild
-                                size="sm"
-                                variant="outline"
-                                className="ml-2"
+                                className="bg-green-600 hover:bg-green-700 text-white flex items-center gap-2"
                             >
-                                <Link href="/dashboard">Dashboard</Link>
+                                <Link href="/deposer-annonce">
+                                    <Plus className="size-4" />
+                                    Déposer une annonce
+                                </Link>
                             </Button>
+                            <UserButton />
                         </SignedIn>
                     </div>
 
                     {/* Mobile Menu Button */}
                     <div className="flex items-center gap-2 lg:hidden">
-                        <Button
-                            asChild
-                            variant="outline"
-                            size="icon"
-                            className="size-10 rounded-full"
-                        >
-                            <Link
-                                href={site.links.github}
-                                target="_blank"
-                                aria-label="View on GitHub"
-                            >
-                                <RiGithubFill className="size-5 fill-foreground" />
-                            </Link>
-                        </Button>
-                        <ModeToggle />
                         <Sheet open={isOpen} onOpenChange={setIsOpen}>
                             <SheetTrigger asChild>
                                 <Button
@@ -253,25 +131,17 @@ export const Navbar = () => {
 
                             <SheetContent
                                 side="right"
-                                className="w-full max-w-sm border-border/50 border-l bg-background/95 backdrop-blur-md"
+                                className="w-full max-w-sm border-l bg-white"
                             >
                                 <div className="flex h-full flex-col">
                                     <SheetHeader className="pb-4">
                                         <SheetTitle>
                                             <Link
                                                 href="/"
-                                                className="flex items-center gap-2"
+                                                className="font-bold text-2xl text-blue-600"
                                                 onClick={() => setIsOpen(false)}
                                             >
-                                                <Image
-                                                    src={site.logo}
-                                                    alt={site.name}
-                                                    width={32}
-                                                    height={32}
-                                                />
-                                                <span className="font-bold text-lg">
-                                                    {site.name}
-                                                </span>
+                                                Doctonext
                                             </Link>
                                         </SheetTitle>
                                     </SheetHeader>
@@ -282,7 +152,7 @@ export const Navbar = () => {
                                     <div className="flex flex-1 flex-col">
                                         <div className="space-y-1">
                                             {routeList.map(
-                                                ({ href, label }) => (
+                                                ({ href, label }, index) => (
                                                     <Button
                                                         key={href}
                                                         onClick={() =>
@@ -290,9 +160,11 @@ export const Navbar = () => {
                                                         }
                                                         asChild
                                                         variant="ghost"
-                                                        className="h-auto w-full justify-start px-3 py-2.5 font-medium hover:bg-accent/50"
+                                                        className="h-auto w-full justify-start px-3 py-2.5 font-medium hover:bg-gray-100"
                                                     >
-                                                        <Link href={href}>
+                                                        <Link href={href} className="flex items-center gap-2">
+                                                            {index === 0 && <Home className="size-4" />}
+                                                            {index === 1 && <ListOrdered className="size-4" />}
                                                             {label}
                                                         </Link>
                                                     </Button>
@@ -302,41 +174,53 @@ export const Navbar = () => {
                                     </div>
 
                                     {/* Mobile Actions */}
-                                    <SheetFooter className="flex-row gap-2 border-border/50 border-t pt-4">
+                                    <SheetFooter className="flex-col gap-2 border-t pt-4">
                                         <SignedOut>
                                             <Button
                                                 asChild
                                                 variant="outline"
-                                                className="w-full"
+                                                className="w-full flex items-center gap-2"
                                                 onClick={() => setIsOpen(false)}
                                             >
-                                                <Link href="/auth/sign-in?redirectTo=/dashboard">
-                                                    Sign In
+                                                <Link href="/auth/sign-in">
+                                                    <LogIn className="size-4" />
+                                                    Connexion
                                                 </Link>
                                             </Button>
                                             <Button
                                                 asChild
-                                                className="w-full bg-primary hover:bg-primary/90"
+                                                className="w-full bg-blue-600 hover:bg-blue-700 text-white flex items-center gap-2"
                                                 onClick={() => setIsOpen(false)}
                                             >
-                                                <Link href="/auth/sign-up?redirectTo=/dashboard">
-                                                    Get Started
+                                                <Link href="/auth/sign-up">
+                                                    <UserPlus className="size-4" />
+                                                    Inscription
+                                                </Link>
+                                            </Button>
+                                            <Button
+                                                asChild
+                                                className="w-full bg-green-600 hover:bg-green-700 text-white flex items-center gap-2"
+                                                onClick={() => setIsOpen(false)}
+                                            >
+                                                <Link href="/deposer-annonce">
+                                                    <Plus className="size-4" />
+                                                    Déposer une annonce
                                                 </Link>
                                             </Button>
                                         </SignedOut>
                                         <SignedIn>
                                             <Button
                                                 asChild
-                                                variant="outline"
-                                                className="w-full"
+                                                className="w-full bg-green-600 hover:bg-green-700 text-white flex items-center gap-2"
                                                 onClick={() => setIsOpen(false)}
                                             >
-                                                <Link href="/dashboard">
-                                                    Dashboard
+                                                <Link href="/deposer-annonce">
+                                                    <Plus className="size-4" />
+                                                    Déposer une annonce
                                                 </Link>
                                             </Button>
-                                            <div className="flex justify-end pt-2">
-                                                <UserButton size="icon" />
+                                            <div className="flex justify-center pt-2">
+                                                <UserButton />
                                             </div>
                                         </SignedIn>
                                     </SheetFooter>
