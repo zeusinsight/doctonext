@@ -3,11 +3,11 @@ import { incrementListingViews } from "@/lib/actions/listings"
 
 export async function POST(
     request: NextRequest,
-    { params }: { params: { id: string } }
+    { params }: { params: Promise<{ id: string }> }
 ) {
     try {
         // Increment view count using server action
-        const result = await incrementListingViews(params.id)
+        const result = await incrementListingViews((await params).id)
 
         if (result.success) {
             return NextResponse.json({

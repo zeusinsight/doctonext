@@ -25,8 +25,8 @@ interface Session {
     expiresAt: Date
     createdAt: Date
     updatedAt: Date
-    ipAddress?: string
-    userAgent?: string
+    ipAddress?: string | null
+    userAgent?: string | null
     isCurrent?: boolean
 }
 
@@ -93,7 +93,7 @@ export function SessionsCard({ className }: SessionsCardProps) {
         }
     }
 
-    const getDeviceIcon = (userAgent?: string) => {
+    const getDeviceIcon = (userAgent?: string | null) => {
         if (!userAgent) return <RiComputerLine className="w-4 h-4" />
         
         const ua = userAgent.toLowerCase()
@@ -106,7 +106,7 @@ export function SessionsCard({ className }: SessionsCardProps) {
         return <RiComputerLine className="w-4 h-4" />
     }
 
-    const getBrowserName = (userAgent?: string) => {
+    const getBrowserName = (userAgent?: string | null) => {
         if (!userAgent) return "Navigateur inconnu"
         
         const ua = userAgent.toLowerCase()

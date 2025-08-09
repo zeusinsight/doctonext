@@ -3,7 +3,7 @@
 import { auth } from "@/lib/auth"
 import { db } from "@/database/db"
 import { listings, listingLocations, transferDetails, replacementDetails, listingMedia } from "@/database/schema"
-import { eq, and, desc, or, ilike, sql } from "drizzle-orm"
+import { eq, and, desc, asc, or, ilike, sql } from "drizzle-orm"
 import { headers } from "next/headers"
 import { redirect } from "next/navigation"
 import { revalidatePath } from "next/cache"
@@ -331,6 +331,7 @@ export async function getPublicListings(filters?: {
     specialty?: string
     region?: string
     search?: string
+    sortBy?: "newest" | "oldest" | "price_low" | "price_high" | "views"
     limit?: number
     offset?: number
 }) {
@@ -350,8 +351,30 @@ export async function getPublicListings(filters?: {
                 or(
                     ilike(listings.title, `%${filters.search}%`),
                     ilike(listings.description, `%${filters.search}%`)
-                )
+                )!
             )
+        }
+
+        // Determine sort order
+        let orderByClause
+        switch (filters?.sortBy) {
+            case "oldest":
+                orderByClause = [asc(listings.publishedAt)]
+                break
+            case "views":
+                orderByClause = [desc(listings.viewsCount)]
+                break
+            case "price_low":
+                // For price sorting, we need to join with transferDetails or replacementDetails
+                // We'll use COALESCE to get the first non-null price value
+                orderByClause = [asc(sql`COALESCE(${transferDetails.salePrice}, ${replacementDetails.dailyRate}, 0)`)]
+                break
+            case "price_high":
+                orderByClause = [desc(sql`COALESCE(${transferDetails.salePrice}, ${replacementDetails.dailyRate}, 0)`)]
+                break
+            default: // "newest" or undefined
+                orderByClause = [desc(listings.publishedAt)]
+                break
         }
 
         const baseQuery = db
@@ -374,8 +397,10 @@ export async function getPublicListings(filters?: {
             })
             .from(listings)
             .leftJoin(listingLocations, eq(listings.id, listingLocations.listingId))
-            .where(and(...conditions))
-            .orderBy(desc(listings.publishedAt))
+            .leftJoin(transferDetails, eq(listings.id, transferDetails.listingId))
+            .leftJoin(replacementDetails, eq(listings.id, replacementDetails.listingId))
+            .where(conditions.length > 0 ? and(...conditions) : undefined)
+            .orderBy(...orderByClause)
 
         // Apply pagination if provided
         const limit = filters?.limit || 20

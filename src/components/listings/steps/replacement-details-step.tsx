@@ -187,7 +187,7 @@ export function ReplacementDetailsStep({ data, onDataChange, onNext, onPrevious 
                     <div className="flex items-center space-x-2">
                         <Checkbox
                             id="hasAssistant"
-                            checked={watch("hasAssistant") || false}
+                            checked={watch("hasAssistant") ?? false}
                             onCheckedChange={(checked) => handleFormChange("hasAssistant", checked === true)}
                         />
                         <Label htmlFor="hasAssistant">
@@ -198,7 +198,7 @@ export function ReplacementDetailsStep({ data, onDataChange, onNext, onPrevious 
                     <div className="flex items-center space-x-2">
                         <Checkbox
                             id="housingProvided"
-                            checked={watch("housingProvided") || false}
+                            checked={watch("housingProvided") ?? false}
                             onCheckedChange={(checked) => handleFormChange("housingProvided", checked === true)}
                         />
                         <Label htmlFor="housingProvided">

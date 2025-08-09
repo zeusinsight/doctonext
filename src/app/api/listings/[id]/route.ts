@@ -11,10 +11,10 @@ import { headers } from "next/headers"
 
 export async function GET(
     request: NextRequest,
-    { params }: { params: { id: string } }
+    { params }: { params: Promise<{ id: string }> }
 ) {
-    try {
-        const listing = await getListingById(params.id)
+    try {   
+        const listing = await getListingById((await params).id)
 
         if (!listing) {
             return NextResponse.json(
@@ -24,7 +24,7 @@ export async function GET(
         }
 
         // Increment view count (fire and forget)
-        incrementListingViews(params.id).catch(error => 
+        incrementListingViews((await params).id).catch(error => 
             console.error("Failed to increment views:", error)
         )
 
@@ -44,7 +44,7 @@ export async function GET(
 
 export async function PUT(
     request: NextRequest,
-    { params }: { params: { id: string } }
+    { params }: { params: Promise<{ id: string }> }
 ) {
     try {
         // Check authentication
@@ -65,7 +65,7 @@ export async function PUT(
         const validatedData = updateListingSchema.parse(body)
 
         // Update listing using server action
-        const result = await updateListing(params.id, validatedData)
+        const result = await updateListing((await params).id, validatedData)
 
         if (result.success) {
             return NextResponse.json({
@@ -97,7 +97,7 @@ export async function PUT(
 
 export async function DELETE(
     request: NextRequest,
-    { params }: { params: { id: string } }
+    { params }: { params: Promise<{ id: string }> }
 ) {
     try {
         // Check authentication
@@ -113,7 +113,7 @@ export async function DELETE(
         }
 
         // Delete listing using server action (soft delete)
-        const result = await deleteListing(params.id)
+        const result = await deleteListing((await params).id)
 
         if (result.success) {
             return NextResponse.json({

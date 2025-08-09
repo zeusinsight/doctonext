@@ -27,9 +27,11 @@ export function Providers({ children }: { children: ReactNode }) {
                 navigate={router.push}
                 replace={router.replace}
                 apiKey={true}
-                onSessionChange={(session) => {
+                onSessionChange={async () => {
+                    // Get the current session
+                    const session = await authClient.getSession()
                     // If no session (user logged out), redirect to home
-                    if (!session?.user) {
+                    if (!session?.data?.user) {
                         window.location.href = "/"
                     } else {
                         router.refresh()

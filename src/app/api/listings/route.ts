@@ -14,14 +14,12 @@ export async function GET(request: NextRequest) {
             region: searchParams.get("region") || undefined,
             search: searchParams.get("search") || undefined,
             page: parseInt(searchParams.get("page") || "1"),
-            limit: parseInt(searchParams.get("limit") || "20")
+            limit: parseInt(searchParams.get("limit") || "20"),
+            sortBy: searchParams.get("sortBy") || undefined
         }
 
         // Validate filters
-        const validatedFilters = listingFiltersSchema.parse({
-            ...filters,
-            offset: (filters.page - 1) * filters.limit
-        })
+        const validatedFilters = listingFiltersSchema.parse(filters)
 
         const listings = await getPublicListings({
             listingType: validatedFilters.listingType,
@@ -29,7 +27,8 @@ export async function GET(request: NextRequest) {
             region: validatedFilters.region,
             search: validatedFilters.search,
             limit: validatedFilters.limit,
-            offset: validatedFilters.offset
+            offset: (validatedFilters.page - 1) * validatedFilters.limit,
+            sortBy: validatedFilters.sortBy
         })
 
         return NextResponse.json({

@@ -21,9 +21,9 @@ export const transferDetailsSchema = z.object({
     availabilityDate: z.string().optional(), // Date string
     reasonForTransfer: z.string().optional(),
     softwareUsed: z.string().optional(),
-    accompanimentOffered: z.boolean().default(false),
+    accompanimentOffered: z.boolean().optional(),
     patientBaseSize: z.number().positive().optional(),
-    equipmentIncluded: z.boolean().default(false)
+    equipmentIncluded: z.boolean().optional()
 })
 
 export const replacementDetailsSchema = z.object({
@@ -31,8 +31,8 @@ export const replacementDetailsSchema = z.object({
     startDate: z.string().optional(), // Date string
     endDate: z.string().optional(), // Date string
     workingDays: z.array(z.enum(["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"])).optional(),
-    hasAssistant: z.boolean().default(false),
-    housingProvided: z.boolean().default(false),
+    hasAssistant: z.boolean().optional(),
+    housingProvided: z.boolean().optional(),
     feeSharePercentage: z.string().optional(),
     dailyRate: z.number().positive().optional(),
     practicalTerms: z.string().optional()

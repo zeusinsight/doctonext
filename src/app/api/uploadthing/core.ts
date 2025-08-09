@@ -46,11 +46,11 @@ export const ourFileRouter = {
     // Define listing media upload route
     listingMediaUploader: f({
         image: {
-            maxFileSize: "10MB",
+            maxFileSize: "8MB",
             maxFileCount: 10
         },
         pdf: {
-            maxFileSize: "10MB",
+            maxFileSize: "8MB",
             maxFileCount: 5
         }
     })

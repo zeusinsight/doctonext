@@ -169,7 +169,7 @@ export function TransferDetailsStep({ data, onDataChange, onNext, onPrevious }: 
                     <div className="flex items-center space-x-2">
                         <Checkbox
                             id="accompanimentOffered"
-                            checked={watch("accompanimentOffered") || false}
+                            checked={watch("accompanimentOffered") ?? false}
                             onCheckedChange={(checked) => handleFormChange("accompanimentOffered", checked === true)}
                         />
                         <Label htmlFor="accompanimentOffered">
@@ -180,7 +180,7 @@ export function TransferDetailsStep({ data, onDataChange, onNext, onPrevious }: 
                     <div className="flex items-center space-x-2">
                         <Checkbox
                             id="equipmentIncluded"
-                            checked={watch("equipmentIncluded") || false}
+                            checked={watch("equipmentIncluded") ?? false}
                             onCheckedChange={(checked) => handleFormChange("equipmentIncluded", checked === true)}
                         />
                         <Label htmlFor="equipmentIncluded">
