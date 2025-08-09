@@ -1,15 +1,9 @@
-import { BenefitsSection } from "@/components/layout/sections/benefits"
-import { CommunitySection } from "@/components/layout/sections/community"
-import { ContactSection } from "@/components/layout/sections/contact"
-import { FAQSection } from "@/components/layout/sections/faq"
-import { FeaturesSection } from "@/components/layout/sections/features"
+import { CTASection } from "@/components/layout/sections/cta"
 import { HeroSection } from "@/components/layout/sections/hero"
-import { PricingSection } from "@/components/layout/sections/pricing"
-import { ServicesSection } from "@/components/layout/sections/services"
+import { HowItWorksSection } from "@/components/layout/sections/howitworks"
+import { NewsletterSection } from "@/components/layout/sections/newsletter"
 import { SpecialtiesSection } from "@/components/layout/sections/specialties"
-import { TeamSection } from "@/components/layout/sections/team"
 import { TestimonialSection } from "@/components/layout/sections/testimonial"
-import Trusted from "@/components/layout/sections/trusted"
 import { site } from "@/config/site"
 
 export const metadata = {
@@ -50,16 +44,11 @@ export default function Home() {
         <>
             <HeroSection />
             <SpecialtiesSection />
-            <Trusted />
-            <BenefitsSection />
-            <FeaturesSection />
-            <ServicesSection />
+            <HowItWorksSection />
             <TestimonialSection />
-            <TeamSection />
-            <CommunitySection />
-            <PricingSection />
-            <ContactSection />
-            <FAQSection />
+            <NewsletterSection />
+            <CTASection />
+
         </>
     )
 }

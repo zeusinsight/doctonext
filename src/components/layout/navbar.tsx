@@ -73,7 +73,7 @@ export const Navbar = () => {
                                 variant="ghost"
                                 className="flex items-center gap-2 text-gray-600 hover:text-gray-900 font-medium"
                             >
-                                <Link href="/auth/sign-in">
+                                <Link href="/login">
                                     <LogIn className="size-4" />
                                     Connexion
                                 </Link>
@@ -82,7 +82,7 @@ export const Navbar = () => {
                                 asChild
                                 className="bg-blue-600 hover:bg-blue-700 text-white flex items-center gap-2"
                             >
-                                <Link href="/auth/sign-up">
+                                <Link href="/register">
                                     <UserPlus className="size-4" />
                                     Inscription
                                 </Link>
@@ -91,7 +91,7 @@ export const Navbar = () => {
                                 asChild
                                 className="bg-green-600 hover:bg-green-700 text-white flex items-center gap-2"
                             >
-                                <Link href="/deposer-annonce">
+                                <Link href="/dashboard/listings/new">
                                     <Plus className="size-4" />
                                     Déposer une annonce
                                 </Link>
@@ -102,12 +102,21 @@ export const Navbar = () => {
                                 asChild
                                 className="bg-green-600 hover:bg-green-700 text-white flex items-center gap-2"
                             >
-                                <Link href="/deposer-annonce">
+                                <Link href="/dashboard/listings/new">
                                     <Plus className="size-4" />
                                     Déposer une annonce
                                 </Link>
                             </Button>
-                            <UserButton />
+                            <Button
+                                asChild
+                                variant="ghost"
+                                className="flex items-center gap-2 text-gray-600 hover:text-gray-900 font-medium"
+                            >
+                                <Link href="/dashboard">
+                                    <Home className="size-4" />
+                                    Tableau de bord
+                                </Link>
+                            </Button>
                         </SignedIn>
                     </div>
 
@@ -182,7 +191,7 @@ export const Navbar = () => {
                                                 className="w-full flex items-center gap-2"
                                                 onClick={() => setIsOpen(false)}
                                             >
-                                                <Link href="/auth/sign-in">
+                                                <Link href="/login">
                                                     <LogIn className="size-4" />
                                                     Connexion
                                                 </Link>
@@ -192,7 +201,7 @@ export const Navbar = () => {
                                                 className="w-full bg-blue-600 hover:bg-blue-700 text-white flex items-center gap-2"
                                                 onClick={() => setIsOpen(false)}
                                             >
-                                                <Link href="/auth/sign-up">
+                                                <Link href="/register">
                                                     <UserPlus className="size-4" />
                                                     Inscription
                                                 </Link>

@@ -1,16 +1,16 @@
 const site_url = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
 
 export const site = {
-  name: "Indie SaaS",
-  description: "A modern SaaS starter built with Next.js, Drizzle, and Better Auth",
+  name: "Doctonext",
+  description: "Doctonext est une plateforme pour les professionnels de santé.",
   url: site_url,
   ogImage: `${site_url}/og.jpg`,
   logo: "/logo.svg",
-  mailSupport: "hello@domain.com", // Support email address
-  mailFrom: process.env.MAIL_FROM || "noreply@domain.com", // Transactional email address
+  mailSupport: "hello@delicads.com", // Support email address
+  mailFrom: process.env.MAIL_FROM || "noreply@delicads.com", // Transactional email address
   links: {
-    twitter: "https://twitter.com/indieceo",
-    github: "https://github.com/indieceo/indiesaas",
-    linkedin: "https://www.linkedin.com/in/indieceo/",
+    twitter: "https://twitter.com/Doctonext",
+    github: "https://github.com/Doctonext/Doctonext",
+    linkedin: "https://www.linkedin.com/in/Doctonext/",
   }
 } as const;

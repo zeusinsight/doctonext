@@ -24,7 +24,9 @@ export const auth = betterAuth({
         usePlural: true,
         schema
     }),
+    
     emailAndPassword: {
+        rememberMe: true,
         enabled: true,
         sendResetPassword: async ({ user, url, token }, request) => {
             const name = user.name || user.email.split("@")[0]
@@ -32,46 +34,32 @@ export const auth = betterAuth({
             await resend.emails.send({
                 from: site.mailFrom,
                 to: user.email,
-                subject: "Reset your password",
+                subject: "Réinitialisez votre mot de passe",
                 react: EmailTemplate({
-                    heading: "Reset your password",
+                    heading: "Réinitialisez votre mot de passe",
                     content: React.createElement(
                         React.Fragment,
                         null,
-                        React.createElement("p", null, `Hi ${name},`),
+                        React.createElement("p", null, `Bonjour ${name},`),
                         React.createElement(
                             "p",
                             null,
-                            "Someone requested a password reset for your account. If this was you, ",
-                            "click the button below to reset your password."
+                            "Quelqu'un a demandé la réinitialisation du mot de passe de votre compte. Si c'était vous, ",
+                            "cliquez sur le bouton ci-dessous pour réinitialiser votre mot de passe."
                         ),
                         React.createElement(
                             "p",
                             null,
-                            "If you didn't request this, you can safely ignore this email."
+                            "Si vous n'avez pas fait cette demande, vous pouvez ignorer cet email en toute sécurité."
                         )
                     ),
-                    action: "Reset Password",
+                    action: "Réinitialiser le mot de passe",
                     url,
                     siteName: site.name,
                     baseUrl: site.url,
-                    imageUrl: `${site.url}/logo.png` // svg are not supported by resend
+                    imageUrl: `${site.url}/logo.png`
                 })
             })
-        }
-    },
-    socialProviders: {
-        github: {
-            clientId: process.env.GITHUB_CLIENT_ID as string,
-            clientSecret: process.env.GITHUB_CLIENT_SECRET as string
-        },
-        google: {
-            clientId: process.env.GOOGLE_CLIENT_ID as string,
-            clientSecret: process.env.GOOGLE_CLIENT_SECRET as string
-        },
-        twitter: {
-            clientId: process.env.TWITTER_CLIENT_ID as string,
-            clientSecret: process.env.TWITTER_CLIENT_SECRET as string
         }
     },
     plugins: [

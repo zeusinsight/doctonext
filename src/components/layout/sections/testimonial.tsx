@@ -1,147 +1,78 @@
-"use client"
-import { Star } from "lucide-react"
+import { Quote } from "lucide-react"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardHeader,
-    CardTitle
-} from "@/components/ui/card"
-import {
-    Carousel,
-    CarouselContent,
-    CarouselItem,
-    CarouselNext,
-    CarouselPrevious
-} from "@/components/ui/carousel"
+import { Card, CardContent } from "@/components/ui/card"
 
 interface ReviewProps {
     image: string
     name: string
-    userName: string
+    role: string
+    location: string
     comment: string
-    rating: number
 }
 
 const reviewList: ReviewProps[] = [
     {
-        image: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=580&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-        name: "John Doe",
-        userName: "Product Manager",
-        comment:
-            "Wow this is awesome!. This Starter Kit lets me change colors, fonts and images to match my brand identity. ",
-        rating: 5.0
+        image: "https://images.unsplash.com/photo-1594824476967-48c8b964273f?q=80&w=200&auto=format&fit=crop",
+        name: "Dr. Sophie Martin",
+        role: "Médecin généraliste",
+        location: "Paris",
+        comment: "Grâce à Doctonext, j'ai pu trouver rapidement un cabinet médical qui correspondait parfaitement à mes attentes. La plateforme est intuitive et les annonces sont très détaillées. Je recommande vivement ce service à tous les professionnels de santé."
     },
     {
-        image: "https://images.unsplash.com/photo-1658281097220-eb7672eed00b?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NDN8fHByb2ZpbGUlMjBwaG90b3xlbnwwfDJ8MHx8fDA%3D",
-        name: "Sophia Collins",
-        userName: "Cybersecurity Analyst",
-        comment:
-            "The security implementation is top-notch. Built-in authentication and proper data validation give me confidence in the platform. ",
-        rating: 4.8
-    },
-
-    {
-        image: "https://images.unsplash.com/photo-1618018352910-72bdafdc82a6?q=80&w=580&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-        name: "Adam Johnson",
-        userName: "Chief Technology Officer",
-        comment:
-            "Perfect architecture and clean code structure. Our development team was able to scale quickly without technical debt issues.",
-        rating: 4.9
+        image: "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?q=80&w=200&auto=format&fit=crop",
+        name: "Dr. Thomas Dubois",
+        role: "Chirurgien-dentiste",
+        location: "Lyon",
+        comment: "J'ai pu vendre mon cabinet dentaire en seulement deux mois grâce à Doctonext. Le processus était simple, la visibilité excellente, et l'équipe m'a accompagné tout au long de la vente. Une solution idéale pour les professionnels de santé."
     },
     {
-        image: "https://images.unsplash.com/photo-1584999734482-0361aecad844?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTV8fHByb2ZpbGV8ZW58MHwyfDB8fHww",
-        name: "Ethan Parker",
-        userName: "Data Scientist",
-        comment:
-            "The analytics integration capabilities are excellent. Easy to implement tracking and gather meaningful insights from user behavior.",
-        rating: 5.0
-    },
-    {
-        image: "https://images.unsplash.com/photo-1586297135537-94bc9ba060aa?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mjh8fHByb2ZpbGUlMjBwaG90b3xlbnwwfDJ8MHx8fDA%3D",
-        name: "Ava Mitchell",
-        userName: "IT Project Manager",
-        comment:
-            "Streamlined our deployment process significantly. The documentation and setup guide helped our team deliver projects faster.",
-        rating: 5.0
-    },
-    {
-        image: "https://images.unsplash.com/photo-1623517006691-00db997b4c58?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTUwfHxwcm9maWxlJTIwcGhvdG98ZW58MHwyfDB8fHww",
-        name: "Isabella Reed",
-        userName: "DevOps Engineer",
-        comment:
-            "Amazing CI/CD integration and containerization support. The deployment pipeline configurations saved us weeks of setup time.",
-        rating: 4.9
+        image: "https://images.unsplash.com/photo-1594744803329-e58b31de8bf5?q=80&w=200&auto=format&fit=crop",
+        name: "Marie Leroy",
+        role: "Pharmacienne",
+        location: "Bordeaux",
+        comment: "Après plusieurs mois de recherche infructueuse, j'ai trouvé la pharmacie de mes rêves sur Doctonext. La qualité des annonces et la facilité de communication avec les vendeurs font toute la différence. Merci pour ce service qui répond vraiment à un besoin dans notre secteur."
     }
 ]
 
 export const TestimonialSection = () => {
     return (
-        <section id="testimonials" className="container mx-auto px-4 py-24 sm:py-32">
-            <div className="mb-8 text-center">
-                <h2 className="mb-2 text-center text-lg text-primary tracking-wider">
-                    Testimonials
-                </h2>
+        <section id="testimonials" className="py-24 sm:py-32 bg-gray-50">
+            <div className="container mx-auto px-4">
+                <div className="mb-12 text-center">
+                    <h2 className="mb-4 text-center font-bold text-3xl md:text-4xl">
+                        Ils nous font confiance
+                    </h2>
+                    <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+                        Découvrez les témoignages de professionnels de santé qui ont concrétisé leurs projets grâce à Doctonext
+                    </p>
+                </div>
 
-                <h2 className="mb-4 text-center font-bold text-3xl md:text-4xl">
-                    Hear What Our 1000+ Clients Say
-                </h2>
-            </div>
-
-            <Carousel
-                opts={{
-                    align: "start"
-                }}
-                className="relative mx-auto w-[80%] sm:w-[90%] lg:max-w-screen-xl"
-            >
-                <CarouselContent>
-                    {reviewList.map((review) => (
-                        <CarouselItem
-                            key={review.name}
-                            className="md:basis-1/2 lg:basis-1/3"
-                        >
-                            <Card className="flex h-full flex-col bg-muted/50">
-                                <CardContent className="flex flex-grow flex-col">
-                                    <div className="flex gap-1 pb-4">
-                                        <Star className="size-4 fill-primary text-primary" />
-                                        <Star className="size-4 fill-primary text-primary" />
-                                        <Star className="size-4 fill-primary text-primary" />
-                                        <Star className="size-4 fill-primary text-primary" />
-                                        <Star className="size-4 fill-primary text-primary" />
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-7xl mx-auto">
+                    {reviewList.map((review, index) => (
+                        <Card key={index} className="relative bg-white border-0 shadow-lg">
+                            <CardContent className="p-8">
+                                <Quote className="w-12 h-12 text-blue-500 mb-4" />
+                                <p className="text-gray-700 mb-6 italic leading-relaxed">
+                                    "{review.comment}"
+                                </p>
+                                <div className="flex items-center gap-4 mt-auto">
+                                    <Avatar className="h-12 w-12">
+                                        <AvatarImage
+                                            src={review.image}
+                                            alt={review.name}
+                                        />
+                                        <AvatarFallback>{review.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
+                                    </Avatar>
+                                    <div>
+                                        <p className="font-semibold text-gray-900">{review.name}</p>
+                                        <p className="text-sm text-gray-600">{review.role}, {review.location}</p>
                                     </div>
-                                    <div className="flex flex-1 items-start pb-4">
-                                        <p className="text-sm leading-relaxed">{`"${review.comment}"`}</p>
-                                    </div>
-                                </CardContent>
-
-                                <CardHeader >
-                                    <div className="flex flex-row items-center gap-4">
-                                        <Avatar>
-                                            <AvatarImage
-                                                src={review.image}
-                                                alt="radix"
-                                            />
-                                            <AvatarFallback>SV</AvatarFallback>
-                                        </Avatar>
-
-                                        <div className="flex flex-col">
-                                            <CardTitle className="text-lg">
-                                                {review.name}
-                                            </CardTitle>
-                                            <CardDescription>
-                                                {review.userName}
-                                            </CardDescription>
-                                        </div>
-                                    </div>
-                                </CardHeader>
-                            </Card>
-                        </CarouselItem>
+                                </div>
+                            </CardContent>
+                        </Card>
                     ))}
-                </CarouselContent>
-                <CarouselPrevious />
-                <CarouselNext />
-            </Carousel>
+                </div>
+            </div>
         </section>
     )
 }

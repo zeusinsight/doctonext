@@ -9,6 +9,7 @@ import NextTopLoader from 'nextjs-toploader';
 import { Toaster } from "sonner"
 import { authClient } from "@/lib/auth-client"
 import { useUploadThing } from "@/lib/uploadthing"
+import { authLocalizationFr } from "@/lib/auth-localization-fr"
 
 export function Providers({ children }: { children: ReactNode }) {
     const router = useRouter()
@@ -26,14 +27,16 @@ export function Providers({ children }: { children: ReactNode }) {
                 navigate={router.push}
                 replace={router.replace}
                 apiKey={true}
-                onSessionChange={() => {
-                    router.refresh()
+                onSessionChange={(session) => {
+                    // If no session (user logged out), redirect to home
+                    if (!session?.user) {
+                        window.location.href = "/"
+                    } else {
+                        router.refresh()
+                    }
                 }}
                 settings={{
                     url: "/dashboard/settings"
-                }}
-                social={{
-                    providers: ["github", "google", "twitter"]
                 }}
                 
                 avatar={{
@@ -44,6 +47,7 @@ export function Providers({ children }: { children: ReactNode }) {
                     }
                 }}
                 Link={Link}
+                localization={authLocalizationFr}
             >
                 <NextTopLoader color="var(--primary)" showSpinner={false} />
                 {children}

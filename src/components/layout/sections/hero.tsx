@@ -48,7 +48,7 @@ export const HeroSection = () => {
                     <div className="relative">
                         <div className="relative rounded-2xl overflow-hidden shadow-2xl">
                             <Image
-                                src="/demo-img.png"
+                                src="/image.png"
                                 alt="Medical professional working on laptop"
                                 width={600}
                                 height={400}
