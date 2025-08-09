@@ -34,7 +34,9 @@ export function MediaUploadStep({ data, onDataChange, onNext, onPrevious }: Medi
                 size: file.size
             }))
             
-            setFiles(prev => [...prev, ...newFiles])
+            const updatedFiles = [...files, ...newFiles]
+            setFiles(updatedFiles)
+            onDataChange({ files: updatedFiles })
             setIsUploading(false)
             toast.success(`${res.length} fichier(s) téléchargé(s) avec succès`)
         },
@@ -44,14 +46,6 @@ export function MediaUploadStep({ data, onDataChange, onNext, onPrevious }: Medi
             toast.error("Erreur lors du téléchargement")
         },
     })
-
-    const handleDataChange = useCallback((newFiles: Array<{url: string, name: string, type: string, size: number}>) => {
-        onDataChange({ files: newFiles })
-    }, [onDataChange])
-
-    useEffect(() => {
-        handleDataChange(files)
-    }, [files, handleDataChange])
 
     const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const selectedFiles = Array.from(e.target.files || [])

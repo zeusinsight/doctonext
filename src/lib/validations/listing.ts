@@ -38,6 +38,22 @@ export const replacementDetailsSchema = z.object({
     practicalTerms: z.string().optional()
 })
 
+export const collaborationDetailsSchema = z.object({
+    collaborationType: z.enum(["association", "partnership", "group_practice", "shared_space"]).optional(),
+    durationExpectation: z.enum(["short_term", "long_term", "permanent"]).optional(),
+    workloadShare: z.string().optional(), // e.g., "50/50", "60/40"
+    spaceArrangement: z.enum(["shared_office", "separate_offices", "rotation"]).optional(),
+    patientManagement: z.enum(["shared", "separate", "mixed"]).optional(),
+    investmentRequired: z.boolean().optional(),
+    investmentAmount: z.number().positive().optional(),
+    revenueSharing: z.string().optional(), // Description of revenue sharing model
+    expenseSharing: z.string().optional(), // Description of expense sharing
+    decisionMaking: z.enum(["equal", "senior_led", "committee"]).optional(),
+    specialtiesWanted: z.array(z.string()).optional(),
+    experienceRequired: z.string().optional(),
+    valuesAndGoals: z.string().optional()
+})
+
 // Main schemas
 export const createListingSchema = z.object({
     title: z.string().min(1, "Le titre est requis").max(200, "Le titre ne peut pas dépasser 200 caractères"),
@@ -89,6 +105,8 @@ export const locationStepSchema = locationSchema
 export const transferDetailsStepSchema = transferDetailsSchema
 
 export const replacementDetailsStepSchema = replacementDetailsSchema
+
+export const collaborationDetailsStepSchema = collaborationDetailsSchema
 
 export const mediaUploadSchema = z.object({
     files: z.array(z.object({

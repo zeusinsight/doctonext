@@ -7,7 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Separator } from "@/components/ui/separator"
-import { ArrowLeft, CheckCircle, MapPin, Calendar, Euro, Users, Clock, FileText } from "lucide-react"
+import { ArrowLeft, CheckCircle, MapPin, Calendar, Euro, Users, Clock, FileText, Handshake } from "lucide-react"
 import { CreateListingFormData, ReviewStepData } from "@/types/listing"
 
 interface ReviewStepProps {
@@ -25,12 +25,10 @@ export function ReviewStep({ formData, onDataChange, onPrevious, onSubmit, isSub
         expiresAt: undefined
     })
 
-    useEffect(() => {
-        onDataChange(reviewData)
-    }, [reviewData, onDataChange])
-
     const handleOptionChange = (field: keyof ReviewStepData, value: any) => {
-        setReviewData(prev => ({ ...prev, [field]: value }))
+        const newData = { ...reviewData, [field]: value }
+        setReviewData(newData)
+        onDataChange(newData)
     }
 
     const getListingTypeBadge = (type: string) => {
@@ -183,6 +181,118 @@ export function ReviewStep({ formData, onDataChange, onPrevious, onSubmit, isSub
                                     </div>
                                 )}
                             </div>
+                        </CardContent>
+                    </Card>
+                )}
+
+                {/* Collaboration Details */}
+                {formData.basicInfo?.listingType === "collaboration" && formData.collaborationDetails && (
+                    <Card>
+                        <CardHeader className="pb-3">
+                            <CardTitle className="text-base flex items-center gap-2">
+                                <Handshake className="h-4 w-4" />
+                                Détails de la collaboration
+                            </CardTitle>
+                        </CardHeader>
+                        <CardContent className="space-y-3">
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                                {formData.collaborationDetails.collaborationType && (
+                                    <div>
+                                        <span className="text-muted-foreground">Type : </span>
+                                        <span className="capitalize">
+                                            {formData.collaborationDetails.collaborationType.replace('_', ' ')}
+                                        </span>
+                                    </div>
+                                )}
+                                {formData.collaborationDetails.durationExpectation && (
+                                    <div>
+                                        <span className="text-muted-foreground">Durée : </span>
+                                        <span className="capitalize">
+                                            {formData.collaborationDetails.durationExpectation.replace('_', ' ')}
+                                        </span>
+                                    </div>
+                                )}
+                                {formData.collaborationDetails.spaceArrangement && (
+                                    <div>
+                                        <span className="text-muted-foreground">Espace : </span>
+                                        <span className="capitalize">
+                                            {formData.collaborationDetails.spaceArrangement.replace('_', ' ')}
+                                        </span>
+                                    </div>
+                                )}
+                                {formData.collaborationDetails.patientManagement && (
+                                    <div>
+                                        <span className="text-muted-foreground">Patients : </span>
+                                        <span className="capitalize">
+                                            {formData.collaborationDetails.patientManagement}
+                                        </span>
+                                    </div>
+                                )}
+                                {formData.collaborationDetails.workloadShare && (
+                                    <div>
+                                        <span className="text-muted-foreground">Répartition : </span>
+                                        {formData.collaborationDetails.workloadShare}
+                                    </div>
+                                )}
+                                {formData.collaborationDetails.decisionMaking && (
+                                    <div>
+                                        <span className="text-muted-foreground">Décisions : </span>
+                                        <span className="capitalize">
+                                            {formData.collaborationDetails.decisionMaking.replace('_', ' ')}
+                                        </span>
+                                    </div>
+                                )}
+                            </div>
+                            
+                            {formData.collaborationDetails.investmentRequired && (
+                                <div className="pt-2 border-t">
+                                    <div className="flex items-center gap-2 text-sm">
+                                        <span className="text-muted-foreground">Investissement requis :</span>
+                                        {formData.collaborationDetails.investmentAmount && (
+                                            <span className="font-medium">
+                                                {formData.collaborationDetails.investmentAmount.toLocaleString()} €
+                                            </span>
+                                        )}
+                                    </div>
+                                </div>
+                            )}
+
+                            {formData.collaborationDetails.specialtiesWanted && formData.collaborationDetails.specialtiesWanted.length > 0 && (
+                                <div className="pt-2 border-t">
+                                    <div className="text-sm">
+                                        <span className="text-muted-foreground">Spécialités recherchées : </span>
+                                        <div className="flex flex-wrap gap-1 mt-1">
+                                            {formData.collaborationDetails.specialtiesWanted.map((specialty, index) => (
+                                                <Badge key={index} variant="secondary" className="text-xs">
+                                                    {specialty}
+                                                </Badge>
+                                            ))}
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
+
+                            {formData.collaborationDetails.revenueSharing && (
+                                <div className="pt-2 border-t">
+                                    <div className="text-sm">
+                                        <span className="text-muted-foreground">Partage revenus : </span>
+                                        <p className="mt-1 text-xs bg-muted p-2 rounded">
+                                            {formData.collaborationDetails.revenueSharing}
+                                        </p>
+                                    </div>
+                                </div>
+                            )}
+
+                            {formData.collaborationDetails.valuesAndGoals && (
+                                <div className="pt-2 border-t">
+                                    <div className="text-sm">
+                                        <span className="text-muted-foreground">Valeurs et objectifs : </span>
+                                        <p className="mt-1 text-xs bg-muted p-2 rounded">
+                                            {formData.collaborationDetails.valuesAndGoals}
+                                        </p>
+                                    </div>
+                                </div>
+                            )}
                         </CardContent>
                     </Card>
                 )}

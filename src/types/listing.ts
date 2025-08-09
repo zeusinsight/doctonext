@@ -9,6 +9,7 @@ import {
     locationStepSchema,
     transferDetailsStepSchema,
     replacementDetailsStepSchema,
+    collaborationDetailsStepSchema,
     mediaUploadSchema,
     reviewStepSchema,
     listingFiltersSchema,
@@ -101,6 +102,7 @@ export type BasicInfoStepData = z.infer<typeof basicInfoStepSchema>
 export type LocationStepData = z.infer<typeof locationStepSchema>
 export type TransferDetailsStepData = z.infer<typeof transferDetailsStepSchema>
 export type ReplacementDetailsStepData = z.infer<typeof replacementDetailsStepSchema>
+export type CollaborationDetailsStepData = z.infer<typeof collaborationDetailsStepSchema>
 export type MediaUploadData = z.infer<typeof mediaUploadSchema>
 export type ReviewStepData = z.infer<typeof reviewStepSchema>
 
@@ -162,6 +164,7 @@ export type CreateListingFormData = {
     location?: LocationStepData
     transferDetails?: TransferDetailsStepData
     replacementDetails?: ReplacementDetailsStepData
+    collaborationDetails?: CollaborationDetailsStepData
     media?: MediaUploadData
     review?: ReviewStepData
 }
