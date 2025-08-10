@@ -13,8 +13,8 @@ export default function NewListingPage() {
                 </p>
             </div>
 
-            <Card className="max-w-5xl">
-                <CardHeader>
+            <Card className="max-w-5xl py-6">
+                <CardHeader className="py-6">
                     <CardTitle>Nouvelle annonce</CardTitle>
                     <CardDescription>
                         Suivez les étapes pour créer votre annonce
