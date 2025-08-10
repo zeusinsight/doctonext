@@ -8,21 +8,23 @@ export const locationSchema = z.object({
     region: z.string().min(1, "La région est requise"),
     department: z.string().optional(),
     latitude: z.string().optional(),
-    longitude: z.string().optional(),
-    medicalDensityZone: z.enum(["over_served", "under_served", "balanced"]).optional(),
-    densityScore: z.number().int().min(1).max(10).optional()
+    longitude: z.string().optional()
 })
 
 export const transferDetailsSchema = z.object({
-    practiceType: z.enum(["solo", "group", "clinic"]).optional(),
-    annualTurnover: z.number().positive().optional(),
-    chargesPercentage: z.string().optional(),
+    practiceType: z.enum(["solo", "group", "clinic"]),
+    annualTurnover: z.number().positive({
+        message: "Le chiffre d'affaires annuel doit être un nombre positif"
+    }),
+    chargesPercentage: z.string().min(1, "Le pourcentage de charges est requis"),
     salePrice: z.number().positive().optional(),
-    availabilityDate: z.string().optional(), // Date string
-    reasonForTransfer: z.string().optional(),
+    availabilityOption: z.enum(["immediately", "to_discuss"]),
+    reasonForTransfer: z.string().min(1, "Le motif de la cession est requis"),
     softwareUsed: z.string().optional(),
     accompanimentOffered: z.boolean().optional(),
-    patientBaseSize: z.number().positive().optional(),
+    patientBaseSize: z.number().positive({
+        message: "Le nombre de patients doit être un nombre positif"
+    }),
     equipmentIncluded: z.boolean().optional()
 })
 
@@ -33,25 +35,43 @@ export const replacementDetailsSchema = z.object({
     workingDays: z.array(z.enum(["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"])).optional(),
     hasAssistant: z.boolean().optional(),
     housingProvided: z.boolean().optional(),
-    feeSharePercentage: z.string().optional(),
-    dailyRate: z.number().positive().optional(),
+    feeSharePercentage: z.string().min(1, "Le pourcentage de rétrocession est requis"),
+    dailyRate: z.union([
+        z.string().transform((val) => {
+            if (val === "" || val === undefined) return undefined;
+            const num = parseInt(val);
+            return isNaN(num) ? undefined : num;
+        }).refine((val) => val === undefined || val > 0, {
+            message: "La rémunération journalière doit être un nombre positif"
+        }),
+        z.number().positive(),
+        z.undefined()
+    ]).optional(),
     practicalTerms: z.string().optional()
 })
 
 export const collaborationDetailsSchema = z.object({
-    collaborationType: z.enum(["association", "partnership", "group_practice", "shared_space"]).optional(),
-    durationExpectation: z.enum(["short_term", "long_term", "permanent"]).optional(),
-    workloadShare: z.string().optional(), // e.g., "50/50", "60/40"
-    spaceArrangement: z.enum(["shared_office", "separate_offices", "rotation"]).optional(),
-    patientManagement: z.enum(["shared", "separate", "mixed"]).optional(),
+    collaborationType: z.enum(["association", "partnership", "group_practice", "shared_space"]),
+    durationExpectation: z.enum(["short_term", "long_term", "permanent"]),
+    activityDistribution: z.enum(["full_time", "part_time"]),
+    activityDistributionDetails: z.string().optional(), // For part-time details
+    spaceArrangement: z.enum(["shared_office", "separate_offices", "rotation"]),
+    patientManagement: z.enum(["shared", "separate", "mixed"]),
     investmentRequired: z.boolean().optional(),
-    investmentAmount: z.number().positive().optional(),
-    revenueSharing: z.string().optional(), // Description of revenue sharing model
-    expenseSharing: z.string().optional(), // Description of expense sharing
-    decisionMaking: z.enum(["equal", "senior_led", "committee"]).optional(),
-    specialtiesWanted: z.array(z.string()).optional(),
-    experienceRequired: z.string().optional(),
-    valuesAndGoals: z.string().optional()
+    investmentAmount: z.union([
+        z.string().transform((val) => {
+            if (val === "" || val === undefined) return undefined;
+            if (val === "to_discuss" || val === "À discuter") return val;
+            const num = parseInt(val);
+            return isNaN(num) ? val : num;
+        }),
+        z.number().positive(),
+        z.undefined()
+    ]).optional(),
+    remunerationModel: z.string().min(1, "Le modèle de rémunération est requis"),
+    specialtiesWanted: z.array(z.string()).min(1, "Au moins une spécialité recherchée est requise"),
+    experienceRequired: z.string().min(1, "L'expérience requise est requise"),
+    valuesAndGoals: z.string().min(1, "Les valeurs et objectifs communs sont requis")
 })
 
 // Main schemas
@@ -60,12 +80,18 @@ export const createListingSchema = z.object({
     description: z.string().optional(),
     listingType: z.enum(["transfer", "replacement", "collaboration"]),
     specialty: z.string().optional(),
-    isPremium: z.boolean().default(false),
-    isUrgent: z.boolean().default(false),
+    isBoostPlus: z.boolean().default(false),
     expiresAt: z.string().optional(), // Date string
     location: locationSchema.optional(),
     transferDetails: transferDetailsSchema.optional(),
-    replacementDetails: replacementDetailsSchema.optional()
+    replacementDetails: replacementDetailsSchema.optional(),
+    collaborationDetails: collaborationDetailsSchema.optional(),
+    media: z.array(z.object({
+        url: z.string().url(),
+        name: z.string(),
+        type: z.string(),
+        size: z.number()
+    })).optional()
 }).refine((data) => {
     // If listingType is transfer, transferDetails should be provided
     if (data.listingType === "transfer" && !data.transferDetails) {
@@ -73,6 +99,10 @@ export const createListingSchema = z.object({
     }
     // If listingType is replacement, replacementDetails should be provided
     if (data.listingType === "replacement" && !data.replacementDetails) {
+        return false
+    }
+    // If listingType is collaboration, collaborationDetails should be provided
+    if (data.listingType === "collaboration" && !data.collaborationDetails) {
         return false
     }
     return true
@@ -85,19 +115,19 @@ export const updateListingSchema = z.object({
     title: z.string().min(1, "Le titre est requis").max(200, "Le titre ne peut pas dépasser 200 caractères"),
     description: z.string().optional(),
     specialty: z.string().optional(),
-    isPremium: z.boolean().optional(),
-    isUrgent: z.boolean().optional(),
+    isBoostPlus: z.boolean().optional(),
     location: locationSchema.optional(),
     transferDetails: transferDetailsSchema.optional(),
-    replacementDetails: replacementDetailsSchema.optional()
+    replacementDetails: replacementDetailsSchema.optional(),
+    collaborationDetails: collaborationDetailsSchema.optional()
 })
 
 // Form step schemas for multi-step form
 export const basicInfoStepSchema = z.object({
     title: z.string().min(1, "Le titre est requis").max(200, "Le titre ne peut pas dépasser 200 caractères"),
-    description: z.string().optional(),
+    description: z.string().min(1, "La description est requise"),
     listingType: z.enum(["transfer", "replacement", "collaboration"]),
-    specialty: z.string().optional()
+    specialty: z.string().min(1, "La spécialité est requise")
 })
 
 export const locationStepSchema = locationSchema
@@ -118,8 +148,7 @@ export const mediaUploadSchema = z.object({
 })
 
 export const reviewStepSchema = z.object({
-    isPremium: z.boolean().default(false),
-    isUrgent: z.boolean().default(false),
+    isBoostPlus: z.boolean().default(false),
     expiresAt: z.string().optional()
 })
 
@@ -131,8 +160,7 @@ export const listingFiltersSchema = z.object({
     city: z.string().optional(),
     postalCode: z.string().optional(),
     search: z.string().optional(),
-    isPremium: z.boolean().optional(),
-    isUrgent: z.boolean().optional(),
+    isBoostPlus: z.boolean().optional(),
     priceMin: z.number().int().positive().optional(),
     priceMax: z.number().int().positive().optional(),
     sortBy: z.enum(["newest", "oldest", "price_low", "price_high", "views"]).default("newest"),

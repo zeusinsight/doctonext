@@ -2,7 +2,7 @@
 
 import { auth } from "@/lib/auth"
 import { db } from "@/database/db"
-import { listings, listingLocations, transferDetails, replacementDetails, listingMedia } from "@/database/schema"
+import { listings, listingLocations, transferDetails, replacementDetails, collaborationDetails, listingMedia } from "@/database/schema"
 import { eq, and, desc, asc, or, ilike, sql } from "drizzle-orm"
 import { headers } from "next/headers"
 import { redirect } from "next/navigation"
@@ -34,8 +34,7 @@ export async function createListing(data: CreateListingData) {
                     listingType: validatedData.listingType,
                     specialty: validatedData.specialty,
                     status: "active",
-                    isPremium: validatedData.isPremium || false,
-                    isUrgent: validatedData.isUrgent || false,
+                    isBoostPlus: validatedData.isBoostPlus || false,
                     publishedAt: new Date(),
                     expiresAt: validatedData.expiresAt ? new Date(validatedData.expiresAt) : null
                 })
@@ -52,9 +51,7 @@ export async function createListing(data: CreateListingData) {
                     region: validatedData.location.region,
                     department: validatedData.location.department,
                     latitude: validatedData.location.latitude,
-                    longitude: validatedData.location.longitude,
-                    medicalDensityZone: validatedData.location.medicalDensityZone,
-                    densityScore: validatedData.location.densityScore
+                    longitude: validatedData.location.longitude
                 })
             }
 
@@ -73,6 +70,42 @@ export async function createListing(data: CreateListingData) {
                     listingId: listing.id,
                     ...validatedData.replacementDetails
                 })
+            }
+
+            if (validatedData.listingType === "collaboration" && validatedData.collaborationDetails) {
+                const cd = validatedData.collaborationDetails
+                await tx.insert(collaborationDetails).values({
+                    id: crypto.randomUUID(),
+                    listingId: listing.id,
+                    collaborationType: cd.collaborationType,
+                    durationExpectation: cd.durationExpectation,
+                    activityDistribution: cd.activityDistribution,
+                    activityDistributionDetails: cd.activityDistributionDetails,
+                    spaceArrangement: cd.spaceArrangement,
+                    patientManagement: cd.patientManagement,
+                    investmentRequired: cd.investmentRequired ?? false,
+                    investmentAmount: cd.investmentAmount == null ? null : String(cd.investmentAmount),
+                    remunerationModel: cd.remunerationModel,
+                    specialtiesWanted: cd.specialtiesWanted,
+                    experienceRequired: cd.experienceRequired,
+                    valuesAndGoals: cd.valuesAndGoals,
+                })
+            }
+
+            // Create media files
+            if (validatedData.media && validatedData.media.length > 0) {
+                const mediaToInsert = validatedData.media.map((file, index) => ({
+                    id: crypto.randomUUID(),
+                    listingId: listing.id,
+                    fileUrl: file.url,
+                    fileName: file.name,
+                    fileType: file.type,
+                    fileSize: file.size,
+                    displayOrder: index,
+                    uploadKey: null
+                }))
+
+                await tx.insert(listingMedia).values(mediaToInsert)
             }
 
             return listing
@@ -122,8 +155,7 @@ export async function updateListing(listingId: string, data: UpdateListingData) 
                     title: validatedData.title,
                     description: validatedData.description,
                     specialty: validatedData.specialty,
-                    isPremium: validatedData.isPremium,
-                    isUrgent: validatedData.isUrgent,
+                    isBoostPlus: validatedData.isBoostPlus,
                     updatedAt: new Date()
                 })
                 .where(eq(listings.id, listingId))
@@ -139,9 +171,7 @@ export async function updateListing(listingId: string, data: UpdateListingData) 
                         region: validatedData.location.region,
                         department: validatedData.location.department,
                         latitude: validatedData.location.latitude,
-                        longitude: validatedData.location.longitude,
-                        medicalDensityZone: validatedData.location.medicalDensityZone,
-                        densityScore: validatedData.location.densityScore
+                        longitude: validatedData.location.longitude
                     })
                     .where(eq(listingLocations.listingId, listingId))
             }
@@ -159,6 +189,27 @@ export async function updateListing(listingId: string, data: UpdateListingData) 
                     .update(replacementDetails)
                     .set(validatedData.replacementDetails)
                     .where(eq(replacementDetails.listingId, listingId))
+            }
+
+            if (existingListing.listingType === "collaboration" && validatedData.collaborationDetails) {
+                const cd = validatedData.collaborationDetails
+                await tx
+                    .update(collaborationDetails)
+                    .set({
+                        collaborationType: cd.collaborationType,
+                        durationExpectation: cd.durationExpectation,
+                        activityDistribution: cd.activityDistribution,
+                        activityDistributionDetails: cd.activityDistributionDetails,
+                        spaceArrangement: cd.spaceArrangement,
+                        patientManagement: cd.patientManagement,
+                        investmentRequired: cd.investmentRequired,
+                        investmentAmount: cd.investmentAmount == null ? null : String(cd.investmentAmount),
+                        remunerationModel: cd.remunerationModel,
+                        specialtiesWanted: cd.specialtiesWanted,
+                        experienceRequired: cd.experienceRequired,
+                        valuesAndGoals: cd.valuesAndGoals,
+                    })
+                    .where(eq(collaborationDetails.listingId, listingId))
             }
         })
 
@@ -229,8 +280,7 @@ export async function getListingById(listingId: string) {
                 listingType: listings.listingType,
                 specialty: listings.specialty,
                 status: listings.status,
-                isPremium: listings.isPremium,
-                isUrgent: listings.isUrgent,
+                isBoostPlus: listings.isBoostPlus,
                 viewsCount: listings.viewsCount,
                 contactsCount: listings.contactsCount,
                 createdAt: listings.createdAt,
@@ -269,6 +319,13 @@ export async function getListingById(listingId: string) {
                 .where(eq(replacementDetails.listingId, listingId))
                 .limit(1)
             details = replacementDetail
+        } else if (listing.listingType === "collaboration") {
+            const [collaborationDetail] = await db
+                .select()
+                .from(collaborationDetails)
+                .where(eq(collaborationDetails.listingId, listingId))
+                .limit(1)
+            details = collaborationDetail
         }
 
         // Get media
@@ -307,8 +364,7 @@ export async function getUserListings() {
                 listingType: listings.listingType,
                 specialty: listings.specialty,
                 status: listings.status,
-                isPremium: listings.isPremium,
-                isUrgent: listings.isUrgent,
+                isBoostPlus: listings.isBoostPlus,
                 viewsCount: listings.viewsCount,
                 contactsCount: listings.contactsCount,
                 createdAt: listings.createdAt,
@@ -319,7 +375,28 @@ export async function getUserListings() {
             .where(eq(listings.userId, session.user.id))
             .orderBy(desc(listings.createdAt))
 
-        return userListings
+        // Get first image for each listing
+        const listingsWithFirstImage = await Promise.all(
+            userListings.map(async (listing) => {
+                const [firstImage] = await db
+                    .select({
+                        id: listingMedia.id,
+                        fileUrl: listingMedia.fileUrl,
+                        fileName: listingMedia.fileName
+                    })
+                    .from(listingMedia)
+                    .where(eq(listingMedia.listingId, listing.id))
+                    .orderBy(listingMedia.displayOrder)
+                    .limit(1)
+
+                return {
+                    ...listing,
+                    firstImage: firstImage || null
+                }
+            })
+        )
+
+        return listingsWithFirstImage
     } catch (error) {
         console.error("Error fetching user listings:", error)
         return []
@@ -384,8 +461,7 @@ export async function getPublicListings(filters?: {
                 description: listings.description,
                 listingType: listings.listingType,
                 specialty: listings.specialty,
-                isPremium: listings.isPremium,
-                isUrgent: listings.isUrgent,
+                isBoostPlus: listings.isBoostPlus,
                 viewsCount: listings.viewsCount,
                 createdAt: listings.createdAt,
                 publishedAt: listings.publishedAt,
@@ -399,6 +475,7 @@ export async function getPublicListings(filters?: {
             .leftJoin(listingLocations, eq(listings.id, listingLocations.listingId))
             .leftJoin(transferDetails, eq(listings.id, transferDetails.listingId))
             .leftJoin(replacementDetails, eq(listings.id, replacementDetails.listingId))
+            .leftJoin(collaborationDetails, eq(listings.id, collaborationDetails.listingId))
             .where(conditions.length > 0 ? and(...conditions) : undefined)
             .orderBy(...orderByClause)
 

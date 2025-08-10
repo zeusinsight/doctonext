@@ -2,10 +2,11 @@
 
 import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Plus, Eye, MessageCircle, Edit, Trash2, MoreHorizontal } from "lucide-react"
+import { Plus, Eye, MessageCircle, Edit, Trash2, MoreHorizontal, Search } from "lucide-react"
 import Link from "next/link"
+import Image from "next/image"
 import { UserListing } from "@/types/listing"
 import {
     DropdownMenu,
@@ -14,10 +15,13 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { toast } from "sonner"
+import { CardHeader } from "@/components/ui/card"
 
 export default function ListingsPage() {
     const [listings, setListings] = useState<UserListing[]>([])
     const [loading, setLoading] = useState(true)
+    const [statusFilter, setStatusFilter] = useState<"all" | "active" | "inactive" | "sold" | "expired">("all")
+    const [query, setQuery] = useState("")
 
     useEffect(() => {
         fetchUserListings()
@@ -116,6 +120,18 @@ export default function ListingsPage() {
         return typeConfig[type as keyof typeof typeConfig] || typeConfig.transfer
     }
 
+    const filteredListings = listings
+        .filter(l => (statusFilter === "all" ? true : l.status === statusFilter))
+        .filter(l => {
+            if (!query.trim()) return true
+            const q = query.toLowerCase()
+            return (
+                l.title.toLowerCase().includes(q) ||
+                (l.specialty?.toLowerCase() || "").includes(q) ||
+                (l.listingType?.toLowerCase() || "").includes(q)
+            )
+        })
+
     if (loading) {
         return (
             <div className="space-y-6">
@@ -168,68 +184,104 @@ export default function ListingsPage() {
 
     return (
         <div className="space-y-6">
-            <div className="flex items-center justify-between">
+            <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
                 <div>
                     <h1 className="text-3xl font-bold tracking-tight">Mes Annonces</h1>
-                    <p className="text-muted-foreground">
-                        Gérez vos annonces de cession et de remplacement
-                    </p>
+                    <p className="text-muted-foreground">Gérez vos annonces de cession et de remplacement</p>
                 </div>
-                <Button asChild>
-                    <Link href="/dashboard/listings/new">
-                        <Plus className="mr-2 h-4 w-4" />
-                        Nouvelle annonce
-                    </Link>
-                </Button>
+                <div className="flex w-full gap-2 md:w-auto">
+                    <div className="relative flex-1 md:w-80">
+                        <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                        <input
+                            value={query}
+                            onChange={(e) => setQuery(e.target.value)}
+                            placeholder="Rechercher par titre, spécialité, type..."
+                            className="w-full rounded-md border bg-background pl-9 pr-3 py-2 text-sm outline-none ring-offset-background placeholder:text-muted-foreground focus-visible:ring-2 focus-visible:ring-ring"
+                        />
+                    </div>
+                    <Button asChild>
+                        <Link href="/dashboard/listings/new">
+                            <Plus className="mr-2 h-4 w-4" />
+                            Nouvelle annonce
+                        </Link>
+                    </Button>
+                </div>
+            </div>
+
+            <div className="flex flex-wrap gap-2">
+                {([
+                    { key: "all", label: "Toutes" },
+                    { key: "active", label: "Actives" },
+                    { key: "inactive", label: "Inactives" },
+                    { key: "sold", label: "Vendues" },
+                    { key: "expired", label: "Expirées" },
+                ] as const).map((tab) => (
+                    <button
+                        key={tab.key}
+                        onClick={() => setStatusFilter(tab.key)}
+                        className={`rounded-full border px-3 py-1 text-sm transition-colors ${
+                            statusFilter === tab.key
+                                ? "bg-primary text-primary-foreground border-primary"
+                                : "hover:bg-muted"
+                        }`}
+                    >
+                        {tab.label}
+                    </button>
+                ))}
+                <div className="ml-auto text-sm text-muted-foreground">{filteredListings.length} résultat(s)</div>
             </div>
 
             {listings.length === 0 ? (
                 <Card>
-                    <CardContent className="pt-6">
-                        <div className="text-center py-8">
-                            <div className="mx-auto mb-4 h-12 w-12 text-muted-foreground">
-                                <Plus className="h-full w-full" />
+                    <CardContent className="pt-8">
+                        <div className="flex flex-col items-center justify-center gap-3 py-8 text-center">
+                            <div className="rounded-full bg-muted p-3">
+                                <Plus className="h-6 w-6 text-muted-foreground" />
                             </div>
                             <h3 className="text-lg font-semibold">Aucune annonce</h3>
-                            <p className="text-muted-foreground mb-4">
-                                Vous n'avez pas encore créé d'annonce.
+                            <p className="max-w-md text-sm text-muted-foreground">
+                                Créez votre première annonce pour commencer à recevoir des vues et des contacts.
                             </p>
                             <Button asChild>
-                                <Link href="/dashboard/listings/new">
-                                    Créer ma première annonce
-                                </Link>
+                                <Link href="/dashboard/listings/new">Créer ma première annonce</Link>
                             </Button>
                         </div>
                     </CardContent>
                 </Card>
             ) : (
-                <div className="grid gap-4">
-                    {listings.map((listing) => {
+                <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+                    {filteredListings.map((listing) => {
                         const statusBadge = getStatusBadge(listing.status)
                         const typeBadge = getListingTypeBadge(listing.listingType)
-                        
                         return (
-                            <Card key={listing.id}>
-                                <CardHeader className="pb-3">
-                                    <div className="flex items-start justify-between">
-                                        <div className="space-y-1">
-                                            <CardTitle className="text-lg">
-                                                {listing.title}
-                                            </CardTitle>
-                                            <CardDescription className="flex items-center gap-2">
-                                                <Badge variant={typeBadge.variant}>
-                                                    {typeBadge.label}
-                                                </Badge>
-                                                {listing.specialty && (
-                                                    <span className="text-sm text-muted-foreground">
-                                                        • {listing.specialty}
-                                                    </span>
-                                                )}
-                                            </CardDescription>
-                                        </div>
+                            <Card key={listing.id} className="group overflow-hidden border hover:shadow-md transition-shadow">
+                                <div className="relative">
+                                    <div className="relative aspect-[16/10] w-full bg-muted m-0">
+                                        {listing.firstImage ? (
+                                            <Image
+                                                src={listing.firstImage.fileUrl}
+                                                alt={listing.firstImage.fileName || listing.title}
+                                                fill
+                                                sizes="(max-width: 768px) 100vw, 33vw"
+                                                className="object-cover"
+                                            />
+                                        ) : (
+                                            <div className="flex h-full w-full items-center justify-center text-muted-foreground/50">
+                                                <Eye className="h-8 w-8" />
+                                            </div>
+                                        )}
+                                    </div>
+                                    <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/60 via-black/0 to-transparent opacity-0 transition-opacity group-hover:opacity-60" />
+                                    <div className="absolute left-2 top-2 flex gap-2">
+                                        <Badge variant={typeBadge.variant}>{typeBadge.label}</Badge>
+                                        {listing.isBoostPlus && (
+                                            <Badge variant="outline" className="border-amber-500/60 text-amber-600 bg-amber-50">Boost+</Badge>
+                                        )}
+                                    </div>
+                                    <div className="absolute right-2 top-2">
                                         <DropdownMenu>
                                             <DropdownMenuTrigger asChild>
-                                                <Button variant="ghost" size="sm">
+                                                <Button variant="secondary" size="icon" className="h-8 w-8 rounded-full bg-background/80 backdrop-blur shadow-sm">
                                                     <MoreHorizontal className="h-4 w-4" />
                                                 </Button>
                                             </DropdownMenuTrigger>
@@ -247,59 +299,45 @@ export default function ListingsPage() {
                                                     </Link>
                                                 </DropdownMenuItem>
                                                 {listing.status === "active" ? (
-                                                    <DropdownMenuItem 
-                                                        onClick={() => handleStatusChange(listing.id, "inactive")}
-                                                    >
+                                                    <DropdownMenuItem onClick={() => handleStatusChange(listing.id, "inactive")}>
                                                         Désactiver
                                                     </DropdownMenuItem>
                                                 ) : (
-                                                    <DropdownMenuItem 
-                                                        onClick={() => handleStatusChange(listing.id, "active")}
-                                                    >
+                                                    <DropdownMenuItem onClick={() => handleStatusChange(listing.id, "active")}>
                                                         Activer
                                                     </DropdownMenuItem>
                                                 )}
-                                                <DropdownMenuItem 
-                                                    className="text-destructive"
-                                                    onClick={() => handleDelete(listing.id)}
-                                                >
+                                                <DropdownMenuItem className="text-destructive" onClick={() => handleDelete(listing.id)}>
                                                     <Trash2 className="mr-2 h-4 w-4" />
                                                     Supprimer
                                                 </DropdownMenuItem>
                                             </DropdownMenuContent>
                                         </DropdownMenu>
                                     </div>
-                                </CardHeader>
-                                <CardContent>
-                                    <div className="flex items-center justify-between">
-                                        <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                                            <div className="flex items-center gap-1">
-                                                <Eye className="h-4 w-4" />
-                                                {listing.viewsCount} vues
-                                            </div>
-                                            <div className="flex items-center gap-1">
-                                                <MessageCircle className="h-4 w-4" />
-                                                {listing.contactsCount} contacts
-                                            </div>
-                                            <div className="text-xs">
-                                                Créé le {new Date(listing.createdAt).toLocaleDateString()}
-                                            </div>
+                                </div>
+                                <div className="border-t" />
+                                <CardContent className="space-y-3 p-4">
+                                    <div className="flex items-start justify-between gap-3">
+                                        <div className="min-w-0 min-h-[3.25rem]">
+                                            <h3 className="truncate text-base font-semibold leading-snug">{listing.title}</h3>
+                                            <p className="truncate text-sm text-muted-foreground">
+                                                {listing.specialty || "Spécialité non précisée"}
+                                            </p>
                                         </div>
-                                        <div className="flex items-center gap-2">
-                                            <Badge variant={statusBadge.variant}>
-                                                {statusBadge.label}
-                                            </Badge>
-                                            {listing.isPremium && (
-                                                <Badge variant="outline" className="text-amber-600">
-                                                    Premium
-                                                </Badge>
-                                            )}
-                                            {listing.isUrgent && (
-                                                <Badge variant="outline" className="text-red-600">
-                                                    Urgent
-                                                </Badge>
-                                            )}
+                                        <Badge className="shrink-0 self-start" variant={statusBadge.variant}>{statusBadge.label}</Badge>
+                                    </div>
+                                    <div className="grid grid-cols-3 items-center gap-3 text-xs text-muted-foreground">
+                                        <div className="flex items-center gap-1 leading-none">
+                                            <Eye className="h-3.5 w-3.5" />
+                                            <span>{listing.viewsCount}</span>
+                                            <span>vues</span>
                                         </div>
+                                        <div className="flex items-center gap-1 leading-none">
+                                            <MessageCircle className="h-3.5 w-3.5" />
+                                            <span>{listing.contactsCount}</span>
+                                            <span>contacts</span>
+                                        </div>
+                                        <div className="text-right leading-none">Créé le {new Date(listing.createdAt).toLocaleDateString()}</div>
                                     </div>
                                 </CardContent>
                             </Card>

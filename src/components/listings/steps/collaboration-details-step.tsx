@@ -9,9 +9,42 @@ import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Checkbox } from "@/components/ui/checkbox"
-import { ArrowLeft, ArrowRight, DollarSign } from "lucide-react"
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
+import { ArrowLeft, ArrowRight } from "lucide-react"
 import { collaborationDetailsStepSchema } from "@/lib/validations/listing"
 import { CollaborationDetailsStepData } from "@/types/listing"
+
+const MEDICAL_SPECIALTIES = [
+    "Médecin généraliste",
+    "Cardiologue",
+    "Dermatologue",
+    "Gynécologue",
+    "Neurologue",
+    "Ophtalmologue",
+    "Orthopédiste", 
+    "Pédiatre",
+    "Psychiatre",
+    "Radiologue",
+    "Chirurgien",
+    "Anesthésiste",
+    "Endocrinologue",
+    "Gastro-entérologue",
+    "Pneumologue",
+    "Rhumatologue",
+    "Urologue",
+    "ORL",
+    "Dentiste",
+    "Pharmacien",
+    "Kinésithérapeute",
+    "Infirmier(ère)",
+    "Sage-femme",
+    "Ostéopathe",
+    "Podologue",
+    "Orthophoniste",
+    "Psychologue",
+    "Diététicien(ne)",
+    "Autre"
+]
 
 interface CollaborationDetailsStepProps {
     data?: CollaborationDetailsStepData
@@ -42,6 +75,8 @@ export function CollaborationDetailsStep({ data, onDataChange, onNext, onPreviou
     }, [data, setValue])
 
     const onSubmit = (formData: CollaborationDetailsStepData) => {
+        console.log("Form submitted with data:", formData)
+        console.log("Form errors:", errors)
         onDataChange(formData)
         onNext()
     }
@@ -52,17 +87,18 @@ export function CollaborationDetailsStep({ data, onDataChange, onNext, onPreviou
         onDataChange({ ...currentData, [field]: value })
     }
 
-    const handleSpecialtiesChange = (specialty: string, checked: boolean) => {
+    const handleSpecialtyChange = (specialty: string) => {
         const current = watch("specialtiesWanted") || []
-        let updated: string[]
         
-        if (checked) {
-            updated = [...current, specialty]
+        if (current.includes(specialty)) {
+            // Remove specialty if already selected
+            const updated = current.filter(s => s !== specialty)
+            handleFormChange("specialtiesWanted", updated)
         } else {
-            updated = current.filter(s => s !== specialty)
+            // Add specialty if not selected
+            const updated = [...current, specialty]
+            handleFormChange("specialtiesWanted", updated)
         }
-        
-        handleFormChange("specialtiesWanted", updated)
     }
 
 
@@ -78,7 +114,7 @@ export function CollaborationDetailsStep({ data, onDataChange, onNext, onPreviou
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
                 {/* Collaboration Type */}
                 <div className="space-y-2">
-                    <Label htmlFor="collaborationType">Type de collaboration</Label>
+                    <Label htmlFor="collaborationType">Type de collaboration *</Label>
                     <Select
                         value={watch("collaborationType") || ""}
                         onValueChange={(value) => handleFormChange("collaborationType", value)}
@@ -98,7 +134,7 @@ export function CollaborationDetailsStep({ data, onDataChange, onNext, onPreviou
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {/* Duration Expectation */}
                     <div className="space-y-2">
-                        <Label htmlFor="durationExpectation">Durée envisagée</Label>
+                        <Label htmlFor="durationExpectation">Durée envisagée *</Label>
                         <Select
                             value={watch("durationExpectation") || ""}
                             onValueChange={(value) => handleFormChange("durationExpectation", value)}
@@ -116,7 +152,7 @@ export function CollaborationDetailsStep({ data, onDataChange, onNext, onPreviou
 
                     {/* Space Arrangement */}
                     <div className="space-y-2">
-                        <Label htmlFor="spaceArrangement">Organisation de l'espace</Label>
+                        <Label htmlFor="spaceArrangement">Organisation de l'espace *</Label>
                         <Select
                             value={watch("spaceArrangement") || ""}
                             onValueChange={(value) => handleFormChange("spaceArrangement", value)}
@@ -133,35 +169,51 @@ export function CollaborationDetailsStep({ data, onDataChange, onNext, onPreviou
                     </div>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {/* Workload Share */}
-                    <div className="space-y-2">
-                        <Label htmlFor="workloadShare">Répartition de l'activité</Label>
-                        <Input
-                            id="workloadShare"
-                            placeholder="Ex: 50/50, 60/40"
-                            {...register("workloadShare")}
-                            onChange={(e) => handleFormChange("workloadShare", e.target.value)}
-                        />
-                    </div>
+                {/* Activity Distribution */}
+                <div className="space-y-4">
+                    <Label>Répartition de l'activité *</Label>
+                    <RadioGroup
+                        value={watch("activityDistribution") || ""}
+                        onValueChange={(value) => handleFormChange("activityDistribution", value)}
+                        className="space-y-3"
+                    >
+                        <div className="flex items-center space-x-2">
+                            <RadioGroupItem value="full_time" id="full_time" />
+                            <Label htmlFor="full_time">Temps plein : activité exclusive dans ce cabinet</Label>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                            <RadioGroupItem value="part_time" id="part_time" />
+                            <Label htmlFor="part_time">Temps partiel</Label>
+                        </div>
+                    </RadioGroup>
+                    
+                    {watch("activityDistribution") === "part_time" && (
+                        <div className="ml-6 space-y-2">
+                            <Input
+                                placeholder="Ex: 60% ou 3 jours/semaine"
+                                {...register("activityDistributionDetails")}
+                                onChange={(e) => handleFormChange("activityDistributionDetails", e.target.value)}
+                            />
+                        </div>
+                    )}
+                </div>
 
-                    {/* Patient Management */}
-                    <div className="space-y-2">
-                        <Label htmlFor="patientManagement">Gestion de la patientèle</Label>
-                        <Select
-                            value={watch("patientManagement") || ""}
-                            onValueChange={(value) => handleFormChange("patientManagement", value)}
-                        >
-                            <SelectTrigger>
-                                <SelectValue placeholder="Sélectionnez le mode" />
-                            </SelectTrigger>
-                            <SelectContent>
-                                <SelectItem value="shared">Partagée</SelectItem>
-                                <SelectItem value="separate">Séparée</SelectItem>
-                                <SelectItem value="mixed">Mixte</SelectItem>
-                            </SelectContent>
-                        </Select>
-                    </div>
+                {/* Patient Management */}
+                <div className="space-y-2">
+                    <Label htmlFor="patientManagement">Gestion de la patientèle *</Label>
+                    <Select
+                        value={watch("patientManagement") || ""}
+                        onValueChange={(value) => handleFormChange("patientManagement", value)}
+                    >
+                        <SelectTrigger>
+                            <SelectValue placeholder="Sélectionnez le mode" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectItem value="shared">Partagée</SelectItem>
+                            <SelectItem value="separate">Séparée</SelectItem>
+                            <SelectItem value="mixed">Mixte</SelectItem>
+                        </SelectContent>
+                    </Select>
                 </div>
 
                 {/* Investment Required */}
@@ -179,91 +231,70 @@ export function CollaborationDetailsStep({ data, onDataChange, onNext, onPreviou
 
                     {watch("investmentRequired") && (
                         <div className="space-y-2 ml-6">
-                            <Label htmlFor="investmentAmount">Montant de l'investissement (€)</Label>
-                            <div className="relative">
-                                <DollarSign className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                                <Input
-                                    id="investmentAmount"
-                                    type="number"
-                                    placeholder="Ex: 50000"
-                                    className="pl-10"
-                                    {...register("investmentAmount", { valueAsNumber: true })}
-                                    onChange={(e) => handleFormChange("investmentAmount", parseInt(e.target.value) || undefined)}
-                                />
+                            <Label htmlFor="investmentAmount">Montant de l'investissement</Label>
+                            <Input
+                                id="investmentAmount"
+                                placeholder="Ex: 50000 ou À discuter"
+                                value={watch("investmentAmount") || ""}
+                                onChange={(e) => handleFormChange("investmentAmount", e.target.value || undefined)}
+                            />
+                        </div>
+                    )}
+                </div>
+
+                {/* Remuneration Model */}
+                <div className="space-y-2">
+                    <Label htmlFor="remunerationModel">Modèle de rémunération *</Label>
+                    <Textarea
+                        id="remunerationModel"
+                        placeholder="Décrivez par exemple : salaire fixe, salaire fixe + variable, % du CA…"
+                        {...register("remunerationModel")}
+                        onChange={(e) => handleFormChange("remunerationModel", e.target.value)}
+                    />
+                </div>
+
+
+                {/* Specialties Wanted */}
+                <div className="space-y-3">
+                    <Label htmlFor="specialtiesWanted">Spécialités recherchées *</Label>
+                    <Select onValueChange={handleSpecialtyChange}>
+                        <SelectTrigger>
+                            <SelectValue placeholder="Sélectionnez une spécialité" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            {MEDICAL_SPECIALTIES.map((specialty) => (
+                                <SelectItem key={specialty} value={specialty}>
+                                    {specialty}
+                                </SelectItem>
+                            ))}
+                        </SelectContent>
+                    </Select>
+                    
+                    {/* Display selected specialties */}
+                    {watch("specialtiesWanted") && watch("specialtiesWanted")!.length > 0 && (
+                        <div className="space-y-2">
+                            <Label className="text-sm text-muted-foreground">Spécialités sélectionnées :</Label>
+                            <div className="flex flex-wrap gap-2">
+                                {watch("specialtiesWanted")!.map((specialty, index) => (
+                                    <div key={index} className="flex items-center space-x-1 bg-secondary px-2 py-1 rounded-md text-sm">
+                                        <span>{specialty}</span>
+                                        <button
+                                            type="button"
+                                            onClick={() => handleSpecialtyChange(specialty)}
+                                            className="ml-1 text-muted-foreground hover:text-destructive"
+                                        >
+                                            ×
+                                        </button>
+                                    </div>
+                                ))}
                             </div>
                         </div>
                     )}
                 </div>
 
-                {/* Revenue Sharing */}
-                <div className="space-y-2">
-                    <Label htmlFor="revenueSharing">Modèle de partage des revenus</Label>
-                    <Textarea
-                        id="revenueSharing"
-                        placeholder="Décrivez comment les revenus seront partagés..."
-                        {...register("revenueSharing")}
-                        onChange={(e) => handleFormChange("revenueSharing", e.target.value)}
-                    />
-                </div>
-
-                {/* Expense Sharing */}
-                <div className="space-y-2">
-                    <Label htmlFor="expenseSharing">Modèle de partage des dépenses</Label>
-                    <Textarea
-                        id="expenseSharing"
-                        placeholder="Décrivez comment les dépenses seront partagées..."
-                        {...register("expenseSharing")}
-                        onChange={(e) => handleFormChange("expenseSharing", e.target.value)}
-                    />
-                </div>
-
-                {/* Decision Making */}
-                <div className="space-y-2">
-                    <Label htmlFor="decisionMaking">Mode de prise de décision</Label>
-                    <Select
-                        value={watch("decisionMaking") || ""}
-                        onValueChange={(value) => handleFormChange("decisionMaking", value)}
-                    >
-                        <SelectTrigger>
-                            <SelectValue placeholder="Sélectionnez le mode" />
-                        </SelectTrigger>
-                        <SelectContent>
-                            <SelectItem value="equal">Égalitaire</SelectItem>
-                            <SelectItem value="senior_led">Dirigé par le senior</SelectItem>
-                            <SelectItem value="committee">Comité de décision</SelectItem>
-                        </SelectContent>
-                    </Select>
-                </div>
-
-                {/* Specialties Wanted */}
-                <div className="space-y-3">
-                    <Label>Spécialités recherchées</Label>
-                    <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-                        {[
-                            "Médecine générale",
-                            "Pédiatrie",
-                            "Gynécologie",
-                            "Psychiatrie",
-                            "Dermatologie",
-                            "Cardiologie"
-                        ].map((specialty) => (
-                            <div key={specialty} className="flex items-center space-x-2">
-                                <Checkbox
-                                    id={`specialty_${specialty}`}
-                                    checked={(watch("specialtiesWanted") || []).includes(specialty)}
-                                    onCheckedChange={(checked) => handleSpecialtiesChange(specialty, checked === true)}
-                                />
-                                <Label htmlFor={`specialty_${specialty}`} className="text-sm">
-                                    {specialty}
-                                </Label>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-
                 {/* Experience Required */}
                 <div className="space-y-2">
-                    <Label htmlFor="experienceRequired">Expérience requise</Label>
+                    <Label htmlFor="experienceRequired">Expérience requise *</Label>
                     <Input
                         id="experienceRequired"
                         placeholder="Ex: Minimum 5 ans d'expérience"
@@ -274,7 +305,7 @@ export function CollaborationDetailsStep({ data, onDataChange, onNext, onPreviou
 
                 {/* Values and Goals */}
                 <div className="space-y-2">
-                    <Label htmlFor="valuesAndGoals">Valeurs et objectifs communs</Label>
+                    <Label htmlFor="valuesAndGoals">Valeurs et objectifs communs *</Label>
                     <Textarea
                         id="valuesAndGoals"
                         placeholder="Décrivez les valeurs et objectifs recherchés..."
@@ -289,7 +320,10 @@ export function CollaborationDetailsStep({ data, onDataChange, onNext, onPreviou
                         <ArrowLeft className="mr-2 h-4 w-4" />
                         Précédent
                     </Button>
-                    <Button type="submit">
+                    <Button 
+                        type="submit"
+                        onClick={() => console.log("Submit button clicked", errors)}
+                    >
                         Suivant
                         <ArrowRight className="ml-2 h-4 w-4" />
                     </Button>

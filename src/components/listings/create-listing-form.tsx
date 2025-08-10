@@ -75,8 +75,7 @@ export function CreateListingForm() {
                 description: formData.basicInfo?.description || "",
                 listingType: formData.basicInfo?.listingType || "transfer",
                 specialty: formData.basicInfo?.specialty || "",
-                isPremium: formData.review?.isPremium || false,
-                isUrgent: formData.review?.isUrgent || false,
+                isBoostPlus: formData.review?.isBoostPlus || false,
                 expiresAt: formData.review?.expiresAt,
                 location: formData.location ? {
                     address: formData.location.address,
@@ -86,12 +85,12 @@ export function CreateListingForm() {
                     department: formData.location.department,
                     latitude: formData.location.latitude,
                     longitude: formData.location.longitude,
-                    medicalDensityZone: formData.location.medicalDensityZone,
-                    densityScore: formData.location.densityScore
+                    // medicalDensityZone and densityScore removed
                 } : undefined,
                 transferDetails: formData.basicInfo?.listingType === "transfer" ? formData.transferDetails : undefined,
                 replacementDetails: formData.basicInfo?.listingType === "replacement" ? formData.replacementDetails : undefined,
-                collaborationDetails: formData.basicInfo?.listingType === "collaboration" ? formData.collaborationDetails : undefined
+                collaborationDetails: formData.basicInfo?.listingType === "collaboration" ? formData.collaborationDetails : undefined,
+                media: formData.media?.files || []
             }
 
             const response = await fetch("/api/listings", {

@@ -138,26 +138,6 @@ export function LocationStep({ data, onDataChange, onNext, onPrevious }: Locatio
                 </div>
             </div>
 
-            {/* Medical Density Zone (Optional) */}
-            <div className="space-y-2">
-                <Label htmlFor="medicalDensityZone">Zone de densité médicale</Label>
-                <Select
-                    value={watch("medicalDensityZone") || ""}
-                    onValueChange={(value) => handleFormChange("medicalDensityZone", value)}
-                >
-                    <SelectTrigger>
-                        <SelectValue placeholder="Sélectionnez si connue" />
-                    </SelectTrigger>
-                    <SelectContent>
-                        <SelectItem value="under_served">Zone sous-dotée</SelectItem>
-                        <SelectItem value="balanced">Zone équilibrée</SelectItem>
-                        <SelectItem value="over_served">Zone sur-dotée</SelectItem>
-                    </SelectContent>
-                </Select>
-                <p className="text-xs text-muted-foreground">
-                    Information optionnelle qui peut aider les candidats à évaluer l'opportunité
-                </p>
-            </div>
 
             {/* Action Buttons */}
             <div className="flex justify-between pt-4">

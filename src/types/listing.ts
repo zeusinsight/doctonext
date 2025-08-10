@@ -25,8 +25,7 @@ export type Listing = {
     listingType: "transfer" | "replacement" | "collaboration"
     specialty: string | null
     status: "active" | "inactive" | "sold" | "expired"
-    isPremium: boolean
-    isUrgent: boolean
+    isBoostPlus: boolean
     viewsCount: number
     contactsCount: number
     createdAt: Date
@@ -45,8 +44,6 @@ export type ListingLocation = {
     department: string | null
     latitude: string | null
     longitude: string | null
-    medicalDensityZone: "over_served" | "under_served" | "balanced" | null
-    densityScore: number | null
 }
 
 export type TransferDetails = {
@@ -56,7 +53,7 @@ export type TransferDetails = {
     annualTurnover: number | null
     chargesPercentage: string | null
     salePrice: number | null
-    availabilityDate: string | null
+    availabilityOption: "immediately" | "to_discuss" | null
     reasonForTransfer: string | null
     softwareUsed: string | null
     accompanimentOffered: boolean
@@ -76,6 +73,23 @@ export type ReplacementDetails = {
     feeSharePercentage: string | null
     dailyRate: number | null
     practicalTerms: string | null
+}
+
+export type CollaborationDetails = {
+    id: string
+    listingId: string
+    collaborationType: "association" | "partnership" | "group_practice" | "shared_space" | null
+    durationExpectation: "short_term" | "long_term" | "permanent" | null
+    activityDistribution: "full_time" | "part_time" | null
+    activityDistributionDetails: string | null
+    spaceArrangement: "shared_office" | "separate_offices" | "rotation" | null
+    patientManagement: "shared" | "separate" | "mixed" | null
+    investmentRequired: boolean
+    investmentAmount: number | "to_discuss" | null
+    remunerationModel: string | null
+    specialtiesWanted: string[] | null
+    experienceRequired: string | null
+    valuesAndGoals: string | null
 }
 
 export type ListingMedia = {
@@ -109,7 +123,7 @@ export type ReviewStepData = z.infer<typeof reviewStepSchema>
 // Combined listing data with relations
 export type ListingWithDetails = Listing & {
     location: ListingLocation | null
-    details: TransferDetails | ReplacementDetails | null
+    details: TransferDetails | ReplacementDetails | CollaborationDetails | null
     media: ListingMedia[]
     user?: {
         name: string
@@ -125,8 +139,7 @@ export type PublicListing = {
     description: string | null
     listingType: "transfer" | "replacement" | "collaboration"
     specialty: string | null
-    isPremium: boolean
-    isUrgent: boolean
+    isBoostPlus: boolean
     viewsCount: number
     createdAt: Date
     publishedAt: Date | null
@@ -143,13 +156,17 @@ export type UserListing = {
     listingType: "transfer" | "replacement" | "collaboration"
     specialty: string | null
     status: "active" | "inactive" | "sold" | "expired"
-    isPremium: boolean
-    isUrgent: boolean
+    isBoostPlus: boolean
     viewsCount: number
     contactsCount: number
     createdAt: Date
     publishedAt: Date | null
     expiresAt: Date | null
+    firstImage: {
+        id: string
+        fileUrl: string
+        fileName: string | null
+    } | null
 }
 
 // Search and filter types

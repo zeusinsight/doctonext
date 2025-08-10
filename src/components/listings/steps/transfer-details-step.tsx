@@ -64,7 +64,7 @@ export function TransferDetailsStep({ data, onDataChange, onNext, onPrevious }: 
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
                 {/* Practice Type */}
                 <div className="space-y-2">
-                    <Label htmlFor="practiceType">Type de cabinet</Label>
+                    <Label htmlFor="practiceType">Type de cabinet *</Label>
                     <Select
                         value={watch("practiceType") || ""}
                         onValueChange={(value) => handleFormChange("practiceType", value)}
@@ -78,12 +78,15 @@ export function TransferDetailsStep({ data, onDataChange, onNext, onPrevious }: 
                             <SelectItem value="clinic">Clinique</SelectItem>
                         </SelectContent>
                     </Select>
+                    {errors.practiceType && (
+                        <p className="text-sm text-destructive">{errors.practiceType.message}</p>
+                    )}
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {/* Annual Turnover */}
                     <div className="space-y-2">
-                        <Label htmlFor="annualTurnover">Chiffre d'affaires annuel (€)</Label>
+                        <Label htmlFor="annualTurnover">Chiffre d'affaires annuel (€) *</Label>
                         <Input
                             id="annualTurnover"
                             type="number"
@@ -91,6 +94,9 @@ export function TransferDetailsStep({ data, onDataChange, onNext, onPrevious }: 
                             {...register("annualTurnover", { valueAsNumber: true })}
                             onChange={(e) => handleFormChange("annualTurnover", parseInt(e.target.value) || undefined)}
                         />
+                        {errors.annualTurnover && (
+                            <p className="text-sm text-destructive">{errors.annualTurnover.message}</p>
+                        )}
                     </div>
 
                     {/* Sale Price */}
@@ -109,18 +115,21 @@ export function TransferDetailsStep({ data, onDataChange, onNext, onPrevious }: 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {/* Charges Percentage */}
                     <div className="space-y-2">
-                        <Label htmlFor="chargesPercentage">Pourcentage de charges (%)</Label>
+                        <Label htmlFor="chargesPercentage">Pourcentage de charges (%) *</Label>
                         <Input
                             id="chargesPercentage"
                             placeholder="Ex: 35"
                             {...register("chargesPercentage")}
                             onChange={(e) => handleFormChange("chargesPercentage", e.target.value)}
                         />
+                        {errors.chargesPercentage && (
+                            <p className="text-sm text-destructive">{errors.chargesPercentage.message}</p>
+                        )}
                     </div>
 
                     {/* Patient Base Size */}
                     <div className="space-y-2">
-                        <Label htmlFor="patientBaseSize">Nombre de patients</Label>
+                        <Label htmlFor="patientBaseSize">Nombre de patients *</Label>
                         <Input
                             id="patientBaseSize"
                             type="number"
@@ -128,18 +137,30 @@ export function TransferDetailsStep({ data, onDataChange, onNext, onPrevious }: 
                             {...register("patientBaseSize", { valueAsNumber: true })}
                             onChange={(e) => handleFormChange("patientBaseSize", parseInt(e.target.value) || undefined)}
                         />
+                        {errors.patientBaseSize && (
+                            <p className="text-sm text-destructive">{errors.patientBaseSize.message}</p>
+                        )}
                     </div>
                 </div>
 
-                {/* Availability Date */}
+                {/* Availability Option */}
                 <div className="space-y-2">
-                    <Label htmlFor="availabilityDate">Date de disponibilité</Label>
-                    <Input
-                        id="availabilityDate"
-                        type="date"
-                        {...register("availabilityDate")}
-                        onChange={(e) => handleFormChange("availabilityDate", e.target.value)}
-                    />
+                    <Label htmlFor="availabilityOption">Date de disponibilité *</Label>
+                    <Select
+                        value={watch("availabilityOption") || ""}
+                        onValueChange={(value) => handleFormChange("availabilityOption", value)}
+                    >
+                        <SelectTrigger>
+                            <SelectValue placeholder="Sélectionnez l'option" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectItem value="immediately">Immédiatement</SelectItem>
+                            <SelectItem value="to_discuss">À discuter</SelectItem>
+                        </SelectContent>
+                    </Select>
+                    {errors.availabilityOption && (
+                        <p className="text-sm text-destructive">{errors.availabilityOption.message}</p>
+                    )}
                 </div>
 
                 {/* Software Used */}
@@ -155,13 +176,16 @@ export function TransferDetailsStep({ data, onDataChange, onNext, onPrevious }: 
 
                 {/* Reason for Transfer */}
                 <div className="space-y-2">
-                    <Label htmlFor="reasonForTransfer">Motif de la cession</Label>
+                    <Label htmlFor="reasonForTransfer">Motif de la cession *</Label>
                     <Textarea
                         id="reasonForTransfer"
                         placeholder="Ex: Départ à la retraite, mutation..."
                         {...register("reasonForTransfer")}
                         onChange={(e) => handleFormChange("reasonForTransfer", e.target.value)}
                     />
+                    {errors.reasonForTransfer && (
+                        <p className="text-sm text-destructive">{errors.reasonForTransfer.message}</p>
+                    )}
                 </div>
 
                 {/* Checkboxes */}

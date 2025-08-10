@@ -38,7 +38,8 @@ export function ReplacementDetailsStep({ data, onDataChange, onNext, onPrevious 
         watch,
         formState: { errors }
     } = useForm<ReplacementDetailsStepData>({
-        resolver: zodResolver(replacementDetailsStepSchema),
+        // Cast resolver to any to avoid TS resolver type mismatch across versions
+        resolver: zodResolver(replacementDetailsStepSchema) as any,
         defaultValues: data || {},
         mode: "onChange"
     })
@@ -154,20 +155,26 @@ export function ReplacementDetailsStep({ data, onDataChange, onNext, onPrevious 
                             id="dailyRate"
                             type="number"
                             placeholder="Ex: 300"
-                            {...register("dailyRate", { valueAsNumber: true })}
-                            onChange={(e) => handleFormChange("dailyRate", parseInt(e.target.value) || undefined)}
+                            {...register("dailyRate")}
+                            onChange={(e) => handleFormChange("dailyRate", e.target.value)}
                         />
+                        {errors.dailyRate && (
+                            <p className="text-sm text-destructive">{errors.dailyRate.message}</p>
+                        )}
                     </div>
 
                     {/* Fee Share Percentage */}
                     <div className="space-y-2">
-                        <Label htmlFor="feeSharePercentage">Pourcentage de rétrocession (%)</Label>
+                        <Label htmlFor="feeSharePercentage">Pourcentage de rétrocession (%) *</Label>
                         <Input
                             id="feeSharePercentage"
                             placeholder="Ex: 65"
                             {...register("feeSharePercentage")}
                             onChange={(e) => handleFormChange("feeSharePercentage", e.target.value)}
                         />
+                        {errors.feeSharePercentage && (
+                            <p className="text-sm text-destructive">{errors.feeSharePercentage.message}</p>
+                        )}
                     </div>
                 </div>
 

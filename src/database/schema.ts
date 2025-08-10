@@ -98,10 +98,7 @@ export const listings = pgTable("listings", {
     listingType: text("listing_type").notNull(),
     specialty: text("specialty"),
     status: text("status").default("active").notNull(),
-    isPremium: boolean("is_premium")
-        .$defaultFn(() => false)
-        .notNull(),
-    isUrgent: boolean("is_urgent")
+    isBoostPlus: boolean("is_boost_plus")
         .$defaultFn(() => false)
         .notNull(),
     viewsCount: integer("views_count")
@@ -132,9 +129,7 @@ export const listingLocations = pgTable("listing_locations", {
     region: text("region").notNull(),
     department: text("department"),
     latitude: decimal("latitude"),
-    longitude: decimal("longitude"),
-    medicalDensityZone: text("medical_density_zone"),
-    densityScore: integer("density_score")
+    longitude: decimal("longitude")
 });
 
 export const transferDetails = pgTable("transfer_details", {
@@ -147,7 +142,7 @@ export const transferDetails = pgTable("transfer_details", {
     annualTurnover: bigint("annual_turnover", { mode: "number" }),
     chargesPercentage: decimal("charges_percentage"),
     salePrice: bigint("sale_price", { mode: "number" }),
-    availabilityDate: date("availability_date"),
+    availabilityOption: text("availability_option"),
     reasonForTransfer: text("reason_for_transfer"),
     softwareUsed: text("software_used"),
     accompanimentOffered: boolean("accompaniment_offered")
@@ -178,6 +173,28 @@ export const replacementDetails = pgTable("replacement_details", {
     feeSharePercentage: decimal("fee_share_percentage"),
     dailyRate: bigint("daily_rate", { mode: "number" }),
     practicalTerms: text("practical_terms")
+});
+
+export const collaborationDetails = pgTable("collaboration_details", {
+    id: text("id").primaryKey(),
+    listingId: text("listing_id")
+        .notNull()
+        .unique()
+        .references(() => listings.id, { onDelete: "cascade" }),
+    collaborationType: text("collaboration_type"),
+    durationExpectation: text("duration_expectation"),
+    activityDistribution: text("activity_distribution"),
+    activityDistributionDetails: text("activity_distribution_details"),
+    spaceArrangement: text("space_arrangement"),
+    patientManagement: text("patient_management"),
+    investmentRequired: boolean("investment_required")
+        .$defaultFn(() => false)
+        .notNull(),
+    investmentAmount: text("investment_amount"),
+    remunerationModel: text("remuneration_model"),
+    specialtiesWanted: text("specialties_wanted").array(),
+    experienceRequired: text("experience_required"),
+    valuesAndGoals: text("values_and_goals")
 });
 
 export const listingMedia = pgTable("listing_media", {

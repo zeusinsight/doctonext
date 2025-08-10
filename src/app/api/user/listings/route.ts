@@ -19,7 +19,6 @@ export async function GET(request: NextRequest) {
 
         // Get user's listings using server action
         const listings = await getUserListings()
-
         return NextResponse.json({
             success: true,
             data: {

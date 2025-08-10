@@ -73,7 +73,7 @@ export function BasicInfoStep({ data, onDataChange, onNext }: BasicInfoStepProps
 
             {/* Description */}
             <div className="space-y-2">
-                <Label htmlFor="description">Description</Label>
+                <Label htmlFor="description">Description *</Label>
                 <Textarea
                     id="description"
                     placeholder="Décrivez votre annonce en détail..."
@@ -138,7 +138,7 @@ export function BasicInfoStep({ data, onDataChange, onNext }: BasicInfoStepProps
 
             {/* Specialty */}
             <div className="space-y-2">
-                <Label htmlFor="specialty">Spécialité</Label>
+                <Label htmlFor="specialty">Spécialité *</Label>
                 <Select
                     value={watch("specialty") || ""}
                     onValueChange={(value) => handleFormChange("specialty", value)}

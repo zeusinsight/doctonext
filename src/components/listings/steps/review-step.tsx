@@ -20,8 +20,7 @@ interface ReviewStepProps {
 
 export function ReviewStep({ formData, onDataChange, onPrevious, onSubmit, isSubmitting }: ReviewStepProps) {
     const [reviewData, setReviewData] = useState<ReviewStepData>({
-        isPremium: false,
-        isUrgent: false,
+        isBoostPlus: false,
         expiresAt: undefined
     })
 
@@ -228,18 +227,18 @@ export function ReviewStep({ formData, onDataChange, onPrevious, onSubmit, isSub
                                         </span>
                                     </div>
                                 )}
-                                {formData.collaborationDetails.workloadShare && (
+                                {formData.collaborationDetails.activityDistribution && (
                                     <div>
                                         <span className="text-muted-foreground">Répartition : </span>
-                                        {formData.collaborationDetails.workloadShare}
+                                        <span className="capitalize">
+                                            {formData.collaborationDetails.activityDistribution.replace('_', ' ')}
+                                        </span>
                                     </div>
                                 )}
-                                {formData.collaborationDetails.decisionMaking && (
+                                {formData.collaborationDetails.activityDistributionDetails && (
                                     <div>
-                                        <span className="text-muted-foreground">Décisions : </span>
-                                        <span className="capitalize">
-                                            {formData.collaborationDetails.decisionMaking.replace('_', ' ')}
-                                        </span>
+                                        <span className="text-muted-foreground">Détails répartition : </span>
+                                        {formData.collaborationDetails.activityDistributionDetails}
                                     </div>
                                 )}
                             </div>
@@ -272,12 +271,12 @@ export function ReviewStep({ formData, onDataChange, onPrevious, onSubmit, isSub
                                 </div>
                             )}
 
-                            {formData.collaborationDetails.revenueSharing && (
+                            {formData.collaborationDetails.remunerationModel && (
                                 <div className="pt-2 border-t">
                                     <div className="text-sm">
-                                        <span className="text-muted-foreground">Partage revenus : </span>
+                                        <span className="text-muted-foreground">Modèle de rémunération : </span>
                                         <p className="mt-1 text-xs bg-muted p-2 rounded">
-                                            {formData.collaborationDetails.revenueSharing}
+                                            {formData.collaborationDetails.remunerationModel}
                                         </p>
                                     </div>
                                 </div>
@@ -322,32 +321,16 @@ export function ReviewStep({ formData, onDataChange, onPrevious, onSubmit, isSub
                 <CardContent className="space-y-4">
                     <div className="flex items-center space-x-2">
                         <Checkbox
-                            id="isPremium"
-                            checked={reviewData.isPremium}
-                            onCheckedChange={(checked) => handleOptionChange("isPremium", checked === true)}
+                            id="isBoostPlus"
+                            checked={reviewData.isBoostPlus}
+                            onCheckedChange={(checked) => handleOptionChange("isBoostPlus", checked === true)}
                         />
                         <div>
-                            <Label htmlFor="isPremium" className="font-medium">
-                                Annonce Premium (+19€/mois)
+                            <Label htmlFor="isBoostPlus" className="font-medium">
+                                Option Boost+ (+10€ TTC)
                             </Label>
                             <p className="text-sm text-muted-foreground">
-                                Mise en avant, badge premium, priorité dans les résultats
-                            </p>
-                        </div>
-                    </div>
-
-                    <div className="flex items-center space-x-2">
-                        <Checkbox
-                            id="isUrgent"
-                            checked={reviewData.isUrgent}
-                            onCheckedChange={(checked) => handleOptionChange("isUrgent", checked === true)}
-                        />
-                        <div>
-                            <Label htmlFor="isUrgent" className="font-medium">
-                                Annonce Urgente (+9€)
-                            </Label>
-                            <p className="text-sm text-muted-foreground">
-                                Badge urgence, notification aux abonnés, remontée en tête
+                                Mise en avant continue, badge distinctif, priorité d'affichage, notifications automatiques aux abonnés, alerte instantanée par email
                             </p>
                         </div>
                     </div>
