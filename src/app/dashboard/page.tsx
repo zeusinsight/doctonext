@@ -30,10 +30,10 @@ export default function DashboardPage() {
       <div className="container mx-auto px-4 py-8 relative z-10">
         <div className="max-w-6xl mx-auto space-y-6">
           {/* Top Section */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div className="mb-6">
             {/* User Profile Card */}
-            <Card className="lg:col-span-2 p-6 bg-white border border-gray-200 shadow-sm hover:shadow-md transition-all duration-300 min-h-full">
-              <CardContent className="p-0 flex items-center justify-between min-h-full">
+            <Card className="p-6 bg-white border border-gray-200 shadow-sm hover:shadow-md transition-all duration-300">
+              <CardContent className="p-0 flex items-center justify-between">
                 <div className="flex items-center gap-4">
                   <Link href="/dashboard/settings" className="relative group">
                     <Avatar className="h-16 w-16">
@@ -64,19 +64,6 @@ export default function DashboardPage() {
                 >
                   Modifier
                 </Button>
-              </CardContent>
-            </Card>
-
-            {/* Wallet Card */}
-            <Card className="p-6 bg-white border border-gray-200 shadow-sm hover:shadow-md transition-all duration-300">
-              <CardContent className="p-0">
-                <h3 className="text-lg font-medium text-gray-900 mb-2">
-                  Porte-monnaie
-                </h3>
-                <div className="text-2xl font-bold text-gray-900 mb-1">
-                  0,00 €
-                </div>
-                <p className="text-gray-500">Solde disponible</p>
               </CardContent>
             </Card>
           </div>
@@ -169,7 +156,7 @@ export default function DashboardPage() {
           <div className="flex mt-8">
             <button
               onClick={handleLogout}
-              className="text-gray-600 underline hover:text-red-600 transition-colors duration-200 text-sm"
+              className="text-white underline hover:text-red-600 transition-colors duration-200 text-sm"
             >
               Me déconnecter
             </button>

@@ -2,7 +2,7 @@
 
 import { auth } from "@/lib/auth"
 import { db } from "@/database/db"
-import { listings, listingLocations, transferDetails, replacementDetails, collaborationDetails, listingMedia } from "@/database/schema"
+import { listings, listingLocations, transferDetails, replacementDetails, collaborationDetails, listingMedia, users } from "@/database/schema"
 import { eq, and, desc, asc, or, ilike, sql } from "drizzle-orm"
 import { headers } from "next/headers"
 import { redirect } from "next/navigation"
@@ -286,9 +286,16 @@ export async function getListingById(listingId: string) {
                 createdAt: listings.createdAt,
                 updatedAt: listings.updatedAt,
                 publishedAt: listings.publishedAt,
-                expiresAt: listings.expiresAt
+                expiresAt: listings.expiresAt,
+                user: {
+                    name: users.name,
+                    profession: users.profession,
+                    specialty: users.specialty,
+                    isVerifiedProfessional: users.isVerifiedProfessional
+                }
             })
             .from(listings)
+            .innerJoin(users, eq(listings.userId, users.id))
             .where(eq(listings.id, listingId))
             .limit(1)
 

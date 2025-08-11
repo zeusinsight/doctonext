@@ -1,28 +1,33 @@
 "use client"
 
-import { useState } from "react"
-import { Search, Filter } from "lucide-react"
+import { useState, useEffect } from "react"
+import { Filter } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
+import { SearchWithHistory } from "@/components/ui/search-with-history"
 import { cn } from "@/lib/utils"
 
 interface ListingSearchHeroProps {
+    initialSearch?: string
     onSearch?: (query: string) => void
     onTabChange?: (tab: "all" | "sales" | "replacements") => void
     onFilterClick?: () => void
 }
 
 export function ListingSearchHero({ 
+    initialSearch = "",
     onSearch, 
     onTabChange,
     onFilterClick 
 }: ListingSearchHeroProps) {
-    const [searchQuery, setSearchQuery] = useState("")
+    const [searchQuery, setSearchQuery] = useState(initialSearch)
     const [activeTab, setActiveTab] = useState<"all" | "sales" | "replacements">("all")
 
-    const handleSearch = (e: React.FormEvent) => {
-        e.preventDefault()
-        onSearch?.(searchQuery)
+    useEffect(() => {
+        setSearchQuery(initialSearch)
+    }, [initialSearch])
+
+    const handleSearch = (query: string) => {
+        onSearch?.(query)
     }
 
     const handleTabChange = (tab: "all" | "sales" | "replacements") => {
@@ -43,17 +48,15 @@ export function ListingSearchHero({
                     Explorez nos annonces
                 </h1>
                 
-                <form onSubmit={handleSearch} className="flex gap-3 mb-6">
-                    <div className="relative flex-1">
-                        <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
-                        <Input
-                            type="text"
-                            placeholder="Rechercher par titre, lieu, spécialité..."
-                            value={searchQuery}
-                            onChange={(e) => setSearchQuery(e.target.value)}
-                            className="h-11 pl-10 pr-3 bg-white border-0 text-gray-900 placeholder:text-gray-400"
-                        />
-                    </div>
+                <div className="flex gap-3 mb-6">
+                    <SearchWithHistory
+                        value={searchQuery}
+                        onChange={setSearchQuery}
+                        onSubmit={handleSearch}
+                        placeholder="Rechercher par titre, lieu, spécialité..."
+                        className="flex-1"
+                        inputClassName="h-11 bg-white border-0 text-gray-900 placeholder:text-gray-400"
+                    />
                     <Button
                         type="button"
                         variant="outline"
@@ -63,7 +66,7 @@ export function ListingSearchHero({
                         <Filter className="mr-2 h-4 w-4" />
                         Filtres
                     </Button>
-                </form>
+                </div>
 
                 <div className="flex gap-2">
                     {tabs.map((tab) => (

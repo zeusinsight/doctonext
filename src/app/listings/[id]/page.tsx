@@ -12,7 +12,7 @@ import {
     CheckCircle, FileText, Settings
 } from "lucide-react"
 import Image from "next/image"
-import { ListingStatus } from "@/components/listings/listing-status"
+import { ListingStatus, type ListingStatusType } from "@/components/listings/listing-status"
 import { ListingDetailActions } from "@/components/listings/listing-detail-client"
 
 interface ListingPageProps {
@@ -138,7 +138,7 @@ export default async function ListingPage({ params }: ListingPageProps) {
                                                 Boost+
                                             </Badge>
                                         )}
-                                        <ListingStatus status={listing.status} />
+                                        <ListingStatus status={listing.status as ListingStatusType} />
                                     </div>
                                 </div>
                                 <ListingDetailActions

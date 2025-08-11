@@ -1,12 +1,14 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, Suspense } from "react"
+import { useSearchParams } from "next/navigation"
 import { ListingSearchHero } from "@/components/listings/listing-search-hero"
 import { SponsoredListingsCarousel } from "@/components/listings/sponsored-listings-carousel"
 import { SponsoredListingCard } from "@/components/listings/sponsored-listing-card"
 import type { PublicListing } from "@/types/listing"
 
-export default function ListingsPage() {
+function ListingsContent() {
+    const searchParams = useSearchParams()
     const [listings, setListings] = useState<PublicListing[]>([])
     const [filteredListings, setFilteredListings] = useState<PublicListing[]>([])
     const [loading, setLoading] = useState(true)
@@ -14,6 +16,9 @@ export default function ListingsPage() {
     const [activeTab, setActiveTab] = useState<"all" | "sales" | "replacements">("all")
 
     useEffect(() => {
+        // Set initial search query from URL
+        const urlSearchQuery = searchParams.get("search") || ""
+        setSearchQuery(urlSearchQuery)
         fetchListings()
     }, [])
 
@@ -89,6 +94,7 @@ export default function ListingsPage() {
     return (
         <>
             <ListingSearchHero
+                initialSearch={searchQuery}
                 onSearch={handleSearch}
                 onTabChange={handleTabChange}
                 onFilterClick={handleFilterClick}
@@ -142,5 +148,39 @@ export default function ListingsPage() {
                 )}
             </div>
         </>
+    )
+}
+
+function ListingsPageFallback() {
+    return (
+        <>
+            <ListingSearchHero
+                initialSearch=""
+                onSearch={() => {}}
+                onTabChange={() => {}}
+                onFilterClick={() => {}}
+            />
+            
+            <div className="container mx-auto max-w-7xl px-4 py-8">
+                <div className="space-y-8">
+                    <div>
+                        <div className="h-6 bg-gray-200 rounded w-48 mb-4 animate-pulse" />
+                        <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+                            {Array.from({ length: 8 }).map((_, i) => (
+                                <div key={i} className="bg-gray-100 rounded-lg h-64 animate-pulse" />
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </>
+    )
+}
+
+export default function ListingsPage() {
+    return (
+        <Suspense fallback={<ListingsPageFallback />}>
+            <ListingsContent />
+        </Suspense>
     )
 }
