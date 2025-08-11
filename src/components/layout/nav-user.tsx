@@ -9,6 +9,7 @@ import {
 } from "@remixicon/react";
 import { useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
+import { NotificationButton } from "@/components/notifications/notification-button";
 
 // Better Auth UI Profile types
 interface Profile {
@@ -54,13 +55,7 @@ export function NavUser() {
           </span>
           <div className="absolute bottom-0 left-1/2 w-0 h-0.5 bg-blue-600 transition-all duration-300 ease-out group-hover:w-full group-hover:-translate-x-1/2"></div>
         </button>
-        <button className="relative flex flex-col items-center gap-1 p-2 cursor-pointer group">
-          <RiNotification3Line className="h-6 w-6 text-muted-foreground group-hover:text-foreground transition-colors" />
-          <span className="text-sm text-muted-foreground group-hover:text-foreground transition-colors">
-            Notifications
-          </span>
-          <div className="absolute bottom-0 left-1/2 w-0 h-0.5 bg-blue-600 transition-all duration-300 ease-out group-hover:w-full group-hover:-translate-x-1/2"></div>
-        </button>
+        <NotificationButton />
         <div className="flex items-center gap-2">
           <Avatar className="h-8 w-8">
             <AvatarFallback>...</AvatarFallback>
@@ -90,13 +85,7 @@ export function NavUser() {
           </span>
           <div className="absolute bottom-0 left-1/2 w-0 h-0.5 bg-blue-600 transition-all duration-300 ease-out group-hover:w-full group-hover:-translate-x-1/2"></div>
         </button>
-        <button className="relative flex flex-col items-center gap-1 p-2 cursor-pointer group">
-          <RiNotification3Line className="h-6 w-6 text-muted-foreground group-hover:text-foreground transition-colors" />
-          <span className="text-sm text-muted-foreground group-hover:text-foreground transition-colors">
-            Notifications
-          </span>
-          <div className="absolute bottom-0 left-1/2 w-0 h-0.5 bg-blue-600 transition-all duration-300 ease-out group-hover:w-full group-hover:-translate-x-1/2"></div>
-        </button>
+        <NotificationButton />
         <div className="flex items-center gap-2">
           <Avatar className="h-8 w-8">
             <AvatarFallback>U</AvatarFallback>
@@ -167,13 +156,7 @@ export function NavUser() {
         </span>
         <div className="absolute bottom-0 left-1/2 w-0 h-0.5 bg-blue-600 transition-all duration-300 ease-out group-hover:w-full group-hover:-translate-x-1/2"></div>
       </button>
-      <button className="relative flex flex-col items-center gap-1 p-2 cursor-pointer group">
-        <RiNotification3Line className="h-6 w-6 text-muted-foreground group-hover:text-foreground transition-colors" />
-        <span className="text-sm text-muted-foreground group-hover:text-foreground transition-colors">
-          Notifications
-        </span>
-        <div className="absolute bottom-0 left-1/2 w-0 h-0.5 bg-blue-600 transition-all duration-300 ease-out group-hover:w-full group-hover:-translate-x-1/2"></div>
-      </button>
+      <NotificationButton />
       <Link
         href="/dashboard"
         className="relative flex flex-col items-center gap-1 p-2 cursor-pointer group"

@@ -9,6 +9,7 @@ import { redirect } from "next/navigation"
 import { revalidatePath } from "next/cache"
 import { createListingSchema, updateListingSchema } from "@/lib/validations/listing"
 import type { CreateListingData, UpdateListingData } from "@/types/listing"
+import { checkNewListingAgainstSavedSearches } from "@/lib/services/alert-service"
 
 export async function createListing(data: CreateListingData) {
     try {
@@ -113,6 +114,18 @@ export async function createListing(data: CreateListingData) {
 
         revalidatePath("/dashboard/listings")
         revalidatePath("/listings")
+
+        // Trigger alert checks asynchronously (don't wait for it)
+        checkNewListingAgainstSavedSearches(result.id)
+            .then((alertResult) => {
+                if (alertResult.success && alertResult.stats) {
+                    console.log(`Alert check completed: ${alertResult.message}`)
+                }
+            })
+            .catch((error) => {
+                console.error("Error checking alerts for new listing:", error)
+                // Don't fail the listing creation if alert check fails
+            })
 
         return { success: true, listingId: result.id }
     } catch (error) {

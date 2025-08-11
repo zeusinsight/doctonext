@@ -7,23 +7,37 @@ import { ThemeProvider } from "next-themes"
 import type { ReactNode } from "react"
 import NextTopLoader from 'nextjs-toploader';
 import { Toaster } from "sonner"
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import { authClient } from "@/lib/auth-client"
 import { useUploadThing } from "@/lib/uploadthing"
 import { authLocalizationFr } from "@/lib/auth-localization-fr"
 import { FavoritesProvider } from "@/contexts/favorites-context"
+import { useState } from "react"
 
 export function Providers({ children }: { children: ReactNode }) {
     const router = useRouter()
     const { startUpload } = useUploadThing("avatarUploader")
+    
+    // Create QueryClient instance - this ensures a stable instance across re-renders
+    const [queryClient] = useState(() => new QueryClient({
+        defaultOptions: {
+            queries: {
+                refetchOnWindowFocus: true, // Refetch when user returns to the page
+                staleTime: 30 * 1000, // Data is fresh for 30 seconds
+                gcTime: 5 * 60 * 1000, // Keep cache for 5 minutes
+            },
+        },
+    }))
 
     return (
-        <ThemeProvider
-            attribute="class"
-            defaultTheme="light"
-            enableSystem
-            disableTransitionOnChange
-        >
-            <AuthUIProvider
+        <QueryClientProvider client={queryClient}>
+            <ThemeProvider
+                attribute="class"
+                defaultTheme="light"
+                enableSystem
+                disableTransitionOnChange
+            >
+                <AuthUIProvider
                 authClient={authClient}
                 navigate={router.push}
                 replace={router.replace}
@@ -58,6 +72,7 @@ export function Providers({ children }: { children: ReactNode }) {
                     <Toaster />
                 </FavoritesProvider>
             </AuthUIProvider>
-        </ThemeProvider>
+            </ThemeProvider>
+        </QueryClientProvider>
     )
 }

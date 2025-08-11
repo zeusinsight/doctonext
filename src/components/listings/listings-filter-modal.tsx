@@ -20,8 +20,12 @@ import {
     SelectValue,
 } from "@/components/ui/select"
 import { Badge } from "@/components/ui/badge"
-import { X } from "lucide-react"
+import { Switch } from "@/components/ui/switch"
+import { X, Bell, Check } from "lucide-react"
 import { SPECIALTIES, FRENCH_REGIONS } from "@/types/listing"
+import { createSavedSearch } from "@/lib/actions/saved-searches"
+import { toast } from "sonner"
+import { authClient } from "@/lib/auth-client"
 
 export interface ListingFilters {
     specialties: string[]
@@ -58,6 +62,11 @@ export function ListingsFilterModal({
     onFiltersChange
 }: ListingsFilterModalProps) {
     const [localFilters, setLocalFilters] = useState<ListingFilters>(filters)
+    const [showSaveSearch, setShowSaveSearch] = useState(false)
+    const [searchName, setSearchName] = useState("")
+    const [emailAlerts, setEmailAlerts] = useState(true)
+    const [isSaving, setIsSaving] = useState(false)
+    const { data: session } = authClient.useSession()
 
     useEffect(() => {
         setLocalFilters(filters)
@@ -122,6 +131,35 @@ export function ListingsFilterModal({
         setLocalFilters(emptyFilters)
         onFiltersChange(emptyFilters)
         onClose()
+    }
+
+    const handleSaveSearch = async () => {
+        if (!searchName.trim()) {
+            toast.error("Veuillez entrer un nom pour votre recherche")
+            return
+        }
+
+        if (!session?.user) {
+            toast.error("Vous devez être connecté pour sauvegarder une recherche")
+            return
+        }
+
+        setIsSaving(true)
+        try {
+            const result = await createSavedSearch(searchName, localFilters, emailAlerts)
+            if (result.success) {
+                toast.success("Recherche sauvegardée avec succès")
+                setShowSaveSearch(false)
+                setSearchName("")
+                handleApply()
+            } else {
+                toast.error(result.error || "Erreur lors de la sauvegarde")
+            }
+        } catch (error) {
+            toast.error("Erreur lors de la sauvegarde de la recherche")
+        } finally {
+            setIsSaving(false)
+        }
     }
 
     const activeFiltersCount = 
@@ -266,6 +304,71 @@ export function ListingsFilterModal({
                             Afficher uniquement les annonces Boost+
                         </Label>
                     </div>
+
+                    {/* Save Search Section */}
+                    {session?.user && activeFiltersCount > 0 && (
+                        <div className="border-t pt-4">
+                            {!showSaveSearch ? (
+                                <Button
+                                    variant="default"
+                                    className="w-full bg-blue-600 hover:bg-blue-700 text-white"
+                                    onClick={() => setShowSaveSearch(true)}
+                                >
+                                    <Bell className="w-4 h-4 mr-2" />
+                                    Sauvegarder cette recherche et recevoir des alertes
+                                </Button>
+                            ) : (
+                                <div className="space-y-4">
+                                    <div className="space-y-2">
+                                        <Label htmlFor="search-name">Nom de la recherche</Label>
+                                        <Input
+                                            id="search-name"
+                                            value={searchName}
+                                            onChange={(e) => setSearchName(e.target.value)}
+                                            placeholder="Ex: Cabinets de généralistes en Île-de-France"
+                                            disabled={isSaving}
+                                        />
+                                    </div>
+                                    <div className="flex items-center justify-between">
+                                        <Label htmlFor="email-alerts" className="cursor-pointer">
+                                            Recevoir des alertes par email
+                                        </Label>
+                                        <Switch
+                                            id="email-alerts"
+                                            checked={emailAlerts}
+                                            onCheckedChange={setEmailAlerts}
+                                            disabled={isSaving}
+                                        />
+                                    </div>
+                                    <div className="flex gap-2">
+                                        <Button
+                                            variant="outline"
+                                            onClick={() => {
+                                                setShowSaveSearch(false)
+                                                setSearchName("")
+                                            }}
+                                            disabled={isSaving}
+                                        >
+                                            Annuler
+                                        </Button>
+                                        <Button 
+                                            onClick={handleSaveSearch}
+                                            disabled={isSaving}
+                                        >
+                                            {isSaving ? (
+                                                "Sauvegarde..."
+                                            ) : (
+                                                <>
+                                                    <Check className="w-4 h-4 mr-2" />
+                                                    Sauvegarder
+                                                </>
+                                            )}
+                                        </Button>
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+                    )}
                 </div>
 
                 <DialogFooter>

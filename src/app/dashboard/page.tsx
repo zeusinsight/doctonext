@@ -111,21 +111,23 @@ export default function DashboardPage() {
             </Card>
 
             {/* Alertes Card */}
-            <Card className="p-6 bg-white border border-gray-200 shadow-sm hover:shadow-md transition-all duration-300 cursor-pointer hover:-translate-y-1">
-              <CardContent className="p-0">
-                <div className="flex items-center space-x-4">
-                  <div className="w-12 h-12 bg-gradient-to-br from-orange-500 to-orange-600 rounded-xl flex items-center justify-center">
-                    <RiAlarmWarningLine className="w-6 h-6 text-white" />
+            <Link href="/dashboard/saved-searches">
+              <Card className="p-6 bg-white border border-gray-200 shadow-sm hover:shadow-md transition-all duration-300 cursor-pointer hover:-translate-y-1">
+                <CardContent className="p-0">
+                  <div className="flex items-center space-x-4">
+                    <div className="w-12 h-12 bg-gradient-to-br from-orange-500 to-orange-600 rounded-xl flex items-center justify-center">
+                      <RiAlarmWarningLine className="w-6 h-6 text-white" />
+                    </div>
+                    <div>
+                      <h3 className="font-semibold text-gray-900 mb-1 text-lg">
+                        Alertes
+                      </h3>
+                      <p className="text-gray-600 text-sm">Gérer vos recherches sauvegardées</p>
+                    </div>
                   </div>
-                  <div>
-                    <h3 className="font-semibold text-gray-900 mb-1 text-lg">
-                      Alertes
-                    </h3>
-                    <p className="text-gray-600 text-sm">Gérer vos alertes</p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+                </CardContent>
+              </Card>
+            </Link>
           </div>
 
           {/* Paramètres Card (Bottom Row) */}

@@ -411,3 +411,21 @@ export const listingAnalytics = pgTable("listing_analytics", {
         .$defaultFn(() => new Date())
         .notNull()
 });
+
+export const notifications = pgTable("notifications", {
+    id: text("id").primaryKey(),
+    userId: text("user_id")
+        .notNull()
+        .references(() => users.id, { onDelete: "cascade" }),
+    type: text("type").notNull(),
+    title: text("title").notNull(),
+    message: text("message"),
+    data: jsonb("data"),
+    isRead: boolean("is_read")
+        .$defaultFn(() => false)
+        .notNull(),
+    createdAt: timestamp("created_at")
+        .$defaultFn(() => new Date())
+        .notNull(),
+    readAt: timestamp("read_at")
+});
