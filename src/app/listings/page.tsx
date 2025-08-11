@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect, Suspense } from "react"
-import { useSearchParams } from "next/navigation"
+import { useSearchParams, useRouter } from "next/navigation"
 import { ListingSearchHero } from "@/components/listings/listing-search-hero"
 import { SponsoredListingsCarousel } from "@/components/listings/sponsored-listings-carousel"
 import { SponsoredListingCard } from "@/components/listings/sponsored-listing-card"
@@ -10,6 +10,7 @@ import type { PublicListing } from "@/types/listing"
 
 function ListingsContent() {
     const searchParams = useSearchParams()
+    const router = useRouter()
     const [listings, setListings] = useState<PublicListing[]>([])
     const [filteredListings, setFilteredListings] = useState<PublicListing[]>([])
     const [loading, setLoading] = useState(true)
@@ -113,6 +114,8 @@ function ListingsContent() {
 
     const handleSearch = (query: string) => {
         setSearchQuery(query)
+        // Reset URL search params when performing a new search
+        router.push('/listings', { scroll: false })
     }
 
     const handleTabChange = (tab: "all" | "sales" | "replacements" | "collaborations") => {
