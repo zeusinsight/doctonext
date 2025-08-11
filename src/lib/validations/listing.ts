@@ -71,7 +71,7 @@ export const collaborationDetailsSchema = z.object({
     remunerationModel: z.string().min(1, "Le modèle de rémunération est requis"),
     specialtiesWanted: z.array(z.string()).min(1, "Au moins une spécialité recherchée est requise"),
     experienceRequired: z.string().min(1, "L'expérience requise est requise"),
-    valuesAndGoals: z.string().min(1, "Les valeurs et objectifs communs sont requis")
+    valuesAndGoals: z.string().optional()
 })
 
 // Main schemas

@@ -7,7 +7,7 @@ import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { 
-    MapPin, Calendar, Euro, Eye, Heart, MessageCircle,
+    MapPin, Calendar, Euro, MessageCircle,
     Building, Users, Clock, Briefcase, Home, Stethoscope,
     CheckCircle, FileText, Settings
 } from "lucide-react"
@@ -244,6 +244,66 @@ export default async function ListingPage({ params }: ListingPageProps) {
                                                     </div>
                                                 </div>
                                             )}
+                                            
+                                            {listing.details.chargesPercentage && (
+                                                <div className="flex items-start gap-3">
+                                                    <Euro className="mt-0.5 h-4 w-4 text-muted-foreground" />
+                                                    <div>
+                                                        <p className="text-sm font-medium">Charges</p>
+                                                        <p className="text-sm text-muted-foreground">
+                                                            {listing.details.chargesPercentage}%
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            )}
+                                            
+                                            {listing.details.availabilityOption && (
+                                                <div className="flex items-start gap-3">
+                                                    <Calendar className="mt-0.5 h-4 w-4 text-muted-foreground" />
+                                                    <div>
+                                                        <p className="text-sm font-medium">Disponibilité</p>
+                                                        <p className="text-sm text-muted-foreground">
+                                                            {listing.details.availabilityOption === "immediately" ? "Immédiate" : "À discuter"}
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            )}
+                                            
+                                            {listing.details.softwareUsed && (
+                                                <div className="flex items-start gap-3">
+                                                    <Settings className="mt-0.5 h-4 w-4 text-muted-foreground" />
+                                                    <div>
+                                                        <p className="text-sm font-medium">Logiciel utilisé</p>
+                                                        <p className="text-sm text-muted-foreground">
+                                                            {listing.details.softwareUsed}
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            )}
+                                            
+                                            {listing.details.equipmentIncluded && (
+                                                <div className="flex items-start gap-3">
+                                                    <CheckCircle className="mt-0.5 h-4 w-4 text-green-600" />
+                                                    <div>
+                                                        <p className="text-sm font-medium">Équipement inclus</p>
+                                                        <p className="text-sm text-muted-foreground">Oui</p>
+                                                    </div>
+                                                </div>
+                                            )}
+                                            
+                                            {listing.details.reasonForTransfer && (
+                                                <div className="col-span-2">
+                                                    <div className="flex items-start gap-3">
+                                                        <FileText className="mt-0.5 h-4 w-4 text-muted-foreground" />
+                                                        <div>
+                                                            <p className="text-sm font-medium">Raison de la cession</p>
+                                                            <p className="text-sm text-muted-foreground whitespace-pre-wrap">
+                                                                {listing.details.reasonForTransfer}
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            )}
                                         </div>
                                     )}
 
@@ -292,6 +352,56 @@ export default async function ListingPage({ params }: ListingPageProps) {
                                                     <div>
                                                         <p className="text-sm font-medium">Assistant(e) disponible</p>
                                                         <p className="text-sm text-muted-foreground">Oui</p>
+                                                    </div>
+                                                </div>
+                                            )}
+                                            
+                                            {listing.details.workingDays && listing.details.workingDays.length > 0 && (
+                                                <div className="flex items-start gap-3">
+                                                    <Calendar className="mt-0.5 h-4 w-4 text-muted-foreground" />
+                                                    <div>
+                                                        <p className="text-sm font-medium">Jours de travail</p>
+                                                        <p className="text-sm text-muted-foreground">
+                                                            {listing.details.workingDays.join(", ")}
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            )}
+                                            
+                                            {listing.details.feeSharePercentage && (
+                                                <div className="flex items-start gap-3">
+                                                    <Euro className="mt-0.5 h-4 w-4 text-muted-foreground" />
+                                                    <div>
+                                                        <p className="text-sm font-medium">Rétrocession</p>
+                                                        <p className="text-sm text-muted-foreground">
+                                                            {listing.details.feeSharePercentage}%
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            )}
+                                            
+                                            {listing.details.dailyRate && (
+                                                <div className="flex items-start gap-3">
+                                                    <Euro className="mt-0.5 h-4 w-4 text-muted-foreground" />
+                                                    <div>
+                                                        <p className="text-sm font-medium">Rémunération journalière</p>
+                                                        <p className="text-sm text-muted-foreground">
+                                                            {formatPrice(listing.details.dailyRate)}
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            )}
+                                            
+                                            {listing.details.practicalTerms && (
+                                                <div className="col-span-2">
+                                                    <div className="flex items-start gap-3">
+                                                        <FileText className="mt-0.5 h-4 w-4 text-muted-foreground" />
+                                                        <div>
+                                                            <p className="text-sm font-medium">Modalités pratiques</p>
+                                                            <p className="text-sm text-muted-foreground whitespace-pre-wrap">
+                                                                {listing.details.practicalTerms}
+                                                            </p>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             )}
@@ -356,6 +466,96 @@ export default async function ListingPage({ params }: ListingPageProps) {
                                                     </div>
                                                 </div>
                                             )}
+                                            
+                                            {listing.details.activityDistributionDetails && (
+                                                <div className="flex items-start gap-3">
+                                                    <Settings className="mt-0.5 h-4 w-4 text-muted-foreground" />
+                                                    <div>
+                                                        <p className="text-sm font-medium">Détails de la répartition</p>
+                                                        <p className="text-sm text-muted-foreground">
+                                                            {listing.details.activityDistributionDetails}
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            )}
+                                            
+                                            {listing.details.spaceArrangement && (
+                                                <div className="flex items-start gap-3">
+                                                    <Building className="mt-0.5 h-4 w-4 text-muted-foreground" />
+                                                    <div>
+                                                        <p className="text-sm font-medium">Aménagement des locaux</p>
+                                                        <p className="text-sm text-muted-foreground">
+                                                            {listing.details.spaceArrangement === "shared_office" ? "Bureau partagé" :
+                                                             listing.details.spaceArrangement === "separate_offices" ? "Bureaux séparés" :
+                                                             "Rotation"}
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            )}
+                                            
+                                            {listing.details.patientManagement && (
+                                                <div className="flex items-start gap-3">
+                                                    <Users className="mt-0.5 h-4 w-4 text-muted-foreground" />
+                                                    <div>
+                                                        <p className="text-sm font-medium">Gestion de la patientèle</p>
+                                                        <p className="text-sm text-muted-foreground">
+                                                            {listing.details.patientManagement === "shared" ? "Partagée" :
+                                                             listing.details.patientManagement === "separate" ? "Séparée" :
+                                                             "Mixte"}
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            )}
+                                            
+                                            {listing.details.remunerationModel && (
+                                                <div className="flex items-start gap-3">
+                                                    <Euro className="mt-0.5 h-4 w-4 text-muted-foreground" />
+                                                    <div>
+                                                        <p className="text-sm font-medium">Modèle de rémunération</p>
+                                                        <p className="text-sm text-muted-foreground">
+                                                            {listing.details.remunerationModel}
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            )}
+                                            
+                                            {listing.details.specialtiesWanted && listing.details.specialtiesWanted.length > 0 && (
+                                                <div className="flex items-start gap-3">
+                                                    <Stethoscope className="mt-0.5 h-4 w-4 text-muted-foreground" />
+                                                    <div>
+                                                        <p className="text-sm font-medium">Spécialités recherchées</p>
+                                                        <p className="text-sm text-muted-foreground">
+                                                            {listing.details.specialtiesWanted.join(", ")}
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            )}
+                                            
+                                            {listing.details.experienceRequired && (
+                                                <div className="flex items-start gap-3">
+                                                    <Briefcase className="mt-0.5 h-4 w-4 text-muted-foreground" />
+                                                    <div>
+                                                        <p className="text-sm font-medium">Expérience requise</p>
+                                                        <p className="text-sm text-muted-foreground">
+                                                            {listing.details.experienceRequired}
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            )}
+                                            
+                                            {listing.details.valuesAndGoals && (
+                                                <div className="col-span-2">
+                                                    <div className="flex items-start gap-3">
+                                                        <FileText className="mt-0.5 h-4 w-4 text-muted-foreground" />
+                                                        <div>
+                                                            <p className="text-sm font-medium">Valeurs et objectifs</p>
+                                                            <p className="text-sm text-muted-foreground whitespace-pre-wrap">
+                                                                {listing.details.valuesAndGoals}
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            )}
                                         </div>
                                     )}
                                 </div>
@@ -365,10 +565,6 @@ export default async function ListingPage({ params }: ListingPageProps) {
 
                             {/* Stats */}
                             <div className="flex items-center gap-6 text-sm text-muted-foreground">
-                                <div className="flex items-center gap-1">
-                                    <Eye className="h-4 w-4" />
-                                    <span>{listing.viewsCount + 1} vues</span>
-                                </div>
                                 <div className="flex items-center gap-1">
                                     <MessageCircle className="h-4 w-4" />
                                     <span>{listing.contactsCount} contacts</span>
@@ -404,7 +600,7 @@ export default async function ListingPage({ params }: ListingPageProps) {
                         <CardContent className="space-y-4">
                             <div className="flex items-center gap-3">
                                 <Avatar className="h-12 w-12">
-                                    <AvatarImage src={`https://api.dicebear.com/7.x/initials/svg?seed=${listing.user?.name}`} />
+                                    <AvatarImage src={listing.user?.avatarUrl || listing.user?.avatar || listing.user?.image || `https://api.dicebear.com/7.x/initials/svg?seed=${listing.user?.name}`} />
                                     <AvatarFallback>
                                         {listing.user?.name?.split(' ').map(n => n[0]).join('').toUpperCase()}
                                     </AvatarFallback>

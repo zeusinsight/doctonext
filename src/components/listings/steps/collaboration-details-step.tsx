@@ -305,7 +305,7 @@ export function CollaborationDetailsStep({ data, onDataChange, onNext, onPreviou
 
                 {/* Values and Goals */}
                 <div className="space-y-2">
-                    <Label htmlFor="valuesAndGoals">Valeurs et objectifs communs *</Label>
+                    <Label htmlFor="valuesAndGoals">Valeurs et objectifs communs</Label>
                     <Textarea
                         id="valuesAndGoals"
                         placeholder="Décrivez les valeurs et objectifs recherchés..."

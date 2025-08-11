@@ -96,7 +96,7 @@ export function BasicInfoStep({ data, onDataChange, onNext }: BasicInfoStepProps
                 >
                     <label 
                         htmlFor="transfer"
-                        className="flex items-center space-x-2 border rounded-lg p-4 cursor-pointer hover:bg-muted/50 transition-colors"
+                        className="flex items-center space-x-2 border border-blue-200 rounded-lg p-4 cursor-pointer hover:bg-muted/50 hover:border-blue-300 transition-colors"
                     >
                         <RadioGroupItem value="transfer" id="transfer" />
                         <div className="flex-1">
@@ -108,7 +108,7 @@ export function BasicInfoStep({ data, onDataChange, onNext }: BasicInfoStepProps
                     </label>
                     <label 
                         htmlFor="replacement"
-                        className="flex items-center space-x-2 border rounded-lg p-4 cursor-pointer hover:bg-muted/50 transition-colors"
+                        className="flex items-center space-x-2 border border-blue-200 rounded-lg p-4 cursor-pointer hover:bg-muted/50 hover:border-blue-300 transition-colors"
                     >
                         <RadioGroupItem value="replacement" id="replacement" />
                         <div className="flex-1">
@@ -120,7 +120,7 @@ export function BasicInfoStep({ data, onDataChange, onNext }: BasicInfoStepProps
                     </label>
                     <label 
                         htmlFor="collaboration"
-                        className="flex items-center space-x-2 border rounded-lg p-4 cursor-pointer hover:bg-muted/50 transition-colors"
+                        className="flex items-center space-x-2 border border-blue-200 rounded-lg p-4 cursor-pointer hover:bg-muted/50 hover:border-blue-300 transition-colors"
                     >
                         <RadioGroupItem value="collaboration" id="collaboration" />
                         <div className="flex-1">

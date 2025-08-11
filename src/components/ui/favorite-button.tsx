@@ -96,12 +96,12 @@ export function FavoriteButton({
 
     return (
         <Button
-            variant={isFavorited ? "default" : variant}
+            variant={variant}
             size={size}
             className={cn(
                 "transition-all",
                 isAnimating && "scale-110",
-                isFavorited ? "bg-red-500 hover:bg-red-600 text-white border-red-500" : "",
+                isFavorited && variant === "ghost" ? "bg-red-50 hover:bg-red-100 border-red-200" : "",
                 className
             )}
             onClick={handleClick}
@@ -110,7 +110,9 @@ export function FavoriteButton({
             <Heart 
                 className={cn(
                     "h-4 w-4 transition-all",
-                    isFavorited ? "fill-white text-white" : "",
+                    isFavorited 
+                        ? "fill-red-500 text-red-500" 
+                        : "fill-none text-gray-600 hover:text-red-400",
                     isAnimating && "animate-pulse"
                 )}
             />

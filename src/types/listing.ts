@@ -158,6 +158,10 @@ export type PublicListing = {
     postalCode: string | null;
   } | null;
   collaborationType?: "association" | "partnership" | "group_practice" | "shared_space" | null;
+  // Pricing data
+  salePrice?: number | null;
+  dailyRate?: number | null;
+  investmentAmount?: string | null;
 };
 
 export type UserListing = {

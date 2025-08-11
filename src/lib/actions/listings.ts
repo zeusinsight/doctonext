@@ -291,7 +291,10 @@ export async function getListingById(listingId: string) {
                     name: users.name,
                     profession: users.profession,
                     specialty: users.specialty,
-                    isVerifiedProfessional: users.isVerifiedProfessional
+                    isVerifiedProfessional: users.isVerifiedProfessional,
+                    avatar: users.avatar,
+                    avatarUrl: users.avatarUrl,
+                    image: users.image
                 }
             })
             .from(listings)
@@ -482,7 +485,11 @@ export async function getPublicListings(filters?: {
                     region: listingLocations.region,
                     postalCode: listingLocations.postalCode
                 },
-                collaborationType: collaborationDetails.collaborationType
+                collaborationType: collaborationDetails.collaborationType,
+                // Pricing data
+                salePrice: transferDetails.salePrice,
+                dailyRate: replacementDetails.dailyRate,
+                investmentAmount: collaborationDetails.investmentAmount
             })
             .from(listings)
             .leftJoin(listingLocations, eq(listings.id, listingLocations.listingId))

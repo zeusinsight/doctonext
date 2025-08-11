@@ -34,16 +34,19 @@ export function SponsoredListingCard({
     }
 
     const getPrice = () => {
-        if ("details" in listing && listing.details) {
-            if (listing.listingType === "transfer" && "salePrice" in listing.details) {
-                return formatPrice(listing.details.salePrice)
-            }
-            if (listing.listingType === "replacement" && "dailyRate" in listing.details) {
-                const rate = formatPrice(listing.details.dailyRate)
-                return rate ? `${rate}/jour` : null
-            }
+        if (listing.listingType === "transfer" && "salePrice" in listing) {
+            return formatPrice(listing.salePrice)
         }
-        return "75000" // Default price for demo
+        if (listing.listingType === "replacement" && "dailyRate" in listing) {
+            const rate = formatPrice(listing.dailyRate)
+            return rate ? `${rate}/jour` : null
+        }
+        if (listing.listingType === "collaboration" && "investmentAmount" in listing) {
+            const amount = listing.investmentAmount
+            if (amount === "to_discuss") return "À discuter"
+            if (amount) return formatPrice(Number(amount))
+        }
+        return null // No price available
     }
 
     const price = getPrice()
@@ -89,11 +92,9 @@ export function SponsoredListingCard({
                             <h3 className="font-medium text-gray-900 line-clamp-1 text-sm group-hover:text-blue-600 transition-colors">
                                 {listing.title || "Cabinet médical moderne"}
                             </h3>
-                            {price && (
-                                <span className="text-sm font-semibold text-gray-900 shrink-0">
-                                    {price}
-                                </span>
-                            )}
+                            <span className="text-sm font-semibold text-gray-900 shrink-0">
+                                {price || "-"}
+                            </span>
                         </div>
                         <p className="text-xs text-gray-600 line-clamp-2 leading-relaxed">
                             {listing.description || "Opportunité exceptionnelle dans un quartier dynamique avec forte patientèle établie"}
@@ -103,9 +104,6 @@ export function SponsoredListingCard({
                                 <MapPin className="h-3 w-3" />
                                 <span>{listing.location?.city || "Paris"}</span>
                             </div>
-                            <span className="text-[10px] text-gray-400">
-                                {listing.viewsCount} vues
-                            </span>
                         </div>
                     </div>
                 </div>
@@ -140,11 +138,9 @@ export function SponsoredListingCard({
                                 <h3 className="font-medium text-gray-900 line-clamp-1 text-sm group-hover:text-blue-600 transition-colors">
                                     {listing.title || "Cabinet médical moderne"}
                                 </h3>
-                                {price && (
-                                    <span className="text-sm font-semibold text-gray-900 shrink-0">
-                                        {price}
-                                    </span>
-                                )}
+                                <span className="text-sm font-semibold text-gray-900 shrink-0">
+                                    {price || "-"}
+                                </span>
                             </div>
                             {listing.specialty && (
                                 <p className="text-xs text-gray-500 mb-1.5">{listing.specialty}</p>

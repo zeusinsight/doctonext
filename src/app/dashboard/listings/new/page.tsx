@@ -22,7 +22,7 @@ export default function NewListingPage() {
         </p>
       </div>
 
-      <Card className="max-w-5xl py-6">
+      <Card className="max-w-5xl py-6 border-blue-200">
         <CardHeader className="py-6">
           <CardTitle>Nouvelle annonce</CardTitle>
           <CardDescription>
