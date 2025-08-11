@@ -10,6 +10,7 @@ import { Toaster } from "sonner"
 import { authClient } from "@/lib/auth-client"
 import { useUploadThing } from "@/lib/uploadthing"
 import { authLocalizationFr } from "@/lib/auth-localization-fr"
+import { FavoritesProvider } from "@/contexts/favorites-context"
 
 export function Providers({ children }: { children: ReactNode }) {
     const router = useRouter()
@@ -51,9 +52,11 @@ export function Providers({ children }: { children: ReactNode }) {
                 Link={Link}
                 localization={authLocalizationFr}
             >
-                <NextTopLoader color="var(--primary)" showSpinner={false} />
-                {children}
-                <Toaster />
+                <FavoritesProvider>
+                    <NextTopLoader color="var(--primary)" showSpinner={false} />
+                    {children}
+                    <Toaster />
+                </FavoritesProvider>
             </AuthUIProvider>
         </ThemeProvider>
     )

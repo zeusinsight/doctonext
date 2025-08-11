@@ -4,7 +4,7 @@ import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Heart } from "lucide-react"
 import { cn } from "@/lib/utils"
-import { useFavorites } from "@/hooks/use-favorites"
+import { useFavoritesContext } from "@/contexts/favorites-context"
 import { toast } from "sonner"
 
 interface FavoriteButtonProps {
@@ -26,7 +26,7 @@ export function FavoriteButton({
     showToast = true,
     onToggle
 }: FavoriteButtonProps) {
-    const { isFavorite, toggleFavorite, isLoaded } = useFavorites()
+    const { isFavorite, toggleFavorite, isLoaded } = useFavoritesContext()
     const [isAnimating, setIsAnimating] = useState(false)
     const [isFavorited, setIsFavorited] = useState(false)
 
@@ -101,6 +101,7 @@ export function FavoriteButton({
             className={cn(
                 "transition-all",
                 isAnimating && "scale-110",
+                isFavorited ? "bg-red-500 hover:bg-red-600 text-white border-red-500" : "",
                 className
             )}
             onClick={handleClick}
@@ -109,7 +110,7 @@ export function FavoriteButton({
             <Heart 
                 className={cn(
                     "h-4 w-4 transition-all",
-                    isFavorited && "fill-current",
+                    isFavorited ? "fill-white text-white" : "",
                     isAnimating && "animate-pulse"
                 )}
             />

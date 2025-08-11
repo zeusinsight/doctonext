@@ -19,7 +19,7 @@ import Link from "next/link";
 import { SponsoredListingCard } from "@/components/listings/sponsored-listing-card";
 import { ShareButton } from "@/components/ui/share-button";
 import { FavoriteButton } from "@/components/ui/favorite-button";
-import { useFavorites } from "@/hooks/use-favorites";
+import { useFavoritesContext } from "@/contexts/favorites-context";
 import { toast } from "sonner";
 
 interface FavoriteListing {
@@ -52,7 +52,7 @@ export default function FavoritesPage() {
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
   const [sortBy, setSortBy] = useState<"newest" | "oldest" | "title">("newest");
-  const { toggleFavorite } = useFavorites();
+  const { toggleFavorite } = useFavoritesContext();
 
   useEffect(() => {
     fetchFavorites();

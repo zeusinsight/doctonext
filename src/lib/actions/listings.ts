@@ -415,6 +415,7 @@ export async function getPublicListings(filters?: {
     specialty?: string
     region?: string
     search?: string
+    collaborationType?: string
     sortBy?: "newest" | "oldest" | "price_low" | "price_high" | "views"
     limit?: number
     offset?: number
@@ -428,6 +429,10 @@ export async function getPublicListings(filters?: {
 
         if (filters?.specialty) {
             conditions.push(eq(listings.specialty, filters.specialty))
+        }
+
+        if (filters?.collaborationType) {
+            conditions.push(eq(collaborationDetails.collaborationType, filters.collaborationType))
         }
 
         if (filters?.search) {
@@ -476,7 +481,8 @@ export async function getPublicListings(filters?: {
                     city: listingLocations.city,
                     region: listingLocations.region,
                     postalCode: listingLocations.postalCode
-                }
+                },
+                collaborationType: collaborationDetails.collaborationType
             })
             .from(listings)
             .leftJoin(listingLocations, eq(listings.id, listingLocations.listingId))

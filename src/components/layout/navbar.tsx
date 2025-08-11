@@ -1,33 +1,11 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
-import { Menu, X } from "lucide-react";
 import { Button } from "../ui/button";
-import { SearchWithHistory } from "../ui/search-with-history";
 import { NavUserPublic } from "./nav-user-public";
-import { Separator } from "../ui/separator";
-import {
-  Sheet,
-  SheetContent,
-  SheetFooter,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "../ui/sheet";
 
 export const Navbar = () => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [searchQuery, setSearchQuery] = useState("");
-  const router = useRouter();
-
-  const handleSearch = (query: string) => {
-    if (query.trim()) {
-      router.push(`/listings?search=${encodeURIComponent(query.trim())}`);
-    }
-  };
 
   return (
     <div className="sticky top-0 z-50 w-full bg-gray-50 border-b border-gray-200 shadow-sm">
@@ -42,29 +20,33 @@ export const Navbar = () => {
             className="h-6 w-auto"
           />
         </Link>
-        
-        {/* Deposit button */}
+
+        {/* Navigation buttons */}
         <Button
           asChild
           variant="default"
           size="sm"
-          className="bg-blue-600 hover:bg-blue-700 hidden sm:flex whitespace-nowrap flex-shrink-0"
+          className="bg-blue-600 hover:bg-blue-700 whitespace-nowrap flex-shrink-0"
         >
           <Link href="/dashboard/listings/new">
-            📝 Déposer une annonce
+            Déposer une annonce
           </Link>
         </Button>
-
-        {/* Search Bar - Full width */}
-        <SearchWithHistory
-          value={searchQuery}
-          onChange={setSearchQuery}
-          onSubmit={handleSearch}
-          placeholder="Rechercher sur Doctonext"
-          className="flex-1"
-          inputClassName="h-9 bg-white border-gray-300 focus:border-blue-500 focus:ring-blue-500"
-        />
         
+        <Button
+          asChild
+          variant="default"
+          size="sm"
+          className="bg-green-600 hover:bg-green-700 whitespace-nowrap flex-shrink-0"
+        >
+          <Link href="/listings">
+            Annonces
+          </Link>
+        </Button>
+        
+        {/* Spacer */}
+        <div className="flex-1"></div>
+
         {/* User Navigation */}
         <div className="flex-shrink-0">
           <NavUserPublic />

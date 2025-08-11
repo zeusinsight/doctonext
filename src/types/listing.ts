@@ -157,6 +157,7 @@ export type PublicListing = {
     region: string | null;
     postalCode: string | null;
   } | null;
+  collaborationType?: "association" | "partnership" | "group_practice" | "shared_space" | null;
 };
 
 export type UserListing = {
@@ -215,31 +216,34 @@ export type GetListingsResult = {
 
 // Specialty options (could be fetched from database later)
 export const SPECIALTIES = [
-  "Médecine générale",
-  "Cardiologie",
-  "Dermatologie",
-  "Gastro-entérologie",
-  "Gynécologie obstétrique",
-  "Neurologie",
-  "Ophtalmologie",
+  "Médecin généraliste",
+  "Cardiologue",
+  "Dermatologue",
+  "Gynécologue",
+  "Neurologue",
+  "Ophtalmologue",
+  "Orthopédiste",
+  "Pédiatre",
+  "Psychiatre",
+  "Radiologue",
+  "Chirurgien",
+  "Anesthésiste",
+  "Endocrinologue",
+  "Gastro-entérologue",
+  "Pneumologue",
+  "Rhumatologue",
+  "Urologue",
   "ORL",
-  "Pédiatrie",
-  "Pneumologie",
-  "Psychiatrie",
-  "Radiologie",
-  "Rhumatologie",
-  "Urologie",
-  "Chirurgie générale",
-  "Chirurgie orthopédique",
-  "Anesthésiologie",
-  "Médecine d'urgence",
   "Dentiste",
+  "Pharmacien",
   "Kinésithérapeute",
+  "Infirmier(ère)",
   "Sage-femme",
   "Ostéopathe",
+  "Podologue",
   "Orthophoniste",
-  "Infirmier",
-  "Autre",
+  "Psychologue",
+  "Diététicien(ne)",
 ] as const;
 
 export type Specialty = (typeof SPECIALTIES)[number];

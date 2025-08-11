@@ -52,10 +52,10 @@ export function SponsoredListingCard({
         return (
             <Link href={`/listings/${listing.id}`} className="block group">
                 <div className={cn(
-                    "bg-white rounded-xl border border-gray-100 hover:border-gray-200 hover:shadow-md transition-all duration-200 overflow-hidden",
+                    "bg-white rounded-xl border border-gray-100 hover:border-gray-200 hover:shadow-md transition-all duration-200 overflow-hidden flex flex-col",
                     className
                 )}>
-                    <div className="aspect-[16/10] relative bg-gray-50 overflow-hidden">
+                    <div className="aspect-[4/3] relative bg-gray-50 overflow-hidden">
                         {firstImage ? (
                             <Image
                                 src={firstImage.fileUrl}
@@ -84,7 +84,7 @@ export function SponsoredListingCard({
                             </Badge>
                         </div>
                     </div>
-                    <div className="p-4 space-y-2">
+                    <div className="p-4 space-y-2 flex-shrink-0">
                         <div className="flex items-start justify-between gap-2">
                             <h3 className="font-medium text-gray-900 line-clamp-1 text-sm group-hover:text-blue-600 transition-colors">
                                 {listing.title || "Cabinet médical moderne"}

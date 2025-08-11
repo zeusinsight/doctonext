@@ -5,6 +5,7 @@ import { useSearchParams } from "next/navigation"
 import { ListingSearchHero } from "@/components/listings/listing-search-hero"
 import { SponsoredListingsCarousel } from "@/components/listings/sponsored-listings-carousel"
 import { SponsoredListingCard } from "@/components/listings/sponsored-listing-card"
+import { ListingsFilterModal, type ListingFilters } from "@/components/listings/listings-filter-modal"
 import type { PublicListing } from "@/types/listing"
 
 function ListingsContent() {
@@ -13,7 +14,15 @@ function ListingsContent() {
     const [filteredListings, setFilteredListings] = useState<PublicListing[]>([])
     const [loading, setLoading] = useState(true)
     const [searchQuery, setSearchQuery] = useState("")
-    const [activeTab, setActiveTab] = useState<"all" | "sales" | "replacements">("all")
+    const [activeTab, setActiveTab] = useState<"all" | "sales" | "replacements" | "collaborations">("all")
+    const [isFilterModalOpen, setIsFilterModalOpen] = useState(false)
+    const [filters, setFilters] = useState<ListingFilters>({
+        specialties: [],
+        regions: [],
+        listingTypes: [],
+        collaborationTypes: [],
+        isBoostPlus: undefined
+    })
 
     useEffect(() => {
         // Set initial search query from URL
@@ -24,7 +33,7 @@ function ListingsContent() {
 
     useEffect(() => {
         filterListings()
-    }, [listings, searchQuery, activeTab])
+    }, [listings, searchQuery, activeTab, filters])
 
     const fetchListings = async () => {
         try {
@@ -49,6 +58,8 @@ function ListingsContent() {
             filtered = filtered.filter(l => l.listingType === "transfer")
         } else if (activeTab === "replacements") {
             filtered = filtered.filter(l => l.listingType === "replacement")
+        } else if (activeTab === "collaborations") {
+            filtered = filtered.filter(l => l.listingType === "collaboration")
         }
 
         // Filter by search query
@@ -62,6 +73,41 @@ function ListingsContent() {
             )
         }
 
+        // Filter by specialties
+        if (filters.specialties.length > 0) {
+            filtered = filtered.filter(l => 
+                l.specialty && filters.specialties.includes(l.specialty)
+            )
+        }
+
+        // Filter by regions
+        if (filters.regions.length > 0) {
+            filtered = filtered.filter(l => 
+                l.location?.region && filters.regions.includes(l.location.region)
+            )
+        }
+
+        // Filter by listing types
+        if (filters.listingTypes.length > 0) {
+            filtered = filtered.filter(l => 
+                filters.listingTypes.includes(l.listingType)
+            )
+        }
+
+        // Filter by collaboration types (only if collaboration is in listing types and specific subtypes are selected)
+        if (filters.collaborationTypes.length > 0 && filters.listingTypes.includes("collaboration")) {
+            filtered = filtered.filter(l => 
+                l.listingType === "collaboration" && 
+                l.collaborationType && 
+                filters.collaborationTypes.includes(l.collaborationType)
+            )
+        }
+
+        // Filter by Boost Plus
+        if (filters.isBoostPlus === true) {
+            filtered = filtered.filter(l => l.isBoostPlus)
+        }
+
         setFilteredListings(filtered)
     }
 
@@ -69,14 +115,25 @@ function ListingsContent() {
         setSearchQuery(query)
     }
 
-    const handleTabChange = (tab: "all" | "sales" | "replacements") => {
+    const handleTabChange = (tab: "all" | "sales" | "replacements" | "collaborations") => {
         setActiveTab(tab)
     }
 
     const handleFilterClick = () => {
-        // TODO: Implement filter modal
-        console.log("Filter clicked")
+        setIsFilterModalOpen(true)
     }
+
+    const handleFiltersChange = (newFilters: ListingFilters) => {
+        setFilters(newFilters)
+    }
+
+    // Calculate active filters count
+    const activeFiltersCount = 
+        filters.specialties.length +
+        filters.regions.length +
+        filters.listingTypes.length +
+        filters.collaborationTypes.length +
+        (filters.isBoostPlus ? 1 : 0)
 
     // Separate sponsored and regular listings
     const sponsoredListings = filteredListings.filter(l => l.isBoostPlus)
@@ -98,6 +155,14 @@ function ListingsContent() {
                 onSearch={handleSearch}
                 onTabChange={handleTabChange}
                 onFilterClick={handleFilterClick}
+                activeFiltersCount={activeFiltersCount}
+            />
+
+            <ListingsFilterModal
+                isOpen={isFilterModalOpen}
+                onClose={() => setIsFilterModalOpen(false)}
+                filters={filters}
+                onFiltersChange={handleFiltersChange}
             />
 
             <div className="container mx-auto max-w-7xl px-4 py-8">
@@ -119,17 +184,17 @@ function ListingsContent() {
                             <SponsoredListingsCarousel listings={displaySponsoredListings} />
                         </div>
 
-                        {/* Regular Listings List */}
+                        {/* Regular Listings Grid */}
                         {displayRegularListings.length > 0 && (
                             <div>
                                 <h2 className="text-2xl font-bold mb-6">Toutes les annonces</h2>
-                                <div className="space-y-2">
+                                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
                                     {displayRegularListings.map((listing) => (
                                         <SponsoredListingCard 
                                             key={listing.id} 
                                             listing={listing}
-                                            orientation="horizontal"
-                                            className="w-full"
+                                            orientation="vertical"
+                                            className="h-full"
                                         />
                                     ))}
                                 </div>

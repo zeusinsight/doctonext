@@ -9,18 +9,20 @@ import { cn } from "@/lib/utils"
 interface ListingSearchHeroProps {
     initialSearch?: string
     onSearch?: (query: string) => void
-    onTabChange?: (tab: "all" | "sales" | "replacements") => void
+    onTabChange?: (tab: "all" | "sales" | "replacements" | "collaborations") => void
     onFilterClick?: () => void
+    activeFiltersCount?: number
 }
 
 export function ListingSearchHero({ 
     initialSearch = "",
     onSearch, 
     onTabChange,
-    onFilterClick 
+    onFilterClick,
+    activeFiltersCount = 0
 }: ListingSearchHeroProps) {
     const [searchQuery, setSearchQuery] = useState(initialSearch)
-    const [activeTab, setActiveTab] = useState<"all" | "sales" | "replacements">("all")
+    const [activeTab, setActiveTab] = useState<"all" | "sales" | "replacements" | "collaborations">("all")
 
     useEffect(() => {
         setSearchQuery(initialSearch)
@@ -30,7 +32,7 @@ export function ListingSearchHero({
         onSearch?.(query)
     }
 
-    const handleTabChange = (tab: "all" | "sales" | "replacements") => {
+    const handleTabChange = (tab: "all" | "sales" | "replacements" | "collaborations") => {
         setActiveTab(tab)
         onTabChange?.(tab)
     }
@@ -38,7 +40,8 @@ export function ListingSearchHero({
     const tabs = [
         { id: "all", label: "Toutes" },
         { id: "sales", label: "Ventes / Cessions" },
-        { id: "replacements", label: "Remplacements" }
+        { id: "replacements", label: "Remplacements" },
+        { id: "collaborations", label: "Association / Collaboration" }
     ] as const
 
     return (
@@ -61,10 +64,18 @@ export function ListingSearchHero({
                         type="button"
                         variant="outline"
                         onClick={onFilterClick}
-                        className="h-11 bg-white hover:bg-gray-50 text-gray-700 border-0"
+                        className={cn(
+                            "h-11 bg-white hover:bg-gray-50 text-gray-700 border-0 relative",
+                            activeFiltersCount > 0 && "bg-blue-50 text-blue-700 hover:bg-blue-100"
+                        )}
                     >
                         <Filter className="mr-2 h-4 w-4" />
                         Filtres
+                        {activeFiltersCount > 0 && (
+                            <span className="ml-2 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white bg-blue-600 rounded-full">
+                                {activeFiltersCount}
+                            </span>
+                        )}
                     </Button>
                 </div>
 

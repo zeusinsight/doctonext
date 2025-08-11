@@ -3,26 +3,15 @@
 import { RedirectToSignUp, SignedIn } from "@daveyplate/better-auth-ui";
 import { NavUser } from "@/components/layout/nav-user";
 import { Button } from "@/components/ui/button";
-import { SearchWithHistory } from "@/components/ui/search-with-history";
 import Link from "next/link";
 import Image from "next/image";
 import { site } from "@/config/site";
-import { useState } from "react";
-import { useRouter } from "next/navigation";
 
 export default function ProtectedPage({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const [searchQuery, setSearchQuery] = useState("");
-  const router = useRouter();
-
-  const handleSearch = (query: string) => {
-    if (query.trim()) {
-      router.push(`/listings?search=${encodeURIComponent(query.trim())}`);
-    }
-  };
   return (
     <>
       <RedirectToSignUp />
@@ -42,27 +31,31 @@ export default function ProtectedPage({
                   />
                 </Link>
 
-                {/* Deposit button */}
+                {/* Navigation buttons */}
                 <Button
                   asChild
                   variant="default"
                   size="sm"
-                  className="bg-blue-600 hover:bg-blue-700 hidden sm:flex whitespace-nowrap flex-shrink-0"
+                  className="bg-blue-600 hover:bg-blue-700 whitespace-nowrap flex-shrink-0"
                 >
                   <Link href="/dashboard/listings/new">
-                    📝 Déposer une annonce
+                    Déposer une annonce
                   </Link>
                 </Button>
-
-                {/* Search Bar - Full width */}
-                <SearchWithHistory
-                  value={searchQuery}
-                  onChange={setSearchQuery}
-                  onSubmit={handleSearch}
-                  placeholder="Rechercher sur Doctonext"
-                  className="flex-1"
-                  inputClassName="h-9 bg-white border-gray-300 focus:border-blue-500 focus:ring-blue-500"
-                />
+                
+                <Button
+                  asChild
+                  variant="default"
+                  size="sm"
+                  className="bg-green-600 hover:bg-green-700 whitespace-nowrap flex-shrink-0"
+                >
+                  <Link href="/listings">
+                    Annonces
+                  </Link>
+                </Button>
+                
+                {/* Spacer */}
+                <div className="flex-1"></div>
 
                 {/* User Navigation */}
                 <div className="flex-shrink-0">
