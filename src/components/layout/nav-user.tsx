@@ -1,6 +1,7 @@
 "use client";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
 import { authClient } from "@/lib/auth-client";
 import {
   RiHeartLine,
@@ -8,6 +9,7 @@ import {
   RiNotification3Line,
 } from "@remixicon/react";
 import { useRouter, usePathname } from "next/navigation";
+import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 import { NotificationButton } from "@/components/notifications/notification-button";
 
@@ -34,6 +36,21 @@ export function NavUser() {
   // Use Better Auth session hook to get real user data
   const { data: session, isPending } = authClient.useSession();
 
+  // Fetch unread messages count
+  const { data: unreadResponse } = useQuery({
+    queryKey: ["messages", "unread-count"],
+    queryFn: async () => {
+      const response = await fetch("/api/messages/unread-count")
+      if (!response.ok) throw new Error("Failed to fetch unread count")
+      return response.json()
+    },
+    refetchInterval: 30000, // Check every 30 seconds
+    staleTime: 15000, // 15 seconds
+    enabled: !!session?.user, // Only fetch if user is logged in
+  })
+
+  const unreadCount = unreadResponse?.count || 0
+
   // Show loading state or return null if no session
   if (isPending) {
     return (
@@ -48,13 +65,15 @@ export function NavUser() {
           </span>
           <div className="absolute bottom-0 left-1/2 w-0 h-0.5 bg-blue-600 transition-all duration-300 ease-out group-hover:w-full group-hover:-translate-x-1/2"></div>
         </Link>
-        <button className="relative flex flex-col items-center gap-1 p-2 cursor-pointer group">
-          <RiMessage3Line className="h-6 w-6 text-muted-foreground group-hover:text-foreground transition-colors" />
+        <Link href="/dashboard/messages" className="relative flex flex-col items-center gap-1 p-2 cursor-pointer group">
+          <div className="relative">
+            <RiMessage3Line className="h-6 w-6 text-muted-foreground group-hover:text-foreground transition-colors" />
+          </div>
           <span className="text-sm text-muted-foreground group-hover:text-foreground transition-colors">
             Messages
           </span>
           <div className="absolute bottom-0 left-1/2 w-0 h-0.5 bg-blue-600 transition-all duration-300 ease-out group-hover:w-full group-hover:-translate-x-1/2"></div>
-        </button>
+        </Link>
         <NotificationButton />
         <div className="flex items-center gap-2">
           <Avatar className="h-8 w-8">
@@ -78,13 +97,15 @@ export function NavUser() {
           </span>
           <div className="absolute bottom-0 left-1/2 w-0 h-0.5 bg-blue-600 transition-all duration-300 ease-out group-hover:w-full group-hover:-translate-x-1/2"></div>
         </Link>
-        <button className="relative flex flex-col items-center gap-1 p-2 cursor-pointer group">
-          <RiMessage3Line className="h-6 w-6 text-muted-foreground group-hover:text-foreground transition-colors" />
+        <Link href="/dashboard/messages" className="relative flex flex-col items-center gap-1 p-2 cursor-pointer group">
+          <div className="relative">
+            <RiMessage3Line className="h-6 w-6 text-muted-foreground group-hover:text-foreground transition-colors" />
+          </div>
           <span className="text-sm text-muted-foreground group-hover:text-foreground transition-colors">
             Messages
           </span>
           <div className="absolute bottom-0 left-1/2 w-0 h-0.5 bg-blue-600 transition-all duration-300 ease-out group-hover:w-full group-hover:-translate-x-1/2"></div>
-        </button>
+        </Link>
         <NotificationButton />
         <div className="flex items-center gap-2">
           <Avatar className="h-8 w-8">
@@ -118,6 +139,7 @@ export function NavUser() {
       .slice(0, 2) || "Inv";
 
   const isFavoritesActive = pathname === "/dashboard/favorites";
+  const isMessagesActive = pathname.startsWith("/dashboard/messages");
 
   return (
     <div className="flex items-center gap-4 bg-gray-50 rounded-lg px-3 py-2">
@@ -149,13 +171,41 @@ export function NavUser() {
           }`}
         ></div>
       </Link>
-      <button className="relative flex flex-col items-center gap-1 p-2 cursor-pointer group">
-        <RiMessage3Line className="h-6 w-6 text-muted-foreground group-hover:text-foreground transition-colors" />
-        <span className="text-sm text-muted-foreground group-hover:text-foreground transition-colors">
+      <Link href="/dashboard/messages" className="relative flex flex-col items-center gap-1 p-2 cursor-pointer group">
+        <div className="relative">
+          <RiMessage3Line 
+            className={`h-6 w-6 transition-colors ${
+              isMessagesActive
+                ? "text-blue-600"
+                : "text-muted-foreground group-hover:text-foreground"
+            }`} 
+          />
+          {unreadCount > 0 && (
+            <Badge 
+              variant="destructive" 
+              className="absolute -top-2 -right-2 px-1 py-0 text-xs min-w-[16px] h-4 flex items-center justify-center rounded-full"
+            >
+              {unreadCount > 99 ? "99+" : unreadCount}
+            </Badge>
+          )}
+        </div>
+        <span 
+          className={`text-sm transition-colors ${
+            isMessagesActive
+              ? "text-blue-600 font-medium"
+              : "text-muted-foreground group-hover:text-foreground"
+          }`}
+        >
           Messages
         </span>
-        <div className="absolute bottom-0 left-1/2 w-0 h-0.5 bg-blue-600 transition-all duration-300 ease-out group-hover:w-full group-hover:-translate-x-1/2"></div>
-      </button>
+        <div 
+          className={`absolute bottom-0 left-1/2 h-0.5 bg-blue-600 transition-all duration-300 ease-out ${
+            isMessagesActive
+              ? "w-full -translate-x-1/2"
+              : "w-0 group-hover:w-full group-hover:-translate-x-1/2"
+          }`}
+        ></div>
+      </Link>
       <NotificationButton />
       <Link
         href="/dashboard"

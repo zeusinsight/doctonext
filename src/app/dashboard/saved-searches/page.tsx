@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Switch } from "@/components/ui/switch"
+import { Skeleton } from "@/components/ui/skeleton"
 import { 
     getUserSavedSearches, 
     deleteSavedSearch, 
@@ -169,9 +170,43 @@ export default function SavedSearchesPage() {
 
     if (loading) {
         return (
-            <div className="container mx-auto p-6">
-                <div className="flex items-center justify-center h-64">
-                    <div className="text-muted-foreground">Chargement...</div>
+            <div className="container mx-auto p-6 max-w-6xl">
+                <div className="mb-6">
+                    <Skeleton className="h-9 w-80 mb-2" />
+                    <Skeleton className="h-5 w-96" />
+                </div>
+
+                <div className="grid gap-4">
+                    {Array.from({ length: 3 }).map((_, i) => (
+                        <Card key={i}>
+                            <CardHeader>
+                                <div className="flex items-start justify-between">
+                                    <div className="flex-1">
+                                        <Skeleton className="h-7 w-64 mb-2" />
+                                        <div className="flex flex-wrap gap-2 mb-3">
+                                            <Skeleton className="h-5 w-24" />
+                                            <Skeleton className="h-5 w-32" />
+                                            <Skeleton className="h-5 w-20" />
+                                        </div>
+                                        <Skeleton className="h-4 w-48" />
+                                    </div>
+                                    <Skeleton className="h-6 w-32" />
+                                </div>
+                            </CardHeader>
+                            <CardContent>
+                                <div className="flex items-center justify-between">
+                                    <div className="flex items-center gap-4">
+                                        <Skeleton className="h-10 w-32" />
+                                        <div className="flex items-center gap-2">
+                                            <Skeleton className="h-4 w-20" />
+                                            <Skeleton className="h-6 w-12" />
+                                        </div>
+                                    </div>
+                                    <Skeleton className="h-10 w-10" />
+                                </div>
+                            </CardContent>
+                        </Card>
+                    ))}
                 </div>
             </div>
         )

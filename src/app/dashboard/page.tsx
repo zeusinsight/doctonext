@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import {
   RiFileList3Line,
-  RiExchangeFundsLine,
+  RiMessage3Line,
   RiAlarmWarningLine,
   RiSettings4Line,
 } from "@remixicon/react";
@@ -91,24 +91,26 @@ export default function DashboardPage() {
               </Card>
             </Link>
 
-            {/* Transactions Card */}
-            <Card className="p-6 bg-white border border-gray-200 shadow-sm hover:shadow-md transition-all duration-300 cursor-pointer hover:-translate-y-1">
-              <CardContent className="p-0">
-                <div className="flex items-center space-x-4">
-                  <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-green-600 rounded-xl flex items-center justify-center">
-                    <RiExchangeFundsLine className="w-6 h-6 text-white" />
+            {/* Messages Card */}
+            <Link href="/dashboard/messages">
+              <Card className="p-6 bg-white border border-gray-200 shadow-sm hover:shadow-md transition-all duration-300 cursor-pointer hover:-translate-y-1">
+                <CardContent className="p-0">
+                  <div className="flex items-center space-x-4">
+                    <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-green-600 rounded-xl flex items-center justify-center">
+                      <RiMessage3Line className="w-6 h-6 text-white" />
+                    </div>
+                    <div>
+                      <h3 className="font-semibold text-gray-900 mb-1 text-lg">
+                        Messages
+                      </h3>
+                      <p className="text-gray-600 text-sm">
+                        Gérer mes conversations
+                      </p>
+                    </div>
                   </div>
-                  <div>
-                    <h3 className="font-semibold text-gray-900 mb-1 text-lg">
-                      Transactions
-                    </h3>
-                    <p className="text-gray-600 text-sm">
-                      Suivre mes achats et ventes
-                    </p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+                </CardContent>
+              </Card>
+            </Link>
 
             {/* Alertes Card */}
             <Link href="/dashboard/saved-searches">
@@ -122,7 +124,9 @@ export default function DashboardPage() {
                       <h3 className="font-semibold text-gray-900 mb-1 text-lg">
                         Alertes
                       </h3>
-                      <p className="text-gray-600 text-sm">Gérer vos recherches sauvegardées</p>
+                      <p className="text-gray-600 text-sm">
+                        Gérer mes recherches alertes
+                      </p>
                     </div>
                   </div>
                 </CardContent>
@@ -156,12 +160,13 @@ export default function DashboardPage() {
 
           {/* Logout Button */}
           <div className="flex mt-8">
-            <button
+            <Button
               onClick={handleLogout}
-              className="text-white underline hover:text-red-600 transition-colors duration-200 text-sm"
+              variant="outline"
+              className="text-red-600 border-red-200 hover:bg-red-50 hover:text-red-700 hover:border-red-300"
             >
               Me déconnecter
-            </button>
+            </Button>
           </div>
         </div>
       </div>

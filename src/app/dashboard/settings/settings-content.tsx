@@ -8,7 +8,6 @@ import {
     SessionsCard,
     UpdateNameCard,
     UpdateAvatarCard,
-    ProvidersCard
 } from "./components";
 import { RiAlarmWarningLine } from "@remixicon/react";
 
@@ -66,9 +65,6 @@ export function SettingsContent({ activeTab }: SettingsContentProps) {
                         </div>
                         <div className="space-y-4">
                             <ChangeEmailCard className="border-0 shadow-none p-0" />
-                            <div className="border-t pt-4">
-                                <ProvidersCard className="border-0 shadow-none p-0" />
-                            </div>
                         </div>
                     </div>
                 )}

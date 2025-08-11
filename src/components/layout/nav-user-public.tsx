@@ -127,13 +127,13 @@ export function NavUserPublic() {
                         : "w-0 group-hover:w-full group-hover:-translate-x-1/2"
                 }`}></div>
             </Link>
-            <button className="relative flex flex-col items-center gap-1 p-2 cursor-pointer group">
+            <Link href="/dashboard/messages" className="relative flex flex-col items-center gap-1 p-2 cursor-pointer group">
                 <RiMessage3Line className="h-6 w-6 text-muted-foreground group-hover:text-foreground transition-colors" />
                 <span className="text-sm text-muted-foreground group-hover:text-foreground transition-colors">Messages</span>
                 <div className="absolute bottom-0 left-1/2 w-0 h-0.5 bg-blue-600 transition-all duration-300 ease-out group-hover:w-full group-hover:-translate-x-1/2"></div>
-            </button>
+            </Link>
             <NotificationButton />  
-            <button onClick={() => {router.push("/dashboard")}} className="relative flex flex-col items-center gap-1 p-2 cursor-pointer group">
+            <Link href="/dashboard" className="relative flex flex-col items-center gap-1 p-2 cursor-pointer group">
                 <Avatar className="h-6 w-6">
                     <AvatarImage
                         src={avatarSrc || undefined}
@@ -143,7 +143,7 @@ export function NavUserPublic() {
                 </Avatar>
                 <span className="text-xs font-medium text-muted-foreground group-hover:text-foreground transition-colors">{displayName}</span>
                 <div className="absolute bottom-0 left-1/2 w-0 h-0.5 bg-blue-600 transition-all duration-300 ease-out group-hover:w-full group-hover:-translate-x-1/2"></div>
-            </button>
+            </Link>
         </div>
     )
 }

@@ -9,6 +9,7 @@ import {
 import { eq, and, gt, inArray, sql } from "drizzle-orm"
 import { Resend } from "resend"
 import { ListingAlertEmail } from "@/components/emails/listing-alert-template"
+import { MessageNotificationEmail } from "@/components/emails/message-notification-template"
 import { ListingFilters } from "@/components/listings/listings-filter-modal"
 import { renderAsync } from "@react-email/render"
 import { createNotification } from "@/lib/actions/notifications"
@@ -262,6 +263,44 @@ export async function sendAlertEmail(
         return true
     } catch (error) {
         console.error("Error sending alert email:", error)
+        return false
+    }
+}
+
+export async function sendMessageNotificationEmail(
+    recipientEmail: string,
+    recipientName: string,
+    senderName: string,
+    messagePreview: string,
+    conversationId: string,
+    listingTitle?: string
+): Promise<boolean> {
+    try {
+        const emailHtml = await renderAsync(
+            MessageNotificationEmail({
+                recipientName,
+                senderName,
+                messagePreview,
+                conversationId,
+                listingTitle
+            })
+        )
+
+        const { error } = await resend.emails.send({
+            from: process.env.MAIL_FROM || "noreply@doctonext.com",
+            to: recipientEmail,
+            subject: `Nouveau message de ${senderName}`,
+            html: emailHtml
+        })
+
+        if (error) {
+            console.error("Error sending message notification email:", error)
+            return false
+        }
+
+        return true
+    } catch (error) {
+        console.error("Error sending message notification email:", error)
         return false
     }
 }

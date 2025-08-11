@@ -14,6 +14,7 @@ import {
 import Image from "next/image"
 import { ListingStatus, type ListingStatusType } from "@/components/listings/listing-status"
 import { ListingDetailActions } from "@/components/listings/listing-detail-client"
+import { ContactSellerButton } from "@/components/messages/contact-seller-button"
 
 interface ListingPageProps {
     params: Promise<{ id: string }>
@@ -638,14 +639,13 @@ export default async function ListingPage({ params }: ListingPageProps) {
                                 </div>
                             )}
 
-                            <Button className="w-full" size="lg">
-                                <MessageCircle className="mr-2 h-4 w-4" />
-                                Contacter le vendeur
-                            </Button>
-
-                            <p className="text-center text-xs text-muted-foreground">
-                                La messagerie sera bientôt disponible
-                            </p>
+                            <ContactSellerButton
+                                listingId={listing.id}
+                                sellerId={listing.userId}
+                                sellerName={listing.user?.name || "Professionnel"}
+                                listingTitle={listing.title}
+                                className="w-full"
+                            />
                         </CardContent>
                     </Card>
 
