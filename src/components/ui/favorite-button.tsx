@@ -1,0 +1,123 @@
+"use client"
+
+import { useState, useEffect } from "react"
+import { Button } from "@/components/ui/button"
+import { Heart } from "lucide-react"
+import { cn } from "@/lib/utils"
+import { useFavorites } from "@/hooks/use-favorites"
+import { toast } from "sonner"
+
+interface FavoriteButtonProps {
+    listingId: string
+    listingTitle?: string
+    className?: string
+    variant?: "default" | "outline" | "ghost" | "secondary"
+    size?: "default" | "sm" | "lg" | "icon"
+    showToast?: boolean
+    onToggle?: (isFavorite: boolean) => void
+}
+
+export function FavoriteButton({ 
+    listingId,
+    listingTitle = "cette annonce",
+    className,
+    variant = "outline",
+    size = "icon",
+    showToast = true,
+    onToggle
+}: FavoriteButtonProps) {
+    const { isFavorite, toggleFavorite, isLoaded } = useFavorites()
+    const [isAnimating, setIsAnimating] = useState(false)
+    const [isFavorited, setIsFavorited] = useState(false)
+
+    useEffect(() => {
+        if (isLoaded) {
+            setIsFavorited(isFavorite(listingId))
+        }
+    }, [isLoaded, isFavorite, listingId])
+
+    const handleClick = async (e: React.MouseEvent) => {
+        e.preventDefault()
+        e.stopPropagation()
+        
+        const wasAlreadyFavorite = isFavorited
+        setIsAnimating(true)
+        
+        try {
+            // Update favorites via database
+            const result = await toggleFavorite(listingId)
+            
+            if (result.success) {
+                const newFavoriteState = result.isFavorite!
+                
+                // Show toast notification
+                if (showToast) {
+                    if (newFavoriteState) {
+                        toast.success(`${listingTitle} ajoutée aux favoris`, {
+                            duration: 2000,
+                            action: {
+                                label: "Annuler",
+                                onClick: () => {
+                                    toggleFavorite(listingId)
+                                }
+                            }
+                        })
+                    } else {
+                        toast.info(`${listingTitle} retirée des favoris`, {
+                            duration: 2000,
+                            action: {
+                                label: "Annuler",
+                                onClick: () => {
+                                    toggleFavorite(listingId)
+                                }
+                            }
+                        })
+                    }
+                }
+                
+                // Call optional callback
+                onToggle?.(newFavoriteState)
+            } else {
+                // Show error toast
+                if (showToast) {
+                    toast.error(result.error || "Erreur lors de la mise à jour des favoris")
+                }
+            }
+        } catch (error) {
+            console.error("Error toggling favorite:", error)
+            if (showToast) {
+                toast.error("Erreur lors de la mise à jour des favoris")
+            }
+        } finally {
+            // Reset animation
+            setTimeout(() => setIsAnimating(false), 300)
+        }
+    }
+
+    return (
+        <Button
+            variant={isFavorited ? "default" : variant}
+            size={size}
+            className={cn(
+                "transition-all",
+                isAnimating && "scale-110",
+                className
+            )}
+            onClick={handleClick}
+            aria-label={isFavorited ? "Retirer des favoris" : "Ajouter aux favoris"}
+        >
+            <Heart 
+                className={cn(
+                    "h-4 w-4 transition-all",
+                    isFavorited && "fill-current",
+                    isAnimating && "animate-pulse"
+                )}
+            />
+            {size !== "icon" && (
+                <span className="ml-2">
+                    {isFavorited ? "Favori" : "Ajouter aux favoris"}
+                </span>
+            )}
+        </Button>
+    )
+}

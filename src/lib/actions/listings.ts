@@ -485,7 +485,44 @@ export async function getPublicListings(filters?: {
         
         const publicListings = await baseQuery.limit(limit).offset(offset)
 
-        return publicListings
+        // Fetch first image for each listing
+        const listingIds = publicListings.map(l => l.id).filter(Boolean)
+        
+        if (listingIds.length > 0) {
+            const firstImages = await db
+                .select({
+                    listingId: listingMedia.listingId,
+                    fileUrl: listingMedia.fileUrl,
+                    fileName: listingMedia.fileName
+                })
+                .from(listingMedia)
+                .where(
+                    and(
+                        sql`${listingMedia.listingId} IN (${sql.join(listingIds.map(id => sql`${id}`), sql`, `)})`,
+                        eq(listingMedia.displayOrder, 0)
+                    )
+                )
+            
+            // Create a map of listing ID to first image
+            const imageMap = new Map(firstImages.map(img => [img.listingId, img]))
+            
+            // Add first image to each listing
+            const listingsWithImages = publicListings.map(listing => ({
+                ...listing,
+                media: imageMap.has(listing.id) ? [{
+                    id: listing.id,
+                    fileUrl: imageMap.get(listing.id)!.fileUrl,
+                    fileName: imageMap.get(listing.id)!.fileName
+                }] : []
+            }))
+            
+            return listingsWithImages
+        }
+
+        return publicListings.map(listing => ({
+            ...listing,
+            media: []
+        }))
     } catch (error) {
         console.error("Error fetching public listings:", error)
         return []

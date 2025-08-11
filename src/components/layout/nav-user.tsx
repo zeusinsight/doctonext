@@ -3,7 +3,8 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { authClient } from "@/lib/auth-client"
 import { RiHeartLine, RiMessage3Line, RiNotification3Line } from "@remixicon/react"
-import { useRouter } from "next/navigation"
+import { useRouter, usePathname } from "next/navigation"
+import Link from "next/link"
 
 // Better Auth UI Profile types
 interface Profile {
@@ -24,18 +25,19 @@ interface Profile {
 
 export function NavUser() {
     const router = useRouter()
+    const pathname = usePathname()
     // Use Better Auth session hook to get real user data
     const { data: session, isPending } = authClient.useSession()
 
     // Show loading state or return null if no session
     if (isPending) {
         return (
-            <div className="flex items-center gap-4">
-                <button className="relative flex flex-col items-center gap-1 p-2 cursor-pointer group">
+            <div className="flex items-center gap-4 bg-gray-50 rounded-lg px-3 py-2">
+                <Link href="/dashboard/favorites" className="relative flex flex-col items-center gap-1 p-2 cursor-pointer group">
                     <RiHeartLine className="h-6 w-6 text-muted-foreground group-hover:text-foreground transition-colors" />
                     <span className="text-sm text-muted-foreground group-hover:text-foreground transition-colors">Favoris</span>
                     <div className="absolute bottom-0 left-1/2 w-0 h-0.5 bg-blue-600 transition-all duration-300 ease-out group-hover:w-full group-hover:-translate-x-1/2"></div>
-                </button>
+                </Link>
                 <button className="relative flex flex-col items-center gap-1 p-2 cursor-pointer group">
                     <RiMessage3Line className="h-6 w-6 text-muted-foreground group-hover:text-foreground transition-colors" />
                     <span className="text-sm text-muted-foreground group-hover:text-foreground transition-colors">Messages</span>
@@ -57,12 +59,12 @@ export function NavUser() {
 
     if (!session?.user) {
         return (
-            <div className="flex items-center gap-4">
-                <button className="relative flex flex-col items-center gap-1 p-2 cursor-pointer group">
+            <div className="flex items-center gap-4 bg-gray-50 rounded-lg px-3 py-2">
+                <Link href="/dashboard/favorites" className="relative flex flex-col items-center gap-1 p-2 cursor-pointer group">
                     <RiHeartLine className="h-6 w-6 text-muted-foreground group-hover:text-foreground transition-colors" />
                     <span className="text-sm text-muted-foreground group-hover:text-foreground transition-colors">Favoris</span>
                     <div className="absolute bottom-0 left-1/2 w-0 h-0.5 bg-blue-600 transition-all duration-300 ease-out group-hover:w-full group-hover:-translate-x-1/2"></div>
-                </button>
+                </Link>
                 <button className="relative flex flex-col items-center gap-1 p-2 cursor-pointer group">
                     <RiMessage3Line className="h-6 w-6 text-muted-foreground group-hover:text-foreground transition-colors" />
                     <span className="text-sm text-muted-foreground group-hover:text-foreground transition-colors">Messages</span>
@@ -90,7 +92,7 @@ export function NavUser() {
         user.fullName ||
         user.name ||
         user.firstName ||
-        "Thomas"
+        "Invité"
 
     // Get user's avatar with fallbacks
     const avatarSrc = user.avatarUrl || user.avatar || user.image
@@ -102,15 +104,29 @@ export function NavUser() {
             .map((name) => name.charAt(0))
             .join("")
             .toUpperCase()
-            .slice(0, 2) || "T"
+            .slice(0, 2) || "Inv"
 
+    const isFavoritesActive = pathname === "/dashboard/favorites"
+    
     return (
-        <div className="flex items-center gap-4">
-            <button className="relative flex flex-col items-center gap-1 p-2 cursor-pointer group">
-                <RiHeartLine className="h-6 w-6 text-muted-foreground group-hover:text-foreground transition-colors" />
-                <span className="text-sm text-muted-foreground group-hover:text-foreground transition-colors">Favoris</span>
-                <div className="absolute bottom-0 left-1/2 w-0 h-0.5 bg-blue-600 transition-all duration-300 ease-out group-hover:w-full group-hover:-translate-x-1/2"></div>
-            </button>
+        <div className="flex items-center gap-4 bg-gray-50 rounded-lg px-3 py-2">
+            <Link href="/dashboard/favorites" className="relative flex flex-col items-center gap-1 p-2 cursor-pointer group">
+                <RiHeartLine className={`h-6 w-6 transition-colors ${
+                    isFavoritesActive 
+                        ? "text-blue-600" 
+                        : "text-muted-foreground group-hover:text-foreground"
+                }`} />
+                <span className={`text-sm transition-colors ${
+                    isFavoritesActive 
+                        ? "text-blue-600 font-medium" 
+                        : "text-muted-foreground group-hover:text-foreground"
+                }`}>Favoris</span>
+                <div className={`absolute bottom-0 left-1/2 h-0.5 bg-blue-600 transition-all duration-300 ease-out ${
+                    isFavoritesActive 
+                        ? "w-full -translate-x-1/2" 
+                        : "w-0 group-hover:w-full group-hover:-translate-x-1/2"
+                }`}></div>
+            </Link>
             <button className="relative flex flex-col items-center gap-1 p-2 cursor-pointer group">
                 <RiMessage3Line className="h-6 w-6 text-muted-foreground group-hover:text-foreground transition-colors" />
                 <span className="text-sm text-muted-foreground group-hover:text-foreground transition-colors">Messages</span>
@@ -121,7 +137,7 @@ export function NavUser() {
                 <span className="text-sm text-muted-foreground group-hover:text-foreground transition-colors">Notifications</span>
                 <div className="absolute bottom-0 left-1/2 w-0 h-0.5 bg-blue-600 transition-all duration-300 ease-out group-hover:w-full group-hover:-translate-x-1/2"></div>
             </button>
-            <button onClick={() => {router.push("/dashboard/settings")}} className="relative flex flex-col items-center gap-1 p-2 cursor-pointer group">
+            <button onClick={() => {router.push("/dashboard")}} className="relative flex flex-col items-center gap-1 p-2 cursor-pointer group">
                 <Avatar className="h-6 w-6">
                     <AvatarImage
                         src={avatarSrc || undefined}

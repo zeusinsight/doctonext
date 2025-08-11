@@ -18,13 +18,13 @@ export default function ProtectedPage({
         <>
             <RedirectToSignUp />
             <SignedIn>
-                <div className="">
+                <div className="min-h-screen bg-blue-50">
                     <div className="mx-auto w-full">
-                        <header className="flex items-center justify-between border-b py-4 overflow-x-auto">
+                        <header className="flex items-center justify-between border-b border-gray-200 py-4 overflow-x-auto bg-gray-50 shadow-sm">
                             <div className="max-w-6xl mx-auto px-6 flex items-center justify-between w-full min-w-0">
                             {/* Left side - Logo and text */}
-                            <div className="flex items-center gap-2 sm:gap-4 flex-shrink-0">
-                                <Link href="/dashboard" className="flex items-center gap-2">
+                            <div className="flex items-center gap-2 sm:gap-4 flex-shrink-0 ">
+                                <Link href="/" className="flex items-center gap-2">
                                     <span className="font-bold text-lg text-blue-600 whitespace-nowrap">
                                         Docto<span className="text-green-600">next</span>
                                     </span>
@@ -41,7 +41,7 @@ export default function ProtectedPage({
                                 </Button>
                                 
                                 {/* Search Bar - Responsive width */}
-                                <div className="relative flex-1 max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg">
+                                <div className="relative flex-1 max-w-sm sm:max-w-md md:max-w-lg lg:max-w-xl">
                                     <RiSearchLine className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
                                     <Input
                                         type="text"
