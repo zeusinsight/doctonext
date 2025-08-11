@@ -362,7 +362,18 @@ export default async function ListingPage({ params }: ListingPageProps) {
                                                     <div>
                                                         <p className="text-sm font-medium">Jours de travail</p>
                                                         <p className="text-sm text-muted-foreground">
-                                                            {listing.details.workingDays.join(", ")}
+                                                            {listing.details.workingDays.map(day => {
+                                                                const dayMap: Record<string, string> = {
+                                                                    "monday": "Lundi",
+                                                                    "tuesday": "Mardi", 
+                                                                    "wednesday": "Mercredi",
+                                                                    "thursday": "Jeudi",
+                                                                    "friday": "Vendredi",
+                                                                    "saturday": "Samedi",
+                                                                    "sunday": "Dimanche"
+                                                                }
+                                                                return dayMap[day] || day
+                                                            }).join(", ")}
                                                         </p>
                                                     </div>
                                                 </div>
