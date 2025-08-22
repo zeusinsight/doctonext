@@ -81,6 +81,36 @@ export const ourFileRouter = {
                 console.error("Error in listing upload complete:", error)
                 throw new UploadThingError("Failed to complete upload")
             }
+        }),
+    // Define blog image upload route
+    blogImageUploader: f({
+        image: {
+            maxFileSize: "4MB",
+            maxFileCount: 1
+        }
+    })
+        .middleware(async ({ req }) => {
+            try {
+                // Generate a unique filename with timestamp
+                const date = new Date().toISOString().split('T')[0]
+                const timestamp = Date.now().toString(36)
+                const fileName = `blog_${date}_${timestamp}`
+
+                return {
+                    fileName
+                }
+            } catch (error) {
+                console.error("Error in blog upload middleware:", error)
+                throw new UploadThingError("Failed to process upload")
+            }
+        })
+        .onUploadComplete(async ({ file }) => {
+            try {
+                return { ufsUrl: file.ufsUrl }
+            } catch (error) {
+                console.error("Error in blog upload complete:", error)
+                throw new UploadThingError("Failed to complete upload")
+            }
         })
 } satisfies FileRouter
 

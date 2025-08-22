@@ -24,6 +24,7 @@ export const users = pgTable("users", {
     phone: text("phone"),
     isVerifiedProfessional: boolean("is_verified_professional")
         .default(false),
+    role: text("role").$type<"user" | "admin">().default("user"),
     bio: text("bio")
 });
 

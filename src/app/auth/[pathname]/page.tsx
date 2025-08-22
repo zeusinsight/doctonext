@@ -106,7 +106,7 @@ export default async function AuthPage({
                                 href="/terms"
                                 className="underline text-white hover:text-white/80"
                             >
-                                Conditions d'utilisation
+                                Conditions d&apos;utilisation
                             </Link>{" "}
                             et notre{" "}
                             <Link
