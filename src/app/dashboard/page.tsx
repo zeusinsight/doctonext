@@ -8,22 +8,55 @@ import {
   RiMessage3Line,
   RiAlarmWarningLine,
   RiSettings4Line,
+  RiBarChartLine,
+  RiTeamLine,
+  RiArticleLine,
+  RiShieldStarLine,
 } from "@remixicon/react";
 import { authClient } from "@/lib/auth-client";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
 export default function DashboardPage() {
   const { data: session } = authClient.useSession();
   const user = session?.user;
   const router = useRouter();
+  const [userRole, setUserRole] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
 
   const displayName = user?.name || "Thomas";
+
+  // Fetch user role from the API
+  useEffect(() => {
+    const fetchUserRole = async () => {
+      if (session?.user) {
+        try {
+          const response = await fetch("/api/user/profile");
+          if (response.ok) {
+            const userData = await response.json();
+            setUserRole(userData.role || "user");
+          }
+        } catch (error) {
+          console.error("Error fetching user role:", error);
+          setUserRole("user");
+        } finally {
+          setLoading(false);
+        }
+      } else {
+        setLoading(false);
+      }
+    };
+
+    fetchUserRole();
+  }, [session]);
 
   const handleLogout = async () => {
     await authClient.signOut();
     window.location.href = "/";
   };
+
+  const isAdmin = userRole === "admin";
 
   return (
     <div className="min-h-screen relative overflow-hidden">
@@ -157,6 +190,104 @@ export default function DashboardPage() {
               </CardContent>
             </Card>
           </div>
+
+          {/* Admin Panel Cards - Only show if user is admin */}
+          {isAdmin && (
+            <>
+              <div className="mt-8">
+                <h2 className="text-xl font-semibold text-white mb-4 flex items-center gap-2">
+                  Administration
+                </h2>
+              </div>
+
+              {/* Admin Cards */}
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                {/* Admin Stats Card */}
+                <Link href="/dashboard/admin/stats">
+                  <Card className="p-6 bg-white border border-yellow-200 shadow-sm hover:shadow-md transition-all duration-300 cursor-pointer hover:-translate-y-1">
+                    <CardContent className="p-0">
+                      <div className="flex items-center space-x-4">
+                        <div className="w-12 h-12 bg-gradient-to-br from-yellow-500 to-yellow-600 rounded-xl flex items-center justify-center">
+                          <RiBarChartLine className="w-6 h-6 text-white" />
+                        </div>
+                        <div>
+                          <h3 className="font-semibold text-gray-900 mb-1 text-lg">
+                            Statistiques
+                          </h3>
+                          <p className="text-gray-600 text-sm">
+                            Voir les stats du site
+                          </p>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </Link>
+
+                {/* Admin Users Card */}
+                <Link href="/dashboard/admin/users">
+                  <Card className="p-6 bg-white border border-red-200 shadow-sm hover:shadow-md transition-all duration-300 cursor-pointer hover:-translate-y-1">
+                    <CardContent className="p-0">
+                      <div className="flex items-center space-x-4">
+                        <div className="w-12 h-12 bg-gradient-to-br from-red-500 to-red-600 rounded-xl flex items-center justify-center">
+                          <RiTeamLine className="w-6 h-6 text-white" />
+                        </div>
+                        <div>
+                          <h3 className="font-semibold text-gray-900 mb-1 text-lg">
+                            Utilisateurs
+                          </h3>
+                          <p className="text-gray-600 text-sm">
+                            Gérer les utilisateurs
+                          </p>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </Link>
+
+                {/* Admin Listings Card */}
+                <Link href="/dashboard/admin/listings">
+                  <Card className="p-6 bg-white border border-indigo-200 shadow-sm hover:shadow-md transition-all duration-300 cursor-pointer hover:-translate-y-1">
+                    <CardContent className="p-0">
+                      <div className="flex items-center space-x-4">
+                        <div className="w-12 h-12 bg-gradient-to-br from-indigo-500 to-indigo-600 rounded-xl flex items-center justify-center">
+                          <RiFileList3Line className="w-6 h-6 text-white" />
+                        </div>
+                        <div>
+                          <h3 className="font-semibold text-gray-900 mb-1 text-lg">
+                            Annonces Admin
+                          </h3>
+                          <p className="text-gray-600 text-sm">
+                            Modérer les annonces
+                          </p>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </Link>
+
+                {/* Admin Blog Card */}
+                <Link href="/dashboard/blog">
+                  <Card className="p-6 bg-white border border-teal-200 shadow-sm hover:shadow-md transition-all duration-300 cursor-pointer hover:-translate-y-1">
+                    <CardContent className="p-0">
+                      <div className="flex items-center space-x-4">
+                        <div className="w-12 h-12 bg-gradient-to-br from-teal-500 to-teal-600 rounded-xl flex items-center justify-center">
+                          <RiArticleLine className="w-6 h-6 text-white" />
+                        </div>
+                        <div>
+                          <h3 className="font-semibold text-gray-900 mb-1 text-lg">
+                            Blog
+                          </h3>
+                          <p className="text-gray-600 text-sm">
+                            Gérer les articles
+                          </p>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </Link>
+              </div>
+            </>
+          )}
 
           {/* Logout Button */}
           <div className="flex mt-8">
