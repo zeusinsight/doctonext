@@ -38,7 +38,7 @@ export default function ProtectedPage({
                   size="sm"
                   className="bg-blue-600 hover:bg-blue-700 whitespace-nowrap flex-shrink-0"
                 >
-                  <Link href="/dashboard/listings/new">
+                  <Link href="/dashboard/annonces/new">
                     Déposer une annonce
                   </Link>
                 </Button>
@@ -49,7 +49,7 @@ export default function ProtectedPage({
                   size="sm"
                   className="bg-green-600 hover:bg-green-700 whitespace-nowrap flex-shrink-0"
                 >
-                  <Link href="/listings">
+                  <Link href="/annonces">
                     Annonces
                   </Link>
                 </Button>

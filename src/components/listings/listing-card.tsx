@@ -66,7 +66,7 @@ export function ListingCard({
   const price = getPrice();
 
   return (
-    <Link href={`/listings/${listing.id}`} className="block">
+    <Link href={`/annonces/${listing.id}`} className="block">
       <Card
         className={cn(
           "group overflow-hidden transition-all hover:shadow-lg",

@@ -329,7 +329,7 @@ export default function AdminListingsPage() {
                             </DropdownMenuTrigger>
                             <DropdownMenuContent align="end">
                               <DropdownMenuItem asChild>
-                                <Link href={`/listings/${listing.id}`} target="_blank" className="cursor-pointer">
+                                <Link href={`/annonces/${listing.id}`} target="_blank" className="cursor-pointer">
                                   <RiExternalLinkLine className="w-4 h-4 mr-2" />
                                   Voir l'annonce
                                 </Link>

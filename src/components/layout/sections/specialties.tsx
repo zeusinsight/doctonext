@@ -38,7 +38,7 @@ const SpecialtyCard = ({ icon, title, count, href, color }: SpecialtyCardProps) 
 export const SpecialtiesSection = () => {
     const specialties = [
         {
-            icon: <Stethoscope className="w-8 h-8 text-blue-600" />,
+            icon: <span className="text-3xl">👨‍⚕️</span>,
             title: "Médecine générale",
             count: 0,
             href: "/annonces?specialty=medecine-generale",
@@ -52,42 +52,42 @@ export const SpecialtiesSection = () => {
             color: "bg-green-600"
         },
         {
-            icon: <Pill className="w-8 h-8 text-purple-600" />,
+            icon: <span className="text-3xl">💊</span>,
             title: "Pharmacies",
             count: 0,
             href: "/annonces?specialty=pharmacies",
             color: "bg-purple-600"
         },
         {
-            icon: <Activity className="w-8 h-8 text-orange-600" />,
+            icon: <span className="text-3xl">🧠</span>,
             title: "Kinésithérapie",
             count: 0,
             href: "/annonces?specialty=kinesitherapie",
             color: "bg-orange-600"
         },
         {
-            icon: <Eye className="w-8 h-8 text-pink-600" />,
+            icon: <span className="text-3xl">👁️</span>,
             title: "Ophtalmologie",
             count: 0,
             href: "/annonces?specialty=ophtalmologie",
             color: "bg-pink-600"
         },
         {
-            icon: <Heart className="w-8 h-8 text-red-600" />,
+            icon: <span className="text-3xl">❤️</span>,
             title: "Cardiologie",
             count: 0,
             href: "/annonces?specialty=cardiologie",
             color: "bg-red-600"
         },
         {
-            icon: <Scissors className="w-8 h-8 text-indigo-600" />,
+            icon: <span className="text-3xl">🥼</span>,
             title: "Chirurgie",
             count: 0,
             href: "/annonces?specialty=chirurgie",
             color: "bg-indigo-600"
         },
         {
-            icon: <Brain className="w-8 h-8 text-yellow-600" />,
+            icon: <span className="text-3xl">🧠</span>,
             title: "Neurologie",
             count: 0,
             href: "/annonces?specialty=neurologie",
@@ -100,14 +100,11 @@ export const SpecialtiesSection = () => {
             <div className="container mx-auto px-4">
                 <div className="text-center mb-12">
                     <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
-                        Explorez par spécialité
+                        Choisissez votre domaine et découvrez les opportunités disponibles
                     </h2>
-                    <p className="text-lg text-gray-600">
-                        Trouvez des opportunités dans votre domaine de spécialité médicale
-                    </p>
                 </div>
 
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-5xl mx-auto">
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-6xl mx-auto">
                     {specialties.map((specialty) => (
                         <SpecialtyCard
                             key={specialty.title}

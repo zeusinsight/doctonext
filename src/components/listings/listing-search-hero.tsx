@@ -32,6 +32,12 @@ export function ListingSearchHero({
         onSearch?.(query)
     }
 
+    const handleInputChange = (query: string) => {
+        setSearchQuery(query)
+        // Trigger real-time search as user types
+        onSearch?.(query)
+    }
+
     const handleTabChange = (tab: "all" | "sales" | "replacements" | "collaborations") => {
         setActiveTab(tab)
         onTabChange?.(tab)
@@ -54,7 +60,7 @@ export function ListingSearchHero({
                 <div className="flex gap-3 mb-6">
                     <SearchWithHistory
                         value={searchQuery}
-                        onChange={setSearchQuery}
+                        onChange={handleInputChange}
                         onSubmit={handleSearch}
                         placeholder="Rechercher par titre, lieu, spécialité..."
                         className="flex-1"

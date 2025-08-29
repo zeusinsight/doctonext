@@ -44,9 +44,10 @@ export default function Home() {
         <>
             <HeroSection />
             <SpecialtiesSection />
-            <HowItWorksSection />
             <TestimonialSection />
-            <NewsletterSection />
+
+            <HowItWorksSection />
+            
             <CTASection />
 
         </>

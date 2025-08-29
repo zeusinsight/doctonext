@@ -15,7 +15,7 @@ export const CTASection = () => {
                     </p>
                     
                     <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                        <Link href="/register">
+                        <Link href="/annonces">
                             <Button 
                                 size="lg"
                                 className="bg-white text-blue-600 hover:bg-blue-50 font-semibold px-8 py-6 text-lg flex items-center gap-2"
@@ -24,7 +24,7 @@ export const CTASection = () => {
                                 Explorer les annonces
                             </Button>
                         </Link>
-                        <Link href="/register">
+                        <Link href="/dashboard/annonces/new">
                             <Button 
                                 size="lg"
                                 className="bg-green-600 text-white hover:bg-green-700 font-semibold px-8 py-6 text-lg flex items-center gap-2"

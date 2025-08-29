@@ -104,7 +104,7 @@ export default function DashboardPage() {
           {/* Dashboard Cards */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {/* Annonces Card */}
-            <Link href="/dashboard/listings">
+            <Link href="/dashboard/annonces">
               <Card className="p-6 bg-white border border-gray-200 shadow-sm hover:shadow-md transition-all duration-300 cursor-pointer hover:-translate-y-1">
                 <CardContent className="p-0">
                   <div className="flex items-center space-x-4">
@@ -245,7 +245,7 @@ export default function DashboardPage() {
                 </Link>
 
                 {/* Admin Listings Card */}
-                <Link href="/dashboard/admin/listings">
+                <Link href="/dashboard/admin/annonces">
                   <Card className="p-6 bg-white border border-indigo-200 shadow-sm hover:shadow-md transition-all duration-300 cursor-pointer hover:-translate-y-1">
                     <CardContent className="p-0">
                       <div className="flex items-center space-x-4">

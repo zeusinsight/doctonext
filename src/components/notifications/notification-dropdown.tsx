@@ -73,9 +73,39 @@ export function NotificationDropdown({ onClose }: NotificationDropdownProps) {
 
             {/* Content */}
             {isLoading ? (
-                <div className="p-8 text-center">
-                    <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-600 mx-auto"></div>
-                    <p className="text-sm text-gray-500 mt-2">Chargement...</p>
+                <div className="divide-y divide-gray-100">
+                    {Array.from({ length: 3 }).map((_, i) => (
+                        <div key={i} className="p-4 animate-pulse">
+                            <div className="flex items-start gap-3">
+                                {/* Icon skeleton */}
+                                <div className="w-8 h-8 bg-gray-200 rounded-full shrink-0"></div>
+                                
+                                <div className="flex-1 min-w-0">
+                                    <div className="flex items-start justify-between gap-2">
+                                        <div className="flex-1">
+                                            {/* Title skeleton */}
+                                            <div className="h-4 bg-gray-200 rounded w-3/4 mb-2"></div>
+                                            
+                                            {/* Description skeleton */}
+                                            <div className="space-y-1">
+                                                <div className="h-3 bg-gray-200 rounded w-full"></div>
+                                                <div className="h-3 bg-gray-200 rounded w-2/3"></div>
+                                            </div>
+                                        </div>
+                                        
+                                        {/* Timestamp skeleton */}
+                                        <div className="h-3 bg-gray-200 rounded w-16 shrink-0"></div>
+                                    </div>
+                                    
+                                    {/* Read indicator skeleton */}
+                                    <div className="flex justify-between items-center mt-3">
+                                        <div className="w-2 h-2 bg-gray-200 rounded-full"></div>
+                                        <div className="h-3 bg-gray-200 rounded w-20"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    ))}
                 </div>
             ) : notifications.length === 0 ? (
                 <div className="p-8 text-center">
@@ -99,22 +129,6 @@ export function NotificationDropdown({ onClose }: NotificationDropdownProps) {
                 </ScrollArea>
             )}
 
-            {/* Footer */}
-            {notifications.length > 0 && (
-                <div className="p-3 border-t bg-gray-50 text-center">
-                    <Button
-                        variant="ghost"
-                        size="sm"
-                        className="text-sm text-gray-600 hover:text-gray-800"
-                        onClick={() => {
-                            onClose()
-                            // Could navigate to a full notifications page in the future
-                        }}
-                    >
-                        Voir toutes les notifications
-                    </Button>
-                </div>
-            )}
         </div>
     )
 }

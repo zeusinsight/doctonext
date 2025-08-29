@@ -4,35 +4,39 @@ import { FileText, Search, MessageSquare, Handshake } from "lucide-react"
 const steps = [
     {
         icon: FileText,
-        title: "Publiez votre annonce",
+        label: "Publiez",
+        title: "Mettez en ligne votre annonce en quelques clics",
         description: "Créez un compte et publiez votre annonce détaillée en quelques minutes."
     },
     {
         icon: Search,
-        title: "Recherchez des opportunités",
+        label: "Recherchez",
+        title: "Trouvez rapidement l'opportunité qui vous correspond",
         description: "Utilisez notre moteur de recherche avancé pour trouver l'opportunité idéale."
     },
     {
         icon: MessageSquare,
-        title: "Échangez en toute sécurité",
+        label: "Échangez",
+        title: "Discutez directement via notre messagerie sécurisée",
         description: "Communiquez directement via notre messagerie sécurisée."
     },
     {
         icon: Handshake,
-        title: "Concrétisez votre projet",
+        label: "Concrétisez",
+        title: "Finalisez votre projet en toute sérénité",
         description: "Finalisez votre transaction et développez votre activité professionnelle."
     }
 ]
 
 export const HowItWorksSection = () => {
     return (
-        <section className="py-20 bg-gradient-to-br from-blue-500 to-blue-700">
+        <section className="py-20 bg-gray-50">
             <div className="container mx-auto px-4">
                 <div className="text-center mb-12">
-                    <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
-                        Comment ça marche
+                    <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+                        Comment ça marche ?
                     </h2>
-                    <p className="text-lg md:text-xl text-blue-100 max-w-3xl mx-auto">
+                    <p className="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto">
                         Doctonext simplifie l'achat et la vente de patientèle et de fonds de commerce dans le domaine médical
                     </p>
                 </div>
@@ -41,16 +45,21 @@ export const HowItWorksSection = () => {
                     {steps.map((step, index) => {
                         const Icon = step.icon
                         return (
-                            <Card key={index} className="bg-blue-600/20 backdrop-blur-sm border-blue-400/30 p-6 text-center hover:bg-blue-600/30 transition-colors">
+                            <Card key={index} className="bg-white border-gray-200 p-6 text-center hover:shadow-lg transition-shadow">
                                 <div className="flex justify-center mb-4">
-                                    <div className="w-16 h-16 rounded-full bg-white flex items-center justify-center">
+                                    <div className="w-16 h-16 rounded-full bg-blue-50 flex items-center justify-center">
                                         <Icon className="w-8 h-8 text-blue-600" />
                                     </div>
                                 </div>
-                                <h3 className="text-xl font-semibold text-white mb-3">
+                                <div className="mb-2">
+                                    <span className="text-sm font-semibold text-blue-600 uppercase tracking-wide">
+                                        {step.label}
+                                    </span>
+                                </div>
+                                <h3 className="text-lg font-semibold text-gray-900 mb-3">
                                     {step.title}
                                 </h3>
-                                <p className="text-blue-100">
+                                <p className="text-gray-600 text-sm">
                                     {step.description}
                                 </p>
                             </Card>
@@ -59,7 +68,7 @@ export const HowItWorksSection = () => {
                 </div>
                 
                 <div className="text-center mt-12">
-                    <button className="bg-white text-blue-600 px-8 py-3 rounded-lg font-semibold hover:bg-blue-50 transition-colors">
+                    <button className="bg-blue-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors">
                         En savoir plus
                     </button>
                 </div>

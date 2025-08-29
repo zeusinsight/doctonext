@@ -248,7 +248,7 @@ export default function ListingsPage() {
             />
           </div>
           <Button asChild>
-            <Link href="/dashboard/listings/new">
+            <Link href="/dashboard/annonces/new">
               <Plus className="mr-2 h-4 w-4" />
               Nouvelle annonce
             </Link>
@@ -296,7 +296,7 @@ export default function ListingsPage() {
                 et des contacts.
               </p>
               <Button asChild>
-                <Link href="/dashboard/listings/new">
+                <Link href="/dashboard/annonces/new">
                   Créer ma première annonce
                 </Link>
               </Button>
@@ -354,13 +354,13 @@ export default function ListingsPage() {
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end">
                         <DropdownMenuItem asChild>
-                          <Link href={`/listings/${listing.id}`}>
+                          <Link href={`/annonces/${listing.id}`}>
                             <Eye className="mr-2 h-4 w-4" />
                             Voir
                           </Link>
                         </DropdownMenuItem>
                         <DropdownMenuItem asChild>
-                          <Link href={`/dashboard/listings/${listing.id}/edit`}>
+                          <Link href={`/dashboard/annonces/${listing.id}/edit`}>
                             <Edit className="mr-2 h-4 w-4" />
                             Modifier
                           </Link>

@@ -1,6 +1,5 @@
 "use client"
 
-import { Card } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { FavoriteButton } from "@/components/ui/favorite-button"
 import { MapPin } from "lucide-react"
@@ -15,14 +14,15 @@ interface SponsoredListingCardProps {
     orientation?: "horizontal" | "vertical"
 }
 
-export function SponsoredListingCard({ 
-    listing, 
+export function SponsoredListingCard({
+    listing,
     className,
-    orientation = "horizontal" 
+    orientation = "horizontal"
 }: SponsoredListingCardProps) {
-    const firstImage = "media" in listing && listing.media?.length > 0 
-        ? listing.media[0] 
-        : null
+    const firstImage =
+        "media" in listing && listing.media?.length > 0
+            ? listing.media[0]
+            : null
 
     const formatPrice = (price: number | null | undefined) => {
         if (!price) return null
@@ -41,7 +41,10 @@ export function SponsoredListingCard({
             const rate = formatPrice(listing.dailyRate)
             return rate ? `${rate}/jour` : null
         }
-        if (listing.listingType === "collaboration" && "investmentAmount" in listing) {
+        if (
+            listing.listingType === "collaboration" &&
+            "investmentAmount" in listing
+        ) {
             const amount = listing.investmentAmount
             if (amount === "to_discuss") return "À discuter"
             if (amount) return formatPrice(Number(amount))
@@ -53,54 +56,69 @@ export function SponsoredListingCard({
 
     if (orientation === "vertical") {
         return (
-            <Link href={`/listings/${listing.id}`} className="block group">
-                <div className={cn(
-                    "bg-white rounded-xl border border-gray-100 hover:border-gray-200 hover:shadow-md transition-all duration-200 overflow-hidden flex flex-col",
-                    className
-                )}>
-                    <div className="aspect-[4/3] relative bg-gray-50 overflow-hidden">
+            <Link href={`/annonces/${listing.id}`} className="group block">
+                <div
+                    className={cn(
+                        "flex flex-col overflow-hidden rounded-xl border border-gray-100 bg-white transition-all duration-200 hover:border-gray-200 hover:shadow-md",
+                        className
+                    )}
+                >
+                    <div className="relative aspect-[4/3] overflow-hidden bg-gray-50">
                         {firstImage ? (
                             <Image
                                 src={firstImage.fileUrl}
                                 alt={listing.title}
                                 fill
-                                className="object-cover group-hover:scale-105 transition-transform duration-500"
+                                className="object-cover transition-transform duration-500 group-hover:scale-105"
                             />
                         ) : (
-                            <div className="w-full h-full bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center">
+                            <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-gray-100 to-gray-200">
                                 <MapPin className="h-8 w-8 text-gray-400" />
                             </div>
                         )}
-                        <div className="absolute top-2 left-2">
+                        <div className="absolute bottom-2 right-2">
                             <FavoriteButton
                                 listingId={listing.id}
-                                listingTitle={listing.title || "Cabinet médical moderne"}
+                                listingTitle={
+                                    listing.title || "Cabinet médical moderne"
+                                }
                                 variant="ghost"
                                 className="h-8 w-8 rounded-full bg-white/80 backdrop-blur-sm hover:bg-white"
                                 showToast={false}
                             />
                         </div>
-                        <div className="absolute top-2 right-2">
-                            <Badge className="bg-white/90 backdrop-blur-sm text-emerald-700 border-0 text-xs px-2 py-0.5">
-                                {listing.listingType === "transfer" ? "Cession" : 
-                                 listing.listingType === "replacement" ? "Remplacement" : "Collaboration"}
+                        <div className="absolute top-2 left-2">
+                            <Badge className="border-0 bg-white/90 px-2 py-0.5 text-emerald-700 text-xs backdrop-blur-sm">
+                                {listing.listingType === "transfer"
+                                    ? "Cession"
+                                    : listing.listingType === "replacement"
+                                      ? "Remplacement"
+                                      : "Collaboration"}
                             </Badge>
                         </div>
+                        {"isBoostPlus" in listing && listing.isBoostPlus && (
+                            <div className="absolute top-2 right-2">
+                                <Badge className="border-amber-500/60 bg-amber-50/90 px-2 py-0.5 text-amber-600 text-xs backdrop-blur-sm">
+                                    Boost+
+                                </Badge>
+                            </div>
+                        )}
                     </div>
-                    <div className="p-4 space-y-2 flex-shrink-0">
+                    <div className="flex-shrink-0 space-y-2 p-4">
                         <div className="flex items-start justify-between gap-2">
-                            <h3 className="font-medium text-gray-900 line-clamp-1 text-sm group-hover:text-blue-600 transition-colors">
+                            <h3 className="line-clamp-1 font-medium text-gray-900 text-sm transition-colors group-hover:text-blue-600">
                                 {listing.title || "Cabinet médical moderne"}
                             </h3>
-                            <span className="text-sm font-semibold text-gray-900 shrink-0">
+                            <span className="shrink-0 font-semibold text-gray-900 text-sm">
                                 {price || "-"}
                             </span>
                         </div>
-                        <p className="text-xs text-gray-600 line-clamp-2 leading-relaxed">
-                            {listing.description || "Opportunité exceptionnelle dans un quartier dynamique avec forte patientèle établie"}
+                        <p className="line-clamp-2 text-gray-600 text-xs leading-relaxed">
+                            {listing.description ||
+                                "Opportunité exceptionnelle dans un quartier dynamique avec forte patientèle établie"}
                         </p>
                         <div className="flex items-center justify-between pt-1">
-                            <div className="flex items-center gap-1 text-xs text-gray-500">
+                            <div className="flex items-center gap-1 text-gray-500 text-xs">
                                 <MapPin className="h-3 w-3" />
                                 <span>{listing.location?.city || "Paris"}</span>
                             </div>
@@ -112,56 +130,100 @@ export function SponsoredListingCard({
     }
 
     return (
-        <Link href={`/listings/${listing.id}`} className="block group">
-            <div className={cn(
-                "bg-white rounded-xl border border-gray-100 hover:border-gray-200 hover:shadow-sm transition-all duration-200",
-                className
-            )}>
+        <Link href={`/annonces/${listing.id}`} className="group block">
+            <div
+                className={cn(
+                    "rounded-xl border border-gray-100 bg-white transition-all duration-200 hover:border-gray-200 hover:shadow-sm",
+                    className
+                )}
+            >
                 <div className="flex gap-3 p-3">
-                    <div className="w-28 h-28 relative bg-gray-50 rounded-lg shrink-0 overflow-hidden">
+                    <div className="relative h-28 w-28 shrink-0 overflow-hidden rounded-lg bg-gray-50">
                         {firstImage ? (
                             <Image
                                 src={firstImage.fileUrl}
                                 alt={listing.title}
                                 fill
-                                className="object-cover group-hover:scale-105 transition-transform duration-300"
+                                className="object-cover transition-transform duration-300 group-hover:scale-105"
                             />
                         ) : (
-                            <div className="w-full h-full bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center">
+                            <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-gray-100 to-gray-200">
                                 <MapPin className="h-6 w-6 text-gray-400" />
                             </div>
                         )}
+                        <div className="absolute top-1 left-1">
+                            <Badge className="border-0 bg-white/90 px-1.5 py-0.5 text-[10px] text-emerald-700 backdrop-blur-sm">
+                                {listing.listingType === "transfer"
+                                    ? "Cession"
+                                    : listing.listingType === "replacement"
+                                      ? "Remplacement"
+                                      : "Collaboration"}
+                            </Badge>
+                        </div>
+                        {"isBoostPlus" in listing && listing.isBoostPlus && (
+                            <div className="absolute top-1 right-1">
+                                <Badge className="border-amber-500/60 bg-amber-50/90 px-1.5 py-0.5 text-[10px] text-amber-600 backdrop-blur-sm">
+                                    Boost+
+                                </Badge>
+                            </div>
+                        )}
+                        <div className="absolute bottom-1 right-1">
+                            <FavoriteButton
+                                listingId={listing.id}
+                                listingTitle={
+                                    listing.title || "Cabinet médical moderne"
+                                }
+                                variant="ghost"
+                                className="h-6 w-6 rounded-full bg-white/80 backdrop-blur-sm hover:bg-white"
+                                showToast={false}
+                            />
+                        </div>
                     </div>
-                    <div className="flex-1 min-w-0 flex flex-col justify-between py-1">
+                    <div className="flex min-w-0 flex-1 flex-col justify-between py-1">
                         <div>
-                            <div className="flex items-start justify-between gap-3 mb-1">
-                                <h3 className="font-medium text-gray-900 line-clamp-1 text-sm group-hover:text-blue-600 transition-colors">
+                            <div className="mb-1 flex items-start justify-between gap-3">
+                                <h3 className="line-clamp-1 font-medium text-gray-900 text-sm transition-colors group-hover:text-blue-600">
                                     {listing.title || "Cabinet médical moderne"}
                                 </h3>
-                                <span className="text-sm font-semibold text-gray-900 shrink-0">
+                                <span className="shrink-0 font-semibold text-gray-900 text-sm">
                                     {price || "-"}
                                 </span>
                             </div>
                             {listing.specialty && (
-                                <p className="text-xs text-gray-500 mb-1.5">{listing.specialty}</p>
+                                <p className="mb-1.5 text-gray-500 text-xs">
+                                    {listing.specialty}
+                                </p>
                             )}
-                            <p className="text-xs text-gray-600 line-clamp-2 leading-relaxed">
-                                {listing.description || "Opportunité exceptionnelle dans un quartier dynamique avec forte patientèle établie"}
+                            <p className="line-clamp-2 text-gray-600 text-xs leading-relaxed">
+                                {listing.description ||
+                                    "Opportunité exceptionnelle dans un quartier dynamique avec forte patientèle établie"}
                             </p>
                         </div>
-                        <div className="flex items-center justify-between mt-2">
+                        <div className="mt-2 flex items-center justify-between">
                             <div className="flex items-center gap-3 text-xs">
                                 <div className="flex items-center gap-1 text-gray-500">
                                     <MapPin className="h-3 w-3" />
-                                    <span>{listing.location?.city || "Paris"}</span>
+                                    <span>
+                                        {listing.location?.city || "Paris"}
+                                    </span>
                                 </div>
-                                <Badge variant="secondary" className="h-5 text-[10px] px-1.5 bg-emerald-50 text-emerald-700 border-emerald-200">
-                                    {listing.listingType === "transfer" ? "Cession" : 
-                                     listing.listingType === "replacement" ? "Remplacement" : "Collaboration"}
+                                <Badge
+                                    variant="secondary"
+                                    className="h-5 border-emerald-200 bg-emerald-50 px-1.5 text-[10px] text-emerald-700"
+                                >
+                                    {listing.listingType === "transfer"
+                                        ? "Cession"
+                                        : listing.listingType === "replacement"
+                                          ? "Remplacement"
+                                          : "Collaboration"}
                                 </Badge>
                             </div>
                             <span className="text-[10px] text-gray-400">
-                                {listing.publishedAt ? new Date(listing.publishedAt).toLocaleDateString("fr-FR") : "Aujourd'hui"}
+                                {listing.publishedAt
+                                    ? new Date(
+                                          listing.publishedAt
+                                      ).toLocaleDateString("fr-FR")
+                                    : "Aujourd'hui"}
                             </span>
                         </div>
                     </div>
