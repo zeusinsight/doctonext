@@ -1,5 +1,6 @@
 "use client"
 import { Search, Plus } from "lucide-react"
+import { useState } from "react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { SmartListingButton } from "@/components/ui/smart-listing-button"
@@ -15,6 +16,9 @@ const ConnectedTriangles = ({
 }: {
     labels?: TriangleLabels
 }) => {
+    const [hovered, setHovered] = useState<
+        "remplacement" | "collaboration" | "cession" | null
+    >(null)
     return (
         <div className="relative flex h-[360px] w-full items-center justify-center md:h-[420px]">
             {/* subtle glow background */}
@@ -57,31 +61,50 @@ const ConnectedTriangles = ({
                     </filter>
                 </defs>
 
-                {/* Triangle connecting lines */}
+                {/* Triangle connecting lines (with hover emphasis) */}
+                {/* Remplacement: dotted, green */}
                 <g
-                    stroke="url(#lineGrad)"
-                    strokeWidth="3"
+                    stroke="#10b981"
                     strokeLinecap="round"
-                    opacity="1"
+                    opacity={hovered && hovered !== "remplacement" ? 0.35 : 1}
+                    className="transition-all duration-200 ease-out cursor-pointer"
+                    onMouseEnter={() => setHovered("remplacement")}
+                    onMouseLeave={() => setHovered(null)}
                 >
-                    {/* top to left */}
                     <line
                         x1="240"
                         y1="52"
                         x2="96"
                         y2="300"
-                        strokeDasharray="4 6"
+                        strokeDasharray="1 8"
+                        strokeWidth={hovered === "remplacement" ? 6 : 4}
                     />
-                    {/* top to right */}
+                </g>
+                {/* Collaboration: solid, blue */}
+                <g
+                    stroke="#2563eb"
+                    strokeLinecap="round"
+                    opacity={hovered && hovered !== "collaboration" ? 0.35 : 1}
+                    className="transition-all duration-200 ease-out cursor-pointer"
+                    onMouseEnter={() => setHovered("collaboration")}
+                    onMouseLeave={() => setHovered(null)}
+                >
                     <line
                         x1="240"
                         y1="52"
                         x2="384"
                         y2="300"
-                        strokeDasharray="4 6"
+                        strokeWidth={hovered === "collaboration" ? 6 : 4}
                     />
-                    {/* left to right */}
-                    {/* shorten to avoid hiding under nodes; add white underlay for contrast + dashed overlay */}
+                </g>
+                {/* Cession: dashed, teal with white underlay */}
+                <g
+                    strokeLinecap="round"
+                    opacity={hovered && hovered !== "cession" ? 0.35 : 1}
+                    className="transition-all duration-200 ease-out cursor-pointer"
+                    onMouseEnter={() => setHovered("cession")}
+                    onMouseLeave={() => setHovered(null)}
+                >
                     <line
                         x1="120"
                         y1="300"
@@ -89,22 +112,27 @@ const ConnectedTriangles = ({
                         y2="300"
                         stroke="#ffffff"
                         strokeOpacity="0.9"
-                        strokeWidth="6"
+                        strokeWidth={hovered === "cession" ? 8 : 6}
                     />
                     <line
                         x1="120"
                         y1="300"
                         x2="360"
                         y2="300"
-                        strokeDasharray="4 6"
-                        strokeWidth="3"
+                        stroke="#14b8a6"
+                        strokeDasharray="8 6"
+                        strokeWidth={hovered === "cession" ? 6 : 4}
                     />
                 </g>
 
-                {/* Relationship labels */}
-                <g fontSize="12" fontWeight="600" textAnchor="middle">
-                    {/* midpoint of top-left line: ((240+96)/2, (52+300)/2) => (168,176) */}
-                    <g>
+                {/* Relationship labels (hover-aware, centered) */}
+                <g fontSize="12" fontWeight={600} textAnchor="middle">
+                    {/* Remplacement label @ (168,176) */}
+                    <g
+                        className="transition-all duration-200 ease-out cursor-pointer"
+                        onMouseEnter={() => setHovered("remplacement")}
+                        onMouseLeave={() => setHovered(null)}
+                    >
                         <rect
                             x="116"
                             y="164"
@@ -112,14 +140,19 @@ const ConnectedTriangles = ({
                             height="24"
                             rx="12"
                             fill="#ffffff"
-                            stroke="#e5e7eb"
+                            stroke={hovered === "remplacement" ? "#10b981" : "#e5e7eb"}
+                            strokeWidth={hovered === "remplacement" ? 2 : 1}
                         />
                         <text x="168" y="180" fill="#374151">
                             Remplacement
                         </text>
                     </g>
-                    {/* midpoint of top-right line: ((240+384)/2, (52+300)/2) => (312,176) */}
-                    <g>
+                    {/* Collaboration label @ (312,176) */}
+                    <g
+                        className="transition-all duration-200 ease-out cursor-pointer"
+                        onMouseEnter={() => setHovered("collaboration")}
+                        onMouseLeave={() => setHovered(null)}
+                    >
                         <rect
                             x="260"
                             y="164"
@@ -127,14 +160,19 @@ const ConnectedTriangles = ({
                             height="24"
                             rx="12"
                             fill="#ffffff"
-                            stroke="#e5e7eb"
+                            stroke={hovered === "collaboration" ? "#2563eb" : "#e5e7eb"}
+                            strokeWidth={hovered === "collaboration" ? 2 : 1}
                         />
                         <text x="312" y="180" fill="#374151">
                             Collaboration
                         </text>
                     </g>
-                    {/* midpoint of bottom line: ((96+384)/2, 300) => (240,300) */}
-                    <g>
+                    {/* Cession label @ (240,300) */}
+                    <g
+                        className="transition-all duration-200 ease-out cursor-pointer"
+                        onMouseEnter={() => setHovered("cession")}
+                        onMouseLeave={() => setHovered(null)}
+                    >
                         <rect
                             x="188"
                             y="288"
@@ -142,7 +180,8 @@ const ConnectedTriangles = ({
                             height="24"
                             rx="12"
                             fill="#ffffff"
-                            stroke="#e5e7eb"
+                            stroke={hovered === "cession" ? "#14b8a6" : "#e5e7eb"}
+                            strokeWidth={hovered === "cession" ? 2 : 1}
                         />
                         <text x="240" y="304" fill="#374151">
                             Cession
@@ -214,24 +253,25 @@ const ConnectedTriangles = ({
                     </g>
                 </g>
 
-                {/* Center badge */}
+                {/* Center badge (emphasized) */}
                 <g transform="translate(240,200)" filter="url(#softShadow)">
                     <rect
-                        x="-56"
+                        x="-70"
                         y="-18"
-                        rx="10"
-                        ry="10"
-                        width="112"
+                        rx="999"
+                        ry="999"
+                        width="140"
                         height="36"
-                        fill="#111827"
-                        fillOpacity="0.9"
+                        fill="#eff6ff"
+                        stroke="#bfdbfe"
                     />
                     <text
                         x="0"
                         y="6"
                         textAnchor="middle"
-                        fontSize="12"
-                        fill="#ffffff"
+                        fontSize="13"
+                        fontWeight={700}
+                        fill="#1d4ed8"
                     >
                         Mises en relation
                     </text>
