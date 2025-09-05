@@ -2,6 +2,7 @@
 
 import { useState, useEffect, Suspense, useCallback, useRef } from "react"
 import { useSearchParams, useRouter } from "next/navigation"
+import dynamic from "next/dynamic"
 import { ListingSearchHero } from "@/components/listings/listing-search-hero"
 import { SponsoredListingCard } from "@/components/listings/sponsored-listing-card"
 import {
@@ -9,6 +10,7 @@ import {
     type ListingFilters
 } from "@/components/listings/listings-filter-modal"
 import type { PublicListing } from "@/types/listing"
+import type { MapListing } from "@/components/map/listing-markers"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -17,6 +19,28 @@ import { Bell, Check } from "lucide-react"
 import { createSavedSearch } from "@/lib/actions/saved-searches"
 import { toast } from "sonner"
 import { authClient } from "@/lib/auth-client"
+import { getDefaultMedicalField, getMedicalDensityForField } from "@/lib/medical-density-utils"
+
+// Dynamic imports to prevent SSR issues
+const InteractiveMap = dynamic(
+    () => import("@/components/map/interactive-map").then((mod) => mod.InteractiveMap),
+    { ssr: false }
+)
+
+const ListingMarkers = dynamic(
+    () => import("@/components/map/listing-markers").then((mod) => mod.ListingMarkers),
+    { ssr: false }
+)
+
+const MedicalDensityOverlay = dynamic(
+    () => import("@/components/map/medical-density-overlay").then((mod) => mod.MedicalDensityOverlay),
+    { ssr: false }
+)
+
+const MedicalFieldSelector = dynamic(
+    () => import("@/components/map/medical-field-selector").then((mod) => mod.MedicalFieldSelector),
+    { ssr: false }
+)
 
 function ListingsContent() {
     const searchParams = useSearchParams()
@@ -30,6 +54,7 @@ function ListingsContent() {
     const [activeTab, setActiveTab] = useState<
         "all" | "sales" | "replacements" | "collaborations"
     >("all")
+    const [viewMode, setViewMode] = useState<"list" | "map">("list")
     const [isFilterModalOpen, setIsFilterModalOpen] = useState(false)
     const [filters, setFilters] = useState<ListingFilters>({
         specialties: [],
@@ -42,6 +67,10 @@ function ListingsContent() {
     const [searchName, setSearchName] = useState("")
     const [emailAlerts, setEmailAlerts] = useState(true)
     const [isSaving, setIsSaving] = useState(false)
+    const [mapListings, setMapListings] = useState<MapListing[]>([])
+    const [mapLoading, setMapLoading] = useState(false)
+    const [selectedMedicalField, setSelectedMedicalField] = useState<string>(getDefaultMedicalField())
+    const [medicalDensityData, setMedicalDensityData] = useState(() => getMedicalDensityForField(getDefaultMedicalField()))
     const { data: session } = authClient.useSession()
     const searchTimeoutRef = useRef<NodeJS.Timeout | null>(null)
 
@@ -55,6 +84,12 @@ function ListingsContent() {
     useEffect(() => {
         filterListings()
     }, [listings, searchQuery, activeTab, filters])
+
+    useEffect(() => {
+        if (viewMode === "map") {
+            fetchMapListings()
+        }
+    }, [viewMode, searchQuery, activeTab, filters])
 
     // Cleanup timeout on component unmount
     useEffect(() => {
@@ -79,6 +114,88 @@ function ListingsContent() {
             setLoading(false)
         }
     }
+
+    const fetchMapListings = useCallback(async () => {
+        console.log("🗺️ fetchMapListings called", { viewMode, activeTab, filters, searchQuery })
+        setMapLoading(true)
+        try {
+            // Build query parameters based on current filters
+            const params = new URLSearchParams()
+            
+            // Filter by listing type based on active tab
+            if (activeTab === "sales") {
+                params.append("type", "transfer")
+            } else if (activeTab === "replacements") {
+                params.append("type", "replacement")  
+            } else if (activeTab === "collaborations") {
+                params.append("type", "collaboration")
+            }
+            
+            // Add specialty filters
+            if (filters.specialties.length > 0) {
+                // For now, take the first specialty - API might need to be updated for multiple
+                params.append("specialty", filters.specialties[0])
+            }
+            
+            // Add region filters  
+            if (filters.regions.length > 0) {
+                // For now, take the first region - API might need to be updated for multiple
+                params.append("region", filters.regions[0])
+            }
+
+            const queryString = params.toString()
+            const url = `/api/map/listings${queryString ? `?${queryString}` : ""}`
+            
+            console.log("🗺️ Fetching map listings from:", url)
+            
+            const response = await fetch(url)
+            console.log("🗺️ Response status:", response.status)
+            
+            const data = await response.json()
+            console.log("🗺️ Response data:", data)
+            
+            // Let's also check if we can see listings data from the regular API for comparison
+            if (data.data?.listings?.length === 0) {
+                console.log("🗺️ No map listings found. Regular listings count:", sortedListings.length)
+                console.log("🗺️ Sample regular listing location:", sortedListings[0]?.location)
+            }
+
+            if (data.success && data.data) {
+                let mapResults = data.data.listings || []
+                console.log("🗺️ Raw map results:", mapResults.length, "listings")
+                
+                // Apply search query client-side (since API doesn't support text search yet)
+                if (searchQuery) {
+                    const query = searchQuery.toLowerCase()
+                    mapResults = mapResults.filter((listing: MapListing) =>
+                        listing.title.toLowerCase().includes(query) ||
+                        listing.specialty?.toLowerCase().includes(query) ||
+                        listing.location.city.toLowerCase().includes(query)
+                    )
+                    console.log("🗺️ After search filter:", mapResults.length, "listings")
+                }
+                
+                setMapListings(mapResults)
+                console.log("🗺️ Map listings set:", mapResults.length)
+            } else {
+                console.log("🗺️ API response not successful or no data:", data)
+                setMapListings([])
+            }
+        } catch (error) {
+            console.error("🗺️ Error fetching map listings:", error)
+            setMapListings([])
+        } finally {
+            setMapLoading(false)
+            console.log("🗺️ fetchMapListings complete")
+        }
+    }, [activeTab, filters.specialties, filters.regions, searchQuery])
+
+    // Handle medical field changes
+    const handleMedicalFieldChange = useCallback((field: string) => {
+        setSelectedMedicalField(field)
+        const newData = getMedicalDensityForField(field)
+        setMedicalDensityData(newData)
+    }, [])
 
     const filterListings = () => {
         let filtered = [...listings]
@@ -211,6 +328,7 @@ function ListingsContent() {
         }
     }
 
+
     // Calculate active filters count
     const activeFiltersCount =
         filters.specialties.length +
@@ -236,6 +354,8 @@ function ListingsContent() {
                 onTabChange={handleTabChange}
                 onFilterClick={handleFilterClick}
                 activeFiltersCount={activeFiltersCount}
+                viewMode={viewMode}
+                onViewModeChange={setViewMode}
             />
 
             <ListingsFilterModal
@@ -250,69 +370,178 @@ function ListingsContent() {
                     <div className="space-y-8">
                         <div>
                             <div className="mb-6 h-8 w-64 animate-pulse rounded bg-gray-200" />
-                            <div className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4">
-                                {Array.from({ length: 12 }).map((_, i) => (
-                                    <div
-                                        key={i}
-                                        className="overflow-hidden rounded-xl border border-gray-100 bg-white"
-                                    >
-                                        {/* Image skeleton */}
-                                        <div className="relative aspect-[4/3] bg-gray-200 animate-pulse">
-                                            {/* Badge skeletons */}
-                                            <div className="absolute top-2 left-2">
-                                                <div className="h-5 w-16 bg-gray-300 rounded-full animate-pulse" />
-                                            </div>
-                                            <div className="absolute top-2 right-2">
-                                                <div className="h-5 w-14 bg-gray-300 rounded-full animate-pulse" />
-                                            </div>
-                                            {/* Favorite button skeleton */}
-                                            <div className="absolute bottom-2 right-2">
-                                                <div className="h-8 w-8 bg-gray-300 rounded-full animate-pulse" />
-                                            </div>
-                                        </div>
-                                        
-                                        {/* Content skeleton */}
-                                        <div className="p-4 space-y-2">
-                                            {/* Title and price */}
-                                            <div className="flex items-start justify-between gap-2">
-                                                <div className="h-4 bg-gray-200 rounded animate-pulse flex-1" />
-                                                <div className="h-4 w-16 bg-gray-200 rounded animate-pulse shrink-0" />
+                            {viewMode === "list" ? (
+                                <div className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4">
+                                    {Array.from({ length: 12 }).map((_, i) => (
+                                        <div
+                                            key={i}
+                                            className="overflow-hidden rounded-xl border border-gray-100 bg-white"
+                                        >
+                                            {/* Image skeleton */}
+                                            <div className="relative aspect-[4/3] bg-gray-200 animate-pulse">
+                                                {/* Badge skeletons */}
+                                                <div className="absolute top-2 left-2">
+                                                    <div className="h-5 w-16 bg-gray-300 rounded-full animate-pulse" />
+                                                </div>
+                                                <div className="absolute top-2 right-2">
+                                                    <div className="h-5 w-14 bg-gray-300 rounded-full animate-pulse" />
+                                                </div>
+                                                {/* Favorite button skeleton */}
+                                                <div className="absolute bottom-2 right-2">
+                                                    <div className="h-8 w-8 bg-gray-300 rounded-full animate-pulse" />
+                                                </div>
                                             </div>
                                             
-                                            {/* Description */}
-                                            <div className="space-y-1">
-                                                <div className="h-3 bg-gray-200 rounded animate-pulse w-full" />
-                                                <div className="h-3 bg-gray-200 rounded animate-pulse w-3/4" />
-                                            </div>
-                                            
-                                            {/* Location */}
-                                            <div className="pt-1">
-                                                <div className="h-3 w-20 bg-gray-200 rounded animate-pulse" />
+                                            {/* Content skeleton */}
+                                            <div className="p-4 space-y-2">
+                                                {/* Title and price */}
+                                                <div className="flex items-start justify-between gap-2">
+                                                    <div className="h-4 bg-gray-200 rounded animate-pulse flex-1" />
+                                                    <div className="h-4 w-16 bg-gray-200 rounded animate-pulse shrink-0" />
+                                                </div>
+                                                
+                                                {/* Description */}
+                                                <div className="space-y-1">
+                                                    <div className="h-3 bg-gray-200 rounded animate-pulse w-full" />
+                                                    <div className="h-3 bg-gray-200 rounded animate-pulse w-3/4" />
+                                                </div>
+                                                
+                                                {/* Location */}
+                                                <div className="pt-1">
+                                                    <div className="h-3 w-20 bg-gray-200 rounded animate-pulse" />
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                ))}
-                            </div>
+                                    ))}
+                                </div>
+                            ) : (
+                                <div className="h-[600px] bg-gray-200 animate-pulse rounded-lg" />
+                            )}
                         </div>
                     </div>
                 ) : (
                     <>
-                        {/* All Listings Grid with boosted ones first */}
-                        {sortedListings.length > 0 ? (
+                        {(viewMode === "list" && sortedListings.length > 0) || (viewMode === "map") ? (
                             <div>
                                 <h2 className="mb-6 font-bold text-2xl">
-                                    Toutes les annonces
+                                    {viewMode === "list" 
+                                        ? `Toutes les annonces (${sortedListings.length})` 
+                                        : mapLoading 
+                                            ? "Carte des annonces (chargement...)"
+                                            : `Carte des annonces (${mapListings.length})`
+                                    }
                                 </h2>
-                                <div className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4">
-                                    {sortedListings.map((listing) => (
-                                        <SponsoredListingCard
-                                            key={listing.id}
-                                            listing={listing}
-                                            orientation="vertical"
-                                            className="h-full"
-                                        />
-                                    ))}
-                                </div>
+                                
+                                {viewMode === "list" ? (
+                                    <div className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4">
+                                        {sortedListings.map((listing) => (
+                                            <SponsoredListingCard
+                                                key={listing.id}
+                                                listing={listing}
+                                                orientation="vertical"
+                                                className="h-full"
+                                            />
+                                        ))}
+                                    </div>
+                                ) : (
+                                    <div className="h-[600px] w-full relative">
+                                        {/* Medical field selector overlay */}
+                                        <div 
+                                            className="absolute top-4 left-4 z-[1001] max-w-xs"
+                                            style={{ zIndex: 1001 }}
+                                        >
+                                            <MedicalFieldSelector
+                                                selectedField={selectedMedicalField}
+                                                onFieldChange={handleMedicalFieldChange}
+                                            />
+                                        </div>
+
+                                        {/* Map legend */}
+                                        <div className="absolute bottom-4 right-4 z-[1000] bg-white/95 backdrop-blur-sm border border-gray-200 shadow-lg rounded-lg p-3 max-w-xs">
+                                            <div className="text-xs font-medium text-gray-700 mb-2">Densité médicale</div>
+                                            <div className="space-y-1 text-xs">
+                                                <div className="flex items-center gap-2">
+                                                    <div className="w-3 h-3 rounded" style={{ backgroundColor: "#10b981" }}></div>
+                                                    <span>Sous-densifié (opportunités)</span>
+                                                </div>
+                                                <div className="flex items-center gap-2">
+                                                    <div className="w-3 h-3 rounded" style={{ backgroundColor: "#f59e0b" }}></div>
+                                                    <span>Densité modérée</span>
+                                                </div>
+                                                <div className="flex items-center gap-2">
+                                                    <div className="w-3 h-3 rounded" style={{ backgroundColor: "#ef4444" }}></div>
+                                                    <span>Surdensifié (saturé)</span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <InteractiveMap
+                                            center={[46.603354, 1.888334]}
+                                            zoom={6}
+                                            height="600px"
+                                            className="w-full h-full"
+                                        >
+                                            {/* Medical density heatmap overlay */}
+                                            <MedicalDensityOverlay
+                                                densityData={medicalDensityData}
+                                                specialty={selectedMedicalField}
+                                                opacity={0.6}
+                                                showLabels={false}
+                                                mode="heatmap"
+                                            />
+                                            <ListingMarkers
+                                                listings={mapListings}
+                                                onMarkerClick={(listing) => {
+                                                    window.open(`/annonces/${listing.id}`, "_blank")
+                                                }}
+                                            />
+                                        </InteractiveMap>
+                                        
+                                        {mapLoading && (
+                                            <div className="absolute inset-0 bg-white/70 flex items-center justify-center rounded-lg">
+                                                <div className="flex items-center gap-2 bg-white p-4 rounded-lg shadow-lg">
+                                                    <div className="h-5 w-5 animate-spin border-2 border-primary border-t-transparent rounded-full" />
+                                                    <span className="text-sm">Chargement de la carte...</span>
+                                                </div>
+                                            </div>
+                                        )}
+                                        
+                                        {!mapLoading && mapListings.length === 0 && (
+                                            <div className="absolute bottom-4 left-4 bg-white/95 rounded-lg shadow-lg p-3 max-w-sm">
+                                                <div className="text-center">
+                                                    <p className="font-medium text-sm">
+                                                        Aucune annonce avec coordonnées
+                                                    </p>
+                                                    {session?.user && (
+                                                        <Button
+                                                            size="sm"
+                                                            onClick={async () => {
+                                                                try {
+                                                                    const response = await fetch("/api/map/geocode-batch", {
+                                                                        method: "POST"
+                                                                    })
+                                                                    const result = await response.json()
+                                                                    if (result.success) {
+                                                                        toast.success(result.data.message)
+                                                                        // Refetch map data
+                                                                        fetchMapListings()
+                                                                    } else {
+                                                                        toast.error("Erreur lors du géocodage")
+                                                                    }
+                                                                } catch (error) {
+                                                                    toast.error("Erreur lors du géocodage")
+                                                                }
+                                                            }}
+                                                            className="mt-2 w-full"
+                                                        >
+                                                            Générer les coordonnées GPS
+                                                        </Button>
+                                                    )}
+                                                </div>
+                                            </div>
+                                        )}
+                                    </div>
+                                )}
                             </div>
                         ) : (
                             <div className="flex flex-col items-center justify-center py-12 text-center">
@@ -407,6 +636,8 @@ function ListingsPageFallback() {
                 onSearch={() => {}}
                 onTabChange={() => {}}
                 onFilterClick={() => {}}
+                viewMode="list"
+                onViewModeChange={() => {}}
             />
 
             <div className="container mx-auto max-w-7xl px-4 py-8">

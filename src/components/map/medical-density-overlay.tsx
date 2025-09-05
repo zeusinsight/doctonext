@@ -4,7 +4,6 @@ import { useEffect, useState } from "react"
 import { useMap } from "react-leaflet"
 import L from "leaflet"
 import { HeatmapDensityOverlay } from "./heatmap-density-overlay";
-import { px } from "framer-motion";
 
 export interface RegionDensity {
   region: string
@@ -60,7 +59,12 @@ export function MedicalDensityOverlay({
     densityData.forEach((region) => {
       // Create polygon for each region
       if (region.bounds && region.bounds.length > 0) {
-        const polygon = L.polygon(region.bounds as L.LatLngExpression[][], {
+        // Convert GeoJSON-style [lng, lat] to Leaflet [lat, lng]
+        const latLngRings = region.bounds.map(ring =>
+          ring.map(([lng, lat]) => [lat, lng] as [number, number])
+        ) as L.LatLngExpression[][]
+
+        const polygon = L.polygon(latLngRings, {
           color: getDensityColor(region.densityScore),
           fillColor: getDensityColor(region.densityScore),
           fillOpacity: opacity,
@@ -69,16 +73,17 @@ export function MedicalDensityOverlay({
         })
 
         // Add tooltip with region information
+        const densityPer10k = ((region.professionalCount / region.populationCount) * 10000).toFixed(1)
         polygon.bindTooltip(
           `
             <div className="p-2">
               <div className="font-medium">${region.region}</div>
               <div className="text-sm space-y-1">
                 <div>Statut: <span className="font-medium">${getDensityCategory(region.densityScore)}</span></div>
-                <div>Score de densité: ${region.densityScore}/100</div>
                 <div>Professionnels: ${region.professionalCount.toLocaleString()}</div>
                 <div>Population: ${region.populationCount.toLocaleString()}</div>
-                ${specialty ? `<div>Spécialité: ${specialty}</div>` : ''}
+                <div>Densité: ${densityPer10k}/10k hab.</div>
+                ${specialty ? `<div class="pt-1 border-t text-xs text-blue-600">${specialty}</div>` : ''}
               </div>
             </div>
           `,
@@ -90,6 +95,7 @@ export function MedicalDensityOverlay({
 
         // Add click handler for more detailed information
         polygon.on("click", (e) => {
+          const densityPer10k = ((region.professionalCount / region.populationCount) * 10000).toFixed(1)
           L.popup()
             .setLatLng(e.latlng)
             .setContent(`
@@ -98,11 +104,7 @@ export function MedicalDensityOverlay({
                 <div className="space-y-2 text-sm">
                   <div className="flex justify-between">
                     <span>Statut médical:</span>
-                    <span className="font-medium" style={{ color: getDensityColor(region.densityScore) }}>${getDensityCategory(region.densityScore)}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span>Score de densité:</span>
-                    <span className="font-medium">${region.densityScore}/100</span>
+                    <span className="font-medium" style="color: ${getDensityColor(region.densityScore)}">${getDensityCategory(region.densityScore)}</span>
                   </div>
                   <div className="flex justify-between">
                     <span>Professionnels:</span>
@@ -113,12 +115,12 @@ export function MedicalDensityOverlay({
                     <span>${region.populationCount.toLocaleString()}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span>Ratio (prof/10k hab):</span>
-                    <span>${((region.professionalCount / region.populationCount) * 10000).toFixed(1)}</span>
+                    <span>Densité:</span>
+                    <span class="font-medium">${densityPer10k}/10k hab.</span>
                   </div>
                   ${specialty ? `
-                    <div className="pt-1 border-t">
-                      <span className="text-xs text-muted-foreground">Filtré par: ${specialty}</span>
+                    <div class="pt-2 border-t">
+                      <span class="text-sm font-medium text-blue-600">${specialty}</span>
                     </div>
                   ` : ''}
                 </div>
@@ -133,7 +135,7 @@ export function MedicalDensityOverlay({
         // Add region labels if enabled
         if (showLabels && region.bounds.length > 0) {
           // Calculate center point of region for label placement
-          const bounds = L.polygon(region.bounds as L.LatLngExpression[][]).getBounds()
+          const bounds = L.polygon(latLngRings).getBounds()
           const center = bounds.getCenter()
 
           const label = L.marker(center, {
@@ -183,6 +185,11 @@ export function MedicalDensityOverlay({
       <HeatmapDensityOverlay 
         densityData={densityData}
         opacity={opacity}
+        useRealData={true}
+        gradientPreset="opportunity"
+        radius={60}
+        blur={25}
+        pointDensity={15}
       />
     )
   }

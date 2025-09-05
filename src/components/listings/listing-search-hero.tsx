@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { Filter } from "lucide-react"
+import { Filter, List, Map } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { SearchWithHistory } from "@/components/ui/search-with-history"
 import { cn } from "@/lib/utils"
@@ -12,6 +12,8 @@ interface ListingSearchHeroProps {
     onTabChange?: (tab: "all" | "sales" | "replacements" | "collaborations") => void
     onFilterClick?: () => void
     activeFiltersCount?: number
+    viewMode?: "list" | "map"
+    onViewModeChange?: (mode: "list" | "map") => void
 }
 
 export function ListingSearchHero({ 
@@ -19,7 +21,9 @@ export function ListingSearchHero({
     onSearch, 
     onTabChange,
     onFilterClick,
-    activeFiltersCount = 0
+    activeFiltersCount = 0,
+    viewMode = "list",
+    onViewModeChange
 }: ListingSearchHeroProps) {
     const [searchQuery, setSearchQuery] = useState(initialSearch)
     const [activeTab, setActiveTab] = useState<"all" | "sales" | "replacements" | "collaborations">("all")
@@ -66,6 +70,39 @@ export function ListingSearchHero({
                         className="flex-1"
                         inputClassName="h-11 bg-white border-0 text-gray-900 placeholder:text-gray-400"
                     />
+                    
+                    {/* View Mode Toggle */}
+                    <div className="flex rounded-lg border border-white/20 bg-white/10 p-1">
+                        <Button
+                            type="button"
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => onViewModeChange?.("list")}
+                            className={cn(
+                                "h-9 px-3 text-xs font-medium transition-colors",
+                                viewMode === "list"
+                                    ? "bg-white text-gray-900 shadow-sm hover:bg-white/90"
+                                    : "text-white hover:bg-white/10"
+                            )}
+                        >
+                            <List className="h-4 w-4" />
+                        </Button>
+                        <Button
+                            type="button"
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => onViewModeChange?.("map")}
+                            className={cn(
+                                "h-9 px-3 text-xs font-medium transition-colors",
+                                viewMode === "map"
+                                    ? "bg-white text-gray-900 shadow-sm hover:bg-white/90"
+                                    : "text-white hover:bg-white/10"
+                            )}
+                        >
+                            <Map className="h-4 w-4" />
+                        </Button>
+                    </div>
+
                     <Button
                         type="button"
                         variant="outline"

@@ -203,7 +203,7 @@ const ConnectedTriangles = ({
                         />
                         <text
                             x="240"
-                            y="96"
+                            y="120"
                             textAnchor="middle"
                             fontSize="13"
                             fill="#111827"
@@ -257,7 +257,7 @@ const ConnectedTriangles = ({
                 <g transform="translate(240,200)" filter="url(#softShadow)">
                     <rect
                         x="-70"
-                        y="-18"
+                        y="20"
                         rx="999"
                         ry="999"
                         width="140"
@@ -267,7 +267,7 @@ const ConnectedTriangles = ({
                     />
                     <text
                         x="0"
-                        y="6"
+                        y="43"
                         textAnchor="middle"
                         fontSize="13"
                         fontWeight={700}

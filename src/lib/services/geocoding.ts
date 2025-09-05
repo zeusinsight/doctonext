@@ -8,6 +8,41 @@ export interface GeocodeResult {
   formattedAddress?: string
 }
 
+// City-only fallback using Nominatim when address-level and postal mapping fail
+export async function geocodeByCity(city: string): Promise<GeocodeResult | GeocodeError> {
+  try {
+    const query = [city, "France"].filter(Boolean).join(", ")
+    if (!city || !city.trim()) {
+      return { error: "Invalid city", code: "INVALID_INPUT" }
+    }
+    const url = new URL("https://nominatim.openstreetmap.org/search")
+    url.searchParams.set("q", query)
+    url.searchParams.set("format", "json")
+    url.searchParams.set("limit", "1")
+    url.searchParams.set("countrycodes", "fr")
+    url.searchParams.set("addressdetails", "1")
+
+    const response = await fetch(url.toString(), {
+      headers: { "User-Agent": "Doctonext/1.0 (contact@doctonext.com)" }
+    })
+    if (response.status === 429) return { error: "Rate limit exceeded", code: "RATE_LIMITED" }
+    if (!response.ok) return { error: "Geocoding service error", code: "NETWORK_ERROR" }
+
+    const results = await response.json()
+    if (!results || results.length === 0) return { error: "City not found", code: "NOT_FOUND" }
+
+    const result = results[0]
+    return {
+      latitude: parseFloat(result.lat),
+      longitude: parseFloat(result.lon),
+      formattedAddress: result.display_name
+    }
+  } catch (error) {
+    console.error("City geocoding error:", error)
+    return { error: "Geocoding failed", code: "NETWORK_ERROR" }
+  }
+}
+
 export interface GeocodeError {
   error: string
   code: "NOT_FOUND" | "RATE_LIMITED" | "NETWORK_ERROR" | "INVALID_INPUT"
@@ -75,9 +110,13 @@ export async function geocodeAddress(address: string, city: string, postalCode: 
  */
 export async function geocodeByPostalCode(postalCode: string, city: string): Promise<GeocodeResult | GeocodeError> {
   try {
-    // Simple postal code to region mapping for basic coordinates
-    const postalCodePrefix = postalCode.substring(0, 2)
-    
+    // Sanitize and derive department/overseas code
+    const cleaned = (postalCode || "").replace(/\s+/g, "")
+    if (cleaned.length < 2) {
+      return { error: "Postal code not found", code: "NOT_FOUND" }
+    }
+    let postalCodePrefix = cleaned.substring(0, 2)
+
     // Approximate coordinates for French departments
     const departmentCoordinates: Record<string, [number, number]> = {
       "01": [46.2044, 5.2406], // Ain
@@ -174,6 +213,32 @@ export async function geocodeByPostalCode(postalCode: string, city: string): Pro
       "93": [48.9167, 2.4333], // Seine-Saint-Denis
       "94": [48.7667, 2.4167], // Val-de-Marne
       "95": [49.0500, 2.0833], // Val-d'Oise
+      // Corsica (both 2A/2B -> 20)
+      "20": [42.0396, 9.0129], // Corse
+      // Overseas departments/collectivities (use first 3 digits)
+      // We'll handle these below by switching key to the first 3
+    }
+
+    // Overseas departments use 97x or 98x prefixes (we use 3-digit granularity where applicable)
+    if (cleaned.startsWith("97") || cleaned.startsWith("98")) {
+      const overseasKey = cleaned.substring(0, 3)
+      const overseasCoordinates: Record<string, [number, number]> = {
+        "971": [16.2650, -61.5510], // Guadeloupe
+        "972": [14.6415, -61.0242], // Martinique
+        "973": [4.0000, -53.0000],  // Guyane
+        "974": [-21.1151, 55.5364], // La Réunion
+        "975": [46.9419, -56.2711], // Saint-Pierre-et-Miquelon
+        "976": [-12.8275, 45.1662], // Mayotte
+        // Other collectivities often use different country codes; omit by default
+      }
+      const overseas = overseasCoordinates[overseasKey]
+      if (overseas) {
+        return {
+          latitude: overseas[0],
+          longitude: overseas[1],
+          formattedAddress: `${city}, ${cleaned}, France`
+        }
+      }
     }
 
     const coordinates = departmentCoordinates[postalCodePrefix]
@@ -182,7 +247,7 @@ export async function geocodeByPostalCode(postalCode: string, city: string): Pro
       return {
         latitude: coordinates[0],
         longitude: coordinates[1],
-        formattedAddress: `${city}, ${postalCode}, France`
+        formattedAddress: `${city}, ${cleaned}, France`
       }
     }
 
@@ -231,9 +296,7 @@ export async function geocodeAllListings(batchSize: number = 10) {
       .where(
         or(
           isNull(listingLocations.latitude),
-          isNull(listingLocations.longitude),
-          eq(listingLocations.latitude, ""),
-          eq(listingLocations.longitude, "")
+          isNull(listingLocations.longitude)
         )
       )
       .limit(batchSize)
@@ -260,6 +323,11 @@ export async function geocodeAllListings(batchSize: number = 10) {
       // If full address fails, try postal code fallback
       if ("error" in geocodeResult && geocodeResult.code === "NOT_FOUND") {
         geocodeResult = await geocodeByPostalCode(location.postalCode, location.city)
+      }
+
+      // If postal code mapping not found, try city-only fallback
+      if ("error" in geocodeResult && geocodeResult.code === "NOT_FOUND" && location.city) {
+        geocodeResult = await geocodeByCity(location.city)
       }
 
       if ("error" in geocodeResult) {

@@ -18,7 +18,7 @@ export const notificationTypes: Record<string, NotificationConfig> = {
         bgColor: "bg-blue-50",
         getTitle: (data) => `Nouvelle annonce: ${data?.listingTitle || "Annonce"}`,
         getMessage: (data) => `Une nouvelle annonce correspond à votre recherche "${data?.searchName}"`,
-        getLink: (data) => `/listings/${data?.listingId || ""}`
+        getLink: (data) => `/annonces/${data?.listingId || ""}`
     },
     new_message: {
         icon: MessageCircle,
@@ -34,7 +34,7 @@ export const notificationTypes: Record<string, NotificationConfig> = {
         bgColor: "bg-purple-50",
         getTitle: () => "Votre annonce a été consultée",
         getMessage: (data) => `Votre annonce "${data?.listingTitle}" a reçu une nouvelle consultation`,
-        getLink: (data) => `/dashboard/listings/${data?.listingId || ""}`
+        getLink: (data) => `/dashboard/annonces/${data?.listingId || ""}`
     },
     listing_favorite: {
         icon: Heart,
@@ -42,7 +42,7 @@ export const notificationTypes: Record<string, NotificationConfig> = {
         bgColor: "bg-red-50",
         getTitle: () => "Votre annonce a été ajoutée aux favoris",
         getMessage: (data) => `Votre annonce "${data?.listingTitle}" a été ajoutée aux favoris`,
-        getLink: (data) => `/dashboard/listings/${data?.listingId || ""}`
+        getLink: (data) => `/dashboard/annonces/${data?.listingId || ""}`
     },
     system_alert: {
         icon: AlertCircle,

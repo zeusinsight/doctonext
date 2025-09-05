@@ -10,6 +10,7 @@ import { revalidatePath } from "next/cache"
 import { createListingSchema, updateListingSchema } from "@/lib/validations/listing"
 import type { CreateListingData, UpdateListingData } from "@/types/listing"
 import { checkNewListingAgainstSavedSearches } from "@/lib/services/alert-service"
+import { geocodeAddress, geocodeByPostalCode, updateListingCoordinates } from "@/lib/services/geocoding"
 
 export async function createListing(data: CreateListingData) {
     try {
@@ -43,6 +44,25 @@ export async function createListing(data: CreateListingData) {
 
             // Create location
             if (validatedData.location) {
+                // Synchronous approximate coordinates (department centroid) if missing
+                let lat: string | null = validatedData.location.latitude ?? null
+                let lng: string | null = validatedData.location.longitude ?? null
+
+                if (!lat || !lng) {
+                    try {
+                        const approx = await geocodeByPostalCode(
+                            validatedData.location.postalCode,
+                            validatedData.location.city
+                        )
+                        if (!("error" in approx)) {
+                            lat = approx.latitude.toString()
+                            lng = approx.longitude.toString()
+                        }
+                    } catch (e) {
+                        console.warn("Approx geocoding failed (postal code)", e)
+                    }
+                }
+
                 await tx.insert(listingLocations).values({
                     id: crypto.randomUUID(),
                     listingId: listing.id,
@@ -51,8 +71,8 @@ export async function createListing(data: CreateListingData) {
                     city: validatedData.location.city,
                     region: validatedData.location.region,
                     department: validatedData.location.department,
-                    latitude: validatedData.location.latitude,
-                    longitude: validatedData.location.longitude
+                    latitude: lat,
+                    longitude: lng
                 })
             }
 
@@ -112,8 +132,8 @@ export async function createListing(data: CreateListingData) {
             return listing
         })
 
-        revalidatePath("/dashboard/listings")
-        revalidatePath("/listings")
+        revalidatePath("/dashboard/annonces")
+        revalidatePath("/annonces")
 
         // Trigger alert checks asynchronously (don't wait for it)
         checkNewListingAgainstSavedSearches(result.id)
@@ -126,6 +146,24 @@ export async function createListing(data: CreateListingData) {
                 console.error("Error checking alerts for new listing:", error)
                 // Don't fail the listing creation if alert check fails
             })
+
+        // Fire-and-forget precise geocoding to refine coordinates
+        ;(async () => {
+            try {
+                if (validatedData.location) {
+                    const precise = await geocodeAddress(
+                        validatedData.location.address || "",
+                        validatedData.location.city,
+                        validatedData.location.postalCode
+                    )
+                    if (!("error" in precise)) {
+                        await updateListingCoordinates(result.id, precise)
+                    }
+                }
+            } catch (e) {
+                console.warn("Background precise geocoding failed for listing", result.id, e)
+            }
+        })()
 
         return { success: true, listingId: result.id }
     } catch (error) {
@@ -175,6 +213,25 @@ export async function updateListing(listingId: string, data: UpdateListingData) 
 
             // Update location if provided
             if (validatedData.location) {
+                // Compute approximate coords if missing
+                let lat: string | null = validatedData.location.latitude ?? null
+                let lng: string | null = validatedData.location.longitude ?? null
+
+                if (!lat || !lng) {
+                    try {
+                        const approx = await geocodeByPostalCode(
+                            validatedData.location.postalCode,
+                            validatedData.location.city
+                        )
+                        if (!("error" in approx)) {
+                            lat = approx.latitude.toString()
+                            lng = approx.longitude.toString()
+                        }
+                    } catch (e) {
+                        console.warn("Approx geocoding failed on update (postal code)", e)
+                    }
+                }
+
                 await tx
                     .update(listingLocations)
                     .set({
@@ -183,8 +240,8 @@ export async function updateListing(listingId: string, data: UpdateListingData) 
                         city: validatedData.location.city,
                         region: validatedData.location.region,
                         department: validatedData.location.department,
-                        latitude: validatedData.location.latitude,
-                        longitude: validatedData.location.longitude
+                        latitude: lat,
+                        longitude: lng
                     })
                     .where(eq(listingLocations.listingId, listingId))
             }
@@ -226,8 +283,26 @@ export async function updateListing(listingId: string, data: UpdateListingData) 
             }
         })
 
-        revalidatePath("/dashboard/listings")
-        revalidatePath(`/listings/${listingId}`)
+        revalidatePath("/dashboard/annonces")
+        revalidatePath(`/annonces/${listingId}`)
+
+        // Background precise geocoding after update (non-blocking)
+        ;(async () => {
+            try {
+                if (validatedData.location) {
+                    const precise = await geocodeAddress(
+                        validatedData.location.address || "",
+                        validatedData.location.city,
+                        validatedData.location.postalCode
+                    )
+                    if (!("error" in precise)) {
+                        await updateListingCoordinates(listingId, precise)
+                    }
+                }
+            } catch (e) {
+                console.warn("Background precise geocoding failed for update", listingId, e)
+            }
+        })()
 
         return { success: true }
     } catch (error) {
@@ -269,8 +344,8 @@ export async function deleteListing(listingId: string) {
             })
             .where(eq(listings.id, listingId))
 
-        revalidatePath("/dashboard/listings")
-        revalidatePath("/listings")
+        revalidatePath("/dashboard/annonces")
+        revalidatePath("/annonces")
 
         return { success: true }
     } catch (error) {
@@ -591,8 +666,8 @@ export async function updateListingStatus(listingId: string, status: string) {
             })
             .where(eq(listings.id, listingId))
 
-        revalidatePath("/dashboard/listings")
-        revalidatePath("/listings")
+        revalidatePath("/dashboard/annonces")
+        revalidatePath("/annonces")
 
         return { success: true }
     } catch (error) {

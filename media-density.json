@@ -1,0 +1,2557 @@
+{
+    "Auvergne-Rhône-Alpes": {
+      "Médecin généraliste": {
+        "density": 120.5,
+        "professionalCount": 9816,
+        "populationCount": 8160000
+      },
+      "Cardiologue": {
+        "density": 7.9,
+        "professionalCount": 644,
+        "populationCount": 8160000
+      },
+      "Dermatologue": {
+        "density": 3.4,
+        "professionalCount": 277,
+        "populationCount": 8160000
+      },
+      "Gynécologue": {
+        "density": 5.5,
+        "professionalCount": 449,
+        "populationCount": 8160000
+      },
+      "Neurologue": {
+        "density": 3.5,
+        "professionalCount": 285,
+        "populationCount": 8160000
+      },
+      "Ophtalmologue": {
+        "density": 5.0,
+        "professionalCount": 408,
+        "populationCount": 8160000
+      },
+      "Orthopédiste": {
+        "density": 5.0,
+        "professionalCount": 408,
+        "populationCount": 8160000
+      },
+      "Pédiatre": {
+        "density": 4.5,
+        "professionalCount": 367,
+        "populationCount": 8160000
+      },
+      "Psychiatre": {
+        "density": 18.0,
+        "professionalCount": 1469,
+        "populationCount": 8160000
+      },
+      "Radiologue": {
+        "density": 8.0,
+        "professionalCount": 653,
+        "populationCount": 8160000
+      },
+      "Chirurgien": {
+        "density": 6.0,
+        "professionalCount": 490,
+        "populationCount": 8160000
+      },
+      "Anesthésiste": {
+        "density": 9.0,
+        "professionalCount": 734,
+        "populationCount": 8160000
+      },
+      "Endocrinologue": {
+        "density": 2.6,
+        "professionalCount": 212,
+        "populationCount": 8160000
+      },
+      "Gastro-entérologue": {
+        "density": 5.0,
+        "professionalCount": 408,
+        "populationCount": 8160000
+      },
+      "Pneumologue": {
+        "density": 4.8,
+        "professionalCount": 392,
+        "populationCount": 8160000
+      },
+      "Rhumatologue": {
+        "density": 3.0,
+        "professionalCount": 245,
+        "populationCount": 8160000
+      },
+      "Urologue": {
+        "density": 2.2,
+        "professionalCount": 179,
+        "populationCount": 8160000
+      },
+      "ORL": {
+        "density": 4.5,
+        "professionalCount": 367,
+        "populationCount": 8160000
+      },
+      "Dentiste": {
+        "density": 60.0,
+        "professionalCount": 4896,
+        "populationCount": 8160000
+      },
+      "Pharmacien": {
+        "density": 108.0,
+        "professionalCount": 8813,
+        "populationCount": 8160000
+      },
+      "Kinésithérapeute": {
+        "density": 131.3,
+        "professionalCount": 10714,
+        "populationCount": 8160000
+      },
+      "Infirmier(ère)": {
+        "density": 1000.0,
+        "professionalCount": 81600,
+        "populationCount": 8160000
+      },
+      "Sage-femme": {
+        "density": 35.0,
+        "professionalCount": 2856,
+        "populationCount": 8160000
+      },
+      "Ostéopathe": {
+        "density": 45.0,
+        "professionalCount": 3672,
+        "populationCount": 8160000
+      },
+      "Podologue": {
+        "density": 20.0,
+        "professionalCount": 1632,
+        "populationCount": 8160000
+      },
+      "Orthophoniste": {
+        "density": 40.0,
+        "professionalCount": 3264,
+        "populationCount": 8160000
+      },
+      "Psychologue": {
+        "density": 107.7,
+        "professionalCount": 8789,
+        "populationCount": 8160000
+      },
+      "Diététicien(ne)": {
+        "density": 26.0,
+        "professionalCount": 2122,
+        "populationCount": 8160000
+      }
+    },
+    "Bourgogne-Franche-Comté": {
+      "Médecin généraliste": {
+        "density": 135.5,
+        "professionalCount": 3794,
+        "populationCount": 2800000
+      },
+      "Cardiologue": {
+        "density": 6.0,
+        "professionalCount": 168,
+        "populationCount": 2800000
+      },
+      "Dermatologue": {
+        "density": 2.4,
+        "professionalCount": 67,
+        "populationCount": 2800000
+      },
+      "Gynécologue": {
+        "density": 4.0,
+        "professionalCount": 112,
+        "populationCount": 2800000
+      },
+      "Neurologue": {
+        "density": 3.6,
+        "professionalCount": 101,
+        "populationCount": 2800000
+      },
+      "Ophtalmologue": {
+        "density": 4.8,
+        "professionalCount": 134,
+        "populationCount": 2800000
+      },
+      "Orthopédiste": {
+        "density": 6.3,
+        "professionalCount": 176,
+        "populationCount": 2800000
+      },
+      "Pédiatre": {
+        "density": 4.2,
+        "professionalCount": 118,
+        "populationCount": 2800000
+      },
+      "Psychiatre": {
+        "density": 22.8,
+        "professionalCount": 638,
+        "populationCount": 2800000
+      },
+      "Radiologue": {
+        "density": 7.2,
+        "professionalCount": 201,
+        "populationCount": 2800000
+      },
+      "Chirurgien": {
+        "density": 5.0,
+        "professionalCount": 140,
+        "populationCount": 2800000
+      },
+      "Anesthésiste": {
+        "density": 9.0,
+        "professionalCount": 252,
+        "populationCount": 2800000
+      },
+      "Endocrinologue": {
+        "density": 2.6,
+        "professionalCount": 73,
+        "populationCount": 2800000
+      },
+      "Gastro-entérologue": {
+        "density": 5.0,
+        "professionalCount": 140,
+        "populationCount": 2800000
+      },
+      "Pneumologue": {
+        "density": 1.9,
+        "professionalCount": 53,
+        "populationCount": 2800000
+      },
+      "Rhumatologue": {
+        "density": 3.0,
+        "professionalCount": 84,
+        "populationCount": 2800000
+      },
+      "Urologue": {
+        "density": 2.2,
+        "professionalCount": 62,
+        "populationCount": 2800000
+      },
+      "ORL": {
+        "density": 4.5,
+        "professionalCount": 126,
+        "populationCount": 2800000
+      },
+      "Dentiste": {
+        "density": 48.0,
+        "professionalCount": 1344,
+        "populationCount": 2800000
+      },
+      "Pharmacien": {
+        "density": 108.0,
+        "professionalCount": 3024,
+        "populationCount": 2800000
+      },
+      "Kinésithérapeute": {
+        "density": 131.3,
+        "professionalCount": 3676,
+        "populationCount": 2800000
+      },
+      "Infirmier(ère)": {
+        "density": 1000.0,
+        "professionalCount": 28000,
+        "populationCount": 2800000
+      },
+      "Sage-femme": {
+        "density": 35.0,
+        "professionalCount": 980,
+        "populationCount": 2800000
+      },
+      "Ostéopathe": {
+        "density": 45.0,
+        "professionalCount": 1260,
+        "populationCount": 2800000
+      },
+      "Podologue": {
+        "density": 20.0,
+        "professionalCount": 560,
+        "populationCount": 2800000
+      },
+      "Orthophoniste": {
+        "density": 40.0,
+        "professionalCount": 1120,
+        "populationCount": 2800000
+      },
+      "Psychologue": {
+        "density": 107.7,
+        "professionalCount": 3016,
+        "populationCount": 2800000
+      },
+      "Diététicien(ne)": {
+        "density": 26.0,
+        "professionalCount": 728,
+        "populationCount": 2800000
+      }
+    },
+    "Bretagne": {
+      "Médecin généraliste": {
+        "density": 116.6,
+        "professionalCount": 3964,
+        "populationCount": 3400000
+      },
+      "Cardiologue": {
+        "density": 7.9,
+        "professionalCount": 269,
+        "populationCount": 3400000
+      },
+      "Dermatologue": {
+        "density": 3.4,
+        "professionalCount": 116,
+        "populationCount": 3400000
+      },
+      "Gynécologue": {
+        "density": 5.5,
+        "professionalCount": 187,
+        "populationCount": 3400000
+      },
+      "Neurologue": {
+        "density": 3.5,
+        "professionalCount": 119,
+        "populationCount": 3400000
+      },
+      "Ophtalmologue": {
+        "density": 5.0,
+        "professionalCount": 170,
+        "populationCount": 3400000
+      },
+      "Orthopédiste": {
+        "density": 5.0,
+        "professionalCount": 170,
+        "populationCount": 3400000
+      },
+      "Pédiatre": {
+        "density": 4.5,
+        "professionalCount": 153,
+        "populationCount": 3400000
+      },
+      "Psychiatre": {
+        "density": 22.8,
+        "professionalCount": 775,
+        "populationCount": 3400000
+      },
+      "Radiologue": {
+        "density": 8.0,
+        "professionalCount": 272,
+        "populationCount": 3400000
+      },
+      "Chirurgien": {
+        "density": 6.0,
+        "professionalCount": 204,
+        "populationCount": 3400000
+      },
+      "Anesthésiste": {
+        "density": 9.0,
+        "professionalCount": 306,
+        "populationCount": 3400000
+      },
+      "Endocrinologue": {
+        "density": 2.6,
+        "professionalCount": 88,
+        "populationCount": 3400000
+      },
+      "Gastro-entérologue": {
+        "density": 5.0,
+        "professionalCount": 170,
+        "populationCount": 3400000
+      },
+      "Pneumologue": {
+        "density": 4.8,
+        "professionalCount": 163,
+        "populationCount": 3400000
+      },
+      "Rhumatologue": {
+        "density": 2.5,
+        "professionalCount": 85,
+        "populationCount": 3400000
+      },
+      "Urologue": {
+        "density": 2.2,
+        "professionalCount": 75,
+        "populationCount": 3400000
+      },
+      "ORL": {
+        "density": 4.5,
+        "professionalCount": 153,
+        "populationCount": 3400000
+      },
+      "Dentiste": {
+        "density": 60.0,
+        "professionalCount": 2040,
+        "populationCount": 3400000
+      },
+      "Pharmacien": {
+        "density": 108.0,
+        "professionalCount": 3672,
+        "populationCount": 3400000
+      },
+      "Kinésithérapeute": {
+        "density": 131.3,
+        "professionalCount": 4464,
+        "populationCount": 3400000
+      },
+      "Infirmier(ère)": {
+        "density": 1000.0,
+        "professionalCount": 34000,
+        "populationCount": 3400000
+      },
+      "Sage-femme": {
+        "density": 35.0,
+        "professionalCount": 1190,
+        "populationCount": 3400000
+      },
+      "Ostéopathe": {
+        "density": 45.0,
+        "professionalCount": 1530,
+        "populationCount": 3400000
+      },
+      "Podologue": {
+        "density": 20.0,
+        "professionalCount": 680,
+        "populationCount": 3400000
+      },
+      "Orthophoniste": {
+        "density": 40.0,
+        "professionalCount": 1360,
+        "populationCount": 3400000
+      },
+      "Psychologue": {
+        "density": 107.7,
+        "professionalCount": 3662,
+        "populationCount": 3400000
+      },
+      "Diététicien(ne)": {
+        "density": 26.0,
+        "professionalCount": 884,
+        "populationCount": 3400000
+      }
+    },
+    "Centre-Val de Loire": {
+      "Médecin généraliste": {
+        "density": 74.1,
+        "professionalCount": 1913,
+        "populationCount": 2580000
+      },
+      "Cardiologue": {
+        "density": 7.9,
+        "professionalCount": 204,
+        "populationCount": 2580000
+      },
+      "Dermatologue": {
+        "density": 3.4,
+        "professionalCount": 88,
+        "populationCount": 2580000
+      },
+      "Gynécologue": {
+        "density": 5.5,
+        "professionalCount": 142,
+        "populationCount": 2580000
+      },
+      "Neurologue": {
+        "density": 3.5,
+        "professionalCount": 90,
+        "populationCount": 2580000
+      },
+      "Ophtalmologue": {
+        "density": 5.0,
+        "professionalCount": 129,
+        "populationCount": 2580000
+      },
+      "Orthopédiste": {
+        "density": 5.0,
+        "professionalCount": 129,
+        "populationCount": 2580000
+      },
+      "Pédiatre": {
+        "density": 4.5,
+        "professionalCount": 116,
+        "populationCount": 2580000
+      },
+      "Psychiatre": {
+        "density": 22.8,
+        "professionalCount": 588,
+        "populationCount": 2580000
+      },
+      "Radiologue": {
+        "density": 8.0,
+        "professionalCount": 206,
+        "populationCount": 2580000
+      },
+      "Chirurgien": {
+        "density": 6.0,
+        "professionalCount": 155,
+        "populationCount": 2580000
+      },
+      "Anesthésiste": {
+        "density": 9.0,
+        "professionalCount": 232,
+        "populationCount": 2580000
+      },
+      "Endocrinologue": {
+        "density": 2.6,
+        "professionalCount": 67,
+        "populationCount": 2580000
+      },
+      "Gastro-entérologue": {
+        "density": 5.0,
+        "professionalCount": 129,
+        "populationCount": 2580000
+      },
+      "Pneumologue": {
+        "density": 4.8,
+        "professionalCount": 124,
+        "populationCount": 2580000
+      },
+      "Rhumatologue": {
+        "density": 3.0,
+        "professionalCount": 77,
+        "populationCount": 2580000
+      },
+      "Urologue": {
+        "density": 2.2,
+        "professionalCount": 57,
+        "populationCount": 2580000
+      },
+      "ORL": {
+        "density": 4.5,
+        "professionalCount": 116,
+        "populationCount": 2580000
+      },
+      "Dentiste": {
+        "density": 44.0,
+        "professionalCount": 1135,
+        "populationCount": 2580000
+      },
+      "Pharmacien": {
+        "density": 108.0,
+        "professionalCount": 2786,
+        "populationCount": 2580000
+      },
+      "Kinésithérapeute": {
+        "density": 131.3,
+        "professionalCount": 3388,
+        "populationCount": 2580000
+      },
+      "Infirmier(ère)": {
+        "density": 1000.0,
+        "professionalCount": 25800,
+        "populationCount": 2580000
+      },
+      "Sage-femme": {
+        "density": 35.0,
+        "professionalCount": 903,
+        "populationCount": 2580000
+      },
+      "Ostéopathe": {
+        "density": 45.0,
+        "professionalCount": 1161,
+        "populationCount": 2580000
+      },
+      "Podologue": {
+        "density": 20.0,
+        "professionalCount": 516,
+        "populationCount": 2580000
+      },
+      "Orthophoniste": {
+        "density": 40.0,
+        "professionalCount": 1032,
+        "populationCount": 2580000
+      },
+      "Psychologue": {
+        "density": 107.7,
+        "professionalCount": 2778,
+        "populationCount": 2580000
+      },
+      "Diététicien(ne)": {
+        "density": 26.0,
+        "professionalCount": 670,
+        "populationCount": 2580000
+      }
+    },
+    "Corse": {
+      "Médecin généraliste": {
+        "density": 130.8,
+        "professionalCount": 458,
+        "populationCount": 350000
+      },
+      "Cardiologue": {
+        "density": 7.9,
+        "professionalCount": 28,
+        "populationCount": 350000
+      },
+      "Dermatologue": {
+        "density": 3.4,
+        "professionalCount": 12,
+        "populationCount": 350000
+      },
+      "Gynécologue": {
+        "density": 5.5,
+        "professionalCount": 19,
+        "populationCount": 350000
+      },
+      "Neurologue": {
+        "density": 3.5,
+        "professionalCount": 12,
+        "populationCount": 350000
+      },
+      "Ophtalmologue": {
+        "density": 5.0,
+        "professionalCount": 18,
+        "populationCount": 350000
+      },
+      "Orthopédiste": {
+        "density": 5.0,
+        "professionalCount": 18,
+        "populationCount": 350000
+      },
+      "Pédiatre": {
+        "density": 4.5,
+        "professionalCount": 16,
+        "populationCount": 350000
+      },
+      "Psychiatre": {
+        "density": 22.8,
+        "professionalCount": 80,
+        "populationCount": 350000
+      },
+      "Radiologue": {
+        "density": 8.0,
+        "professionalCount": 28,
+        "populationCount": 350000
+      },
+      "Chirurgien": {
+        "density": 6.0,
+        "professionalCount": 21,
+        "populationCount": 350000
+      },
+      "Anesthésiste": {
+        "density": 9.0,
+        "professionalCount": 31,
+        "populationCount": 350000
+      },
+      "Endocrinologue": {
+        "density": 2.6,
+        "professionalCount": 9,
+        "populationCount": 350000
+      },
+      "Gastro-entérologue": {
+        "density": 5.0,
+        "professionalCount": 18,
+        "populationCount": 350000
+      },
+      "Pneumologue": {
+        "density": 4.8,
+        "professionalCount": 17,
+        "populationCount": 350000
+      },
+      "Rhumatologue": {
+        "density": 3.1,
+        "professionalCount": 11,
+        "populationCount": 350000
+      },
+      "Urologue": {
+        "density": 2.2,
+        "professionalCount": 8,
+        "populationCount": 350000
+      },
+      "ORL": {
+        "density": 4.5,
+        "professionalCount": 16,
+        "populationCount": 350000
+      },
+      "Dentiste": {
+        "density": 60.0,
+        "professionalCount": 210,
+        "populationCount": 350000
+      },
+      "Pharmacien": {
+        "density": 108.0,
+        "professionalCount": 378,
+        "populationCount": 350000
+      },
+      "Kinésithérapeute": {
+        "density": 131.3,
+        "professionalCount": 460,
+        "populationCount": 350000
+      },
+      "Infirmier(ère)": {
+        "density": 1000.0,
+        "professionalCount": 3500,
+        "populationCount": 350000
+      },
+      "Sage-femme": {
+        "density": 35.0,
+        "professionalCount": 122,
+        "populationCount": 350000
+      },
+      "Ostéopathe": {
+        "density": 45.0,
+        "professionalCount": 158,
+        "populationCount": 350000
+      },
+      "Podologue": {
+        "density": 20.0,
+        "professionalCount": 70,
+        "populationCount": 350000
+      },
+      "Orthophoniste": {
+        "density": 40.0,
+        "professionalCount": 140,
+        "populationCount": 350000
+      },
+      "Psychologue": {
+        "density": 107.7,
+        "professionalCount": 377,
+        "populationCount": 350000
+      },
+      "Diététicien(ne)": {
+        "density": 26.0,
+        "professionalCount": 91,
+        "populationCount": 350000
+      }
+    },
+    "Grand Est": {
+      "Médecin généraliste": {
+        "density": 109.4,
+        "professionalCount": 6098,
+        "populationCount": 5560000
+      },
+      "Cardiologue": {
+        "density": 7.9,
+        "professionalCount": 439,
+        "populationCount": 5560000
+      },
+      "Dermatologue": {
+        "density": 3.4,
+        "professionalCount": 189,
+        "populationCount": 5560000
+      },
+      "Gynécologue": {
+        "density": 5.5,
+        "professionalCount": 306,
+        "populationCount": 5560000
+      },
+      "Neurologue": {
+        "density": 3.5,
+        "professionalCount": 194,
+        "populationCount": 5560000
+      },
+      "Ophtalmologue": {
+        "density": 5.0,
+        "professionalCount": 278,
+        "populationCount": 5560000
+      },
+      "Orthopédiste": {
+        "density": 5.0,
+        "professionalCount": 278,
+        "populationCount": 5560000
+      },
+      "Pédiatre": {
+        "density": 4.5,
+        "professionalCount": 250,
+        "populationCount": 5560000
+      },
+      "Psychiatre": {
+        "density": 22.8,
+        "professionalCount": 1268,
+        "populationCount": 5560000
+      },
+      "Radiologue": {
+        "density": 8.0,
+        "professionalCount": 445,
+        "populationCount": 5560000
+      },
+      "Chirurgien": {
+        "density": 6.0,
+        "professionalCount": 334,
+        "populationCount": 5560000
+      },
+      "Anesthésiste": {
+        "density": 9.0,
+        "professionalCount": 500,
+        "populationCount": 5560000
+      },
+      "Endocrinologue": {
+        "density": 2.6,
+        "professionalCount": 145,
+        "populationCount": 5560000
+      },
+      "Gastro-entérologue": {
+        "density": 5.0,
+        "professionalCount": 278,
+        "populationCount": 5560000
+      },
+      "Pneumologue": {
+        "density": 4.8,
+        "professionalCount": 267,
+        "populationCount": 5560000
+      },
+      "Rhumatologue": {
+        "density": 3.0,
+        "professionalCount": 167,
+        "populationCount": 5560000
+      },
+      "Urologue": {
+        "density": 2.2,
+        "professionalCount": 122,
+        "populationCount": 5560000
+      },
+      "ORL": {
+        "density": 4.5,
+        "professionalCount": 250,
+        "populationCount": 5560000
+      },
+      "Dentiste": {
+        "density": 60.0,
+        "professionalCount": 3336,
+        "populationCount": 5560000
+      },
+      "Pharmacien": {
+        "density": 108.0,
+        "professionalCount": 6005,
+        "populationCount": 5560000
+      },
+      "Kinésithérapeute": {
+        "density": 131.3,
+        "professionalCount": 7302,
+        "populationCount": 5560000
+      },
+      "Infirmier(ère)": {
+        "density": 1000.0,
+        "professionalCount": 55600,
+        "populationCount": 5560000
+      },
+      "Sage-femme": {
+        "density": 35.0,
+        "professionalCount": 1946,
+        "populationCount": 5560000
+      },
+      "Ostéopathe": {
+        "density": 45.0,
+        "professionalCount": 2502,
+        "populationCount": 5560000
+      },
+      "Podologue": {
+        "density": 20.0,
+        "professionalCount": 1112,
+        "populationCount": 5560000
+      },
+      "Orthophoniste": {
+        "density": 40.0,
+        "professionalCount": 2224,
+        "populationCount": 5560000
+      },
+      "Psychologue": {
+        "density": 107.7,
+        "professionalCount": 5989,
+        "populationCount": 5560000
+      },
+      "Diététicien(ne)": {
+        "density": 26.0,
+        "professionalCount": 1446,
+        "populationCount": 5560000
+      }
+    },
+    "Hauts-de-France": {
+      "Médecin généraliste": {
+        "density": 130.5,
+        "professionalCount": 7830,
+        "populationCount": 6000000
+      },
+      "Cardiologue": {
+        "density": 7.9,
+        "professionalCount": 474,
+        "populationCount": 6000000
+      },
+      "Dermatologue": {
+        "density": 3.4,
+        "professionalCount": 204,
+        "populationCount": 6000000
+      },
+      "Gynécologue": {
+        "density": 5.5,
+        "professionalCount": 330,
+        "populationCount": 6000000
+      },
+      "Neurologue": {
+        "density": 3.5,
+        "professionalCount": 210,
+        "populationCount": 6000000
+      },
+      "Ophtalmologue": {
+        "density": 5.0,
+        "professionalCount": 300,
+        "populationCount": 6000000
+      },
+      "Orthopédiste": {
+        "density": 5.0,
+        "professionalCount": 300,
+        "populationCount": 6000000
+      },
+      "Pédiatre": {
+        "density": 4.5,
+        "professionalCount": 270,
+        "populationCount": 6000000
+      },
+      "Psychiatre": {
+        "density": 22.8,
+        "professionalCount": 1368,
+        "populationCount": 6000000
+      },
+      "Radiologue": {
+        "density": 8.0,
+        "professionalCount": 480,
+        "populationCount": 6000000
+      },
+      "Chirurgien": {
+        "density": 6.0,
+        "professionalCount": 360,
+        "populationCount": 6000000
+      },
+      "Anesthésiste": {
+        "density": 9.0,
+        "professionalCount": 540,
+        "populationCount": 6000000
+      },
+      "Endocrinologue": {
+        "density": 2.6,
+        "professionalCount": 156,
+        "populationCount": 6000000
+      },
+      "Gastro-entérologue": {
+        "density": 5.0,
+        "professionalCount": 300,
+        "populationCount": 6000000
+      },
+      "Pneumologue": {
+        "density": 4.8,
+        "professionalCount": 288,
+        "populationCount": 6000000
+      },
+      "Rhumatologue": {
+        "density": 3.0,
+        "professionalCount": 180,
+        "populationCount": 6000000
+      },
+      "Urologue": {
+        "density": 2.2,
+        "professionalCount": 132,
+        "populationCount": 6000000
+      },
+      "ORL": {
+        "density": 4.5,
+        "professionalCount": 270,
+        "populationCount": 6000000
+      },
+      "Dentiste": {
+        "density": 60.0,
+        "professionalCount": 3600,
+        "populationCount": 6000000
+      },
+      "Pharmacien": {
+        "density": 108.0,
+        "professionalCount": 6480,
+        "populationCount": 6000000
+      },
+      "Kinésithérapeute": {
+        "density": 131.3,
+        "professionalCount": 7878,
+        "populationCount": 6000000
+      },
+      "Infirmier(ère)": {
+        "density": 1000.0,
+        "professionalCount": 60000,
+        "populationCount": 6000000
+      },
+      "Sage-femme": {
+        "density": 35.0,
+        "professionalCount": 2100,
+        "populationCount": 6000000
+      },
+      "Ostéopathe": {
+        "density": 45.0,
+        "professionalCount": 2700,
+        "populationCount": 6000000
+      },
+      "Podologue": {
+        "density": 20.0,
+        "professionalCount": 1200,
+        "populationCount": 6000000
+      },
+      "Orthophoniste": {
+        "density": 40.0,
+        "professionalCount": 2400,
+        "populationCount": 6000000
+      },
+      "Psychologue": {
+        "density": 107.7,
+        "professionalCount": 6462,
+        "populationCount": 6000000
+      },
+      "Diététicien(ne)": {
+        "density": 26.0,
+        "professionalCount": 1560,
+        "populationCount": 6000000
+      }
+    },
+    "Île-de-France": {
+      "Médecin généraliste": {
+        "density": 135.0,
+        "professionalCount": 16605,
+        "populationCount": 12300000
+      },
+      "Cardiologue": {
+        "density": 17.0,
+        "professionalCount": 2091,
+        "populationCount": 12300000
+      },
+      "Dermatologue": {
+        "density": 17.5,
+        "professionalCount": 2152,
+        "populationCount": 12300000
+      },
+      "Gynécologue": {
+        "density": 5.5,
+        "professionalCount": 677,
+        "populationCount": 12300000
+      },
+      "Neurologue": {
+        "density": 3.5,
+        "professionalCount": 431,
+        "populationCount": 12300000
+      },
+      "Ophtalmologue": {
+        "density": 5.0,
+        "professionalCount": 615,
+        "populationCount": 12300000
+      },
+      "Orthopédiste": {
+        "density": 5.0,
+        "professionalCount": 615,
+        "populationCount": 12300000
+      },
+      "Pédiatre": {
+        "density": 4.5,
+        "professionalCount": 553,
+        "populationCount": 12300000
+      },
+      "Psychiatre": {
+        "density": 22.8,
+        "professionalCount": 2804,
+        "populationCount": 12300000
+      },
+      "Radiologue": {
+        "density": 8.0,
+        "professionalCount": 984,
+        "populationCount": 12300000
+      },
+      "Chirurgien": {
+        "density": 6.0,
+        "professionalCount": 738,
+        "populationCount": 12300000
+      },
+      "Anesthésiste": {
+        "density": 17.7,
+        "professionalCount": 2177,
+        "populationCount": 12300000
+      },
+      "Endocrinologue": {
+        "density": 2.6,
+        "professionalCount": 320,
+        "populationCount": 12300000
+      },
+      "Gastro-entérologue": {
+        "density": 5.0,
+        "professionalCount": 615,
+        "populationCount": 12300000
+      },
+      "Pneumologue": {
+        "density": 4.8,
+        "professionalCount": 590,
+        "populationCount": 12300000
+      },
+      "Rhumatologue": {
+        "density": 3.0,
+        "professionalCount": 369,
+        "populationCount": 12300000
+      },
+      "Urologue": {
+        "density": 2.2,
+        "professionalCount": 271,
+        "populationCount": 12300000
+      },
+      "ORL": {
+        "density": 4.5,
+        "professionalCount": 553,
+        "populationCount": 12300000
+      },
+      "Dentiste": {
+        "density": 60.0,
+        "professionalCount": 7380,
+        "populationCount": 12300000
+      },
+      "Pharmacien": {
+        "density": 108.0,
+        "professionalCount": 13284,
+        "populationCount": 12300000
+      },
+      "Kinésithérapeute": {
+        "density": 131.3,
+        "professionalCount": 16150,
+        "populationCount": 12300000
+      },
+      "Infirmier(ère)": {
+        "density": 1000.0,
+        "professionalCount": 123000,
+        "populationCount": 12300000
+      },
+      "Sage-femme": {
+        "density": 35.0,
+        "professionalCount": 4305,
+        "populationCount": 12300000
+      },
+      "Ostéopathe": {
+        "density": 45.0,
+        "professionalCount": 5535,
+        "populationCount": 12300000
+      },
+      "Podologue": {
+        "density": 20.0,
+        "professionalCount": 2460,
+        "populationCount": 12300000
+      },
+      "Orthophoniste": {
+        "density": 40.0,
+        "professionalCount": 4920,
+        "populationCount": 12300000
+      },
+      "Psychologue": {
+        "density": 107.7,
+        "professionalCount": 13247,
+        "populationCount": 12300000
+      },
+      "Diététicien(ne)": {
+        "density": 26.0,
+        "professionalCount": 3198,
+        "populationCount": 12300000
+      }
+    },
+    "Normandie": {
+      "Médecin généraliste": {
+        "density": 141.1,
+        "professionalCount": 4713,
+        "populationCount": 3340000
+      },
+      "Cardiologue": {
+        "density": 7.9,
+        "professionalCount": 264,
+        "populationCount": 3340000
+      },
+      "Dermatologue": {
+        "density": 3.4,
+        "professionalCount": 114,
+        "populationCount": 3340000
+      },
+      "Gynécologue": {
+        "density": 5.5,
+        "professionalCount": 184,
+        "populationCount": 3340000
+      },
+      "Neurologue": {
+        "density": 3.5,
+        "professionalCount": 117,
+        "populationCount": 3340000
+      },
+      "Ophtalmologue": {
+        "density": 5.0,
+        "professionalCount": 167,
+        "populationCount": 3340000
+      },
+      "Orthopédiste": {
+        "density": 5.0,
+        "professionalCount": 167,
+        "populationCount": 3340000
+      },
+      "Pédiatre": {
+        "density": 4.5,
+        "professionalCount": 150,
+        "populationCount": 3340000
+      },
+      "Psychiatre": {
+        "density": 22.8,
+        "professionalCount": 762,
+        "populationCount": 3340000
+      },
+      "Radiologue": {
+        "density": 8.0,
+        "professionalCount": 267,
+        "populationCount": 3340000
+      },
+      "Chirurgien": {
+        "density": 6.0,
+        "professionalCount": 200,
+        "populationCount": 3340000
+      },
+      "Anesthésiste": {
+        "density": 9.0,
+        "professionalCount": 301,
+        "populationCount": 3340000
+      },
+      "Endocrinologue": {
+        "density": 2.6,
+        "professionalCount": 87,
+        "populationCount": 3340000
+      },
+      "Gastro-entérologue": {
+        "density": 5.0,
+        "professionalCount": 167,
+        "populationCount": 3340000
+      },
+      "Pneumologue": {
+        "density": 4.8,
+        "professionalCount": 160,
+        "populationCount": 3340000
+      },
+      "Rhumatologue": {
+        "density": 3.0,
+        "professionalCount": 100,
+        "populationCount": 3340000
+      },
+      "Urologue": {
+        "density": 2.2,
+        "professionalCount": 73,
+        "populationCount": 3340000
+      },
+      "ORL": {
+        "density": 4.5,
+        "professionalCount": 150,
+        "populationCount": 3340000
+      },
+      "Dentiste": {
+        "density": 42.0,
+        "professionalCount": 1403,
+        "populationCount": 3340000
+      },
+      "Pharmacien": {
+        "density": 108.0,
+        "professionalCount": 3607,
+        "populationCount": 3340000
+      },
+      "Kinésithérapeute": {
+        "density": 131.3,
+        "professionalCount": 4387,
+        "populationCount": 3340000
+      },
+      "Infirmier(ère)": {
+        "density": 1000.0,
+        "professionalCount": 33400,
+        "populationCount": 3340000
+      },
+      "Sage-femme": {
+        "density": 35.0,
+        "professionalCount": 1169,
+        "populationCount": 3340000
+      },
+      "Ostéopathe": {
+        "density": 45.0,
+        "professionalCount": 1503,
+        "populationCount": 3340000
+      },
+      "Podologue": {
+        "density": 20.0,
+        "professionalCount": 668,
+        "populationCount": 3340000
+      },
+      "Orthophoniste": {
+        "density": 40.0,
+        "professionalCount": 1336,
+        "populationCount": 3340000
+      },
+      "Psychologue": {
+        "density": 107.7,
+        "professionalCount": 3597,
+        "populationCount": 3340000
+      },
+      "Diététicien(ne)": {
+        "density": 26.0,
+        "professionalCount": 868,
+        "populationCount": 3340000
+      }
+    },
+    "Nouvelle-Aquitaine": {
+      "Médecin généraliste": {
+        "density": 107.3,
+        "professionalCount": 6473,
+        "populationCount": 6030000
+      },
+      "Cardiologue": {
+        "density": 7.9,
+        "professionalCount": 476,
+        "populationCount": 6030000
+      },
+      "Dermatologue": {
+        "density": 3.4,
+        "professionalCount": 205,
+        "populationCount": 6030000
+      },
+      "Gynécologue": {
+        "density": 5.5,
+        "professionalCount": 332,
+        "populationCount": 6030000
+      },
+      "Neurologue": {
+        "density": 3.5,
+        "professionalCount": 211,
+        "populationCount": 6030000
+      },
+      "Ophtalmologue": {
+        "density": 5.0,
+        "professionalCount": 301,
+        "populationCount": 6030000
+      },
+      "Orthopédiste": {
+        "density": 5.0,
+        "professionalCount": 301,
+        "populationCount": 6030000
+      },
+      "Pédiatre": {
+        "density": 4.5,
+        "professionalCount": 271,
+        "populationCount": 6030000
+      },
+      "Psychiatre": {
+        "density": 22.8,
+        "professionalCount": 1375,
+        "populationCount": 6030000
+      },
+      "Radiologue": {
+        "density": 8.0,
+        "professionalCount": 482,
+        "populationCount": 6030000
+      },
+      "Chirurgien": {
+        "density": 6.0,
+        "professionalCount": 362,
+        "populationCount": 6030000
+      },
+      "Anesthésiste": {
+        "density": 9.0,
+        "professionalCount": 543,
+        "populationCount": 6030000
+      },
+      "Endocrinologue": {
+        "density": 2.6,
+        "professionalCount": 157,
+        "populationCount": 6030000
+      },
+      "Gastro-entérologue": {
+        "density": 5.0,
+        "professionalCount": 301,
+        "populationCount": 6030000
+      },
+      "Pneumologue": {
+        "density": 4.8,
+        "professionalCount": 289,
+        "populationCount": 6030000
+      },
+      "Rhumatologue": {
+        "density": 3.0,
+        "professionalCount": 181,
+        "populationCount": 6030000
+      },
+      "Urologue": {
+        "density": 2.2,
+        "professionalCount": 133,
+        "populationCount": 6030000
+      },
+      "ORL": {
+        "density": 4.5,
+        "professionalCount": 271,
+        "populationCount": 6030000
+      },
+      "Dentiste": {
+        "density": 60.0,
+        "professionalCount": 3618,
+        "populationCount": 6030000
+      },
+      "Pharmacien": {
+        "density": 108.0,
+        "professionalCount": 6512,
+        "populationCount": 6030000
+      },
+      "Kinésithérapeute": {
+        "density": 131.3,
+        "professionalCount": 7917,
+        "populationCount": 6030000
+      },
+      "Infirmier(ère)": {
+        "density": 1000.0,
+        "professionalCount": 60300,
+        "populationCount": 6030000
+      },
+      "Sage-femme": {
+        "density": 35.0,
+        "professionalCount": 2110,
+        "populationCount": 6030000
+      },
+      "Ostéopathe": {
+        "density": 45.0,
+        "professionalCount": 2714,
+        "populationCount": 6030000
+      },
+      "Podologue": {
+        "density": 20.0,
+        "professionalCount": 1206,
+        "populationCount": 6030000
+      },
+      "Orthophoniste": {
+        "density": 40.0,
+        "professionalCount": 2412,
+        "populationCount": 6030000
+      },
+      "Psychologue": {
+        "density": 107.7,
+        "professionalCount": 6494,
+        "populationCount": 6030000
+      },
+      "Diététicien(ne)": {
+        "density": 26.0,
+        "professionalCount": 1568,
+        "populationCount": 6030000
+      }
+    },
+    "Occitanie": {
+      "Médecin généraliste": {
+        "density": 135.5,
+        "professionalCount": 8167,
+        "populationCount": 6020000
+      },
+      "Cardiologue": {
+        "density": 7.9,
+        "professionalCount": 476,
+        "populationCount": 6020000
+      },
+      "Dermatologue": {
+        "density": 3.4,
+        "professionalCount": 205,
+        "populationCount": 6020000
+      },
+      "Gynécologue": {
+        "density": 5.5,
+        "professionalCount": 331,
+        "populationCount": 6020000
+      },
+      "Neurologue": {
+        "density": 3.5,
+        "professionalCount": 211,
+        "populationCount": 6020000
+      },
+      "Ophtalmologue": {
+        "density": 5.0,
+        "professionalCount": 301,
+        "populationCount": 6020000
+      },
+      "Orthopédiste": {
+        "density": 5.0,
+        "professionalCount": 301,
+        "populationCount": 6020000
+      },
+      "Pédiatre": {
+        "density": 4.5,
+        "professionalCount": 271,
+        "populationCount": 6020000
+      },
+      "Psychiatre": {
+        "density": 22.8,
+        "professionalCount": 1373,
+        "populationCount": 6020000
+      },
+      "Radiologue": {
+        "density": 8.0,
+        "professionalCount": 482,
+        "populationCount": 6020000
+      },
+      "Chirurgien": {
+        "density": 6.0,
+        "professionalCount": 361,
+        "populationCount": 6020000
+      },
+      "Anesthésiste": {
+        "density": 9.0,
+        "professionalCount": 542,
+        "populationCount": 6020000
+      },
+      "Endocrinologue": {
+        "density": 2.6,
+        "professionalCount": 157,
+        "populationCount": 6020000
+      },
+      "Gastro-entérologue": {
+        "density": 5.0,
+        "professionalCount": 301,
+        "populationCount": 6020000
+      },
+      "Pneumologue": {
+        "density": 4.8,
+        "professionalCount": 289,
+        "populationCount": 6020000
+      },
+      "Rhumatologue": {
+        "density": 3.0,
+        "professionalCount": 181,
+        "populationCount": 6020000
+      },
+      "Urologue": {
+        "density": 2.2,
+        "professionalCount": 132,
+        "populationCount": 6020000
+      },
+      "ORL": {
+        "density": 4.5,
+        "professionalCount": 271,
+        "populationCount": 6020000
+      },
+      "Dentiste": {
+        "density": 60.0,
+        "professionalCount": 3612,
+        "populationCount": 6020000
+      },
+      "Pharmacien": {
+        "density": 108.0,
+        "professionalCount": 6502,
+        "populationCount": 6020000
+      },
+      "Kinésithérapeute": {
+        "density": 131.3,
+        "professionalCount": 7907,
+        "populationCount": 6020000
+      },
+      "Infirmier(ère)": {
+        "density": 1000.0,
+        "professionalCount": 60200,
+        "populationCount": 6020000
+      },
+      "Sage-femme": {
+        "density": 35.0,
+        "professionalCount": 2107,
+        "populationCount": 6020000
+      },
+      "Ostéopathe": {
+        "density": 45.0,
+        "professionalCount": 2709,
+        "populationCount": 6020000
+      },
+      "Podologue": {
+        "density": 20.0,
+        "professionalCount": 1204,
+        "populationCount": 6020000
+      },
+      "Orthophoniste": {
+        "density": 40.0,
+        "professionalCount": 2408,
+        "populationCount": 6020000
+      },
+      "Psychologue": {
+        "density": 107.7,
+        "professionalCount": 6484,
+        "populationCount": 6020000
+      },
+      "Diététicien(ne)": {
+        "density": 26.0,
+        "professionalCount": 1565,
+        "populationCount": 6020000
+      }
+    },
+    "Pays de la Loire": {
+      "Médecin généraliste": {
+        "density": 136.5,
+        "professionalCount": 5354,
+        "populationCount": 3920000
+      },
+      "Cardiologue": {
+        "density": 7.9,
+        "professionalCount": 310,
+        "populationCount": 3920000
+      },
+      "Dermatologue": {
+        "density": 3.4,
+        "professionalCount": 133,
+        "populationCount": 3920000
+      },
+      "Gynécologue": {
+        "density": 5.5,
+        "professionalCount": 216,
+        "populationCount": 3920000
+      },
+      "Neurologue": {
+        "density": 3.5,
+        "professionalCount": 137,
+        "populationCount": 3920000
+      },
+      "Ophtalmologue": {
+        "density": 5.0,
+        "professionalCount": 196,
+        "populationCount": 3920000
+      },
+      "Orthopédiste": {
+        "density": 5.0,
+        "professionalCount": 196,
+        "populationCount": 3920000
+      },
+      "Pédiatre": {
+        "density": 4.5,
+        "professionalCount": 176,
+        "populationCount": 3920000
+      },
+      "Psychiatre": {
+        "density": 22.8,
+        "professionalCount": 894,
+        "populationCount": 3920000
+      },
+      "Radiologue": {
+        "density": 8.0,
+        "professionalCount": 314,
+        "populationCount": 3920000
+      },
+      "Chirurgien": {
+        "density": 6.0,
+        "professionalCount": 235,
+        "populationCount": 3920000
+      },
+      "Anesthésiste": {
+        "density": 9.0,
+        "professionalCount": 353,
+        "populationCount": 3920000
+      },
+      "Endocrinologue": {
+        "density": 2.6,
+        "professionalCount": 102,
+        "populationCount": 3920000
+      },
+      "Gastro-entérologue": {
+        "density": 5.0,
+        "professionalCount": 196,
+        "populationCount": 3920000
+      },
+      "Pneumologue": {
+        "density": 4.8,
+        "professionalCount": 188,
+        "populationCount": 3920000
+      },
+      "Rhumatologue": {
+        "density": 3.0,
+        "professionalCount": 118,
+        "populationCount": 3920000
+      },
+      "Urologue": {
+        "density": 2.2,
+        "professionalCount": 86,
+        "populationCount": 3920000
+      },
+      "ORL": {
+        "density": 4.5,
+        "professionalCount": 176,
+        "populationCount": 3920000
+      },
+      "Dentiste": {
+        "density": 60.0,
+        "professionalCount": 2352,
+        "populationCount": 3920000
+      },
+      "Pharmacien": {
+        "density": 108.0,
+        "professionalCount": 4234,
+        "populationCount": 3920000
+      },
+      "Kinésithérapeute": {
+        "density": 131.3,
+        "professionalCount": 5147,
+        "populationCount": 3920000
+      },
+      "Infirmier(ère)": {
+        "density": 1000.0,
+        "professionalCount": 39200,
+        "populationCount": 3920000
+      },
+      "Sage-femme": {
+        "density": 35.0,
+        "professionalCount": 1372,
+        "populationCount": 3920000
+      },
+      "Ostéopathe": {
+        "density": 45.0,
+        "professionalCount": 1764,
+        "populationCount": 3920000
+      },
+      "Podologue": {
+        "density": 20.0,
+        "professionalCount": 784,
+        "populationCount": 3920000
+      },
+      "Orthophoniste": {
+        "density": 40.0,
+        "professionalCount": 1568,
+        "populationCount": 3920000
+      },
+      "Psychologue": {
+        "density": 107.7,
+        "professionalCount": 4220,
+        "populationCount": 3920000
+      },
+      "Diététicien(ne)": {
+        "density": 26.0,
+        "professionalCount": 1019,
+        "populationCount": 3920000
+      }
+    },
+    "Provence-Alpes-Côte d'Azur": {
+      "Médecin généraliste": {
+        "density": 145.5,
+        "professionalCount": 7485,
+        "populationCount": 5130000
+      },
+      "Cardiologue": {
+        "density": 7.9,
+        "professionalCount": 405,
+        "populationCount": 5130000
+      },
+      "Dermatologue": {
+        "density": 3.4,
+        "professionalCount": 174,
+        "populationCount": 5130000
+      },
+      "Gynécologue": {
+        "density": 5.5,
+        "professionalCount": 282,
+        "populationCount": 5130000
+      },
+      "Neurologue": {
+        "density": 3.5,
+        "professionalCount": 180,
+        "populationCount": 5130000
+      },
+      "Ophtalmologue": {
+        "density": 5.0,
+        "professionalCount": 256,
+        "populationCount": 5130000
+      },
+      "Orthopédiste": {
+        "density": 5.0,
+        "professionalCount": 256,
+        "populationCount": 5130000
+      },
+      "Pédiatre": {
+        "density": 4.5,
+        "professionalCount": 231,
+        "populationCount": 5130000
+      },
+      "Psychiatre": {
+        "density": 22.8,
+        "professionalCount": 1170,
+        "populationCount": 5130000
+      },
+      "Radiologue": {
+        "density": 8.0,
+        "professionalCount": 410,
+        "populationCount": 5130000
+      },
+      "Chirurgien": {
+        "density": 6.0,
+        "professionalCount": 308,
+        "populationCount": 5130000
+      },
+      "Anesthésiste": {
+        "density": 9.0,
+        "professionalCount": 462,
+        "populationCount": 5130000
+      },
+      "Endocrinologue": {
+        "density": 2.6,
+        "professionalCount": 133,
+        "populationCount": 5130000
+      },
+      "Gastro-entérologue": {
+        "density": 5.0,
+        "professionalCount": 256,
+        "populationCount": 5130000
+      },
+      "Pneumologue": {
+        "density": 4.8,
+        "professionalCount": 246,
+        "populationCount": 5130000
+      },
+      "Rhumatologue": {
+        "density": 3.0,
+        "professionalCount": 154,
+        "populationCount": 5130000
+      },
+      "Urologue": {
+        "density": 2.2,
+        "professionalCount": 113,
+        "populationCount": 5130000
+      },
+      "ORL": {
+        "density": 4.5,
+        "professionalCount": 231,
+        "populationCount": 5130000
+      },
+      "Dentiste": {
+        "density": 60.0,
+        "professionalCount": 3078,
+        "populationCount": 5130000
+      },
+      "Pharmacien": {
+        "density": 108.0,
+        "professionalCount": 5540,
+        "populationCount": 5130000
+      },
+      "Kinésithérapeute": {
+        "density": 131.3,
+        "professionalCount": 6737,
+        "populationCount": 5130000
+      },
+      "Infirmier(ère)": {
+        "density": 1000.0,
+        "professionalCount": 51300,
+        "populationCount": 5130000
+      },
+      "Sage-femme": {
+        "density": 35.0,
+        "professionalCount": 1796,
+        "populationCount": 5130000
+      },
+      "Ostéopathe": {
+        "density": 45.0,
+        "professionalCount": 2308,
+        "populationCount": 5130000
+      },
+      "Podologue": {
+        "density": 20.0,
+        "professionalCount": 1026,
+        "populationCount": 5130000
+      },
+      "Orthophoniste": {
+        "density": 40.0,
+        "professionalCount": 2052,
+        "populationCount": 5130000
+      },
+      "Psychologue": {
+        "density": 107.7,
+        "professionalCount": 5525,
+        "populationCount": 5130000
+      },
+      "Diététicien(ne)": {
+        "density": 26.0,
+        "professionalCount": 1334,
+        "populationCount": 5130000
+      }
+    },
+    "Guadeloupe": {
+      "Médecin généraliste": {
+        "density": 147.0,
+        "professionalCount": 556,
+        "populationCount": 378000
+      },
+      "Cardiologue": {
+        "density": 7.9,
+        "professionalCount": 30,
+        "populationCount": 378000
+      },
+      "Dermatologue": {
+        "density": 3.4,
+        "professionalCount": 13,
+        "populationCount": 378000
+      },
+      "Gynécologue": {
+        "density": 5.5,
+        "professionalCount": 21,
+        "populationCount": 378000
+      },
+      "Neurologue": {
+        "density": 3.5,
+        "professionalCount": 13,
+        "populationCount": 378000
+      },
+      "Ophtalmologue": {
+        "density": 5.0,
+        "professionalCount": 19,
+        "populationCount": 378000
+      },
+      "Orthopédiste": {
+        "density": 5.0,
+        "professionalCount": 19,
+        "populationCount": 378000
+      },
+      "Pédiatre": {
+        "density": 4.5,
+        "professionalCount": 17,
+        "populationCount": 378000
+      },
+      "Psychiatre": {
+        "density": 22.8,
+        "professionalCount": 86,
+        "populationCount": 378000
+      },
+      "Radiologue": {
+        "density": 8.0,
+        "professionalCount": 30,
+        "populationCount": 378000
+      },
+      "Chirurgien": {
+        "density": 6.0,
+        "professionalCount": 23,
+        "populationCount": 378000
+      },
+      "Anesthésiste": {
+        "density": 9.0,
+        "professionalCount": 34,
+        "populationCount": 378000
+      },
+      "Endocrinologue": {
+        "density": 2.6,
+        "professionalCount": 10,
+        "populationCount": 378000
+      },
+      "Gastro-entérologue": {
+        "density": 5.0,
+        "professionalCount": 19,
+        "populationCount": 378000
+      },
+      "Pneumologue": {
+        "density": 4.8,
+        "professionalCount": 18,
+        "populationCount": 378000
+      },
+      "Rhumatologue": {
+        "density": 3.0,
+        "professionalCount": 11,
+        "populationCount": 378000
+      },
+      "Urologue": {
+        "density": 2.2,
+        "professionalCount": 8,
+        "populationCount": 378000
+      },
+      "ORL": {
+        "density": 4.5,
+        "professionalCount": 17,
+        "populationCount": 378000
+      },
+      "Dentiste": {
+        "density": 60.0,
+        "professionalCount": 227,
+        "populationCount": 378000
+      },
+      "Pharmacien": {
+        "density": 108.0,
+        "professionalCount": 408,
+        "populationCount": 378000
+      },
+      "Kinésithérapeute": {
+        "density": 131.3,
+        "professionalCount": 496,
+        "populationCount": 378000
+      },
+      "Infirmier(ère)": {
+        "density": 1000.0,
+        "professionalCount": 3780,
+        "populationCount": 378000
+      },
+      "Sage-femme": {
+        "density": 35.0,
+        "professionalCount": 132,
+        "populationCount": 378000
+      },
+      "Ostéopathe": {
+        "density": 45.0,
+        "professionalCount": 170,
+        "populationCount": 378000
+      },
+      "Podologue": {
+        "density": 20.0,
+        "professionalCount": 76,
+        "populationCount": 378000
+      },
+      "Orthophoniste": {
+        "density": 40.0,
+        "professionalCount": 151,
+        "populationCount": 378000
+      },
+      "Psychologue": {
+        "density": 107.7,
+        "professionalCount": 407,
+        "populationCount": 378000
+      },
+      "Diététicien(ne)": {
+        "density": 26.0,
+        "professionalCount": 98,
+        "populationCount": 378000
+      }
+    },
+    "Martinique": {
+      "Médecin généraliste": {
+        "density": 332.0,
+        "professionalCount": 1162,
+        "populationCount": 350000
+      },
+      "Cardiologue": {
+        "density": 7.9,
+        "professionalCount": 28,
+        "populationCount": 350000
+      },
+      "Dermatologue": {
+        "density": 3.4,
+        "professionalCount": 12,
+        "populationCount": 350000
+      },
+      "Gynécologue": {
+        "density": 5.5,
+        "professionalCount": 19,
+        "populationCount": 350000
+      },
+      "Neurologue": {
+        "density": 3.5,
+        "professionalCount": 12,
+        "populationCount": 350000
+      },
+      "Ophtalmologue": {
+        "density": 5.0,
+        "professionalCount": 18,
+        "populationCount": 350000
+      },
+      "Orthopédiste": {
+        "density": 5.0,
+        "professionalCount": 18,
+        "populationCount": 350000
+      },
+      "Pédiatre": {
+        "density": 4.5,
+        "professionalCount": 16,
+        "populationCount": 350000
+      },
+      "Psychiatre": {
+        "density": 22.8,
+        "professionalCount": 80,
+        "populationCount": 350000
+      },
+      "Radiologue": {
+        "density": 8.0,
+        "professionalCount": 28,
+        "populationCount": 350000
+      },
+      "Chirurgien": {
+        "density": 6.0,
+        "professionalCount": 21,
+        "populationCount": 350000
+      },
+      "Anesthésiste": {
+        "density": 9.0,
+        "professionalCount": 31,
+        "populationCount": 350000
+      },
+      "Endocrinologue": {
+        "density": 2.6,
+        "professionalCount": 9,
+        "populationCount": 350000
+      },
+      "Gastro-entérologue": {
+        "density": 5.0,
+        "professionalCount": 18,
+        "populationCount": 350000
+      },
+      "Pneumologue": {
+        "density": 4.8,
+        "professionalCount": 17,
+        "populationCount": 350000
+      },
+      "Rhumatologue": {
+        "density": 3.0,
+        "professionalCount": 11,
+        "populationCount": 350000
+      },
+      "Urologue": {
+        "density": 2.2,
+        "professionalCount": 8,
+        "populationCount": 350000
+      },
+      "ORL": {
+        "density": 4.5,
+        "professionalCount": 16,
+        "populationCount": 350000
+      },
+      "Dentiste": {
+        "density": 60.0,
+        "professionalCount": 210,
+        "populationCount": 350000
+      },
+      "Pharmacien": {
+        "density": 108.0,
+        "professionalCount": 378,
+        "populationCount": 350000
+      },
+      "Kinésithérapeute": {
+        "density": 131.3,
+        "professionalCount": 460,
+        "populationCount": 350000
+      },
+      "Infirmier(ère)": {
+        "density": 1000.0,
+        "professionalCount": 3500,
+        "populationCount": 350000
+      },
+      "Sage-femme": {
+        "density": 35.0,
+        "professionalCount": 122,
+        "populationCount": 350000
+      },
+      "Ostéopathe": {
+        "density": 45.0,
+        "professionalCount": 158,
+        "populationCount": 350000
+      },
+      "Podologue": {
+        "density": 20.0,
+        "professionalCount": 70,
+        "populationCount": 350000
+      },
+      "Orthophoniste": {
+        "density": 40.0,
+        "professionalCount": 140,
+        "populationCount": 350000
+      },
+      "Psychologue": {
+        "density": 107.7,
+        "professionalCount": 377,
+        "populationCount": 350000
+      },
+      "Diététicien(ne)": {
+        "density": 26.0,
+        "professionalCount": 91,
+        "populationCount": 350000
+      }
+    },
+    "Guyane": {
+      "Médecin généraliste": {
+        "density": 147.0,
+        "professionalCount": 448,
+        "populationCount": 305000
+      },
+      "Cardiologue": {
+        "density": 7.9,
+        "professionalCount": 24,
+        "populationCount": 305000
+      },
+      "Dermatologue": {
+        "density": 3.4,
+        "professionalCount": 10,
+        "populationCount": 305000
+      },
+      "Gynécologue": {
+        "density": 5.5,
+        "professionalCount": 17,
+        "populationCount": 305000
+      },
+      "Neurologue": {
+        "density": 3.5,
+        "professionalCount": 11,
+        "populationCount": 305000
+      },
+      "Ophtalmologue": {
+        "density": 5.0,
+        "professionalCount": 15,
+        "populationCount": 305000
+      },
+      "Orthopédiste": {
+        "density": 5.0,
+        "professionalCount": 15,
+        "populationCount": 305000
+      },
+      "Pédiatre": {
+        "density": 4.5,
+        "professionalCount": 14,
+        "populationCount": 305000
+      },
+      "Psychiatre": {
+        "density": 22.8,
+        "professionalCount": 70,
+        "populationCount": 305000
+      },
+      "Radiologue": {
+        "density": 8.0,
+        "professionalCount": 24,
+        "populationCount": 305000
+      },
+      "Chirurgien": {
+        "density": 6.0,
+        "professionalCount": 18,
+        "populationCount": 305000
+      },
+      "Anesthésiste": {
+        "density": 9.0,
+        "professionalCount": 27,
+        "populationCount": 305000
+      },
+      "Endocrinologue": {
+        "density": 2.6,
+        "professionalCount": 8,
+        "populationCount": 305000
+      },
+      "Gastro-entérologue": {
+        "density": 5.0,
+        "professionalCount": 15,
+        "populationCount": 305000
+      },
+      "Pneumologue": {
+        "density": 4.8,
+        "professionalCount": 15,
+        "populationCount": 305000
+      },
+      "Rhumatologue": {
+        "density": 3.0,
+        "professionalCount": 9,
+        "populationCount": 305000
+      },
+      "Urologue": {
+        "density": 2.2,
+        "professionalCount": 7,
+        "populationCount": 305000
+      },
+      "ORL": {
+        "density": 4.5,
+        "professionalCount": 14,
+        "populationCount": 305000
+      },
+      "Dentiste": {
+        "density": 24.0,
+        "professionalCount": 73,
+        "populationCount": 305000
+      },
+      "Pharmacien": {
+        "density": 108.0,
+        "professionalCount": 329,
+        "populationCount": 305000
+      },
+      "Kinésithérapeute": {
+        "density": 131.3,
+        "professionalCount": 400,
+        "populationCount": 305000
+      },
+      "Infirmier(ère)": {
+        "density": 1000.0,
+        "professionalCount": 3050,
+        "populationCount": 305000
+      },
+      "Sage-femme": {
+        "density": 35.0,
+        "professionalCount": 106,
+        "populationCount": 305000
+      },
+      "Ostéopathe": {
+        "density": 45.0,
+        "professionalCount": 137,
+        "populationCount": 305000
+      },
+      "Podologue": {
+        "density": 20.0,
+        "professionalCount": 61,
+        "populationCount": 305000
+      },
+      "Orthophoniste": {
+        "density": 40.0,
+        "professionalCount": 122,
+        "populationCount": 305000
+      },
+      "Psychologue": {
+        "density": 107.7,
+        "populationCount": 305000
+      },
+      "Diététicien(ne)": {
+        "density": 26.0,
+        "professionalCount": 79,
+        "populationCount": 305000
+      }
+    },
+    "La Réunion": {
+      "Médecin généraliste": {
+        "density": 147.0,
+        "professionalCount": 1283,
+        "populationCount": 873000
+      },
+      "Cardiologue": {
+        "density": 7.9,
+        "professionalCount": 69,
+        "populationCount": 873000
+      },
+      "Dermatologue": {
+        "density": 3.4,
+        "professionalCount": 30,
+        "populationCount": 873000
+      },
+      "Gynécologue": {
+        "density": 5.5,
+        "professionalCount": 48,
+        "populationCount": 873000
+      },
+      "Neurologue": {
+        "density": 3.5,
+        "professionalCount": 31,
+        "populationCount": 873000
+      },
+      "Ophtalmologue": {
+        "density": 5.0,
+        "professionalCount": 44,
+        "populationCount": 873000
+      },
+      "Orthopédiste": {
+        "density": 5.0,
+        "professionalCount": 44,
+        "populationCount": 873000
+      },
+      "Pédiatre": {
+        "density": 4.5,
+        "professionalCount": 39,
+        "populationCount": 873000
+      },
+      "Psychiatre": {
+        "density": 22.8,
+        "professionalCount": 199,
+        "populationCount": 873000
+      },
+      "Radiologue": {
+        "density": 8.0,
+        "professionalCount": 70,
+        "populationCount": 873000
+      },
+      "Chirurgien": {
+        "density": 6.0,
+        "professionalCount": 52,
+        "populationCount": 873000
+      },
+      "Anesthésiste": {
+        "density": 9.0,
+        "professionalCount": 79,
+        "populationCount": 873000
+      },
+      "Endocrinologue": {
+        "density": 2.6,
+        "professionalCount": 23,
+        "populationCount": 873000
+      },
+      "Gastro-entérologue": {
+        "density": 5.0,
+        "professionalCount": 44,
+        "populationCount": 873000
+      },
+      "Pneumologue": {
+        "density": 4.8,
+        "professionalCount": 42,
+        "populationCount": 873000
+      },
+      "Rhumatologue": {
+        "density": 3.0,
+        "professionalCount": 26,
+        "populationCount": 873000
+      },
+      "Urologue": {
+        "density": 2.2,
+        "professionalCount": 19,
+        "populationCount": 873000
+      },
+      "ORL": {
+        "density": 4.5,
+        "professionalCount": 39,
+        "populationCount": 873000
+      },
+      "Dentiste": {
+        "density": 60.0,
+        "professionalCount": 524,
+        "populationCount": 873000
+      },
+      "Pharmacien": {
+        "density": 108.0,
+        "professionalCount": 943,
+        "populationCount": 873000
+      },
+      "Kinésithérapeute": {
+        "density": 131.3,
+        "professionalCount": 1146,
+        "populationCount": 873000
+      },
+      "Infirmier(ère)": {
+        "density": 1000.0,
+        "professionalCount": 8730,
+        "populationCount": 873000
+      },
+      "Sage-femme": {
+        "density": 35.0,
+        "professionalCount": 305,
+        "populationCount": 873000
+      },
+      "Ostéopathe": {
+        "density": 45.0,
+        "professionalCount": 393,
+        "populationCount": 873000
+      },
+      "Podologue": {
+        "density": 20.0,
+        "professionalCount": 175,
+        "populationCount": 873000
+      },
+      "Orthophoniste": {
+        "density": 40.0,
+        "professionalCount": 349,
+        "populationCount": 873000
+      },
+      "Psychologue": {
+        "density": 107.7,
+        "professionalCount": 940,
+        "populationCount": 873000
+      },
+      "Diététicien(ne)": {
+        "density": 26.0,
+        "professionalCount": 227,
+        "populationCount": 873000
+      }
+    },
+    "Mayotte": {
+      "Médecin généraliste": {
+        "density": 147.0,
+        "professionalCount": 456,
+        "populationCount": 310000
+      },
+      "Cardiologue": {
+        "density": 7.9,
+        "professionalCount": 24,
+        "populationCount": 310000
+      },
+      "Dermatologue": {
+        "density": 3.4,
+        "professionalCount": 11,
+        "populationCount": 310000
+      },
+      "Gynécologue": {
+        "density": 5.5,
+        "professionalCount": 17,
+        "populationCount": 310000
+      },
+      "Neurologue": {
+        "density": 3.5,
+        "professionalCount": 11,
+        "populationCount": 310000
+      },
+      "Ophtalmologue": {
+        "density": 5.0,
+        "professionalCount": 15,
+        "populationCount": 310000
+      },
+      "Orthopédiste": {
+        "density": 5.0,
+        "professionalCount": 15,
+        "populationCount": 310000
+      },
+      "Pédiatre": {
+        "density": 4.5,
+        "professionalCount": 14,
+        "populationCount": 310000
+      },
+      "Psychiatre": {
+        "density": 22.8,
+        "professionalCount": 71,
+        "populationCount": 310000
+      },
+      "Radiologue": {
+        "density": 8.0,
+        "professionalCount": 25,
+        "populationCount": 310000
+      },
+      "Chirurgien": {
+        "density": 6.0,
+        "professionalCount": 19,
+        "populationCount": 310000
+      },
+      "Anesthésiste": {
+        "density": 9.0,
+        "professionalCount": 28,
+        "populationCount": 310000
+      },
+      "Endocrinologue": {
+        "density": 2.6,
+        "professionalCount": 8,
+        "populationCount": 310000
+      },
+      "Gastro-entérologue": {
+        "density": 5.0,
+        "professionalCount": 15,
+        "populationCount": 310000
+      },
+      "Pneumologue": {
+        "density": 4.8,
+        "professionalCount": 15,
+        "populationCount": 310000
+      },
+      "Rhumatologue": {
+        "density": 3.0,
+        "professionalCount": 9,
+        "populationCount": 310000
+      },
+      "Urologue": {
+        "density": 2.2,
+        "professionalCount": 7,
+        "populationCount": 310000
+      },
+      "ORL": {
+        "density": 4.5,
+        "professionalCount": 14,
+        "populationCount": 310000
+      },
+      "Dentiste": {
+        "density": 60.0,
+        "professionalCount": 186,
+        "populationCount": 310000
+      },
+      "Pharmacien": {
+        "density": 108.0,
+        "professionalCount": 335,
+        "populationCount": 310000
+      },
+      "Kinésithérapeute": {
+        "density": 131.3,
+        "professionalCount": 407,
+        "populationCount": 310000
+      },
+      "Infirmier(ère)": {
+        "density": 1000.0,
+        "professionalCount": 3100,
+        "populationCount": 310000
+      },
+      "Sage-femme": {
+        "density": 35.0,
+        "professionalCount": 108,
+        "populationCount": 310000
+      },
+      "Ostéopathe": {
+        "density": 45.0,
+        "professionalCount": 139,
+        "populationCount": 310000
+      },
+      "Podologue": {
+        "density": 20.0,
+        "professionalCount": 62,
+        "populationCount": 310000
+      },
+      "Orthophoniste": {
+        "density": 40.0,
+        "professionalCount": 124,
+        "populationCount": 310000
+      },
+      "Psychologue": {
+        "density": 107.7,
+        "professionalCount": 334,
+        "populationCount": 310000
+      },
+      "Diététicien(ne)": {
+        "density": 26.0,
+        "professionalCount": 81,
+        "populationCount": 310000
+      }
+    }
+  }

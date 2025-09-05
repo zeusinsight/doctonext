@@ -38,6 +38,7 @@ export function InteractiveMap({
   onMapReady
 }: InteractiveMapProps) {
   const mapRef = useRef<LeafletMap | null>(null)
+  const containerRef = useRef<HTMLDivElement | null>(null)
 
   useEffect(() => {
     if (mapRef.current && onMapReady) {
@@ -45,8 +46,34 @@ export function InteractiveMap({
     }
   }, [onMapReady])
 
+  // Ensure Leaflet knows its size when container becomes visible/resizes
+  useEffect(() => {
+    const map = mapRef.current
+    const container = containerRef.current
+    if (!map || !container) return
+
+    const invalidate = () => map.invalidateSize({ animate: false })
+
+    // Invalidate right after mount
+    const t = setTimeout(invalidate, 0)
+
+    // Observe container size changes
+    const ro = new ResizeObserver(() => invalidate())
+    ro.observe(container)
+
+    // Also listen to window resize
+    window.addEventListener("resize", invalidate)
+
+    return () => {
+      clearTimeout(t)
+      ro.disconnect()
+      window.removeEventListener("resize", invalidate)
+    }
+  }, [])
+
   return (
     <div 
+      ref={containerRef}
       className={cn("relative overflow-hidden rounded-lg border", className)}
       style={{ height }}
     >

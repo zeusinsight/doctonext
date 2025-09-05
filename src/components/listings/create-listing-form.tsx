@@ -105,7 +105,7 @@ export function CreateListingForm() {
 
             if (result.success) {
                 toast.success("Annonce créée avec succès !")
-                router.push("/dashboard/listings")
+                router.push("/dashboard/annonces")
             } else {
                 toast.error(result.error || "Erreur lors de la création de l'annonce")
             }

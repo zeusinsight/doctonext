@@ -7,7 +7,6 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { MapPin, Eye, Euro, ArrowUpRight } from "lucide-react"
-import Link from "next/link"
 
 export interface MapListing {
   id: string
@@ -111,9 +110,7 @@ export function ListingMarkers({ listings, onMarkerClick, clustering = false }: 
         key={listing.id}
         position={[listing.location.latitude, listing.location.longitude]}
         icon={createListingIcon(listing.listingType, listing.isBoostPlus)}
-        eventHandlers={{
-          click: () => onMarkerClick?.(listing),
-        }}
+        eventHandlers={{}}
       >
         <Popup maxWidth={320} className="custom-popup">
           <Card className="border-0 shadow-none p-0 m-0">
@@ -163,12 +160,14 @@ export function ListingMarkers({ listings, onMarkerClick, clustering = false }: 
                 )}
               </div>
               
-              <Link href={`/listings/${listing.id}`} className="block">
-                <Button size="sm" className="w-full h-8 text-xs">
-                  Voir l'annonce
-                  <ArrowUpRight className="h-3 w-3 ml-1" />
-                </Button>
-              </Link>
+              <Button 
+                size="sm" 
+                className="w-full h-8 text-xs"
+                onClick={() => onMarkerClick?.(listing)}
+              >
+                Voir l'annonce
+                <ArrowUpRight className="h-3 w-3 ml-1" />
+              </Button>
             </CardContent>
           </Card>
         </Popup>

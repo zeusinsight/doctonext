@@ -82,7 +82,24 @@ export async function GET(request: NextRequest) {
       .where(and(...conditions))
       .limit(1000) // Limit to prevent excessive data transfer
 
+    // Debug: Let's first check if we have any listings at all
+    const allListingsCount = await db.select({ count: sql`count(*)` }).from(listings)
+    const activeListingsCount = await db.select({ count: sql`count(*)` }).from(listings).where(eq(listings.status, "active"))
+    const locationsCount = await db.select({ count: sql`count(*)` }).from(listingLocations)
+    const locationsWithCoordsCount = await db
+      .select({ count: sql`count(*)` })
+      .from(listingLocations)
+      .where(and(isNotNull(listingLocations.latitude), isNotNull(listingLocations.longitude)))
+
+    console.log("🗂️ Database stats:", {
+      allListings: allListingsCount[0]?.count,
+      activeListings: activeListingsCount[0]?.count,
+      locations: locationsCount[0]?.count,
+      locationsWithCoords: locationsWithCoordsCount[0]?.count
+    })
+
     const baseListings = await query
+    console.log("🗂️ Query result:", baseListings.length, "listings found with conditions:", conditions.length, "conditions")
 
     // Get pricing data for transfer and replacement listings
     const listingIds = baseListings.map(l => l.id)
