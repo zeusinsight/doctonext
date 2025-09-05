@@ -125,7 +125,7 @@ export function getMedicalDensityForField(field: string): RegionDensity[] {
   Object.entries(medicalDensityData).forEach(([regionName, regionData]) => {
     const fieldData = regionData[field as keyof typeof regionData]
     
-    if (fieldData && REGIONAL_BOUNDS[regionName] && fieldData.professionalCount !== undefined) {
+    if (fieldData && REGIONAL_BOUNDS[regionName] && 'professionalCount' in fieldData && fieldData.professionalCount !== undefined) {
       const density = calculateDensityScore(fieldData.professionalCount, fieldData.populationCount)
       const normalizedScore = normalizeDensityScore(density, field)
       
@@ -161,7 +161,7 @@ export function getMedicalFieldStats(field: string): {
 
   Object.values(medicalDensityData).forEach(regionData => {
     const fieldData = regionData[field as keyof typeof regionData]
-    if (fieldData && fieldData.professionalCount !== undefined) {
+    if (fieldData && 'professionalCount' in fieldData && fieldData.professionalCount !== undefined) {
       totalProfessionals += fieldData.professionalCount
       totalPopulation += fieldData.populationCount
       regionCount++
