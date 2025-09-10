@@ -365,6 +365,8 @@ export const contractTemplates = pgTable("contract_templates", {
 
 export const contracts = pgTable("contracts", {
     id: text("id").primaryKey(),
+    conversationId: text("conversation_id")
+        .references(() => conversations.id, { onDelete: "cascade" }),
     listingId: text("listing_id")
         .notNull()
         .references(() => listings.id, { onDelete: "cascade" }),
@@ -376,18 +378,19 @@ export const contracts = pgTable("contracts", {
         .references(() => users.id, { onDelete: "cascade" }),
     contractType: text("contract_type").notNull(),
     templateId: text("template_id")
-        .notNull()
         .references(() => contractTemplates.id),
+    docusealTemplateId: text("docuseal_template_id"),
+    docusealSubmissionId: text("docuseal_submission_id"),
     status: text("status")
-        .$defaultFn(() => "draft")
+        .$type<"pending_payment" | "pending_signature" | "in_progress" | "completed" | "cancelled">()
+        .$defaultFn(() => "pending_payment")
         .notNull(),
-    docusealDocumentId: text("docuseal_document_id"),
     contractData: jsonb("contract_data"),
-    paymentIntentId: text("payment_intent_id"),
-    paymentStatus: text("payment_status")
-        .$defaultFn(() => "unpaid")
-        .notNull(),
+    parties: jsonb("parties"),
+    stripePaymentIntentId: text("stripe_payment_intent_id"),
+    paidAt: timestamp("paid_at"),
     signedAt: timestamp("signed_at"),
+    documentUrl: text("document_url"),
     expiresAt: timestamp("expires_at"),
     createdAt: timestamp("created_at")
         .$defaultFn(() => new Date())

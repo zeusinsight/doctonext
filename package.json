@@ -11,11 +11,14 @@
         "db:generate": "drizzle-kit generate",
         "db:push": "drizzle-kit push",
         "db:migrate": "drizzle-kit migrate",
-        "db:seed": "tsx scripts/generate-sample-listings.ts"
+        "db:seed": "tsx scripts/generate-sample-listings.ts",
+        "db:seed-contracts": "tsx scripts/seed-contract-templates.ts"
     },
     "dependencies": {
         "@better-auth/stripe": "^1.2.12",
         "@daveyplate/better-auth-ui": "^2.0.8",
+        "@docuseal/api": "^1.0.19",
+        "@docuseal/react": "^1.0.68",
         "@hookform/resolvers": "^5.1.1",
         "@radix-ui/react-accordion": "^1.2.11",
         "@radix-ui/react-alert-dialog": "^1.1.14",
@@ -54,6 +57,7 @@
         "leaflet": "^1.9.4",
         "leaflet.heat": "^0.2.0",
         "lucide-react": "^0.518.0",
+        "nanoid": "^5.1.5",
         "next": "15.3.4",
         "next-themes": "0.4.6",
         "nextjs-toploader": "^3.8.16",

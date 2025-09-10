@@ -1,7 +1,8 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useQuery, useQueryClient } from "@tanstack/react-query"
+import { useRouter, useParams } from "next/navigation"
 import { ConversationList } from "./conversation-list"
 import { MessageList } from "./message-list"
 import { MessageInput } from "./message-input"
@@ -19,19 +20,33 @@ import {
     Stethoscope,
     CheckCircle,
     Clock,
-    Briefcase,
-    FileText,
-    Crown
+    Briefcase
 } from "lucide-react"
 import { authClient } from "@/lib/auth-client"
 import Link from "next/link"
+import { ContractButton } from "@/components/contracts/contract-button"
 
-export function ChatInterface() {
+interface ChatInterfaceProps {
+    initialConversationId?: string
+}
+
+export function ChatInterface({ initialConversationId }: ChatInterfaceProps = {}) {
+    const router = useRouter()
+    const params = useParams()
     const [selectedConversationId, setSelectedConversationId] = useState<
         string | undefined
-    >()
-    const [showMobileConversations, setShowMobileConversations] = useState(true)
+    >(initialConversationId)
+    const [showMobileConversations, setShowMobileConversations] = useState(!initialConversationId)
     const queryClient = useQueryClient()
+
+    // Update selected conversation when URL changes or initialConversationId changes
+    useEffect(() => {
+        const conversationId = initialConversationId || (params?.id as string)
+        if (conversationId && conversationId !== selectedConversationId) {
+            setSelectedConversationId(conversationId)
+            setShowMobileConversations(false)
+        }
+    }, [initialConversationId, params?.id, selectedConversationId])
 
     const { data: session } = useQuery({
         queryKey: ["auth", "session"],
@@ -41,6 +56,9 @@ export function ChatInterface() {
     const handleSelectConversation = (conversationId: string) => {
         setSelectedConversationId(conversationId)
         setShowMobileConversations(false) // Hide conversation list on mobile
+        
+        // Update URL to reflect selected conversation
+        router.push(`/dashboard/messages/${conversationId}`)
     }
 
     const handleMessageSent = () => {
@@ -92,6 +110,9 @@ export function ChatInterface() {
     const handleBackToConversations = () => {
         setShowMobileConversations(true)
         setSelectedConversationId(undefined)
+        
+        // Navigate back to messages list
+        router.push('/dashboard/messages')
     }
 
     const formatPrice = (price: number | null | undefined) => {
@@ -265,21 +286,21 @@ export function ChatInterface() {
                                     </span>
                                     
                                 </div>
-                                                            {/* Contract Generation Button - Premium Feature */}
-                            <Button
-                                size="sm"
-                                className="w-full border-0 bg-gradient-to-r from-amber-500 to-amber-600 text-white hover:from-amber-600 hover:to-amber-700"
-                                onClick={() => {
-                                    // TODO: Open contract generation modal
-                                    alert(
-                                        "Fonctionnalité premium - Génération de contrat bientôt disponible!"
-                                    )
-                                }}
-                            >
-                                <FileText className="mr-2 h-4 w-4" />
-                                Générer un contrat
-                                <Crown className="ml-2 h-3 w-3" />
-                            </Button>
+                                                            {/* Contract Generation Button */}
+                                {selectedConversation && (
+                                    <ContractButton
+                                        conversationId={selectedConversationId}
+                                        listingId={listingDetails.listing.id}
+                                        recipientId={
+                                            selectedConversation.participant1Id === session.data.user.id
+                                                ? selectedConversation.participant2Id
+                                                : selectedConversation.participant1Id
+                                        }
+                                        senderId={session.data.user.id}
+                                        listingType={listingDetails.listing.listingType}
+                                        userProfession={(session.data.user as any).profession}
+                                    />
+                                )}
                             <Button asChild size="sm" className="w-full">
                                 <Link
                                     href={`/annonces/${listingDetails.listing.id}`}
