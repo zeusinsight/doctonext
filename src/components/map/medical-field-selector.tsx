@@ -1,6 +1,6 @@
 "use client"
 
-import { Activity } from "lucide-react"
+import { Activity, Users, MapPin } from "lucide-react"
 import { cn } from "@/lib/utils"
 import {
   Select,
@@ -9,46 +9,75 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import { getAvailableMedicalFields, MEDICAL_FIELD_NAMES, getMedicalFieldStats } from "@/lib/medical-density-utils"
+import { type MedicalProfession } from "@/lib/services/town-density-types"
+
+// Available medical professions from our CSV data
+const MEDICAL_PROFESSIONS: Record<MedicalProfession, { name: string; icon: React.ReactNode }> = {
+  'chirurgiens-dentistes': {
+    name: 'Chirurgiens-Dentistes',
+    icon: <Users className="w-4 h-4" />
+  },
+  'infirmier': {
+    name: 'Infirmiers',
+    icon: <Activity className="w-4 h-4" />
+  },
+  'masseurs-kinésithérapeutes': {
+    name: 'Masseurs-Kinésithérapeutes',
+    icon: <Activity className="w-4 h-4" />
+  },
+  'orthophonistes': {
+    name: 'Orthophonistes', 
+    icon: <Users className="w-4 h-4" />
+  },
+  'sages-femmes': {
+    name: 'Sages-femmes',
+    icon: <Activity className="w-4 h-4" />
+  }
+}
 
 interface MedicalFieldSelectorProps {
-  selectedField: string
-  onFieldChange: (field: string) => void
+  selectedProfession: MedicalProfession
+  onProfessionChange: (profession: MedicalProfession) => void
   className?: string
+  showStats?: boolean
 }
 
 export function MedicalFieldSelector({
-  selectedField,
-  onFieldChange,
-  className
+  selectedProfession,
+  onProfessionChange,
+  className,
+  showStats = false
 }: MedicalFieldSelectorProps) {
-  const availableFields = getAvailableMedicalFields()
+  const professions = Object.keys(MEDICAL_PROFESSIONS) as MedicalProfession[]
 
   return (
     <div className={cn("w-full max-w-sm", className)}>
-      <Select value={selectedField} onValueChange={onFieldChange}>
+      <Select value={selectedProfession} onValueChange={onProfessionChange}>
         <SelectTrigger className="bg-white/95 backdrop-blur-sm border border-gray-200 shadow-sm relative z-[1002]">
           <div className="flex items-center gap-2">
-            <Activity className="h-4 w-4 text-blue-600" />
-            <SelectValue placeholder="Sélectionner un domaine médical..." />
+            <MapPin className="h-4 w-4 text-blue-600" />
+            <SelectValue placeholder="Sélectionner une profession..." />
           </div>
         </SelectTrigger>
         <SelectContent className="max-h-64 z-[1003] bg-white border shadow-lg" sideOffset={5}>
-          {availableFields.map((field) => {
-            const stats = getMedicalFieldStats(field)
+          {professions.map((profession) => {
+            const professionInfo = MEDICAL_PROFESSIONS[profession]
             return (
-              <SelectItem key={field} value={field} className="py-3">
-                <div className="flex flex-col w-full">
-                  <span className="font-medium">
-                    {MEDICAL_FIELD_NAMES[field]}
-                  </span>
-                  <div className="flex items-center gap-4 text-xs text-muted-foreground mt-1">
-                    <span>
-                      {stats.totalProfessionals.toLocaleString()} professionnels
+              <SelectItem key={profession} value={profession} className="py-3">
+                <div className="flex items-center gap-3 w-full">
+                  <div className="text-blue-600">
+                    {professionInfo.icon}
+                  </div>
+                  <div className="flex flex-col">
+                    <span className="font-medium">
+                      {professionInfo.name}
                     </span>
-                    <span>
-                      {stats.averageDensity.toFixed(1)}/10k hab.
-                    </span>
+                    {showStats && (
+                      <div className="flex items-center gap-4 text-xs text-muted-foreground mt-1">
+                        <span>~35,000 communes</span>
+                        <span>Densité variable</span>
+                      </div>
+                    )}
                   </div>
                 </div>
               </SelectItem>
@@ -59,3 +88,6 @@ export function MedicalFieldSelector({
     </div>
   )
 }
+
+// Export the medical professions for use in other components
+export { MEDICAL_PROFESSIONS, type MedicalProfession }

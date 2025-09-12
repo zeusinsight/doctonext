@@ -8,7 +8,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Map, MapPin, TrendingUp, Users, ArrowRight } from "lucide-react"
 import type { MapListing } from "@/components/map/listing-markers"
-import type { RegionDensity } from "@/components/map/medical-density-overlay"
+import type { MedicalProfession } from "@/lib/services/town-density-types"
 
 // Dynamic imports to prevent SSR issues
 const InteractiveMap = dynamic(
@@ -21,8 +21,8 @@ const ListingMarkers = dynamic(
   { ssr: false }
 )
 
-const MedicalDensityOverlay = dynamic(
-  () => import("@/components/map/medical-density-overlay").then((mod) => mod.MedicalDensityOverlay),
+const ViewportOptimizedTownOverlay = dynamic(
+  () => import("@/components/map/viewport-optimized-town-overlay").then((mod) => mod.ViewportOptimizedTownOverlay),
   { ssr: false }
 )
 
@@ -42,20 +42,10 @@ function MapSkeleton() {
 
 export function MapShowcaseSection() {
   const [sampleListings, setSampleListings] = useState<MapListing[]>([])
-  const [densityData, setDensityData] = useState<RegionDensity[]>([])
-  const [filteredDensityData, setFilteredDensityData] = useState<RegionDensity[]>([])
+  const [selectedProfession] = useState<MedicalProfession>('chirurgiens-dentistes')
   const [loading, setLoading] = useState(true)
 
-  // Show all medical zones for entire France (not just regions with listings)
-  const processDensityData = (densityRegions: RegionDensity[]): RegionDensity[] => {
-    console.log("All medical zones loaded:", densityRegions.length, "regions")
-    console.log("Zone breakdown:", {
-      "sous-dotées": densityRegions.filter(r => r.densityScore <= 30).length,
-      "équilibrées": densityRegions.filter(r => r.densityScore > 30 && r.densityScore <= 70).length, 
-      "surdotées": densityRegions.filter(r => r.densityScore > 70).length
-    })
-    return densityRegions
-  }
+  // Town density is now handled directly by the TownDensityOverlay component
 
   // Load a few sample listings for demo
   useEffect(() => {
@@ -121,180 +111,7 @@ export function MapShowcaseSection() {
           }
         }
         
-        // Load density data from API or use temporary realistic data
-        try {
-          const densityResponse = await fetch("/api/map/density")
-          if (densityResponse.ok) {
-            const densityResult = await densityResponse.json()
-            console.log("Density API response:", densityResult) // Debug log
-            if (densityResult.success && densityResult.data?.regions) {
-              console.log("Setting density data:", densityResult.data.regions) // Debug log
-              setDensityData(densityResult.data.regions)
-            } else {
-              console.log("No density data found in response")
-            }
-          } else {
-            console.log("Density API response not ok:", densityResponse.status)
-          }
-        } catch (error) {
-          console.error("Error loading density data:", error)
-        }
-        
-        // Complete French medical zones classification (ARS data)
-        // Green = Sous-dotées (0-30), Yellow = Équilibrées (31-70), Red = Surdotées (71-100)
-        setDensityData([
-          // Surdotées (Red zones - over-supplied)
-          {
-            region: "Île-de-France",
-            code: "idf",
-            densityScore: 85,
-            professionalCount: 15000,
-            populationCount: 12317279,
-            bounds: [[[1.4461, 49.2147], [3.5589, 49.2147], [3.5589, 48.1205], [1.4461, 48.1205], [1.4461, 49.2147]]]
-          },
-          {
-            region: "Provence-Alpes-Côte d'Azur", 
-            code: "paca",
-            densityScore: 78,
-            professionalCount: 4200,
-            populationCount: 5098666,
-            bounds: [[[4.2279, 44.9013], [7.7186, 44.9013], [7.7186, 43.0203], [4.2279, 43.0203], [4.2279, 44.9013]]]
-          },
-          {
-            region: "Occitanie",
-            code: "occitanie", 
-            densityScore: 72,
-            professionalCount: 3800,
-            populationCount: 5999982,
-            bounds: [[[0.1278, 44.9013], [4.8378, 44.9013], [4.8378, 42.3334], [0.1278, 42.3334], [0.1278, 44.9013]]]
-          },
-          
-          // Équilibrées (Yellow/Orange zones - balanced)
-          {
-            region: "Auvergne-Rhône-Alpes",
-            code: "ara", 
-            densityScore: 58,
-            professionalCount: 5800,
-            populationCount: 8112714,
-            bounds: [[[2.1697, 46.8176], [7.1442, 46.8176], [7.1442, 44.1259], [2.1697, 44.1259], [2.1697, 46.8176]]]
-          },
-          {
-            region: "Nouvelle-Aquitaine",
-            code: "nouvelleaquitaine",
-            densityScore: 52,
-            professionalCount: 3100,
-            populationCount: 6018386,
-            bounds: [[[-1.7889, 46.8176], [2.1697, 46.8176], [2.1697, 42.3334], [-1.7889, 42.3334], [-1.7889, 46.8176]]]
-          },
-          {
-            region: "Bretagne",
-            code: "bretagne",
-            densityScore: 48,
-            professionalCount: 2200,
-            populationCount: 3373835,
-            bounds: [[[-5.1406, 48.9077], [-0.9998, 48.9077], [-0.9998, 47.2383], [-5.1406, 47.2383], [-5.1406, 48.9077]]]
-          },
-          {
-            region: "Pays de la Loire",
-            code: "paysdelaloire",
-            densityScore: 45,
-            professionalCount: 2400,
-            populationCount: 3832120,
-            bounds: [[[-2.5811, 47.8028], [0.1278, 47.8028], [0.1278, 46.2644], [-2.5811, 46.2644], [-2.5811, 47.8028]]]
-          },
-          {
-            region: "Grand Est",
-            code: "grandest",
-            densityScore: 42,
-            professionalCount: 2800,
-            populationCount: 5511747,
-            bounds: [[[4.2279, 49.6710], [8.2336, 49.6710], [8.2336, 47.4521], [4.2279, 47.4521], [4.2279, 49.6710]]]
-          },
-          {
-            region: "Normandie",
-            code: "normandie",
-            densityScore: 38,
-            professionalCount: 1600,
-            populationCount: 3317500,
-            bounds: [[[-1.7889, 49.7297], [1.7889, 49.7297], [1.7889, 48.1736], [-1.7889, 48.1736], [-1.7889, 49.7297]]]
-          },
-          
-          // Sous-dotées (Green zones - under-supplied, opportunities)
-          {
-            region: "Hauts-de-France",
-            code: "hautsdefrance",
-            densityScore: 28,
-            professionalCount: 2200,
-            populationCount: 5965058,
-            bounds: [[[1.3733, 51.1244], [4.2279, 51.1244], [4.2279, 49.2147], [1.3733, 49.2147], [1.3733, 51.1244]]]
-          },
-          {
-            region: "Centre-Val de Loire",
-            code: "centrevaldeloire",
-            densityScore: 25,
-            professionalCount: 1200,
-            populationCount: 2568029,
-            bounds: [[[0.1278, 48.6044], [3.0556, 48.6044], [3.0556, 46.3470], [0.1278, 46.3470], [0.1278, 48.6044]]]
-          },
-          {
-            region: "Bourgogne-Franche-Comté",
-            code: "bourgognefranchecomt",
-            densityScore: 22,
-            professionalCount: 1100,
-            populationCount: 2783039,
-            bounds: [[[2.1697, 48.3970], [7.1442, 48.3970], [7.1442, 46.2644], [2.1697, 46.2644], [2.1697, 48.3970]]]
-          },
-          {
-            region: "Corse",
-            code: "corse",
-            densityScore: 18,
-            professionalCount: 200,
-            populationCount: 344679,
-            bounds: [[[8.5387, 43.0203], [9.5606, 43.0203], [9.5606, 41.3337], [8.5387, 41.3337], [8.5387, 43.0203]]]
-          },
-          
-          // Outre-mer (Generally under-supplied)
-          {
-            region: "Guadeloupe",
-            code: "guadeloupe", 
-            densityScore: 15,
-            professionalCount: 150,
-            populationCount: 395700,
-            bounds: [[[-61.8, 16.5], [-61.0, 16.5], [-61.0, 15.8], [-61.8, 15.8], [-61.8, 16.5]]]
-          },
-          {
-            region: "Martinique",
-            code: "martinique",
-            densityScore: 20,
-            professionalCount: 180,
-            populationCount: 364508,
-            bounds: [[[-61.2, 14.9], [-60.8, 14.9], [-60.8, 14.4], [-61.2, 14.4], [-61.2, 14.9]]]
-          },
-          {
-            region: "Guyane",
-            code: "guyane",
-            densityScore: 8,
-            professionalCount: 80,
-            populationCount: 301099,
-            bounds: [[[-54.5, 6.0], [-51.6, 6.0], [-51.6, 2.1], [-54.5, 2.1], [-54.5, 6.0]]]
-          },
-          {
-            region: "La Réunion",
-            code: "larunion",
-            densityScore: 12,
-            professionalCount: 250,
-            populationCount: 873356,
-            bounds: [[[55.2, -20.9], [55.8, -20.9], [55.8, -21.4], [55.2, -21.4], [55.2, -20.9]]]
-          },
-          {
-            region: "Mayotte",
-            code: "mayotte",
-            densityScore: 5,
-            professionalCount: 30,
-            populationCount: 279515,
-            bounds: [[[45.0, -12.6], [45.3, -12.6], [45.3, -13.0], [45.0, -13.0], [45.0, -12.6]]]
-          }
-        ])
+        // Town density data is now loaded by the TownDensityOverlay component
         
       } catch (error) {
         console.error("Error loading sample listings:", error)
@@ -308,30 +125,25 @@ export function MapShowcaseSection() {
     loadSampleData()
   }, [])
 
-  // Process density data to show all medical zones
-  useEffect(() => {
-    const processed = processDensityData(densityData)
-    setFilteredDensityData(processed)
-  }, [densityData])
 
   const stats = [
     {
       icon: MapPin,
-      label: "Annonces géolocalisées",
-      value: "1,200+",
-      description: "Partout en France"
+      label: "Communes analysées",
+      value: "35,000+",
+      description: "Toute la France"
     },
     {
       icon: TrendingUp,
-      label: "Zones sous-densifiées",
-      value: "45%",
-      description: "Opportunités identifiées"
+      label: "Zones sous-dotées",
+      value: "70%",
+      description: "Opportunités chirurgiens-dentistes"
     },
     {
       icon: Users,
-      label: "Professionnels actifs",
-      value: "3,400+",
-      description: "Toutes spécialités"
+      label: "Professions médicales",
+      value: "5",
+      description: "Données ARS officielles"
     }
   ]
 
@@ -348,7 +160,7 @@ export function MapShowcaseSection() {
             Explorez la carte interactive
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Découvrez les annonces médicales sur la carte des zones officielles médicalement surdotées ou sous-dotées (classification ARS).
+            Explorez la densité médicale par commune avec les données officielles ARS. Identifiez les opportunités d'installation pour chaque profession médicale.
           </p>
         </div>
 
@@ -367,14 +179,14 @@ export function MapShowcaseSection() {
                       height="400px"
                       className="border-0"
                     >
-{filteredDensityData.length > 0 && (
-                        <MedicalDensityOverlay
-                          densityData={filteredDensityData}
-                          mode="heatmap"
-                          opacity={0.6}
-                          showLabels={false}
-                        />
-                      )}
+<ViewportOptimizedTownOverlay
+                        profession={selectedProfession}
+                        opacity={0.6}
+                        showLabels={false}
+                        onTownClick={(town) => {
+                          console.log('Town clicked:', town.name)
+                        }}
+                      />
                       <ListingMarkers
                         listings={sampleListings}
                         onMarkerClick={(listing) => {
@@ -401,11 +213,9 @@ export function MapShowcaseSection() {
                           {sampleListings.length} annonces affichées
                         </Badge>
                       )}
-{filteredDensityData.length > 0 && (
-                        <Badge variant="secondary" className="bg-green-100 text-green-800 backdrop-blur-sm">
-                          Zones ARS activées ({filteredDensityData.length} régions)
-                        </Badge>
-                      )}
+<Badge variant="secondary" className="bg-green-100 text-green-800 backdrop-blur-sm">
+                        Densité par commune • {selectedProfession}
+                      </Badge>
                     </div>
                   </div>
                 )}
@@ -451,7 +261,7 @@ export function MapShowcaseSection() {
                 </li>
                 <li className="flex items-center gap-2">
                   <div className="w-2 h-2 bg-gradient-to-r from-green-500 via-yellow-500 to-red-500 rounded-full"></div>
-                  <span>Zones ARS (sous-dotées/surdotées)</span>
+                  <span>Zonage médical par commune (ARS)</span>
                 </li>
                 <li className="flex items-center gap-2">
                   <div className="w-2 h-2 bg-yellow-400 rounded-full"></div>

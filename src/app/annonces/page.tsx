@@ -19,7 +19,25 @@ import { Bell, Check } from "lucide-react"
 import { createSavedSearch } from "@/lib/actions/saved-searches"
 import { toast } from "sonner"
 import { authClient } from "@/lib/auth-client"
-import { getDefaultMedicalField, getMedicalDensityForField } from "@/lib/medical-density-utils"
+import { type MedicalProfession } from "@/lib/services/town-density-types"
+
+// Mapping from medical professions to listing specialties
+const getMedicalProfessionSpecialties = (profession: MedicalProfession): string[] => {
+    switch (profession) {
+        case 'chirurgiens-dentistes':
+            return ['Dentiste']
+        case 'infirmier':
+            return ['Infirmier(ère)']
+        case 'masseurs-kinésithérapeutes':
+            return ['Kinésithérapeute']
+        case 'orthophonistes':
+            return ['Orthophoniste']
+        case 'sages-femmes':
+            return ['Sage-femme']
+        default:
+            return []
+    }
+}
 
 // Dynamic imports to prevent SSR issues
 const InteractiveMap = dynamic(
@@ -32,8 +50,8 @@ const ListingMarkers = dynamic(
     { ssr: false }
 )
 
-const MedicalDensityOverlay = dynamic(
-    () => import("@/components/map/medical-density-overlay").then((mod) => mod.MedicalDensityOverlay),
+const ViewportOptimizedTownOverlay = dynamic(
+    () => import("@/components/map/viewport-optimized-town-overlay").then((mod) => mod.ViewportOptimizedTownOverlay),
     { ssr: false }
 )
 
@@ -69,8 +87,9 @@ function ListingsContent() {
     const [isSaving, setIsSaving] = useState(false)
     const [mapListings, setMapListings] = useState<MapListing[]>([])
     const [mapLoading, setMapLoading] = useState(false)
-    const [selectedMedicalField, setSelectedMedicalField] = useState<string>(getDefaultMedicalField())
-    const [medicalDensityData, setMedicalDensityData] = useState(() => getMedicalDensityForField(getDefaultMedicalField()))
+    const [selectedProfession, setSelectedProfession] = useState<MedicalProfession>('chirurgiens-dentistes')
+    const [townDataLoading, setTownDataLoading] = useState(false)
+    const [visibleTownCount, setVisibleTownCount] = useState(0)
     const { data: session } = authClient.useSession()
     const searchTimeoutRef = useRef<NodeJS.Timeout | null>(null)
 
@@ -89,7 +108,7 @@ function ListingsContent() {
         if (viewMode === "map") {
             fetchMapListings()
         }
-    }, [viewMode, searchQuery, activeTab, filters])
+    }, [viewMode, searchQuery, activeTab, filters, selectedProfession])
 
     // Cleanup timeout on component unmount
     useEffect(() => {
@@ -116,7 +135,7 @@ function ListingsContent() {
     }
 
     const fetchMapListings = useCallback(async () => {
-        console.log("🗺️ fetchMapListings called", { viewMode, activeTab, filters, searchQuery })
+        console.log("🗺️ fetchMapListings called", { viewMode, activeTab, filters, searchQuery, selectedProfession })
         setMapLoading(true)
         try {
             // Build query parameters based on current filters
@@ -131,10 +150,14 @@ function ListingsContent() {
                 params.append("type", "collaboration")
             }
             
-            // Add specialty filters
-            if (filters.specialties.length > 0) {
+            // Add specialty filters from both manual filters and selected medical profession
+            const medicalProfessionSpecialties = getMedicalProfessionSpecialties(selectedProfession)
+            const allSpecialties = [...filters.specialties, ...medicalProfessionSpecialties]
+            const uniqueSpecialties = [...new Set(allSpecialties)]
+            
+            if (uniqueSpecialties.length > 0) {
                 // For now, take the first specialty - API might need to be updated for multiple
-                params.append("specialty", filters.specialties[0])
+                params.append("specialty", uniqueSpecialties[0])
             }
             
             // Add region filters  
@@ -188,13 +211,11 @@ function ListingsContent() {
             setMapLoading(false)
             console.log("🗺️ fetchMapListings complete")
         }
-    }, [activeTab, filters.specialties, filters.regions, searchQuery])
+    }, [activeTab, filters.specialties, filters.regions, searchQuery, selectedProfession])
 
-    // Handle medical field changes
-    const handleMedicalFieldChange = useCallback((field: string) => {
-        setSelectedMedicalField(field)
-        const newData = getMedicalDensityForField(field)
-        setMedicalDensityData(newData)
+    // Handle medical profession changes
+    const handleProfessionChange = useCallback((profession: MedicalProfession) => {
+        setSelectedProfession(profession)
     }, [])
 
     const filterListings = () => {
@@ -451,26 +472,34 @@ function ListingsContent() {
                                             style={{ zIndex: 1001 }}
                                         >
                                             <MedicalFieldSelector
-                                                selectedField={selectedMedicalField}
-                                                onFieldChange={handleMedicalFieldChange}
+                                                selectedProfession={selectedProfession}
+                                                onProfessionChange={handleProfessionChange}
                                             />
                                         </div>
 
                                         {/* Map legend */}
                                         <div className="absolute bottom-4 right-4 z-[1000] bg-white/95 backdrop-blur-sm border border-gray-200 shadow-lg rounded-lg p-3 max-w-xs">
-                                            <div className="text-xs font-medium text-gray-700 mb-2">Densité médicale</div>
+                                            <div className="text-xs font-medium text-gray-700 mb-2">Zonage médical (ARS)</div>
                                             <div className="space-y-1 text-xs">
                                                 <div className="flex items-center gap-2">
                                                     <div className="w-3 h-3 rounded" style={{ backgroundColor: "#10b981" }}></div>
-                                                    <span>Sous-densifié (opportunités)</span>
+                                                    <span>Très sous-dotée</span>
+                                                </div>
+                                                <div className="flex items-center gap-2">
+                                                    <div className="w-3 h-3 rounded" style={{ backgroundColor: "#84cc16" }}></div>
+                                                    <span>Sous-dotée</span>
                                                 </div>
                                                 <div className="flex items-center gap-2">
                                                     <div className="w-3 h-3 rounded" style={{ backgroundColor: "#f59e0b" }}></div>
-                                                    <span>Densité modérée</span>
+                                                    <span>Intermédiaire</span>
                                                 </div>
                                                 <div className="flex items-center gap-2">
                                                     <div className="w-3 h-3 rounded" style={{ backgroundColor: "#ef4444" }}></div>
-                                                    <span>Surdensifié (saturé)</span>
+                                                    <span>Très dotée</span>
+                                                </div>
+                                                <div className="flex items-center gap-2">
+                                                    <div className="w-3 h-3 rounded" style={{ backgroundColor: "#b91c1c" }}></div>
+                                                    <span>Sur-dotée</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -481,13 +510,16 @@ function ListingsContent() {
                                             height="600px"
                                             className="w-full h-full"
                                         >
-                                            {/* Medical density heatmap overlay */}
-                                            <MedicalDensityOverlay
-                                                densityData={medicalDensityData}
-                                                specialty={selectedMedicalField}
+                                            {/* Viewport-optimized town density overlay */}
+                                            <ViewportOptimizedTownOverlay
+                                                profession={selectedProfession}
                                                 opacity={0.6}
                                                 showLabels={false}
-                                                mode="heatmap"
+                                                onLoadingChange={setTownDataLoading}
+                                                onTownCountChange={setVisibleTownCount}
+                                                onTownClick={(town) => {
+                                                    console.log('Town clicked:', town.name, town.zonage)
+                                                }}
                                             />
                                             <ListingMarkers
                                                 listings={mapListings}
@@ -497,14 +529,32 @@ function ListingsContent() {
                                             />
                                         </InteractiveMap>
                                         
+                                        {/* Loading overlays */}
                                         {mapLoading && (
-                                            <div className="absolute inset-0 bg-white/70 flex items-center justify-center rounded-lg">
+                                            <div className="absolute inset-0 bg-white/70 flex items-center justify-center rounded-lg z-[1001]">
                                                 <div className="flex items-center gap-2 bg-white p-4 rounded-lg shadow-lg">
                                                     <div className="h-5 w-5 animate-spin border-2 border-primary border-t-transparent rounded-full" />
-                                                    <span className="text-sm">Chargement de la carte...</span>
+                                                    <span className="text-sm">Chargement des annonces...</span>
                                                 </div>
                                             </div>
                                         )}
+                                        
+                                        {townDataLoading && (
+                                            <div className="absolute top-4 right-4 z-[1002] bg-white/95 backdrop-blur-sm border border-gray-200 shadow-lg rounded-lg p-3 flex items-center gap-2">
+                                                <div className="h-4 w-4 animate-spin border-2 border-blue-600 border-t-transparent rounded-full" />
+                                                <span className="text-sm font-medium">Chargement des communes...</span>
+                                            </div>
+                                        )}
+                                        
+                                        {/* Town count display */}
+                                        <div className="absolute top-20 left-4 z-[1002] bg-white/95 backdrop-blur-sm border border-gray-200 shadow-lg rounded-lg p-3 max-w-xs">
+                                            <div className="text-xs font-medium text-gray-700">
+                                                Communes affichées: <span className="text-blue-600">{visibleTownCount.toLocaleString()}</span>
+                                            </div>
+                                            <div className="text-xs text-gray-500">
+                                                Profession: {selectedProfession}
+                                            </div>
+                                        </div>
                                         
                                         {!mapLoading && mapListings.length === 0 && (
                                             <div className="absolute bottom-4 left-4 bg-white/95 rounded-lg shadow-lg p-3 max-w-sm">

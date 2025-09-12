@@ -28,38 +28,46 @@ export function MapLegend({
       <CardContent className="space-y-4">
         {showDensityLegend && (
           <div>
-            <h4 className="text-xs font-medium mb-2">Densité médicale par région</h4>
+            <h4 className="text-xs font-medium mb-2">Zonage médical par commune</h4>
             {densityMode === "heatmap" ? (
               <div className="space-y-2">
                 <div className="flex items-center gap-2 text-xs">
                   <div className="w-12 h-3 rounded" style={{ 
-                    background: "linear-gradient(to right, #10b981 0%, #84cc16 20%, #eab308 40%, #f59e0b 60%, #f97316 80%, #ef4444 100%)" 
+                    background: "linear-gradient(to right, #10b981 0%, #84cc16 25%, #f59e0b 50%, #ef4444 75%, #b91c1c 100%)" 
                   }}></div>
                 </div>
                 <div className="flex justify-between text-xs text-muted-foreground">
-                  <span>Opportunité</span>
-                  <span>Saturé</span>
+                  <span>Très sous-dotée</span>
+                  <span>Sur-dotée</span>
                 </div>
                 <div className="text-xs text-muted-foreground">
-                  * Gradient de densité continue
+                  * Basé sur les données ARS officielles
                 </div>
               </div>
             ) : (
               <div className="space-y-1">
                 <div className="flex items-center gap-2 text-xs">
                   <div className="w-4 h-3 rounded" style={{ backgroundColor: "#10b981" }}></div>
-                  <span>Sous-densifié (0-30%)</span>
+                  <span>Très sous-dotée</span>
+                </div>
+                <div className="flex items-center gap-2 text-xs">
+                  <div className="w-4 h-3 rounded" style={{ backgroundColor: "#84cc16" }}></div>
+                  <span>Sous-dotée</span>
                 </div>
                 <div className="flex items-center gap-2 text-xs">
                   <div className="w-4 h-3 rounded" style={{ backgroundColor: "#f59e0b" }}></div>
-                  <span>Densité modérée (31-70%)</span>
+                  <span>Intermédiaire</span>
                 </div>
                 <div className="flex items-center gap-2 text-xs">
                   <div className="w-4 h-3 rounded" style={{ backgroundColor: "#ef4444" }}></div>
-                  <span>Surdensifié (71-100%)</span>
+                  <span>Très dotée</span>
+                </div>
+                <div className="flex items-center gap-2 text-xs">
+                  <div className="w-4 h-3 rounded" style={{ backgroundColor: "#b91c1c" }}></div>
+                  <span>Sur-dotée</span>
                 </div>
                 <div className="text-xs text-muted-foreground mt-2">
-                  * Basé sur le ratio professionnels/population
+                  * Classification officielle ARS par commune
                 </div>
               </div>
             )}

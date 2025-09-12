@@ -84,6 +84,7 @@ export function InteractiveMap({
         ref={mapRef}
         scrollWheelZoom={true}
         zoomControl={true}
+        preferCanvas={true}
         style={{ height: "100%", width: "100%" }}
       >
         <TileLayer
