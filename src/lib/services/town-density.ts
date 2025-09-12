@@ -1,6 +1,8 @@
-// Server-side functions for processing CSV files and medical density data
+// Server-side functions for medical density data
+// Uses pre-processed JSON data instead of CSV files for Vercel compatibility
 
 import { MedicalProfession, TownDensityData, TownMedicalZones, ZonageLevel } from './town-density-types'
+import densityData from '@/lib/data/town-density-data.json'
 
 // Re-export client-safe types and utilities
 export type {
@@ -17,86 +19,44 @@ export {
 } from './town-density-types'
 
 /**
- * Parse a single CSV file for medical density data
+ * Get medical density data for a specific profession from pre-processed JSON
  */
-export async function parseMedicalDensityCSV(profession: MedicalProfession): Promise<TownDensityData[]> {
+export function parseMedicalDensityCSV(profession: MedicalProfession): Promise<TownDensityData[]> {
   try {
-    // Only import fs and path on server side
-    if (typeof window !== 'undefined') {
-      throw new Error('CSV parsing is only available on server side')
-    }
-    
-    // Dynamic import with variable to prevent webpack from bundling
-    const fsModule = 'fs'
-    const pathModule = 'path'
-    const fs = await import(/* webpackIgnore: true */ fsModule)
-    const path = await import(/* webpackIgnore: true */ pathModule)
-    
-    const filePath = path.join(process.cwd(), 'public', 'data', 'Zonage_Doctonext', `${profession}.csv`)
-    const fileContent = fs.readFileSync(filePath, 'utf-8')
-    
-    const lines = fileContent.split('\n')
     const data: TownDensityData[] = []
+    const typedDensityData = densityData as TownMedicalZones
     
-    // Skip header lines (first 3 lines are metadata/headers)
-    for (let i = 3; i < lines.length; i++) {
-      const line = lines[i].trim()
-      if (!line) continue
-      
-      const parts = line.split(';')
-      if (parts.length >= 3) {
-        const code = parts[0].trim()
-        const name = parts[1].trim()
-        const zonage = parts[2].trim() as ZonageLevel
-        
-        // Skip invalid entries
-        if (code && name && zonage && zonage !== 'N/A - résultat non disponible') {
-          data.push({
-            code,
-            name,
-            zonage,
-            profession
-          })
-        }
+    // Extract data for the specific profession from all towns
+    Object.entries(typedDensityData).forEach(([code, townData]) => {
+      const zonage = townData.zones[profession]
+      if (zonage && zonage !== 'N/A - résultat non disponible') {
+        data.push({
+          code,
+          name: townData.name,
+          zonage,
+          profession
+        })
       }
-    }
+    })
     
-    return data
+    return Promise.resolve(data)
   } catch (error) {
-    console.error(`Error parsing CSV for ${profession}:`, error)
-    return []
+    console.error(`Error extracting data for ${profession}:`, error)
+    return Promise.resolve([])
   }
 }
 
 /**
  * Load all medical density data for all professions
  */
-export async function loadAllMedicalDensityData(): Promise<TownMedicalZones> {
-  const professions: MedicalProfession[] = [
-    'chirurgiens-dentistes',
-    'infirmier', 
-    'masseurs-kinésithérapeutes',
-    'orthophonistes',
-    'sages-femmes'
-  ]
-  
-  const allData: TownMedicalZones = {}
-  
-  for (const profession of professions) {
-    const data = await parseMedicalDensityCSV(profession)
-    
-    for (const entry of data) {
-      if (!allData[entry.code]) {
-        allData[entry.code] = {
-          name: entry.name,
-          zones: {}
-        }
-      }
-      allData[entry.code].zones[entry.profession] = entry.zonage
-    }
+export function loadAllMedicalDensityData(): Promise<TownMedicalZones> {
+  try {
+    // Return the pre-processed JSON data directly
+    return Promise.resolve(densityData as TownMedicalZones)
+  } catch (error) {
+    console.error('Error loading medical density data:', error)
+    return Promise.resolve({})
   }
-  
-  return allData
 }
 
 /**
@@ -137,25 +97,22 @@ export async function getProfessionDensityStats(profession: MedicalProfession) {
   }
 }
 
-// Cache for loaded data
-let cachedData: TownMedicalZones | null = null
-let cacheTimestamp = 0
-const CACHE_DURATION = 1000 * 60 * 60 // 1 hour
-
 /**
  * Get cached medical density data (server-side only)
+ * Now uses pre-processed JSON data - no caching needed as data is already in memory
  */
-export async function getCachedMedicalDensityData(): Promise<TownMedicalZones> {
+export function getCachedMedicalDensityData(): Promise<TownMedicalZones> {
   // Ensure this only runs on server side
   if (typeof window !== 'undefined') {
     throw new Error('getCachedMedicalDensityData can only be called on server side. Use the API routes instead.')
   }
   
-  if (!cachedData || Date.now() - cacheTimestamp > CACHE_DURATION) {
-    console.log('Loading medical density data from CSV files...')
-    cachedData = await loadAllMedicalDensityData()
-    cacheTimestamp = Date.now()
-    console.log(`Loaded ${Object.keys(cachedData).length} towns with medical density data`)
+  try {
+    const data = densityData as TownMedicalZones
+    console.log(`Loaded ${Object.keys(data).length} towns with medical density data`)
+    return Promise.resolve(data)
+  } catch (error) {
+    console.error('Error accessing medical density data:', error)
+    return Promise.resolve({})
   }
-  return cachedData
 }
