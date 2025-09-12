@@ -32,7 +32,7 @@ export async function parseMedicalDensityCSV(profession: MedicalProfession): Pro
     const fs = await import(/* webpackIgnore: true */ fsModule)
     const path = await import(/* webpackIgnore: true */ pathModule)
     
-    const filePath = path.join(process.cwd(), 'src', 'database', 'Zonage_Doctonext', `${profession}.csv`)
+    const filePath = path.join(process.cwd(), 'public', 'data', 'Zonage_Doctonext', `${profession}.csv`)
     const fileContent = fs.readFileSync(filePath, 'utf-8')
     
     const lines = fileContent.split('\n')
