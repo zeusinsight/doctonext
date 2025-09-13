@@ -20,6 +20,10 @@ import { createSavedSearch } from "@/lib/actions/saved-searches"
 import { toast } from "sonner"
 import { authClient } from "@/lib/auth-client"
 import { type MedicalProfession } from "@/lib/services/town-density-types"
+import { CitySearchBox } from "@/components/map/city-search-box"
+import { type CityInfo } from "@/lib/data/major-cities"
+import { type MapRef } from "@/components/map/interactive-map"
+import { PerformanceMonitor, usePerformanceMonitoring } from "@/components/performance/performance-monitor"
 
 // Mapping from medical professions to listing specialties
 const getMedicalProfessionSpecialties = (profession: MedicalProfession): string[] => {
@@ -45,13 +49,14 @@ const InteractiveMap = dynamic(
     { ssr: false }
 )
 
-const ListingMarkers = dynamic(
-    () => import("@/components/map/listing-markers").then((mod) => mod.ListingMarkers),
+
+const ClusteredListingMarkers = dynamic(
+    () => import("@/components/map/clustered-listing-markers").then((mod) => mod.ClusteredListingMarkers),
     { ssr: false }
 )
 
-const ViewportOptimizedTownOverlay = dynamic(
-    () => import("@/components/map/viewport-optimized-town-overlay").then((mod) => mod.ViewportOptimizedTownOverlay),
+const OptimizedTownOverlay = dynamic(
+    () => import("@/components/map/optimized-town-overlay").then((mod) => mod.OptimizedTownOverlay),
     { ssr: false }
 )
 
@@ -92,6 +97,8 @@ function ListingsContent() {
     const [visibleTownCount, setVisibleTownCount] = useState(0)
     const { data: session } = authClient.useSession()
     const searchTimeoutRef = useRef<NodeJS.Timeout | null>(null)
+    const mapRef = useRef<MapRef | null>(null)
+    const { isMonitoring, toggleMonitoring } = usePerformanceMonitoring()
 
     useEffect(() => {
         // Set initial search query from URL
@@ -218,6 +225,13 @@ function ListingsContent() {
         setSelectedProfession(profession)
     }, [])
 
+    // Handle city selection from search box
+    const handleCitySelect = useCallback((city: CityInfo & { code: string }) => {
+        if (mapRef.current) {
+            mapRef.current.flyTo(city.lat, city.lng, city.zoom || 12)
+        }
+    }, [])
+
     const filterListings = () => {
         let filtered = [...listings]
 
@@ -292,12 +306,12 @@ function ListingsContent() {
             clearTimeout(searchTimeoutRef.current)
         }
 
-        // Set new timeout for debounced search
+        // Set new timeout for debounced search - reduced from 600ms to 300ms
         searchTimeoutRef.current = setTimeout(() => {
             setSearchQuery(query)
             // Reset URL search params when performing a new search
             router.push("/annonces", { scroll: false })
-        }, 600) // 600ms debounce delay
+        }, 300) // 300ms debounce delay for faster response
     }, [router])
 
     const handleTabChange = (
@@ -505,30 +519,40 @@ function ListingsContent() {
                                         </div>
 
                                         <InteractiveMap
+                                            ref={mapRef}
                                             center={[46.603354, 1.888334]}
                                             zoom={6}
                                             height="600px"
                                             className="w-full h-full"
+                                            mapStyle="geometric"
                                         >
-                                            {/* Viewport-optimized town density overlay */}
-                                            <ViewportOptimizedTownOverlay
+                                            {/* Optimized town density overlay */}
+                                            <OptimizedTownOverlay
                                                 profession={selectedProfession}
                                                 opacity={0.6}
-                                                showLabels={false}
+                                                showLabels={true}
                                                 onLoadingChange={setTownDataLoading}
                                                 onTownCountChange={setVisibleTownCount}
                                                 onTownClick={(town) => {
                                                     console.log('Town clicked:', town.name, town.zonage)
                                                 }}
                                             />
-                                            <ListingMarkers
+                                            <ClusteredListingMarkers
                                                 listings={mapListings}
                                                 onMarkerClick={(listing) => {
                                                     window.open(`/annonces/${listing.id}`, "_blank")
                                                 }}
                                             />
                                         </InteractiveMap>
-                                        
+
+                                        {/* City Search - Top Right */}
+                                        <div className="absolute top-4 right-4 z-[1003] w-80">
+                                            <CitySearchBox
+                                                onCitySelect={handleCitySelect}
+                                                placeholder="Rechercher une ville..."
+                                            />
+                                        </div>
+
                                         {/* Loading overlays */}
                                         {mapLoading && (
                                             <div className="absolute inset-0 bg-white/70 flex items-center justify-center rounded-lg z-[1001]">
@@ -546,7 +570,7 @@ function ListingsContent() {
                                             </div>
                                         )}
                                         
-                                        {/* Town count display */}
+                                        {/* Town count display and performance toggle */}
                                         <div className="absolute top-20 left-4 z-[1002] bg-white/95 backdrop-blur-sm border border-gray-200 shadow-lg rounded-lg p-3 max-w-xs">
                                             <div className="text-xs font-medium text-gray-700">
                                                 Communes affichées: <span className="text-blue-600">{visibleTownCount.toLocaleString()}</span>
@@ -554,6 +578,13 @@ function ListingsContent() {
                                             <div className="text-xs text-gray-500">
                                                 Profession: {selectedProfession}
                                             </div>
+                                            <button
+                                                onClick={toggleMonitoring}
+                                                className="mt-2 text-xs bg-gray-100 hover:bg-gray-200 px-2 py-1 rounded transition-colors"
+                                                title="Toggle performance monitor"
+                                            >
+                                                {isMonitoring ? 'Hide' : 'Show'} Perf Monitor
+                                            </button>
                                         </div>
                                         
                                         {!mapLoading && mapListings.length === 0 && (
@@ -674,6 +705,13 @@ function ListingsContent() {
                     </>
                 )}
             </div>
+
+            {/* Performance Monitor */}
+            <PerformanceMonitor
+                isVisible={isMonitoring}
+                polygonCount={visibleTownCount}
+                markerCount={mapListings.length}
+            />
         </>
     )
 }

@@ -5,6 +5,7 @@ import { useMap, useMapEvents } from "react-leaflet"
 import L from "leaflet"
 import { type MedicalProfession, type ZonageLevel } from "@/lib/services/town-density-types"
 import { TownDensityLoader } from "@/lib/services/town-medical-density"
+import { MAJOR_CITIES, shouldShowCityLabel, getCityLabelStyle, type CityInfo } from "@/lib/data/major-cities"
 
 interface TownDensityData {
   code: string
@@ -66,6 +67,56 @@ export function ViewportOptimizedTownOverlay({
   
   const loaderRef = useRef<TownDensityLoader | null>(null)
   const currentViewportRef = useRef<L.LatLngBounds | null>(null)
+
+  // Calculate bounds of a polygon
+  const calculatePolygonBounds = (boundary: any): { minLat: number, maxLat: number, minLng: number, maxLng: number } => {
+    let minLat = Infinity, maxLat = -Infinity, minLng = Infinity, maxLng = -Infinity
+    
+    try {
+      if (boundary.type === 'Polygon') {
+        const coords = boundary.coordinates as number[][][]
+        for (const ring of coords) {
+          for (const [lng, lat] of ring) {
+            if (lat < minLat) minLat = lat
+            if (lat > maxLat) maxLat = lat
+            if (lng < minLng) minLng = lng
+            if (lng > maxLng) maxLng = lng
+          }
+        }
+      } else if (boundary.type === 'MultiPolygon') {
+        const coords = boundary.coordinates as number[][][][]
+        for (const polygon of coords) {
+          for (const ring of polygon) {
+            for (const [lng, lat] of ring) {
+              if (lat < minLat) minLat = lat
+              if (lat > maxLat) maxLat = lat
+              if (lng < minLng) minLng = lng
+              if (lng > maxLng) maxLng = lng
+            }
+          }
+        }
+      }
+    } catch (error) {
+      console.warn('Error calculating polygon bounds:', error)
+      return { minLat: 0, maxLat: 0, minLng: 0, maxLng: 0 }
+    }
+    
+    return { minLat, maxLat, minLng, maxLng }
+  }
+
+  // Check if polygon bounds intersect with viewport bounds
+  const boundsIntersect = (polygonBounds: { minLat: number, maxLat: number, minLng: number, maxLng: number }, viewportBounds: L.LatLngBounds): boolean => {
+    const vpSouth = viewportBounds.getSouth()
+    const vpNorth = viewportBounds.getNorth()  
+    const vpWest = viewportBounds.getWest()
+    const vpEast = viewportBounds.getEast()
+    
+    // Check if bounds overlap
+    return !(polygonBounds.maxLat < vpSouth || 
+             polygonBounds.minLat > vpNorth ||
+             polygonBounds.maxLng < vpWest || 
+             polygonBounds.minLng > vpEast)
+  }
 
   // Initialize loader
   useEffect(() => {
@@ -158,21 +209,10 @@ export function ViewportOptimizedTownOverlay({
         continue
       }
       
-      // Simple bounds check - get first coordinate of first polygon
-      let lat = 0, lng = 0
-      if (town.boundary.type === 'Polygon') {
-        const coords = town.boundary.coordinates as number[][][]
-        if (coords[0]?.[0]) {
-          [lng, lat] = coords[0][0]
-        }
-      } else {
-        const coords = town.boundary.coordinates as number[][][][]
-        if (coords[0]?.[0]?.[0]) {
-          [lng, lat] = coords[0][0][0]
-        }
-      }
+      // Check if polygon bounds intersect with viewport
+      const polygonBounds = calculatePolygonBounds(town.boundary)
       
-      if (bounds.contains([lat, lng])) {
+      if (boundsIntersect(polygonBounds, bounds)) {
         visibleTownsList.push(town)
         count++
       }
@@ -318,34 +358,55 @@ export function ViewportOptimizedTownOverlay({
         newLayers.push(polygon)
         processedCount++
 
-        // Add labels for high zoom levels only
-        if (showLabels && map.getZoom() > 9 && visibleTowns.length < 100) {
+        // Add labels based on city priority and zoom level
+        const cityInfo = MAJOR_CITIES[town.code]
+        const shouldShowLabel = showLabels && (
+          // Major cities: show based on priority and minZoom
+          (cityInfo && shouldShowCityLabel(town.code, currentZoom)) ||
+          // Regular communes: show at higher zoom levels with more liberal limits
+          (!cityInfo && currentZoom > 10 && visibleTowns.length < 500) ||
+          // Show even more communes at very high zoom
+          (!cityInfo && currentZoom > 12 && visibleTowns.length < 1000)
+        )
+
+        if (shouldShowLabel) {
           const bounds = polygon.getBounds()
           const center = bounds.getCenter()
 
+          // Get label style based on priority
+          const priority = cityInfo?.priority || 4
+          const labelStyle = getCityLabelStyle(priority, currentZoom)
+
+          // For major cities, use the display name from our database
+          const displayName = cityInfo?.name || town.name
+
           const label = L.marker(center, {
             icon: L.divIcon({
-              className: "town-label",
+              className: `town-label priority-${priority}`,
               html: `
                 <div style="
-                  background: rgba(255, 255, 255, 0.95);
-                  padding: 1px 3px;
-                  border-radius: 2px;
-                  font-size: 9px;
-                  font-weight: 500;
+                  background: ${labelStyle.background};
+                  padding: ${labelStyle.padding};
+                  border-radius: 4px;
+                  font-size: ${labelStyle.fontSize}px;
+                  font-weight: ${labelStyle.fontWeight};
                   text-align: center;
-                  border: 1px solid rgba(0, 0, 0, 0.1);
-                  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+                  border: ${labelStyle.border};
+                  box-shadow: ${labelStyle.boxShadow};
+                  color: #1a1a1a;
+                  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+                  display: inline-block;
+                  line-height: 1.2;
+                  letter-spacing: -0.02em;
+                  user-select: none;
+                  pointer-events: none;
                   white-space: nowrap;
-                  max-width: 60px;
-                  overflow: hidden;
-                  text-overflow: ellipsis;
                 ">
-                  ${town.name.length > 8 ? town.name.substring(0, 8) + '...' : town.name}
+                  ${displayName}
                 </div>
               `,
-              iconSize: [0, 0],
-              iconAnchor: [0, 0]
+              iconSize: undefined, // Let Leaflet calculate size
+              iconAnchor: undefined // Use default anchor (centered)
             })
           })
 

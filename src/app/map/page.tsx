@@ -1,19 +1,22 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import dynamic from "next/dynamic"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Map, Settings, Info, Eye, EyeOff } from "lucide-react"
+import { type MapRef } from "@/components/map/interactive-map"
 import { MedicalFieldSelector, type MedicalProfession } from "@/components/map/medical-field-selector"
 import { ZonageFilter } from "@/components/map/zonage-filter"
 import { MapLegend } from "@/components/map/map-legend"
+import { CitySearchBox } from "@/components/map/city-search-box"
 import { type ZonageLevel } from "@/lib/services/town-density-types"
+import { type CityInfo } from "@/lib/data/major-cities"
 
 // Dynamic imports to prevent SSR issues
 const InteractiveMap = dynamic(
-  () => import("@/components/map/interactive-map").then((mod) => mod.InteractiveMap),
+  () => import("@/components/map/interactive-map").then((mod) => ({ default: mod.InteractiveMap })),
   { ssr: false, loading: () => <MapSkeleton /> }
 )
 
@@ -48,6 +51,7 @@ export default function MapPage() {
   const [showListings, setShowListings] = useState(true)
   const [loading, setLoading] = useState(false)
   const [townCount, setTownCount] = useState(0)
+  const mapRef = useRef<MapRef | null>(null)
 
   // Stats state
   const [stats, setStats] = useState<{
@@ -81,6 +85,12 @@ export default function MapPage() {
     loadStats()
   }, [selectedProfession])
 
+  const handleCitySelect = (city: CityInfo & { code: string }) => {
+    if (mapRef.current) {
+      mapRef.current.flyTo(city.lat, city.lng, city.zoom || 12)
+    }
+  }
+
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
@@ -96,7 +106,7 @@ export default function MapPage() {
                 Explorez les zones de densité médicale par commune selon les données officielles ARS
               </p>
             </div>
-            
+
             <div className="flex items-center gap-2">
               <Badge variant="outline" className="text-green-700 border-green-200">
                 Données ARS officielles
@@ -218,13 +228,15 @@ export default function MapPage() {
 
           {/* Map */}
           <div className="lg:col-span-3">
-            <Card className="h-[80vh]">
+            <Card className="h-[80vh] relative">
               <CardContent className="p-0 h-full">
                 <InteractiveMap
+                  ref={mapRef}
                   center={[46.603354, 1.888334]}
                   zoom={6}
                   height="100%"
                   className="rounded-lg border-0"
+                  mapStyle="geometric"
                 >
                   <TownDensityOverlay
                     profession={selectedProfession}
@@ -235,7 +247,7 @@ export default function MapPage() {
                       console.log('Town clicked:', town.name, town.zonage)
                     }}
                   />
-                  
+
                   {showListings && (
                     <ListingMarkers
                       listings={[]}
@@ -245,19 +257,27 @@ export default function MapPage() {
                     />
                   )}
                 </InteractiveMap>
-                
+
+                {/* City Search - Top Right */}
+                <div className="absolute top-4 right-4 z-[1000] w-80">
+                  <CitySearchBox
+                    onCitySelect={handleCitySelect}
+                    placeholder="Rechercher une ville..."
+                  />
+                </div>
+
                 {/* Map Status */}
                 <div className="absolute bottom-4 left-4 z-[1000] space-y-2">
                   <Badge variant="secondary" className="bg-white/90 backdrop-blur-sm">
                     Profession: {selectedProfession}
                   </Badge>
-                  
+
                   {selectedZonages.length > 0 && (
                     <Badge variant="secondary" className="bg-blue-100/90 text-blue-800 backdrop-blur-sm">
                       Zonages filtrés: {selectedZonages.length}
                     </Badge>
                   )}
-                  
+
                   {loading && (
                     <Badge variant="secondary" className="bg-yellow-100/90 text-yellow-800 backdrop-blur-sm">
                       Chargement...
