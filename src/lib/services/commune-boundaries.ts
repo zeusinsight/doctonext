@@ -10,32 +10,43 @@ export interface CommuneWithBoundary {
 }
 
 /**
- * Load commune boundary data (lazy-loaded)
+ * Load commune boundary data (lazy-loaded) from split files
  */
 async function loadBoundaryData(): Promise<Record<string, CommuneBoundary>> {
   if (boundaryData) return boundaryData
-  
+
   try {
     // Check if we're running on the server or client
     if (typeof window === 'undefined') {
       // Server-side: load directly from file system
       const fs = await import('fs')
       const path = await import('path')
-      
-      const dataPath = path.join(process.cwd(), 'src', 'lib', 'data', 'commune-boundaries.json')
-      const rawData = fs.readFileSync(dataPath, 'utf8')
-      boundaryData = JSON.parse(rawData)
-      
-      console.log(`Loaded ${Object.keys(boundaryData || {}).length} commune boundaries from file system`)
+
+      const part1Path = path.join(process.cwd(), 'src', 'lib', 'data', 'commune-boundaries-part1.json')
+      const part2Path = path.join(process.cwd(), 'src', 'lib', 'data', 'commune-boundaries-part2.json')
+
+      // Load both parts in parallel for better performance
+      const [part1Raw, part2Raw] = await Promise.all([
+        Promise.resolve(fs.readFileSync(part1Path, 'utf8')),
+        Promise.resolve(fs.readFileSync(part2Path, 'utf8'))
+      ])
+
+      const part1Data = JSON.parse(part1Raw)
+      const part2Data = JSON.parse(part2Raw)
+
+      // Merge both parts into a single object
+      boundaryData = { ...part1Data, ...part2Data }
+
+      console.log(`Loaded ${Object.keys(boundaryData || {}).length} commune boundaries from split files (Part 1: ${Object.keys(part1Data).length}, Part 2: ${Object.keys(part2Data).length})`)
     } else {
       // Client-side: use fetch with absolute URL
       const response = await fetch('/api/map/commune-boundaries')
       if (!response.ok) throw new Error('Failed to load boundary data')
-      
+
       boundaryData = await response.json()
       console.log(`Loaded ${Object.keys(boundaryData || {}).length} commune boundaries from API`)
     }
-    
+
     return boundaryData || {}
   } catch (error) {
     console.error('Error loading commune boundary data:', error)

@@ -4,10 +4,10 @@ import { useState, useEffect } from "react"
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "cmdk"
 import { Search, MapPin } from "lucide-react"
 import { cn } from "@/lib/utils"
-import { searchCities, type CityInfo } from "@/lib/data/major-cities"
+import { searchCities, getPriorityLabel, getPriorityColor, type CityInfo } from "@/lib/services/city-service"
 
 interface CitySearchBoxProps {
-  onCitySelect: (city: CityInfo & { code: string }) => void
+  onCitySelect: (city: CityInfo) => void
   className?: string
   placeholder?: string
 }
@@ -15,7 +15,7 @@ interface CitySearchBoxProps {
 export function CitySearchBox({ onCitySelect, className, placeholder = "Rechercher une ville..." }: CitySearchBoxProps) {
   const [open, setOpen] = useState(false)
   const [value, setValue] = useState("")
-  const [cities, setCities] = useState<Array<CityInfo & { code: string }>>([])
+  const [cities, setCities] = useState<CityInfo[]>([])
 
   // Search cities when value changes
   useEffect(() => {
@@ -29,28 +29,10 @@ export function CitySearchBox({ onCitySelect, className, placeholder = "Recherch
     }
   }, [value])
 
-  const handleCitySelect = (city: CityInfo & { code: string }) => {
+  const handleCitySelect = (city: CityInfo) => {
     setValue("")
     setOpen(false)
     onCitySelect(city)
-  }
-
-  const getPriorityLabel = (priority: number) => {
-    switch (priority) {
-      case 1: return "Grande ville"
-      case 2: return "Ville régionale"
-      case 3: return "Chef-lieu"
-      default: return "Commune"
-    }
-  }
-
-  const getPriorityColor = (priority: number) => {
-    switch (priority) {
-      case 1: return "text-blue-600"
-      case 2: return "text-green-600"
-      case 3: return "text-gray-600"
-      default: return "text-gray-500"
-    }
   }
 
   return (

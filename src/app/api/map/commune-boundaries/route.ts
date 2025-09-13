@@ -8,16 +8,26 @@ let cacheTimestamp = 0
 const CACHE_DURATION = 1000 * 60 * 60 // 1 hour
 
 /**
- * Load boundary data with caching
+ * Load boundary data with caching from split files
  */
 function loadBoundaryData() {
   if (!boundaryCache || Date.now() - cacheTimestamp > CACHE_DURATION) {
     try {
-      const dataPath = path.join(process.cwd(), 'src', 'lib', 'data', 'commune-boundaries.json')
-      const rawData = fs.readFileSync(dataPath, 'utf8')
-      boundaryCache = JSON.parse(rawData)
+      const part1Path = path.join(process.cwd(), 'src', 'lib', 'data', 'commune-boundaries-part1.json')
+      const part2Path = path.join(process.cwd(), 'src', 'lib', 'data', 'commune-boundaries-part2.json')
+
+      // Load both parts
+      const part1Raw = fs.readFileSync(part1Path, 'utf8')
+      const part2Raw = fs.readFileSync(part2Path, 'utf8')
+
+      const part1Data = JSON.parse(part1Raw)
+      const part2Data = JSON.parse(part2Raw)
+
+      // Merge both parts into a single object
+      boundaryCache = { ...part1Data, ...part2Data }
       cacheTimestamp = Date.now()
-      console.log(`Loaded ${Object.keys(boundaryCache || {}).length} commune boundaries`)
+
+      console.log(`Loaded ${Object.keys(boundaryCache || {}).length} commune boundaries from split files (Part 1: ${Object.keys(part1Data).length}, Part 2: ${Object.keys(part2Data).length})`)
     } catch (error) {
       console.error('Error loading boundary data:', error)
       boundaryCache = {}

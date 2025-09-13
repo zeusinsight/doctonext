@@ -12,7 +12,7 @@ import { ZonageFilter } from "@/components/map/zonage-filter"
 import { MapLegend } from "@/components/map/map-legend"
 import { CitySearchBox } from "@/components/map/city-search-box"
 import { type ZonageLevel } from "@/lib/services/town-density-types"
-import { type CityInfo } from "@/lib/data/major-cities"
+import { type CityInfo } from "@/lib/services/city-service"
 
 // Dynamic imports to prevent SSR issues
 const InteractiveMap = dynamic(
@@ -85,7 +85,7 @@ export default function MapPage() {
     loadStats()
   }, [selectedProfession])
 
-  const handleCitySelect = (city: CityInfo & { code: string }) => {
+  const handleCitySelect = (city: CityInfo) => {
     if (mapRef.current) {
       mapRef.current.flyTo(city.lat, city.lng, city.zoom || 12)
     }

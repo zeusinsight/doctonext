@@ -21,7 +21,7 @@ import { toast } from "sonner"
 import { authClient } from "@/lib/auth-client"
 import { type MedicalProfession } from "@/lib/services/town-density-types"
 import { CitySearchBox } from "@/components/map/city-search-box"
-import { type CityInfo } from "@/lib/data/major-cities"
+import { type CityInfo } from "@/lib/services/city-service"
 import { type MapRef } from "@/components/map/interactive-map"
 import { PerformanceMonitor, usePerformanceMonitoring } from "@/components/performance/performance-monitor"
 
@@ -226,7 +226,7 @@ function ListingsContent() {
     }, [])
 
     // Handle city selection from search box
-    const handleCitySelect = useCallback((city: CityInfo & { code: string }) => {
+    const handleCitySelect = useCallback((city: CityInfo) => {
         if (mapRef.current) {
             mapRef.current.flyTo(city.lat, city.lng, city.zoom || 12)
         }
