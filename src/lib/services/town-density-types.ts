@@ -26,7 +26,7 @@ export const getZonageDensityScore = (zonage: ZonageLevel): number => {
     case '3_intermediaire': return 55    // Balanced (orange)
     case '4_Tres_dotee': return 75       // Well-served (red)
     case '5_Sur_dotee': return 95        // Over-served (dark red)
-    case '5b_Non_prioritaire': return 50 // Non-priority (neutral)
+    case '5b_Non_prioritaire': return 95 // Non-priority (same as Sur-dotée - dark red)
     default: return 0                    // Unknown/N/A (gray)
   }
 }

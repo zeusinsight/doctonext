@@ -1,8 +1,11 @@
 // Map component exports
 export { InteractiveMap } from "./interactive-map"
-export { ListingMarkers } from "./listing-markers" 
+export { ListingMarkers } from "./listing-markers"
 export { MedicalDensityOverlay } from "./medical-density-overlay"
 export { HeatmapDensityOverlay } from "./heatmap-density-overlay"
+export { DepartmentOverlay } from "./department-overlay"
+export { CommuneOverlay } from "./commune-overlay"
+export { MapNavigationControls } from "./map-navigation-controls"
 export { MapLegend } from "./map-legend"
 export { MapWidget } from "./map-widget"
 

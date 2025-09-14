@@ -5,14 +5,18 @@ import dynamic from "next/dynamic"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { Map, Settings, Info, Eye, EyeOff } from "lucide-react"
+import { Map, Settings, Info, Eye, EyeOff, Layers } from "lucide-react"
 import { type MapRef } from "@/components/map/interactive-map"
 import { MedicalFieldSelector, type MedicalProfession } from "@/components/map/medical-field-selector"
 import { ZonageFilter } from "@/components/map/zonage-filter"
 import { MapLegend } from "@/components/map/map-legend"
 import { CitySearchBox } from "@/components/map/city-search-box"
+import { MapNavigationControls } from "@/components/map/map-navigation-controls"
+import { useMapNavigation } from "@/hooks/use-map-navigation"
 import { type ZonageLevel } from "@/lib/services/town-density-types"
 import { type CityInfo } from "@/lib/services/city-service"
+import { type DepartmentData } from "@/lib/services/department-service"
+import { type CommuneData } from "@/lib/services/commune-department-service"
 
 // Dynamic imports to prevent SSR issues
 const InteractiveMap = dynamic(
@@ -22,6 +26,16 @@ const InteractiveMap = dynamic(
 
 const TownDensityOverlay = dynamic(
   () => import("@/components/map/town-density-overlay").then((mod) => mod.TownDensityOverlay),
+  { ssr: false }
+)
+
+const DepartmentOverlay = dynamic(
+  () => import("@/components/map/department-overlay").then((mod) => ({ default: mod.DepartmentOverlay })),
+  { ssr: false }
+)
+
+const CommuneOverlay = dynamic(
+  () => import("@/components/map/commune-overlay").then((mod) => ({ default: mod.CommuneOverlay })),
   { ssr: false }
 )
 
@@ -49,9 +63,18 @@ export default function MapPage() {
   const [selectedZonages, setSelectedZonages] = useState<ZonageLevel[]>([])
   const [showLabels, setShowLabels] = useState(false)
   const [showListings, setShowListings] = useState(true)
+  const [showDepartments, setShowDepartments] = useState(true)
+  const [showCommunes, setShowCommunes] = useState(false)
+  const [showTownDensity, setShowTownDensity] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [departmentsLoading, setDepartmentsLoading] = useState(false)
+  const [communesLoading, setCommunesLoading] = useState(false)
+  const [mapError, setMapError] = useState<string | null>(null)
   const [townCount, setTownCount] = useState(0)
   const mapRef = useRef<MapRef | null>(null)
+
+  // Navigation state
+  const navigation = useMapNavigation(mapRef)
 
   // Stats state
   const [stats, setStats] = useState<{
@@ -66,8 +89,13 @@ export default function MapPage() {
     }>
   } | null>(null)
 
-  // Load stats when profession changes
+  // Load stats when profession changes (only if town density is enabled)
   useEffect(() => {
+    if (!showTownDensity) {
+      setStats(null)
+      return
+    }
+
     const loadStats = async () => {
       try {
         const response = await fetch(`/api/map/town-density?profession=${selectedProfession}&stats=true`)
@@ -81,15 +109,107 @@ export default function MapPage() {
         console.error('Error loading stats:', error)
       }
     }
-    
+
     loadStats()
-  }, [selectedProfession])
+  }, [selectedProfession, showTownDensity])
+
+  // Manage layer visibility based on navigation level
+  useEffect(() => {
+    console.log('Map page: Navigation level changed to:', navigation.state.level)
+
+    switch (navigation.state.level) {
+      case 'country':
+        setShowDepartments(true)
+        setShowCommunes(false)
+        console.log('Map page: Showing departments, hiding communes')
+        break
+      case 'department':
+        setShowDepartments(false)
+        setShowCommunes(true)
+        console.log('Map page: Hiding departments, showing communes for department:', navigation.state.selectedDepartment?.code)
+        break
+      case 'commune':
+        setShowDepartments(false)
+        setShowCommunes(true)
+        console.log('Map page: Showing commune view')
+        break
+    }
+  }, [navigation.state.level, navigation.state.selectedDepartment])
 
   const handleCitySelect = (city: CityInfo) => {
     if (mapRef.current) {
       mapRef.current.flyTo(city.lat, city.lng, city.zoom || 12)
     }
   }
+
+  const handleDepartmentClick = (department: DepartmentData) => {
+    console.log('Map page: Department clicked:', department.name, department.code)
+    setCommunesLoading(true)
+    setMapError(null)
+    navigation.navigateToDepartment(department)
+    // Layer visibility will be handled by the useEffect above
+  }
+
+  const handleDepartmentHover = (department: DepartmentData | null) => {
+    navigation.setHoveredLocation(department ? department.name : null)
+  }
+
+  const handleCommuneClick = (commune: CommuneData) => {
+    navigation.navigateToCommune(commune)
+  }
+
+  const handleCommuneHover = (commune: CommuneData | null) => {
+    navigation.setHoveredLocation(commune ? commune.name : null)
+  }
+
+  const handleNavigateToCountry = () => {
+    console.log('Map page: Navigating to country view')
+    navigation.navigateToCountry()
+    // Layer visibility will be handled by the useEffect above
+  }
+
+  const handleNavigateToDepartment = () => {
+    if (navigation.state.selectedDepartment) {
+      console.log('Map page: Navigating back to department view:', navigation.state.selectedDepartment.name)
+      navigation.navigateToDepartment(navigation.state.selectedDepartment)
+      // Layer visibility will be handled by the useEffect above
+    }
+  }
+
+  // Auto-adjust layer visibility based on zoom level
+  useEffect(() => {
+    if (!mapRef.current) return
+
+    const map = mapRef.current.getMap()
+    if (!map) return
+
+    const handleZoomEnd = () => {
+      const zoom = map.getZoom()
+
+      if (zoom >= 10) {
+        // High zoom - show communes if in department view
+        if (navigation.state.level === 'department') {
+          setShowCommunes(true)
+          setShowDepartments(false)
+        }
+      } else if (zoom >= 7) {
+        // Medium zoom - show departments
+        if (navigation.state.level === 'country') {
+          setShowDepartments(true)
+          setShowCommunes(false)
+        }
+      } else {
+        // Low zoom - show country level
+        setShowDepartments(true)
+        setShowCommunes(false)
+      }
+    }
+
+    map.on('zoomend', handleZoomEnd)
+    return () => {
+      map.off('zoomend', handleZoomEnd)
+    }
+  }, [navigation.state.level])
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -100,20 +220,25 @@ export default function MapPage() {
             <div>
               <h1 className="text-2xl font-bold text-gray-900 flex items-center gap-2">
                 <Map className="w-6 h-6 text-blue-600" />
-                Carte de Densité Médicale
+                Carte Interactive de France
               </h1>
               <p className="text-gray-600 mt-1">
-                Explorez les zones de densité médicale par commune selon les données officielles ARS
+                Explorez la France par départements et communes • Données officielles IGN/INSEE
               </p>
             </div>
 
             <div className="flex items-center gap-2">
               <Badge variant="outline" className="text-green-700 border-green-200">
-                Données ARS officielles
+                Données IGN/INSEE
               </Badge>
               <Badge variant="secondary">
-                ~35,000 communes
+                101 départements • 34,968 communes
               </Badge>
+              {navigation.state.level === 'department' && (
+                <Badge variant="outline" className="text-blue-700 border-blue-200">
+                  {navigation.state.selectedDepartment?.name}
+                </Badge>
+              )}
             </div>
           </div>
         </div>
@@ -133,36 +258,81 @@ export default function MapPage() {
               </CardHeader>
               <CardContent className="space-y-4">
                 <div>
-                  <label className="text-xs font-medium text-gray-700 mb-2 block">
-                    Profession médicale
+                  <label className="text-xs font-medium text-gray-700 mb-2 block flex items-center gap-2">
+                    <Layers className="h-3 w-3" />
+                    Couches de données
                   </label>
-                  <MedicalFieldSelector
-                    selectedProfession={selectedProfession}
-                    onProfessionChange={setSelectedProfession}
-                  />
-                </div>
-                
-                <div>
-                  <label className="text-xs font-medium text-gray-700 mb-2 block">
-                    Filtrer par zonage
-                  </label>
-                  <ZonageFilter
-                    selectedZonages={selectedZonages}
-                    onZonageChange={setSelectedZonages}
-                  />
+                  <div className="space-y-2">
+                    <Button
+                      variant={showDepartments ? "default" : "outline"}
+                      size="sm"
+                      onClick={() => setShowDepartments(!showDepartments)}
+                      className="w-full justify-start"
+                    >
+                      {showDepartments ? <Eye className="w-4 h-4 mr-2" /> : <EyeOff className="w-4 h-4 mr-2" />}
+                      Départements
+                    </Button>
+
+                    <Button
+                      variant={showCommunes ? "default" : "outline"}
+                      size="sm"
+                      onClick={() => setShowCommunes(!showCommunes)}
+                      className="w-full justify-start"
+                      disabled={navigation.state.level === 'country'}
+                    >
+                      {showCommunes ? <Eye className="w-4 h-4 mr-2" /> : <EyeOff className="w-4 h-4 mr-2" />}
+                      Communes
+                    </Button>
+
+                    <Button
+                      variant={showTownDensity ? "default" : "outline"}
+                      size="sm"
+                      onClick={() => setShowTownDensity(!showTownDensity)}
+                      className="w-full justify-start"
+                    >
+                      {showTownDensity ? <Eye className="w-4 h-4 mr-2" /> : <EyeOff className="w-4 h-4 mr-2" />}
+                      Densité médicale
+                    </Button>
+                  </div>
                 </div>
 
+                {showTownDensity && (
+                  <>
+                    <div>
+                      <label className="text-xs font-medium text-gray-700 mb-2 block">
+                        Profession médicale
+                      </label>
+                      <MedicalFieldSelector
+                        selectedProfession={selectedProfession}
+                        onProfessionChange={setSelectedProfession}
+                      />
+                    </div>
+
+                    <div>
+                      <label className="text-xs font-medium text-gray-700 mb-2 block">
+                        Filtrer par zonage
+                      </label>
+                      <ZonageFilter
+                        selectedZonages={selectedZonages}
+                        onZonageChange={setSelectedZonages}
+                      />
+                    </div>
+                  </>
+                )}
+
                 <div className="space-y-2">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => setShowLabels(!showLabels)}
-                    className="w-full justify-start"
-                  >
-                    {showLabels ? <EyeOff className="w-4 h-4 mr-2" /> : <Eye className="w-4 h-4 mr-2" />}
-                    {showLabels ? 'Masquer les labels' : 'Afficher les labels'}
-                  </Button>
-                  
+                  {showTownDensity && (
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => setShowLabels(!showLabels)}
+                      className="w-full justify-start"
+                    >
+                      {showLabels ? <EyeOff className="w-4 h-4 mr-2" /> : <Eye className="w-4 h-4 mr-2" />}
+                      {showLabels ? 'Masquer les labels' : 'Afficher les labels'}
+                    </Button>
+                  )}
+
                   <Button
                     variant="outline"
                     size="sm"
@@ -176,13 +346,50 @@ export default function MapPage() {
               </CardContent>
             </Card>
 
-            {/* Statistics */}
-            {stats && (
+            {/* Navigation Info */}
+            <Card>
+              <CardHeader className="pb-3">
+                <CardTitle className="text-sm flex items-center gap-2">
+                  <Info className="h-4 w-4" />
+                  Navigation
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-3">
+                  <div className="text-center">
+                    <div className="text-lg font-bold text-blue-600">
+                      {navigation.state.level === 'country' && 'Vue nationale'}
+                      {navigation.state.level === 'department' && navigation.state.selectedDepartment?.name}
+                      {navigation.state.level === 'commune' && navigation.state.selectedCommune?.name}
+                    </div>
+                    <div className="text-xs text-gray-600">
+                      {navigation.state.level === 'country' && '101 départements'}
+                      {navigation.state.level === 'department' && `Département ${navigation.state.selectedDepartment?.code}`}
+                      {navigation.state.level === 'commune' && `Commune ${navigation.state.selectedCommune?.code}`}
+                    </div>
+                  </div>
+
+                  {navigation.state.hoveredLocation && (
+                    <div className="text-center p-2 bg-gray-50 rounded">
+                      <div className="text-sm font-medium text-gray-800">
+                        {navigation.state.hoveredLocation}
+                      </div>
+                      <div className="text-xs text-gray-500">
+                        Survolé
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Statistics for Medical Density */}
+            {showTownDensity && stats && (
               <Card>
                 <CardHeader className="pb-3">
                   <CardTitle className="text-sm flex items-center gap-2">
                     <Info className="h-4 w-4" />
-                    Statistiques
+                    Statistiques médicales
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
@@ -195,12 +402,12 @@ export default function MapPage() {
                         communes analysées
                       </div>
                     </div>
-                    
+
                     <div className="space-y-2">
                       {stats.distribution.map((item) => (
                         <div key={item.zonage} className="flex items-center justify-between text-xs">
                           <div className="flex items-center gap-2">
-                            <div 
+                            <div
                               className="w-3 h-3 rounded-sm"
                               style={{ backgroundColor: item.color }}
                             />
@@ -219,11 +426,13 @@ export default function MapPage() {
             )}
 
             {/* Legend */}
-            <MapLegend
-              showDensityLegend={true}
-              showListingTypes={showListings}
-              densityMode="polygon"
-            />
+            {showTownDensity && (
+              <MapLegend
+                showDensityLegend={true}
+                showListingTypes={showListings}
+                densityMode="polygon"
+              />
+            )}
           </div>
 
           {/* Map */}
@@ -238,15 +447,42 @@ export default function MapPage() {
                   className="rounded-lg border-0"
                   mapStyle="geometric"
                 >
-                  <TownDensityOverlay
-                    profession={selectedProfession}
-                    zonageFilter={selectedZonages}
-                    showLabels={showLabels}
-                    maxTowns={selectedZonages.length > 0 ? 1000 : 200}
-                    onTownClick={(town) => {
-                      console.log('Town clicked:', town.name, town.zonage)
-                    }}
+                  {/* Department Layer */}
+                  <DepartmentOverlay
+                    visible={showDepartments}
+                    onDepartmentClick={handleDepartmentClick}
+                    onDepartmentHover={handleDepartmentHover}
+                    onLoadingChange={setDepartmentsLoading}
+                    onError={setMapError}
+                    highlightedDepartment={navigation.state.selectedDepartment?.code}
                   />
+
+                  {/* Commune Layer */}
+                  <CommuneOverlay
+                    departmentCode={navigation.state.selectedDepartment?.code || null}
+                    visible={showCommunes}
+                    onCommuneClick={handleCommuneClick}
+                    onCommuneHover={handleCommuneHover}
+                    onLoadingChange={(loading) => {
+                      setCommunesLoading(loading)
+                      if (!loading) setCommunesLoading(false) // Reset on completion
+                    }}
+                    onError={setMapError}
+                    highlightedCommune={navigation.state.selectedCommune?.code}
+                  />
+
+                  {/* Town Density Overlay */}
+                  {showTownDensity && (
+                    <TownDensityOverlay
+                      profession={selectedProfession}
+                      zonageFilter={selectedZonages}
+                      showLabels={showLabels}
+                      maxTowns={selectedZonages.length > 0 ? 1000 : 200}
+                      onTownClick={(town) => {
+                        console.log('Town clicked:', town.name, town.zonage)
+                      }}
+                    />
+                  )}
 
                   {showListings && (
                     <ListingMarkers
@@ -258,6 +494,28 @@ export default function MapPage() {
                   )}
                 </InteractiveMap>
 
+                {/* Navigation Controls - Top Left */}
+                <div className="absolute top-4 left-4 z-[1000] max-w-sm">
+                  <MapNavigationControls
+                    currentLevel={{
+                      level: navigation.state.level,
+                      name: navigation.state.level === 'country' ? 'France' :
+                            navigation.state.level === 'department' ? navigation.state.selectedDepartment?.name || 'Département' :
+                            navigation.state.selectedCommune?.name || 'Commune',
+                      code: navigation.state.level === 'department' ? navigation.state.selectedDepartment?.code :
+                            navigation.state.level === 'commune' ? navigation.state.selectedCommune?.code :
+                            undefined
+                    }}
+                    departmentName={navigation.state.selectedDepartment?.name}
+                    departmentCode={navigation.state.selectedDepartment?.code}
+                    communeName={navigation.state.selectedCommune?.name}
+                    communeCode={navigation.state.selectedCommune?.code}
+                    onNavigateToCountry={handleNavigateToCountry}
+                    onNavigateToDepartment={handleNavigateToDepartment}
+                    hoveredLocation={navigation.state.hoveredLocation}
+                  />
+                </div>
+
                 {/* City Search - Top Right */}
                 <div className="absolute top-4 right-4 z-[1000] w-80">
                   <CitySearchBox
@@ -266,13 +524,15 @@ export default function MapPage() {
                   />
                 </div>
 
-                {/* Map Status */}
+                {/* Map Status - Bottom Left */}
                 <div className="absolute bottom-4 left-4 z-[1000] space-y-2">
-                  <Badge variant="secondary" className="bg-white/90 backdrop-blur-sm">
-                    Profession: {selectedProfession}
-                  </Badge>
+                  {showTownDensity && (
+                    <Badge variant="secondary" className="bg-white/90 backdrop-blur-sm">
+                      Profession: {selectedProfession}
+                    </Badge>
+                  )}
 
-                  {selectedZonages.length > 0 && (
+                  {showTownDensity && selectedZonages.length > 0 && (
                     <Badge variant="secondary" className="bg-blue-100/90 text-blue-800 backdrop-blur-sm">
                       Zonages filtrés: {selectedZonages.length}
                     </Badge>
@@ -283,6 +543,25 @@ export default function MapPage() {
                       Chargement...
                     </Badge>
                   )}
+
+                  {/* Layer Status */}
+                  <div className="flex flex-wrap gap-1">
+                    {showDepartments && (
+                      <Badge variant="outline" className="bg-blue-50/90 text-blue-700 backdrop-blur-sm text-xs">
+                        Départements
+                      </Badge>
+                    )}
+                    {showCommunes && (
+                      <Badge variant="outline" className="bg-green-50/90 text-green-700 backdrop-blur-sm text-xs">
+                        Communes
+                      </Badge>
+                    )}
+                    {showTownDensity && (
+                      <Badge variant="outline" className="bg-purple-50/90 text-purple-700 backdrop-blur-sm text-xs">
+                        Densité
+                      </Badge>
+                    )}
+                  </div>
                 </div>
               </CardContent>
             </Card>
