@@ -1,7 +1,13 @@
 "use client"
 
 import { useState } from "react"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle
+} from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Input } from "@/components/ui/input"
@@ -20,7 +26,7 @@ export function UpdateAvatarCard({ className }: UpdateAvatarCardProps) {
     const { data: session } = authClient.useSession()
     const [isLoading, setIsLoading] = useState(false)
     const [previewUrl, setPreviewUrl] = useState<string | null>(null)
-    
+
     const { startUpload, isUploading } = useUploadThing("avatarUploader", {
         onClientUploadComplete: (res) => {
             if (res?.[0]?.ufsUrl) {
@@ -28,9 +34,9 @@ export function UpdateAvatarCard({ className }: UpdateAvatarCardProps) {
             }
         },
         onUploadError: (error: Error) => {
-            toast.error("Erreur lors du téléchargement: " + error.message)
+            toast.error(`Erreur lors du téléchargement: ${error.message}`)
             setIsLoading(false)
-        },
+        }
     })
 
     const handleAvatarUpdate = async (avatarUrl: string) => {
@@ -48,12 +54,14 @@ export function UpdateAvatarCard({ className }: UpdateAvatarCardProps) {
         }
     }
 
-    const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const handleFileChange = async (
+        event: React.ChangeEvent<HTMLInputElement>
+    ) => {
         const file = event.target.files?.[0]
         if (!file) return
 
         // Validate file type
-        if (!file.type.startsWith('image/')) {
+        if (!file.type.startsWith("image/")) {
             toast.error("Veuillez sélectionner une image valide")
             return
         }
@@ -65,7 +73,7 @@ export function UpdateAvatarCard({ className }: UpdateAvatarCardProps) {
         }
 
         setIsLoading(true)
-        
+
         // Create preview URL
         const url = URL.createObjectURL(file)
         setPreviewUrl(url)
@@ -80,34 +88,39 @@ export function UpdateAvatarCard({ className }: UpdateAvatarCardProps) {
         }
     }
 
-    const userInitials = session?.user?.name
-        ?.split(" ")
-        .map(n => n[0])
-        .join("")
-        .toUpperCase() || "U"
+    const userInitials =
+        session?.user?.name
+            ?.split(" ")
+            .map((n) => n[0])
+            .join("")
+            .toUpperCase() || "U"
 
     return (
         <Card className={cn(className)}>
             <CardHeader>
                 <CardTitle>Photo de profil</CardTitle>
                 <CardDescription>
-                    Modifiez votre photo de profil. Formats acceptés : JPG, PNG. Taille max : 5 MB.
+                    Modifiez votre photo de profil. Formats acceptés : JPG, PNG.
+                    Taille max : 5 MB.
                 </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
                 <div className="flex items-center gap-4">
-                    <Avatar className="w-16 h-16">
-                        <AvatarImage 
-                            src={previewUrl || session?.user?.image || ""} 
-                            alt={session?.user?.name || "Avatar"} 
+                    <Avatar className="h-16 w-16">
+                        <AvatarImage
+                            src={previewUrl || session?.user?.image || ""}
+                            alt={session?.user?.name || "Avatar"}
                         />
                         <AvatarFallback className="text-lg">
                             {userInitials}
                         </AvatarFallback>
                     </Avatar>
-                    
+
                     <div className="flex-1">
-                        <Label htmlFor="avatar-upload" className="cursor-pointer">
+                        <Label
+                            htmlFor="avatar-upload"
+                            className="cursor-pointer"
+                        >
                             <Button
                                 type="button"
                                 variant="outline"
@@ -116,12 +129,14 @@ export function UpdateAvatarCard({ className }: UpdateAvatarCardProps) {
                                 asChild
                             >
                                 <span>
-                                    {(isLoading || isUploading) ? (
-                                        <RiLoader4Line className="w-4 h-4 mr-2 animate-spin" />
+                                    {isLoading || isUploading ? (
+                                        <RiLoader4Line className="mr-2 h-4 w-4 animate-spin" />
                                     ) : (
-                                        <RiUploadLine className="w-4 h-4 mr-2" />
+                                        <RiUploadLine className="mr-2 h-4 w-4" />
                                     )}
-                                    {(isLoading || isUploading) ? "Téléchargement..." : "Choisir une photo"}
+                                    {isLoading || isUploading
+                                        ? "Téléchargement..."
+                                        : "Choisir une photo"}
                                 </span>
                             </Button>
                         </Label>
@@ -133,22 +148,28 @@ export function UpdateAvatarCard({ className }: UpdateAvatarCardProps) {
                             disabled={isLoading || isUploading}
                             className="sr-only"
                         />
-                        
+
                         {session?.user?.image && (
                             <Button
                                 type="button"
                                 variant="ghost"
                                 size="sm"
-                                className="mt-2 text-red-600 hover:text-red-700 hover:bg-red-50"
+                                className="mt-2 text-red-600 hover:bg-red-50 hover:text-red-700"
                                 disabled={isLoading || isUploading}
                                 onClick={async () => {
                                     setIsLoading(true)
                                     try {
-                                        await authClient.updateUser({ image: "" })
+                                        await authClient.updateUser({
+                                            image: ""
+                                        })
                                         setPreviewUrl(null)
-                                        toast.success("Photo de profil supprimée")
+                                        toast.success(
+                                            "Photo de profil supprimée"
+                                        )
                                     } catch (error) {
-                                        toast.error("Erreur lors de la suppression")
+                                        toast.error(
+                                            "Erreur lors de la suppression"
+                                        )
                                     } finally {
                                         setIsLoading(false)
                                     }

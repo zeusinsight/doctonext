@@ -16,8 +16,10 @@ export const notificationTypes: Record<string, NotificationConfig> = {
         icon: Bell,
         color: "text-blue-600",
         bgColor: "bg-blue-50",
-        getTitle: (data) => `Nouvelle annonce: ${data?.listingTitle || "Annonce"}`,
-        getMessage: (data) => `Une nouvelle annonce correspond à votre recherche "${data?.searchName}"`,
+        getTitle: (data) =>
+            `Nouvelle annonce: ${data?.listingTitle || "Annonce"}`,
+        getMessage: (data) =>
+            `Une nouvelle annonce correspond à votre recherche "${data?.searchName}"`,
         getLink: (data) => `/annonces/${data?.listingId || ""}`
     },
     new_message: {
@@ -25,7 +27,8 @@ export const notificationTypes: Record<string, NotificationConfig> = {
         color: "text-green-600",
         bgColor: "bg-green-50",
         getTitle: (data) => `Message de ${data?.senderName || "Utilisateur"}`,
-        getMessage: (data) => data?.messagePreview || "Vous avez reçu un nouveau message",
+        getMessage: (data) =>
+            data?.messagePreview || "Vous avez reçu un nouveau message",
         getLink: (data) => `/dashboard/messages/${data?.conversationId || ""}`
     },
     listing_view: {
@@ -33,7 +36,8 @@ export const notificationTypes: Record<string, NotificationConfig> = {
         color: "text-purple-600",
         bgColor: "bg-purple-50",
         getTitle: () => "Votre annonce a été consultée",
-        getMessage: (data) => `Votre annonce "${data?.listingTitle}" a reçu une nouvelle consultation`,
+        getMessage: (data) =>
+            `Votre annonce "${data?.listingTitle}" a reçu une nouvelle consultation`,
         getLink: (data) => `/dashboard/annonces/${data?.listingId || ""}`
     },
     listing_favorite: {
@@ -41,7 +45,8 @@ export const notificationTypes: Record<string, NotificationConfig> = {
         color: "text-red-600",
         bgColor: "bg-red-50",
         getTitle: () => "Votre annonce a été ajoutée aux favoris",
-        getMessage: (data) => `Votre annonce "${data?.listingTitle}" a été ajoutée aux favoris`,
+        getMessage: (data) =>
+            `Votre annonce "${data?.listingTitle}" a été ajoutée aux favoris`,
         getLink: (data) => `/dashboard/annonces/${data?.listingId || ""}`
     },
     system_alert: {
@@ -62,7 +67,9 @@ export function getNotificationConfig(type: string): NotificationConfig {
 export function formatTimeAgo(date: Date | string): string {
     const now = new Date()
     const notificationDate = new Date(date)
-    const diffInSeconds = Math.floor((now.getTime() - notificationDate.getTime()) / 1000)
+    const diffInSeconds = Math.floor(
+        (now.getTime() - notificationDate.getTime()) / 1000
+    )
 
     if (diffInSeconds < 60) {
         return "À l'instant"
@@ -70,23 +77,23 @@ export function formatTimeAgo(date: Date | string): string {
 
     const diffInMinutes = Math.floor(diffInSeconds / 60)
     if (diffInMinutes < 60) {
-        return `Il y a ${diffInMinutes} minute${diffInMinutes > 1 ? 's' : ''}`
+        return `Il y a ${diffInMinutes} minute${diffInMinutes > 1 ? "s" : ""}`
     }
 
     const diffInHours = Math.floor(diffInMinutes / 60)
     if (diffInHours < 24) {
-        return `Il y a ${diffInHours} heure${diffInHours > 1 ? 's' : ''}`
+        return `Il y a ${diffInHours} heure${diffInHours > 1 ? "s" : ""}`
     }
 
     const diffInDays = Math.floor(diffInHours / 24)
     if (diffInDays < 7) {
-        return `Il y a ${diffInDays} jour${diffInDays > 1 ? 's' : ''}`
+        return `Il y a ${diffInDays} jour${diffInDays > 1 ? "s" : ""}`
     }
 
     // For older notifications, show the actual date
-    return notificationDate.toLocaleDateString('fr-FR', {
-        day: 'numeric',
-        month: 'short',
-        year: diffInDays > 365 ? 'numeric' : undefined
+    return notificationDate.toLocaleDateString("fr-FR", {
+        day: "numeric",
+        month: "short",
+        year: diffInDays > 365 ? "numeric" : undefined
     })
 }

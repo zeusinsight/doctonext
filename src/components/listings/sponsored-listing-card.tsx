@@ -76,7 +76,7 @@ export function SponsoredListingCard({
                                 <MapPin className="h-8 w-8 text-gray-400" />
                             </div>
                         )}
-                        <div className="absolute bottom-2 right-2">
+                        <div className="absolute right-2 bottom-2">
                             <FavoriteButton
                                 listingId={listing.id}
                                 listingTitle={
@@ -167,7 +167,7 @@ export function SponsoredListingCard({
                                 </Badge>
                             </div>
                         )}
-                        <div className="absolute bottom-1 right-1">
+                        <div className="absolute right-1 bottom-1">
                             <FavoriteButton
                                 listingId={listing.id}
                                 listingTitle={

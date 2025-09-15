@@ -13,16 +13,16 @@ export const metadata: Metadata = {
 
 export default function LoginPage() {
     return (
-        <main className="relative min-h-screen bg-gradient-to-br from-blue-600 to-blue-700 overflow-hidden">
+        <main className="relative min-h-screen overflow-hidden bg-gradient-to-br from-blue-600 to-blue-700">
             {/* Background decorations similar to hero section */}
-            <div className="absolute top-0 right-0 w-96 h-96 bg-blue-500 rounded-full filter blur-3xl opacity-30 -z-10" />
-            <div className="absolute bottom-0 left-0 w-80 h-80 bg-blue-400 rounded-full filter blur-3xl opacity-30 -z-10" />
-            
-            <div className="container mx-auto flex grow flex-col items-center justify-center gap-4 self-center py-18 sm:py-22 min-h-screen">
+            <div className="-z-10 absolute top-0 right-0 h-96 w-96 rounded-full bg-blue-500 opacity-30 blur-3xl filter" />
+            <div className="-z-10 absolute bottom-0 left-0 h-80 w-80 rounded-full bg-blue-400 opacity-30 blur-3xl filter" />
+
+            <div className="container mx-auto flex min-h-screen grow flex-col items-center justify-center gap-4 self-center py-18 sm:py-22">
                 <Link href="/" className="absolute top-6 left-8">
                     <Button
                         variant="outline"
-                        className="bg-white/10 backdrop-blur-sm border-white/20 text-white hover:bg-white/20 hover:text-white"
+                        className="border-white/20 bg-white/10 text-white backdrop-blur-sm hover:bg-white/20 hover:text-white"
                         size="sm"
                     >
                         <ArrowLeft className="mr-2 h-4 w-4" />

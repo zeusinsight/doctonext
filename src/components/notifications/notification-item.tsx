@@ -5,7 +5,10 @@ import Link from "next/link"
 import { X } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { getNotificationConfig, formatTimeAgo } from "@/lib/notifications/types"
-import { markNotificationAsRead, deleteNotification } from "@/lib/actions/notifications"
+import {
+    markNotificationAsRead,
+    deleteNotification
+} from "@/lib/actions/notifications"
 import { useQueryClient } from "@tanstack/react-query"
 import { toast } from "sonner"
 import { cn } from "@/lib/utils"
@@ -23,7 +26,10 @@ interface NotificationItemProps {
     onClose?: () => void
 }
 
-export function NotificationItem({ notification, onClose }: NotificationItemProps) {
+export function NotificationItem({
+    notification,
+    onClose
+}: NotificationItemProps) {
     const [isDeleting, setIsDeleting] = useState(false)
     const queryClient = useQueryClient()
     const config = getNotificationConfig(notification.type)
@@ -34,13 +40,15 @@ export function NotificationItem({ notification, onClose }: NotificationItemProp
             try {
                 await markNotificationAsRead(notification.id)
                 // Invalidate queries to refresh the UI
-                queryClient.invalidateQueries({ queryKey: ['notifications'] })
-                queryClient.invalidateQueries({ queryKey: ['notifications', 'unread-count'] })
+                queryClient.invalidateQueries({ queryKey: ["notifications"] })
+                queryClient.invalidateQueries({
+                    queryKey: ["notifications", "unread-count"]
+                })
             } catch (error) {
                 console.error("Error marking notification as read:", error)
             }
         }
-        
+
         // Close dropdown if provided
         if (onClose) onClose()
     }
@@ -48,14 +56,16 @@ export function NotificationItem({ notification, onClose }: NotificationItemProp
     const handleDelete = async (e: React.MouseEvent) => {
         e.preventDefault()
         e.stopPropagation()
-        
+
         setIsDeleting(true)
         try {
             const result = await deleteNotification(notification.id)
             if (result.success) {
                 // Invalidate queries to refresh the UI
-                queryClient.invalidateQueries({ queryKey: ['notifications'] })
-                queryClient.invalidateQueries({ queryKey: ['notifications', 'unread-count'] })
+                queryClient.invalidateQueries({ queryKey: ["notifications"] })
+                queryClient.invalidateQueries({
+                    queryKey: ["notifications", "unread-count"]
+                })
             } else {
                 toast.error("Erreur lors de la suppression")
             }
@@ -69,41 +79,52 @@ export function NotificationItem({ notification, onClose }: NotificationItemProp
     const IconComponent = config.icon
     const link = config.getLink(notification.data)
     const title = config.getTitle(notification.data)
-    const message = config.getMessage ? config.getMessage(notification.data) : notification.message
+    const message = config.getMessage
+        ? config.getMessage(notification.data)
+        : notification.message
 
     return (
         <Link
             href={link}
             onClick={handleClick}
             className={cn(
-                "block p-3 hover:bg-gray-50 transition-colors border-l-2 group",
-                !notification.isRead 
-                    ? "bg-blue-50 border-l-blue-500" 
-                    : "bg-white border-l-transparent"
+                "group block border-l-2 p-3 transition-colors hover:bg-gray-50",
+                !notification.isRead
+                    ? "border-l-blue-500 bg-blue-50"
+                    : "border-l-transparent bg-white"
             )}
         >
             <div className="flex items-start gap-3">
                 {/* Icon */}
-                <div className={cn("p-2 rounded-full flex-shrink-0", config.bgColor)}>
-                    <IconComponent className={cn("w-4 h-4", config.color)} />
+                <div
+                    className={cn(
+                        "flex-shrink-0 rounded-full p-2",
+                        config.bgColor
+                    )}
+                >
+                    <IconComponent className={cn("h-4 w-4", config.color)} />
                 </div>
 
                 {/* Content */}
-                <div className="flex-1 min-w-0">
+                <div className="min-w-0 flex-1">
                     <div className="flex items-start justify-between gap-2">
-                        <div className="flex-1 min-w-0">
-                            <h4 className={cn(
-                                "text-sm font-medium break-words",
-                                !notification.isRead ? "text-gray-900" : "text-gray-700"
-                            )}>
+                        <div className="min-w-0 flex-1">
+                            <h4
+                                className={cn(
+                                    "break-words font-medium text-sm",
+                                    !notification.isRead
+                                        ? "text-gray-900"
+                                        : "text-gray-700"
+                                )}
+                            >
                                 {title}
                             </h4>
                             {message && (
-                                <p className="text-sm text-gray-600 mt-1 break-words">
+                                <p className="mt-1 break-words text-gray-600 text-sm">
                                     {message}
                                 </p>
                             )}
-                            <p className="text-xs text-gray-500 mt-1">
+                            <p className="mt-1 text-gray-500 text-xs">
                                 {formatTimeAgo(notification.createdAt)}
                             </p>
                         </div>
@@ -112,17 +133,17 @@ export function NotificationItem({ notification, onClose }: NotificationItemProp
                         <Button
                             variant="ghost"
                             size="sm"
-                            className="opacity-0 group-hover:opacity-100 transition-opacity p-1 h-auto flex-shrink-0"
+                            className="h-auto flex-shrink-0 p-1 opacity-0 transition-opacity group-hover:opacity-100"
                             onClick={handleDelete}
                             disabled={isDeleting}
                         >
-                            <X className="w-4 h-4 text-gray-400 hover:text-red-500" />
+                            <X className="h-4 w-4 text-gray-400 hover:text-red-500" />
                         </Button>
                     </div>
 
                     {/* Unread indicator */}
                     {!notification.isRead && (
-                        <div className="w-2 h-2 bg-blue-500 rounded-full absolute top-3 right-3" />
+                        <div className="absolute top-3 right-3 h-2 w-2 rounded-full bg-blue-500" />
                     )}
                 </div>
             </div>

@@ -3,7 +3,7 @@
 import { useEditor, EditorContent } from "@tiptap/react"
 import StarterKit from "@tiptap/starter-kit"
 import Image from "@tiptap/extension-image"
-import Link from "@tiptap/extension-link";
+import Link from "@tiptap/extension-link"
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
 import { cn } from "@/lib/utils"
@@ -30,11 +30,11 @@ interface ArticleEditorProps {
     placeholder?: string
 }
 
-export function ArticleEditor({ 
-    content, 
-    onChange, 
+export function ArticleEditor({
+    content,
+    onChange,
     className,
-    placeholder = "Commencez à écrire votre article..." 
+    placeholder = "Commencez à écrire votre article..."
 }: ArticleEditorProps) {
     const editor = useEditor({
         extensions: [
@@ -91,13 +91,18 @@ export function ArticleEditor({
             return
         }
 
-        editor.chain().focus().extendMarkRange("link").setLink({ href: url }).run()
+        editor
+            .chain()
+            .focus()
+            .extendMarkRange("link")
+            .setLink({ href: url })
+            .run()
     }
 
     return (
-        <div className={cn("border rounded-lg overflow-hidden", className)}>
+        <div className={cn("overflow-hidden rounded-lg border", className)}>
             {/* Toolbar */}
-            <div className="flex flex-wrap items-center gap-1 p-2 border-b bg-muted/50">
+            <div className="flex flex-wrap items-center gap-1 border-b bg-muted/50 p-2">
                 {/* Undo/Redo */}
                 <Button
                     variant="ghost"
@@ -120,23 +125,41 @@ export function ArticleEditor({
 
                 {/* Headings */}
                 <Button
-                    variant={editor.isActive("heading", { level: 1 }) ? "default" : "ghost"}
+                    variant={
+                        editor.isActive("heading", { level: 1 })
+                            ? "default"
+                            : "ghost"
+                    }
                     size="sm"
-                    onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
+                    onClick={() =>
+                        editor.chain().focus().toggleHeading({ level: 1 }).run()
+                    }
                 >
                     <Heading1 className="h-4 w-4" />
                 </Button>
                 <Button
-                    variant={editor.isActive("heading", { level: 2 }) ? "default" : "ghost"}
+                    variant={
+                        editor.isActive("heading", { level: 2 })
+                            ? "default"
+                            : "ghost"
+                    }
                     size="sm"
-                    onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
+                    onClick={() =>
+                        editor.chain().focus().toggleHeading({ level: 2 }).run()
+                    }
                 >
                     <Heading2 className="h-4 w-4" />
                 </Button>
                 <Button
-                    variant={editor.isActive("heading", { level: 3 }) ? "default" : "ghost"}
+                    variant={
+                        editor.isActive("heading", { level: 3 })
+                            ? "default"
+                            : "ghost"
+                    }
                     size="sm"
-                    onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}
+                    onClick={() =>
+                        editor.chain().focus().toggleHeading({ level: 3 }).run()
+                    }
                 >
                     <Heading3 className="h-4 w-4" />
                 </Button>
@@ -170,16 +193,24 @@ export function ArticleEditor({
 
                 {/* Lists */}
                 <Button
-                    variant={editor.isActive("bulletList") ? "default" : "ghost"}
+                    variant={
+                        editor.isActive("bulletList") ? "default" : "ghost"
+                    }
                     size="sm"
-                    onClick={() => editor.chain().focus().toggleBulletList().run()}
+                    onClick={() =>
+                        editor.chain().focus().toggleBulletList().run()
+                    }
                 >
                     <List className="h-4 w-4" />
                 </Button>
                 <Button
-                    variant={editor.isActive("orderedList") ? "default" : "ghost"}
+                    variant={
+                        editor.isActive("orderedList") ? "default" : "ghost"
+                    }
                     size="sm"
-                    onClick={() => editor.chain().focus().toggleOrderedList().run()}
+                    onClick={() =>
+                        editor.chain().focus().toggleOrderedList().run()
+                    }
                 >
                     <ListOrdered className="h-4 w-4" />
                 </Button>
@@ -188,9 +219,13 @@ export function ArticleEditor({
 
                 {/* Block Elements */}
                 <Button
-                    variant={editor.isActive("blockquote") ? "default" : "ghost"}
+                    variant={
+                        editor.isActive("blockquote") ? "default" : "ghost"
+                    }
                     size="sm"
-                    onClick={() => editor.chain().focus().toggleBlockquote().run()}
+                    onClick={() =>
+                        editor.chain().focus().toggleBlockquote().run()
+                    }
                 >
                     <Quote className="h-4 w-4" />
                 </Button>
@@ -205,23 +240,19 @@ export function ArticleEditor({
                 >
                     <Link2 className="h-4 w-4" />
                 </Button>
-                <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={addImage}
-                >
+                <Button variant="ghost" size="sm" onClick={addImage}>
                     <ImageIcon className="h-4 w-4" />
                 </Button>
             </div>
 
             {/* Editor */}
             <div className="bg-background">
-                <EditorContent 
-                    editor={editor} 
+                <EditorContent
+                    editor={editor}
                     className="prose-headings:font-semibold prose-h1:text-2xl prose-h2:text-xl prose-h3:text-lg"
                 />
                 {editor.isEmpty && (
-                    <div className="absolute top-20 left-8 text-muted-foreground pointer-events-none">
+                    <div className="pointer-events-none absolute top-20 left-8 text-muted-foreground">
                         {placeholder}
                     </div>
                 )}

@@ -9,22 +9,22 @@ export async function getCurrentUser() {
         const session = await auth.api.getSession({
             headers: await headers()
         })
-        
+
         if (!session?.user) {
             return null
         }
-        
+
         // Fetch full user data including role from database
         const { db } = await import("@/database/db")
         const { users } = await import("@/database/schema")
         const { eq } = await import("drizzle-orm")
-        
+
         const [fullUser] = await db
             .select()
             .from(users)
             .where(eq(users.id, session.user.id))
             .limit(1)
-        
+
         if (fullUser) {
             // Merge session data with database data
             return {
@@ -32,7 +32,7 @@ export async function getCurrentUser() {
                 ...fullUser
             }
         }
-        
+
         return session.user
     } catch (error) {
         console.error("Error getting current user:", error)
@@ -54,7 +54,7 @@ export async function requireAuth() {
 
 export async function requireAdmin() {
     const user = await requireAuth()
-    
+
     if ((user as any).role !== "admin") {
         redirect("/dashboard")
     }

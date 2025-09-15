@@ -1,10 +1,10 @@
-import { NextRequest, NextResponse } from "next/server"
+import { NextResponse } from "next/server"
 import { getUserFavoritesWithDetails } from "@/lib/actions/favorites"
 
 export async function GET() {
     try {
         const result = await getUserFavoritesWithDetails()
-        
+
         return NextResponse.json({
             success: result.success,
             favorites: result.favorites,
@@ -13,7 +13,7 @@ export async function GET() {
         })
     } catch (error) {
         console.error("Error in GET /api/favorites/details:", error)
-        
+
         return NextResponse.json(
             { success: false, error: "Internal server error" },
             { status: 500 }

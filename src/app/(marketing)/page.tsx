@@ -1,7 +1,6 @@
 import { CTASection } from "@/components/layout/sections/cta"
 import { HeroSection } from "@/components/layout/sections/hero"
 import { HowItWorksSection } from "@/components/layout/sections/howitworks"
-import { NewsletterSection } from "@/components/layout/sections/newsletter"
 import { SpecialtiesSection } from "@/components/layout/sections/specialties"
 import { TestimonialSection } from "@/components/layout/sections/testimonial"
 import { site } from "@/config/site"
@@ -47,9 +46,8 @@ export default function Home() {
             <TestimonialSection />
 
             <HowItWorksSection />
-            
-            <CTASection />
 
+            <CTASection />
         </>
     )
 }

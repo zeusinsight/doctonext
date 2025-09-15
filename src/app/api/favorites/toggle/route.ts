@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server"
+import { type NextRequest, NextResponse } from "next/server"
 import { toggleFavorite } from "@/lib/actions/favorites"
 
 export async function POST(request: NextRequest) {
@@ -14,7 +14,7 @@ export async function POST(request: NextRequest) {
         }
 
         const result = await toggleFavorite(listingId)
-        
+
         return NextResponse.json({
             success: result.success,
             isFavorite: result.isFavorite,
@@ -22,7 +22,7 @@ export async function POST(request: NextRequest) {
         })
     } catch (error) {
         console.error("Error in POST /api/favorites/toggle:", error)
-        
+
         return NextResponse.json(
             { success: false, error: "Internal server error" },
             { status: 500 }

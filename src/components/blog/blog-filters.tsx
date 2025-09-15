@@ -21,60 +21,63 @@ export function BlogFilters() {
     const router = useRouter()
     const searchParams = useSearchParams()
     const [isPending, startTransition] = useTransition()
-    
-    const [searchValue, setSearchValue] = useState(searchParams.get("search") || "")
+
+    const [searchValue, setSearchValue] = useState(
+        searchParams.get("search") || ""
+    )
     const currentCategory = searchParams.get("category")
-    
+
     const updateURL = (key: string, value: string | null) => {
         const params = new URLSearchParams(searchParams.toString())
-        
+
         if (value) {
             params.set(key, value)
         } else {
             params.delete(key)
         }
-        
+
         // Reset to first page when filtering
         params.delete("page")
-        
+
         startTransition(() => {
             router.push(`/blog?${params.toString()}`)
         })
     }
-    
+
     const handleSearchSubmit = (e: React.FormEvent) => {
         e.preventDefault()
         updateURL("search", searchValue || null)
     }
-    
+
     const clearSearch = () => {
         setSearchValue("")
         updateURL("search", null)
     }
-    
+
     const clearCategory = () => {
         updateURL("category", null)
     }
-    
+
     const clearAll = () => {
         setSearchValue("")
         startTransition(() => {
             router.push("/blog")
         })
     }
-    
-    const hasActiveFilters = searchParams.get("search") || searchParams.get("category")
-    
+
+    const hasActiveFilters =
+        searchParams.get("search") || searchParams.get("category")
+
     return (
         <div className="space-y-4">
             {/* Search Bar */}
             <form onSubmit={handleSearchSubmit} className="relative">
-                <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                <Search className="-translate-y-1/2 absolute top-1/2 left-3 h-4 w-4 text-muted-foreground" />
                 <Input
                     placeholder="Rechercher des articles..."
                     value={searchValue}
                     onChange={(e) => setSearchValue(e.target.value)}
-                    className="pl-10 pr-10"
+                    className="pr-10 pl-10"
                 />
                 {searchValue && (
                     <Button
@@ -82,35 +85,46 @@ export function BlogFilters() {
                         variant="ghost"
                         size="sm"
                         onClick={clearSearch}
-                        className="absolute right-1 top-1/2 h-7 w-7 -translate-y-1/2 p-0"
+                        className="-translate-y-1/2 absolute top-1/2 right-1 h-7 w-7 p-0"
                     >
                         <X className="h-4 w-4" />
                     </Button>
                 )}
             </form>
-            
+
             {/* Category Filters */}
             <div className="flex flex-wrap gap-2">
                 {CATEGORIES.map((category) => (
                     <Button
                         key={category.value}
-                        variant={currentCategory === category.value ? "default" : "outline"}
+                        variant={
+                            currentCategory === category.value
+                                ? "default"
+                                : "outline"
+                        }
                         size="sm"
-                        onClick={() => updateURL("category", 
-                            currentCategory === category.value ? null : category.value
-                        )}
+                        onClick={() =>
+                            updateURL(
+                                "category",
+                                currentCategory === category.value
+                                    ? null
+                                    : category.value
+                            )
+                        }
                         disabled={isPending}
                     >
                         {category.label}
                     </Button>
                 ))}
             </div>
-            
+
             {/* Active Filters */}
             {hasActiveFilters && (
-                <div className="flex items-center gap-2 flex-wrap">
-                    <span className="text-sm text-muted-foreground">Filtres actifs:</span>
-                    
+                <div className="flex flex-wrap items-center gap-2">
+                    <span className="text-muted-foreground text-sm">
+                        Filtres actifs:
+                    </span>
+
                     {searchParams.get("search") && (
                         <Badge variant="secondary" className="gap-1">
                             Recherche: "{searchParams.get("search")}"
@@ -124,10 +138,14 @@ export function BlogFilters() {
                             </Button>
                         </Badge>
                     )}
-                    
+
                     {currentCategory && (
                         <Badge variant="secondary" className="gap-1">
-                            {CATEGORIES.find(c => c.value === currentCategory)?.label}
+                            {
+                                CATEGORIES.find(
+                                    (c) => c.value === currentCategory
+                                )?.label
+                            }
                             <Button
                                 variant="ghost"
                                 size="sm"
@@ -138,7 +156,7 @@ export function BlogFilters() {
                             </Button>
                         </Badge>
                     )}
-                    
+
                     <Button
                         variant="ghost"
                         size="sm"

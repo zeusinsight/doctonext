@@ -6,9 +6,17 @@ import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuItem,
-    DropdownMenuTrigger,
+    DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu"
-import { Share2, Link2, Mail, MessageCircle, Linkedin, Facebook, Check } from "lucide-react"
+import {
+    Share2,
+    Link2,
+    Mail,
+    MessageCircle,
+    Linkedin,
+    Facebook,
+    Check
+} from "lucide-react"
 import { toast } from "sonner"
 
 interface ShareButtonProps {
@@ -20,7 +28,7 @@ interface ShareButtonProps {
     size?: "default" | "sm" | "lg" | "icon"
 }
 
-export function ShareButton({ 
+export function ShareButton({
     url,
     title = "Découvrez cette annonce",
     description = "Annonce médicale sur Doctonext",
@@ -29,7 +37,8 @@ export function ShareButton({
     size = "icon"
 }: ShareButtonProps) {
     const [copied, setCopied] = useState(false)
-    const shareUrl = url || (typeof window !== "undefined" ? window.location.href : "")
+    const shareUrl =
+        url || (typeof window !== "undefined" ? window.location.href : "")
 
     const handleCopyLink = async () => {
         try {
@@ -44,7 +53,9 @@ export function ShareButton({
 
     const handleEmailShare = () => {
         const subject = encodeURIComponent(title)
-        const body = encodeURIComponent(`${description}\n\nDécouvrez cette annonce : ${shareUrl}`)
+        const body = encodeURIComponent(
+            `${description}\n\nDécouvrez cette annonce : ${shareUrl}`
+        )
         window.open(`mailto:?subject=${subject}&body=${body}`, "_blank")
     }
 
@@ -86,22 +97,22 @@ export function ShareButton({
                         </>
                     )}
                 </DropdownMenuItem>
-                
+
                 <DropdownMenuItem onClick={handleWhatsAppShare}>
                     <MessageCircle className="mr-2 h-4 w-4 text-green-600" />
                     WhatsApp
                 </DropdownMenuItem>
-                
+
                 <DropdownMenuItem onClick={handleEmailShare}>
                     <Mail className="mr-2 h-4 w-4" />
                     Email
                 </DropdownMenuItem>
-                
+
                 <DropdownMenuItem onClick={handleLinkedInShare}>
                     <Linkedin className="mr-2 h-4 w-4 text-blue-600" />
                     LinkedIn
                 </DropdownMenuItem>
-                
+
                 <DropdownMenuItem onClick={handleFacebookShare}>
                     <Facebook className="mr-2 h-4 w-4 text-blue-700" />
                     Facebook

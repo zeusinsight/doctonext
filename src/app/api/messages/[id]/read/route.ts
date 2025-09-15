@@ -15,7 +15,10 @@ export async function PATCH(
         })
 
         if (!session) {
-            return NextResponse.json({ error: "Authentication requise" }, { status: 401 })
+            return NextResponse.json(
+                { error: "Authentication requise" },
+                { status: 401 }
+            )
         }
 
         const messageId = (await params).id
@@ -36,7 +39,10 @@ export async function PATCH(
             .returning()
 
         if (!updatedMessage) {
-            return NextResponse.json({ error: "Message non trouvé" }, { status: 404 })
+            return NextResponse.json(
+                { error: "Message non trouvé" },
+                { status: 404 }
+            )
         }
 
         return NextResponse.json({ success: true, data: updatedMessage })

@@ -238,8 +238,11 @@ async function seedContractTemplates() {
 
     try {
         // Check if templates already exist
-        const existingTemplates = await db.select().from(contractTemplates).limit(1)
-        
+        const existingTemplates = await db
+            .select()
+            .from(contractTemplates)
+            .limit(1)
+
         if (existingTemplates.length > 0) {
             console.log("📋 Contract templates already exist, skipping seed...")
             return
@@ -248,12 +251,13 @@ async function seedContractTemplates() {
         // Insert all templates
         await db.insert(contractTemplates).values(templates)
 
-        console.log(`✅ Successfully seeded ${templates.length} contract templates`)
+        console.log(
+            `✅ Successfully seeded ${templates.length} contract templates`
+        )
         console.log("📋 Templates created:")
-        templates.forEach(template => {
+        templates.forEach((template) => {
             console.log(`   - ${template.name} (${template.profession})`)
         })
-
     } catch (error) {
         console.error("❌ Error seeding contract templates:", error)
         process.exit(1)

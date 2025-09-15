@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server"
+import { type NextRequest, NextResponse } from "next/server"
 import { auth } from "@/lib/auth"
 import { getUserListings } from "@/lib/actions/listings"
 import { headers } from "next/headers"
@@ -28,9 +28,12 @@ export async function GET(request: NextRequest) {
         })
     } catch (error) {
         console.error("Error fetching user listings:", error)
-        
+
         return NextResponse.json(
-            { success: false, error: "Erreur lors de la récupération de vos annonces" },
+            {
+                success: false,
+                error: "Erreur lors de la récupération de vos annonces"
+            },
             { status: 500 }
         )
     }

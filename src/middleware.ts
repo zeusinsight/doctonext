@@ -8,11 +8,15 @@ export async function middleware(request: NextRequest) {
     if (pathname.startsWith("/auth/")) {
         if (pathname === "/auth/sign-in" || pathname.includes("sign-in")) {
             const searchParams = request.nextUrl.search
-            return NextResponse.redirect(new URL(`/login${searchParams}`, request.url))
+            return NextResponse.redirect(
+                new URL(`/login${searchParams}`, request.url)
+            )
         }
         if (pathname === "/auth/sign-up" || pathname.includes("sign-up")) {
             const searchParams = request.nextUrl.search
-            return NextResponse.redirect(new URL(`/register${searchParams}`, request.url))
+            return NextResponse.redirect(
+                new URL(`/register${searchParams}`, request.url)
+            )
         }
         // Handle other auth paths by keeping them under /auth
         return NextResponse.next()

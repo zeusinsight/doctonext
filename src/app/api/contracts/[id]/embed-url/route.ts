@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server"
+import { type NextRequest, NextResponse } from "next/server"
 import { auth } from "@/lib/auth"
 import { headers } from "next/headers"
 import { db } from "@/database/db"
@@ -7,7 +7,7 @@ import { eq } from "drizzle-orm"
 import { DocusealApi } from "@docuseal/api"
 
 const docuseal = new DocusealApi({
-    key: process.env.DOCUSEAL_API_KEY!,
+    key: process.env.DOCUSEAL_API_KEY!
 })
 
 export async function GET(
@@ -15,8 +15,8 @@ export async function GET(
     { params }: { params: Promise<{ id: string }> }
 ) {
     try {
-        const session = await auth.api.getSession({ 
-            headers: await headers() 
+        const session = await auth.api.getSession({
+            headers: await headers()
         })
 
         if (!session) {
@@ -42,11 +42,11 @@ export async function GET(
         }
 
         // Ensure user has permission to view this contract
-        if (contract.senderId !== session.user.id && contract.recipientId !== session.user.id) {
-            return NextResponse.json(
-                { error: "Unauthorized" },
-                { status: 403 }
-            )
+        if (
+            contract.senderId !== session.user.id &&
+            contract.recipientId !== session.user.id
+        ) {
+            return NextResponse.json({ error: "Unauthorized" }, { status: 403 })
         }
 
         // Get DocuSeal submission details
@@ -73,12 +73,16 @@ export async function GET(
         }
 
         // Debug: log the submitter object to see its structure
-        console.log("Submitter object:", JSON.stringify(currentUserSubmitter, null, 2))
+        console.log(
+            "Submitter object:",
+            JSON.stringify(currentUserSubmitter, null, 2)
+        )
 
         // Try different possible embed URL field names
-        const embedUrl = (currentUserSubmitter as any).embed_src || 
-                         (currentUserSubmitter as any).embed_url ||
-                         `https://docuseal.com/s/${currentUserSubmitter.slug}`
+        const embedUrl =
+            (currentUserSubmitter as any).embed_src ||
+            (currentUserSubmitter as any).embed_url ||
+            `https://docuseal.com/s/${currentUserSubmitter.slug}`
 
         console.log("Final embed URL:", embedUrl)
 
@@ -87,7 +91,6 @@ export async function GET(
             submitterSlug: currentUserSubmitter.slug,
             status: currentUserSubmitter.status
         })
-
     } catch (error) {
         console.error("Get embed URL error:", error)
         return NextResponse.json(

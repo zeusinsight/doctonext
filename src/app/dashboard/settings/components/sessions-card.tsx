@@ -1,16 +1,22 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle
+} from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
 import { authClient } from "@/lib/auth-client"
 import { toast } from "sonner"
-import { 
-    RiLoader4Line, 
-    RiComputerLine, 
-    RiSmartphoneLine, 
+import {
+    RiLoader4Line,
+    RiComputerLine,
+    RiSmartphoneLine,
     RiTabletLine,
     RiGlobalLine,
     RiCheckLine,
@@ -43,8 +49,13 @@ export function SessionsCard({ className }: SessionsCardProps) {
         try {
             const sessionsList = await authClient.listSessions()
             // Ensure we have an array
-            const sessionsArray = Array.isArray(sessionsList) ? sessionsList : 
-                                 sessionsList?.data ? (Array.isArray(sessionsList.data) ? sessionsList.data : []) : []
+            const sessionsArray = Array.isArray(sessionsList)
+                ? sessionsList
+                : sessionsList?.data
+                  ? Array.isArray(sessionsList.data)
+                      ? sessionsList.data
+                      : []
+                  : []
             setSessions(sessionsArray)
         } catch (error) {
             console.error("Error loading sessions:", error)
@@ -60,17 +71,17 @@ export function SessionsCard({ className }: SessionsCardProps) {
     }, [])
 
     const revokeSession = async (sessionToken: string) => {
-        setRevokingIds(prev => new Set(prev).add(sessionToken))
-        
+        setRevokingIds((prev) => new Set(prev).add(sessionToken))
+
         try {
             await authClient.revokeSession({ token: sessionToken })
-            setSessions(prev => prev.filter(s => s.token !== sessionToken))
+            setSessions((prev) => prev.filter((s) => s.token !== sessionToken))
             toast.success("Session révoquée avec succès")
         } catch (error) {
             console.error("Error revoking session:", error)
             toast.error("Erreur lors de la révocation de la session")
         } finally {
-            setRevokingIds(prev => {
+            setRevokingIds((prev) => {
                 const newSet = new Set(prev)
                 newSet.delete(sessionToken)
                 return newSet
@@ -80,7 +91,7 @@ export function SessionsCard({ className }: SessionsCardProps) {
 
     const revokeAllOtherSessions = async () => {
         setIsLoading(true)
-        
+
         try {
             await authClient.revokeOtherSessions()
             await loadSessions() // Reload to show only current session
@@ -94,38 +105,42 @@ export function SessionsCard({ className }: SessionsCardProps) {
     }
 
     const getDeviceIcon = (userAgent?: string | null) => {
-        if (!userAgent) return <RiComputerLine className="w-4 h-4" />
-        
+        if (!userAgent) return <RiComputerLine className="h-4 w-4" />
+
         const ua = userAgent.toLowerCase()
-        if (ua.includes('mobile') || ua.includes('android') || ua.includes('iphone')) {
-            return <RiSmartphoneLine className="w-4 h-4" />
+        if (
+            ua.includes("mobile") ||
+            ua.includes("android") ||
+            ua.includes("iphone")
+        ) {
+            return <RiSmartphoneLine className="h-4 w-4" />
         }
-        if (ua.includes('tablet') || ua.includes('ipad')) {
-            return <RiTabletLine className="w-4 h-4" />
+        if (ua.includes("tablet") || ua.includes("ipad")) {
+            return <RiTabletLine className="h-4 w-4" />
         }
-        return <RiComputerLine className="w-4 h-4" />
+        return <RiComputerLine className="h-4 w-4" />
     }
 
     const getBrowserName = (userAgent?: string | null) => {
         if (!userAgent) return "Navigateur inconnu"
-        
+
         const ua = userAgent.toLowerCase()
-        if (ua.includes('chrome')) return "Chrome"
-        if (ua.includes('firefox')) return "Firefox"
-        if (ua.includes('safari') && !ua.includes('chrome')) return "Safari"
-        if (ua.includes('edge')) return "Edge"
-        if (ua.includes('opera')) return "Opera"
-        
+        if (ua.includes("chrome")) return "Chrome"
+        if (ua.includes("firefox")) return "Firefox"
+        if (ua.includes("safari") && !ua.includes("chrome")) return "Safari"
+        if (ua.includes("edge")) return "Edge"
+        if (ua.includes("opera")) return "Opera"
+
         return "Navigateur inconnu"
     }
 
     const formatDate = (date: Date) => {
-        return new Intl.DateTimeFormat('fr-FR', {
-            year: 'numeric',
-            month: 'short',
-            day: 'numeric',
-            hour: '2-digit',
-            minute: '2-digit'
+        return new Intl.DateTimeFormat("fr-FR", {
+            year: "numeric",
+            month: "short",
+            day: "numeric",
+            hour: "2-digit",
+            minute: "2-digit"
         }).format(new Date(date))
     }
 
@@ -133,9 +148,11 @@ export function SessionsCard({ className }: SessionsCardProps) {
         return new Date() > new Date(expiresAt)
     }
 
-    const activeSessions = Array.isArray(sessions) ? sessions.filter(session => !isSessionExpired(session.expiresAt)) : []
-    const currentSession = activeSessions.find(session => session.isCurrent)
-    const otherSessions = activeSessions.filter(session => !session.isCurrent)
+    const activeSessions = Array.isArray(sessions)
+        ? sessions.filter((session) => !isSessionExpired(session.expiresAt))
+        : []
+    const currentSession = activeSessions.find((session) => session.isCurrent)
+    const otherSessions = activeSessions.filter((session) => !session.isCurrent)
 
     return (
         <Card className={cn(className)}>
@@ -144,7 +161,8 @@ export function SessionsCard({ className }: SessionsCardProps) {
                     <div>
                         <CardTitle>Sessions actives</CardTitle>
                         <CardDescription>
-                            Gérez vos sessions de connexion sur tous vos appareils
+                            Gérez vos sessions de connexion sur tous vos
+                            appareils
                         </CardDescription>
                     </div>
                     {otherSessions.length > 0 && (
@@ -154,7 +172,9 @@ export function SessionsCard({ className }: SessionsCardProps) {
                             onClick={revokeAllOtherSessions}
                             disabled={isLoading}
                         >
-                            {isLoading && <RiLoader4Line className="w-4 h-4 mr-2 animate-spin" />}
+                            {isLoading && (
+                                <RiLoader4Line className="mr-2 h-4 w-4 animate-spin" />
+                            )}
                             Révoquer toutes
                         </Button>
                     )}
@@ -166,10 +186,10 @@ export function SessionsCard({ className }: SessionsCardProps) {
                         {Array.from({ length: 2 }).map((_, i) => (
                             <div key={i} className="animate-pulse">
                                 <div className="flex items-center gap-3">
-                                    <div className="w-8 h-8 bg-gray-200 rounded-full" />
+                                    <div className="h-8 w-8 rounded-full bg-gray-200" />
                                     <div className="flex-1 space-y-2">
-                                        <div className="h-4 bg-gray-200 rounded w-32" />
-                                        <div className="h-3 bg-gray-200 rounded w-48" />
+                                        <div className="h-4 w-32 rounded bg-gray-200" />
+                                        <div className="h-3 w-48 rounded bg-gray-200" />
                                     </div>
                                 </div>
                             </div>
@@ -178,7 +198,7 @@ export function SessionsCard({ className }: SessionsCardProps) {
                 ) : (
                     <div className="space-y-4">
                         {activeSessions.length === 0 ? (
-                            <p className="text-sm text-gray-500 py-4">
+                            <p className="py-4 text-gray-500 text-sm">
                                 Aucune session active trouvée
                             </p>
                         ) : (
@@ -186,33 +206,48 @@ export function SessionsCard({ className }: SessionsCardProps) {
                                 {/* Current Session */}
                                 {currentSession && (
                                     <div className="space-y-3">
-                                        <div className="flex items-center justify-between p-3 border border-green-200 bg-green-50 rounded-lg">
+                                        <div className="flex items-center justify-between rounded-lg border border-green-200 bg-green-50 p-3">
                                             <div className="flex items-center gap-3">
                                                 <div className="text-green-600">
-                                                    {getDeviceIcon(currentSession.userAgent)}
+                                                    {getDeviceIcon(
+                                                        currentSession.userAgent
+                                                    )}
                                                 </div>
                                                 <div className="flex-1">
-                                                    <div className="flex items-center gap-2 mb-1">
+                                                    <div className="mb-1 flex items-center gap-2">
                                                         <span className="font-medium text-sm">
-                                                            {getBrowserName(currentSession.userAgent)}
+                                                            {getBrowserName(
+                                                                currentSession.userAgent
+                                                            )}
                                                         </span>
-                                                        <Badge variant="secondary" className="text-green-700 bg-green-100">
-                                                            <RiCheckLine className="w-3 h-3 mr-1" />
+                                                        <Badge
+                                                            variant="secondary"
+                                                            className="bg-green-100 text-green-700"
+                                                        >
+                                                            <RiCheckLine className="mr-1 h-3 w-3" />
                                                             Session actuelle
                                                         </Badge>
                                                     </div>
-                                                    <div className="text-xs text-gray-600 space-y-1">
+                                                    <div className="space-y-1 text-gray-600 text-xs">
                                                         {currentSession.ipAddress && (
                                                             <div className="flex items-center gap-1">
-                                                                <RiGlobalLine className="w-3 h-3" />
-                                                                {currentSession.ipAddress}
+                                                                <RiGlobalLine className="h-3 w-3" />
+                                                                {
+                                                                    currentSession.ipAddress
+                                                                }
                                                             </div>
                                                         )}
                                                         <div>
-                                                            Dernière activité : {formatDate(currentSession.updatedAt)}
+                                                            Dernière activité :{" "}
+                                                            {formatDate(
+                                                                currentSession.updatedAt
+                                                            )}
                                                         </div>
                                                         <div>
-                                                            Expire le : {formatDate(currentSession.expiresAt)}
+                                                            Expire le :{" "}
+                                                            {formatDate(
+                                                                currentSession.expiresAt
+                                                            )}
                                                         </div>
                                                     </div>
                                                 </div>
@@ -226,34 +261,48 @@ export function SessionsCard({ className }: SessionsCardProps) {
                                     <>
                                         {currentSession && <Separator />}
                                         <div className="space-y-3">
-                                            <h4 className="text-sm font-medium text-gray-900">
-                                                Autres sessions ({otherSessions.length})
+                                            <h4 className="font-medium text-gray-900 text-sm">
+                                                Autres sessions (
+                                                {otherSessions.length})
                                             </h4>
                                             {otherSessions.map((session) => (
-                                                <div 
-                                                    key={session.id} 
-                                                    className="flex items-center justify-between p-3 border rounded-lg"
+                                                <div
+                                                    key={session.id}
+                                                    className="flex items-center justify-between rounded-lg border p-3"
                                                 >
                                                     <div className="flex items-center gap-3">
                                                         <div className="text-gray-400">
-                                                            {getDeviceIcon(session.userAgent)}
+                                                            {getDeviceIcon(
+                                                                session.userAgent
+                                                            )}
                                                         </div>
                                                         <div className="flex-1">
-                                                            <div className="font-medium text-sm mb-1">
-                                                                {getBrowserName(session.userAgent)}
+                                                            <div className="mb-1 font-medium text-sm">
+                                                                {getBrowserName(
+                                                                    session.userAgent
+                                                                )}
                                                             </div>
-                                                            <div className="text-xs text-gray-600 space-y-1">
+                                                            <div className="space-y-1 text-gray-600 text-xs">
                                                                 {session.ipAddress && (
                                                                     <div className="flex items-center gap-1">
-                                                                        <RiGlobalLine className="w-3 h-3" />
-                                                                        {session.ipAddress}
+                                                                        <RiGlobalLine className="h-3 w-3" />
+                                                                        {
+                                                                            session.ipAddress
+                                                                        }
                                                                     </div>
                                                                 )}
                                                                 <div>
-                                                                    Dernière activité : {formatDate(session.updatedAt)}
+                                                                    Dernière
+                                                                    activité :{" "}
+                                                                    {formatDate(
+                                                                        session.updatedAt
+                                                                    )}
                                                                 </div>
                                                                 <div>
-                                                                    Expire le : {formatDate(session.expiresAt)}
+                                                                    Expire le :{" "}
+                                                                    {formatDate(
+                                                                        session.expiresAt
+                                                                    )}
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -261,15 +310,25 @@ export function SessionsCard({ className }: SessionsCardProps) {
                                                     <Button
                                                         variant="outline"
                                                         size="sm"
-                                                        onClick={() => revokeSession(session.token)}
-                                                        disabled={revokingIds.has(session.token)}
-                                                    >
-                                                        {revokingIds.has(session.token) ? (
-                                                            <RiLoader4Line className="w-4 h-4 animate-spin" />
-                                                        ) : (
-                                                            <RiCloseLine className="w-4 h-4" />
+                                                        onClick={() =>
+                                                            revokeSession(
+                                                                session.token
+                                                            )
+                                                        }
+                                                        disabled={revokingIds.has(
+                                                            session.token
                                                         )}
-                                                        <span className="sr-only">Révoquer</span>
+                                                    >
+                                                        {revokingIds.has(
+                                                            session.token
+                                                        ) ? (
+                                                            <RiLoader4Line className="h-4 w-4 animate-spin" />
+                                                        ) : (
+                                                            <RiCloseLine className="h-4 w-4" />
+                                                        )}
+                                                        <span className="sr-only">
+                                                            Révoquer
+                                                        </span>
                                                     </Button>
                                                 </div>
                                             ))}

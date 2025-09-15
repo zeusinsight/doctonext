@@ -1,13 +1,3 @@
-import { 
-    Stethoscope, 
-    Heart, 
-    Pill, 
-    Activity,
-    Eye,
-    HeartHandshake,
-    Scissors,
-    Brain
-} from "lucide-react"
 import Link from "next/link"
 
 interface SpecialtyCardProps {
@@ -18,18 +8,26 @@ interface SpecialtyCardProps {
     color: string
 }
 
-const SpecialtyCard = ({ icon, title, count, href, color }: SpecialtyCardProps) => {
+const SpecialtyCard = ({
+    icon,
+    title,
+    count,
+    href,
+    color
+}: SpecialtyCardProps) => {
     return (
-        <Link 
+        <Link
             href={href}
-            className="group block p-6 bg-white rounded-xl border border-gray-200 hover:shadow-lg transition-all duration-300 hover:-translate-y-1"
+            className="group hover:-translate-y-1 block rounded-xl border border-gray-200 bg-white p-6 transition-all duration-300 hover:shadow-lg"
         >
-            <div className="flex flex-col items-center text-center space-y-3">
-                <div className={`p-4 rounded-full ${color} bg-opacity-10 group-hover:bg-opacity-20 transition-colors`}>
+            <div className="flex flex-col items-center space-y-3 text-center">
+                <div
+                    className={`rounded-full p-4 ${color} bg-opacity-10 transition-colors group-hover:bg-opacity-20`}
+                >
                     {icon}
                 </div>
                 <h3 className="font-semibold text-gray-900">{title}</h3>
-                <p className="text-sm text-gray-500">{count} annonces</p>
+                <p className="text-gray-500 text-sm">{count} annonces</p>
             </div>
         </Link>
     )
@@ -96,15 +94,16 @@ export const SpecialtiesSection = () => {
     ]
 
     return (
-        <section className="py-16 lg:py-24 bg-gray-50">
+        <section className="bg-gray-50 py-16 lg:py-24">
             <div className="container mx-auto px-4">
-                <div className="text-center mb-12">
-                    <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
-                        Choisissez votre domaine et découvrez les opportunités disponibles
+                <div className="mb-12 text-center">
+                    <h2 className="mb-4 font-bold text-3xl text-gray-900 lg:text-4xl">
+                        Choisissez votre domaine et découvrez les opportunités
+                        disponibles
                     </h2>
                 </div>
 
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-6xl mx-auto">
+                <div className="mx-auto grid max-w-6xl grid-cols-2 gap-6 md:grid-cols-4">
                     {specialties.map((specialty) => (
                         <SpecialtyCard
                             key={specialty.title}
@@ -117,10 +116,10 @@ export const SpecialtiesSection = () => {
                     ))}
                 </div>
 
-                <div className="text-center mt-12">
-                    <Link 
-                        href="/annonces" 
-                        className="text-blue-600 hover:text-blue-700 font-medium inline-flex items-center gap-2"
+                <div className="mt-12 text-center">
+                    <Link
+                        href="/annonces"
+                        className="inline-flex items-center gap-2 font-medium text-blue-600 hover:text-blue-700"
                     >
                         Voir toutes les spécialités
                         <span className="text-xl">›</span>

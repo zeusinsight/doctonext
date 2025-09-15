@@ -9,9 +9,7 @@ export default function ListingsLayout({
     return (
         <>
             <Navbar />
-            <main className="flex-1">
-                {children}
-            </main>
+            <main className="flex-1">{children}</main>
             <FooterSection />
         </>
     )

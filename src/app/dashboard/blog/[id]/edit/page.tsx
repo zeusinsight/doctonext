@@ -1,4 +1,4 @@
-"use client";
+"use client"
 
 import { useState, useEffect, useTransition } from "react"
 import { useRouter } from "next/navigation"
@@ -10,13 +10,31 @@ import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Switch } from "@/components/ui/switch";
-import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
-import { ArrowLeft, Save, Eye, Trash2, X, Upload, Image as ImageIcon } from "lucide-react";
-import { toast } from "sonner";
-import { UploadButton } from "@uploadthing/react";
-import type { OurFileRouter } from "@/app/api/uploadthing/core";
-import Image from "next/image";
+import { Switch } from "@/components/ui/switch"
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger
+} from "@/components/ui/alert-dialog"
+import {
+    ArrowLeft,
+    Save,
+    Eye,
+    Trash2,
+    X,
+    Upload,
+    Image as ImageIcon
+} from "lucide-react"
+import { toast } from "sonner"
+import { UploadButton } from "@uploadthing/react"
+import type { OurFileRouter } from "@/app/api/uploadthing/core"
+import Image from "next/image"
 
 interface EditArticlePageProps {
     params: Promise<{
@@ -73,7 +91,7 @@ export default function EditBlogArticlePage({ params }: EditArticlePageProps) {
     const [newTag, setNewTag] = useState("")
     const [isImageUploading, setIsImageUploading] = useState(false)
     const [articleId, setArticleId] = useState<string>("")
-    
+
     const [form, setForm] = useState<ArticleForm>({
         title: "",
         content: "",
@@ -87,7 +105,7 @@ export default function EditBlogArticlePage({ params }: EditArticlePageProps) {
 
     // Resolve params promise
     useEffect(() => {
-        params.then(resolvedParams => {
+        params.then((resolvedParams) => {
             setArticleId(resolvedParams.id)
         })
     }, [params])
@@ -101,10 +119,10 @@ export default function EditBlogArticlePage({ params }: EditArticlePageProps) {
                 if (!response.ok) {
                     throw new Error("Article not found")
                 }
-                
+
                 const articleData = await response.json()
                 setArticle(articleData)
-                
+
                 setForm({
                     title: articleData.title,
                     content: articleData.content,
@@ -128,7 +146,7 @@ export default function EditBlogArticlePage({ params }: EditArticlePageProps) {
     }, [articleId, router])
 
     const updateForm = (field: keyof ArticleForm, value: any) => {
-        setForm(prev => ({ ...prev, [field]: value }))
+        setForm((prev) => ({ ...prev, [field]: value }))
     }
 
     const addTag = (tag: string) => {
@@ -140,7 +158,10 @@ export default function EditBlogArticlePage({ params }: EditArticlePageProps) {
     }
 
     const removeTag = (tagToRemove: string) => {
-        updateForm("tags", form.tags.filter(tag => tag !== tagToRemove))
+        updateForm(
+            "tags",
+            form.tags.filter((tag) => tag !== tagToRemove)
+        )
     }
 
     const handleSave = async () => {
@@ -165,16 +186,22 @@ export default function EditBlogArticlePage({ params }: EditArticlePageProps) {
 
                 if (!response.ok) {
                     const error = await response.json()
-                    throw new Error(error.error || "Erreur lors de la sauvegarde")
+                    throw new Error(
+                        error.error || "Erreur lors de la sauvegarde"
+                    )
                 }
 
                 const updatedArticle = await response.json()
                 setArticle(updatedArticle)
-                
+
                 toast.success("Article sauvegardé avec succès")
             } catch (error) {
                 console.error("Error saving article:", error)
-                toast.error(error instanceof Error ? error.message : "Erreur lors de la sauvegarde")
+                toast.error(
+                    error instanceof Error
+                        ? error.message
+                        : "Erreur lors de la sauvegarde"
+                )
             }
         })
     }
@@ -182,27 +209,36 @@ export default function EditBlogArticlePage({ params }: EditArticlePageProps) {
     const handlePublish = async (publish: boolean) => {
         startTransition(async () => {
             try {
-                const response = await fetch(`/api/admin/blog/${articleId}/publish`, {
-                    method: "PATCH",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({ isPublished: publish })
-                })
+                const response = await fetch(
+                    `/api/admin/blog/${articleId}/publish`,
+                    {
+                        method: "PATCH",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({ isPublished: publish })
+                    }
+                )
 
                 if (!response.ok) {
                     const error = await response.json()
-                    throw new Error(error.error || "Erreur lors de la publication")
+                    throw new Error(
+                        error.error || "Erreur lors de la publication"
+                    )
                 }
 
                 const result = await response.json()
                 setArticle(result.article)
                 updateForm("isPublished", publish)
-                
+
                 toast.success(result.message)
             } catch (error) {
                 console.error("Error publishing article:", error)
-                toast.error(error instanceof Error ? error.message : "Erreur lors de la publication")
+                toast.error(
+                    error instanceof Error
+                        ? error.message
+                        : "Erreur lors de la publication"
+                )
             }
         })
     }
@@ -216,24 +252,32 @@ export default function EditBlogArticlePage({ params }: EditArticlePageProps) {
 
                 if (!response.ok) {
                     const error = await response.json()
-                    throw new Error(error.error || "Erreur lors de la suppression")
+                    throw new Error(
+                        error.error || "Erreur lors de la suppression"
+                    )
                 }
 
                 toast.success("Article supprimé avec succès")
                 router.push("/dashboard/blog")
             } catch (error) {
                 console.error("Error deleting article:", error)
-                toast.error(error instanceof Error ? error.message : "Erreur lors de la suppression")
+                toast.error(
+                    error instanceof Error
+                        ? error.message
+                        : "Erreur lors de la suppression"
+                )
             }
         })
     }
 
     if (isLoading) {
         return (
-            <div className="flex items-center justify-center min-h-[400px]">
+            <div className="flex min-h-[400px] items-center justify-center">
                 <div className="text-center">
-                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
-                    <p className="text-muted-foreground text-white">Chargement de l&apos;article...</p>
+                    <div className="mx-auto mb-4 h-8 w-8 animate-spin rounded-full border-primary border-b-2" />
+                    <p className="text-muted-foreground text-white">
+                        Chargement de l&apos;article...
+                    </p>
                 </div>
             </div>
         )
@@ -242,7 +286,7 @@ export default function EditBlogArticlePage({ params }: EditArticlePageProps) {
     if (!article) {
         return (
             <div className="text-center">
-                <h1 className="text-2xl font-bold mb-4">Article non trouvé</h1>
+                <h1 className="mb-4 font-bold text-2xl">Article non trouvé</h1>
                 <Link href="/dashboard/blog">
                     <Button>Retour au blog</Button>
                 </Link>
@@ -261,20 +305,31 @@ export default function EditBlogArticlePage({ params }: EditArticlePageProps) {
                         </Button>
                     </Link>
                     <div>
-                        <h1 className="text-2xl font-bold text-white">Modifier l&apos;article</h1>
+                        <h1 className="font-bold text-2xl text-white">
+                            Modifier l&apos;article
+                        </h1>
                         <p className="text-muted-foreground text-white">
-                            Créé le {new Date(article.createdAt).toLocaleDateString("fr-FR")}
+                            Créé le{" "}
+                            {new Date(article.createdAt).toLocaleDateString(
+                                "fr-FR"
+                            )}
                             {article.publishedAt && (
-                                <span> • Publié le {new Date(article.publishedAt).toLocaleDateString("fr-FR")}</span>
+                                <span>
+                                    {" "}
+                                    • Publié le{" "}
+                                    {new Date(
+                                        article.publishedAt
+                                    ).toLocaleDateString("fr-FR")}
+                                </span>
                             )}
                         </p>
                     </div>
                 </div>
-                
+
                 <div className="flex items-center gap-2">
                     <Link href={`/blog/${article.slug}`} target="_blank">
                         <Button variant="outline">
-                            <Eye className="h-4 w-4 mr-2" />
+                            <Eye className="mr-2 h-4 w-4" />
                             Voir
                         </Button>
                     </Link>
@@ -283,7 +338,7 @@ export default function EditBlogArticlePage({ params }: EditArticlePageProps) {
                         onClick={handleSave}
                         disabled={isPending}
                     >
-                        <Save className="h-4 w-4 mr-2" />
+                        <Save className="mr-2 h-4 w-4" />
                         Sauvegarder
                     </Button>
                     <Button
@@ -300,14 +355,17 @@ export default function EditBlogArticlePage({ params }: EditArticlePageProps) {
                         </AlertDialogTrigger>
                         <AlertDialogContent>
                             <AlertDialogHeader>
-                                <AlertDialogTitle>Supprimer l&apos;article</AlertDialogTitle>
+                                <AlertDialogTitle>
+                                    Supprimer l&apos;article
+                                </AlertDialogTitle>
                                 <AlertDialogDescription>
-                                    Êtes-vous sûr de vouloir supprimer cet article ? Cette action est irréversible.
+                                    Êtes-vous sûr de vouloir supprimer cet
+                                    article ? Cette action est irréversible.
                                 </AlertDialogDescription>
                             </AlertDialogHeader>
                             <AlertDialogFooter>
                                 <AlertDialogCancel>Annuler</AlertDialogCancel>
-                                <AlertDialogAction 
+                                <AlertDialogAction
                                     onClick={handleDelete}
                                     className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
                                 >
@@ -319,14 +377,20 @@ export default function EditBlogArticlePage({ params }: EditArticlePageProps) {
                 </div>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
                 {/* Main Content */}
-                <div className="lg:col-span-2 space-y-6">
+                <div className="space-y-6 lg:col-span-2">
                     <Card>
                         <CardHeader>
                             <div className="flex items-center justify-between">
                                 <CardTitle>Contenu de l&apos;article</CardTitle>
-                                <Badge variant={form.isPublished ? "default" : "secondary"}>
+                                <Badge
+                                    variant={
+                                        form.isPublished
+                                            ? "default"
+                                            : "secondary"
+                                    }
+                                >
                                     {form.isPublished ? "Publié" : "Brouillon"}
                                 </Badge>
                             </div>
@@ -337,7 +401,9 @@ export default function EditBlogArticlePage({ params }: EditArticlePageProps) {
                                 <Input
                                     id="title"
                                     value={form.title}
-                                    onChange={(e) => updateForm("title", e.target.value)}
+                                    onChange={(e) =>
+                                        updateForm("title", e.target.value)
+                                    }
                                     placeholder="Titre de votre article"
                                     className="text-lg"
                                 />
@@ -348,7 +414,9 @@ export default function EditBlogArticlePage({ params }: EditArticlePageProps) {
                                 <Textarea
                                     id="excerpt"
                                     value={form.excerpt}
-                                    onChange={(e) => updateForm("excerpt", e.target.value)}
+                                    onChange={(e) =>
+                                        updateForm("excerpt", e.target.value)
+                                    }
                                     placeholder="Résumé court de votre article (optionnel)"
                                     rows={3}
                                 />
@@ -358,7 +426,9 @@ export default function EditBlogArticlePage({ params }: EditArticlePageProps) {
                                 <Label>Contenu *</Label>
                                 <ArticleEditor
                                     content={form.content}
-                                    onChange={(content) => updateForm("content", content)}
+                                    onChange={(content) =>
+                                        updateForm("content", content)
+                                    }
                                     placeholder="Rédigez le contenu de votre article..."
                                     className="mt-2"
                                 />
@@ -380,7 +450,9 @@ export default function EditBlogArticlePage({ params }: EditArticlePageProps) {
                                 <Switch
                                     id="publish"
                                     checked={form.isPublished}
-                                    onCheckedChange={(checked) => handlePublish(checked)}
+                                    onCheckedChange={(checked) =>
+                                        handlePublish(checked)
+                                    }
                                 />
                             </div>
                         </CardContent>
@@ -399,65 +471,80 @@ export default function EditBlogArticlePage({ params }: EditArticlePageProps) {
                                             src={form.featuredImage}
                                             alt="Image à la une"
                                             fill
-                                            className="object-cover rounded"
+                                            className="rounded object-cover"
                                         />
                                     </div>
                                     <Button
                                         variant="outline"
                                         size="sm"
-                                        onClick={() => updateForm("featuredImage", "")}
+                                        onClick={() =>
+                                            updateForm("featuredImage", "")
+                                        }
                                         className="w-full"
                                     >
                                         Supprimer l&apos;image
                                     </Button>
                                 </div>
                             ) : (
-                                <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-gray-400 transition-colors">
+                                <div className="rounded-lg border-2 border-gray-300 border-dashed p-6 text-center transition-colors hover:border-gray-400">
                                     <div className="flex flex-col items-center space-y-4">
-                                        <div className="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center">
-                                            <ImageIcon className="w-6 h-6 text-gray-500" />
+                                        <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gray-100">
+                                            <ImageIcon className="h-6 w-6 text-gray-500" />
                                         </div>
                                         <div>
-                                            <h3 className="text-sm font-medium text-gray-900 mb-1">
+                                            <h3 className="mb-1 font-medium text-gray-900 text-sm">
                                                 Ajouter une image à la une
                                             </h3>
-                                            <p className="text-xs text-gray-500">
+                                            <p className="text-gray-500 text-xs">
                                                 PNG, JPG jusqu&apos;à 10MB
                                             </p>
                                         </div>
-                                        <UploadButton<OurFileRouter, "blogImageUploader">
+                                        <UploadButton<
+                                            OurFileRouter,
+                                            "blogImageUploader"
+                                        >
                                             endpoint="blogImageUploader"
                                             onUploadBegin={() => {
                                                 setIsImageUploading(true)
                                             }}
                                             onClientUploadComplete={(res) => {
                                                 setIsImageUploading(false)
-                                                updateForm("featuredImage", res[0]?.ufsUrl || "")
-                                                toast.success("Image téléchargée !")
+                                                updateForm(
+                                                    "featuredImage",
+                                                    res[0]?.ufsUrl || ""
+                                                )
+                                                toast.success(
+                                                    "Image téléchargée !"
+                                                )
                                             }}
                                             onUploadError={(error) => {
                                                 setIsImageUploading(false)
-                                                toast.error(`Erreur: ${error.message}`)
+                                                toast.error(
+                                                    `Erreur: ${error.message}`
+                                                )
                                             }}
                                             appearance={{
-                                                button: `${isImageUploading 
-                                                    ? "bg-gray-400 cursor-not-allowed" 
-                                                    : "bg-blue-600 hover:bg-blue-700"
+                                                button: `${
+                                                    isImageUploading
+                                                        ? "bg-gray-400 cursor-not-allowed"
+                                                        : "bg-blue-600 hover:bg-blue-700"
                                                 } text-white px-4 py-2 rounded-md text-sm font-medium transition-colors`,
-                                                allowedContent: "hidden",
+                                                allowedContent: "hidden"
                                             }}
                                             content={{
                                                 button: ({ ready }) => (
                                                     <div className="flex items-center gap-2">
                                                         {isImageUploading ? (
                                                             <>
-                                                                <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                                                                <div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
                                                                 Téléchargement...
                                                             </>
                                                         ) : (
                                                             <>
-                                                                <Upload className="w-4 h-4" />
-                                                                {ready ? "Choisir un fichier" : "Préparation..."}
+                                                                <Upload className="h-4 w-4" />
+                                                                {ready
+                                                                    ? "Choisir un fichier"
+                                                                    : "Préparation..."}
                                                             </>
                                                         )}
                                                     </div>
@@ -482,7 +569,9 @@ export default function EditBlogArticlePage({ params }: EditArticlePageProps) {
                                     <Input
                                         id="new-tag"
                                         value={newTag}
-                                        onChange={(e) => setNewTag(e.target.value)}
+                                        onChange={(e) =>
+                                            setNewTag(e.target.value)
+                                        }
                                         placeholder="Nouveau tag"
                                         onKeyDown={(e) => {
                                             if (e.key === "Enter") {
@@ -504,11 +593,15 @@ export default function EditBlogArticlePage({ params }: EditArticlePageProps) {
 
                             <div>
                                 <Label>Tags suggérés</Label>
-                                <div className="flex flex-wrap gap-1 mt-2">
+                                <div className="mt-2 flex flex-wrap gap-1">
                                     {PREDEFINED_TAGS.map((tag) => (
                                         <Badge
                                             key={tag}
-                                            variant={form.tags.includes(tag) ? "default" : "outline"}
+                                            variant={
+                                                form.tags.includes(tag)
+                                                    ? "default"
+                                                    : "outline"
+                                            }
                                             className="cursor-pointer"
                                             onClick={() => {
                                                 if (form.tags.includes(tag)) {
@@ -527,13 +620,19 @@ export default function EditBlogArticlePage({ params }: EditArticlePageProps) {
                             {form.tags.length > 0 && (
                                 <div>
                                     <Label>Tags sélectionnés</Label>
-                                    <div className="flex flex-wrap gap-1 mt-2">
+                                    <div className="mt-2 flex flex-wrap gap-1">
                                         {form.tags.map((tag) => (
-                                            <Badge key={tag} variant="default" className="flex gap-1">
+                                            <Badge
+                                                key={tag}
+                                                variant="default"
+                                                className="flex gap-1"
+                                            >
                                                 {tag}
                                                 <button
-                                                    onClick={() => removeTag(tag)}
-                                                    className="hover:bg-white/20 rounded"
+                                                    onClick={() =>
+                                                        removeTag(tag)
+                                                    }
+                                                    className="rounded hover:bg-white/20"
                                                 >
                                                     <X className="h-3 w-3" />
                                                 </button>
@@ -556,26 +655,35 @@ export default function EditBlogArticlePage({ params }: EditArticlePageProps) {
                                 <Input
                                     id="seo-title"
                                     value={form.seoTitle}
-                                    onChange={(e) => updateForm("seoTitle", e.target.value)}
+                                    onChange={(e) =>
+                                        updateForm("seoTitle", e.target.value)
+                                    }
                                     placeholder="Titre pour les moteurs de recherche"
                                     maxLength={60}
                                 />
-                                <p className="text-xs text-muted-foreground mt-1">
+                                <p className="mt-1 text-muted-foreground text-xs">
                                     {form.seoTitle.length}/60 caractères
                                 </p>
                             </div>
 
                             <div>
-                                <Label htmlFor="seo-description">Description SEO</Label>
+                                <Label htmlFor="seo-description">
+                                    Description SEO
+                                </Label>
                                 <Textarea
                                     id="seo-description"
                                     value={form.seoDescription}
-                                    onChange={(e) => updateForm("seoDescription", e.target.value)}
+                                    onChange={(e) =>
+                                        updateForm(
+                                            "seoDescription",
+                                            e.target.value
+                                        )
+                                    }
                                     placeholder="Description pour les moteurs de recherche"
                                     rows={3}
                                     maxLength={160}
                                 />
-                                <p className="text-xs text-muted-foreground mt-1">
+                                <p className="mt-1 text-muted-foreground text-xs">
                                     {form.seoDescription.length}/160 caractères
                                 </p>
                             </div>

@@ -1,7 +1,13 @@
 "use client"
 
 import { useState } from "react"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle
+} from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -31,7 +37,7 @@ export function ChangePasswordCard({ className }: ChangePasswordCardProps) {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
-        
+
         if (!currentPassword) {
             toast.error("Veuillez entrer votre mot de passe actuel")
             return
@@ -43,7 +49,9 @@ export function ChangePasswordCard({ className }: ChangePasswordCardProps) {
         }
 
         if (!isPasswordValid(newPassword)) {
-            toast.error("Le nouveau mot de passe doit contenir au moins 8 caractères")
+            toast.error(
+                "Le nouveau mot de passe doit contenir au moins 8 caractères"
+            )
             return
         }
 
@@ -53,7 +61,9 @@ export function ChangePasswordCard({ className }: ChangePasswordCardProps) {
         }
 
         if (currentPassword === newPassword) {
-            toast.error("Le nouveau mot de passe doit être différent de l'ancien")
+            toast.error(
+                "Le nouveau mot de passe doit être différent de l'ancien"
+            )
             return
         }
 
@@ -65,24 +75,26 @@ export function ChangePasswordCard({ className }: ChangePasswordCardProps) {
                 newPassword,
                 revokeOtherSessions
             })
-            
+
             // Reset form
             setCurrentPassword("")
             setNewPassword("")
             setConfirmPassword("")
-            
+
             toast.success(
-                revokeOtherSessions 
+                revokeOtherSessions
                     ? "Mot de passe modifié avec succès. Toutes les autres sessions ont été révoquées."
                     : "Mot de passe modifié avec succès"
             )
         } catch (error: any) {
             console.error("Error changing password:", error)
-            
+
             if (error.message?.includes("current password")) {
                 toast.error("Le mot de passe actuel est incorrect")
             } else if (error.message?.includes("fresh session")) {
-                toast.error("Veuillez vous reconnecter pour changer votre mot de passe")
+                toast.error(
+                    "Veuillez vous reconnecter pour changer votre mot de passe"
+                )
             } else {
                 toast.error("Erreur lors du changement de mot de passe")
             }
@@ -102,19 +114,24 @@ export function ChangePasswordCard({ className }: ChangePasswordCardProps) {
             <CardHeader>
                 <CardTitle>Mot de passe</CardTitle>
                 <CardDescription>
-                    Modifiez votre mot de passe. Le nouveau mot de passe doit contenir au moins 8 caractères.
+                    Modifiez votre mot de passe. Le nouveau mot de passe doit
+                    contenir au moins 8 caractères.
                 </CardDescription>
             </CardHeader>
             <CardContent>
                 <form onSubmit={handleSubmit} className="space-y-4">
                     <div className="space-y-2">
-                        <Label htmlFor="current-password">Mot de passe actuel</Label>
+                        <Label htmlFor="current-password">
+                            Mot de passe actuel
+                        </Label>
                         <div className="relative">
                             <Input
                                 id="current-password"
                                 type={showCurrentPassword ? "text" : "password"}
                                 value={currentPassword}
-                                onChange={(e) => setCurrentPassword(e.target.value)}
+                                onChange={(e) =>
+                                    setCurrentPassword(e.target.value)
+                                }
                                 placeholder="Entrez votre mot de passe actuel"
                                 disabled={isLoading}
                                 className="max-w-md pr-10"
@@ -123,21 +140,25 @@ export function ChangePasswordCard({ className }: ChangePasswordCardProps) {
                                 type="button"
                                 variant="ghost"
                                 size="sm"
-                                className="absolute right-0 top-0 h-full px-3 hover:bg-transparent"
-                                onClick={() => setShowCurrentPassword(!showCurrentPassword)}
+                                className="absolute top-0 right-0 h-full px-3 hover:bg-transparent"
+                                onClick={() =>
+                                    setShowCurrentPassword(!showCurrentPassword)
+                                }
                                 disabled={isLoading}
                             >
                                 {showCurrentPassword ? (
-                                    <RiEyeOffLine className="w-4 h-4" />
+                                    <RiEyeOffLine className="h-4 w-4" />
                                 ) : (
-                                    <RiEyeLine className="w-4 h-4" />
+                                    <RiEyeLine className="h-4 w-4" />
                                 )}
                             </Button>
                         </div>
                     </div>
 
                     <div className="space-y-2">
-                        <Label htmlFor="new-password">Nouveau mot de passe</Label>
+                        <Label htmlFor="new-password">
+                            Nouveau mot de passe
+                        </Label>
                         <div className="relative">
                             <Input
                                 id="new-password"
@@ -152,32 +173,39 @@ export function ChangePasswordCard({ className }: ChangePasswordCardProps) {
                                 type="button"
                                 variant="ghost"
                                 size="sm"
-                                className="absolute right-0 top-0 h-full px-3 hover:bg-transparent"
-                                onClick={() => setShowNewPassword(!showNewPassword)}
+                                className="absolute top-0 right-0 h-full px-3 hover:bg-transparent"
+                                onClick={() =>
+                                    setShowNewPassword(!showNewPassword)
+                                }
                                 disabled={isLoading}
                             >
                                 {showNewPassword ? (
-                                    <RiEyeOffLine className="w-4 h-4" />
+                                    <RiEyeOffLine className="h-4 w-4" />
                                 ) : (
-                                    <RiEyeLine className="w-4 h-4" />
+                                    <RiEyeLine className="h-4 w-4" />
                                 )}
                             </Button>
                         </div>
                         {newPassword && !isPasswordValid(newPassword) && (
-                            <p className="text-sm text-red-600">
-                                Le mot de passe doit contenir au moins 8 caractères
+                            <p className="text-red-600 text-sm">
+                                Le mot de passe doit contenir au moins 8
+                                caractères
                             </p>
                         )}
                     </div>
 
                     <div className="space-y-2">
-                        <Label htmlFor="confirm-password">Confirmer le nouveau mot de passe</Label>
+                        <Label htmlFor="confirm-password">
+                            Confirmer le nouveau mot de passe
+                        </Label>
                         <div className="relative">
                             <Input
                                 id="confirm-password"
                                 type={showConfirmPassword ? "text" : "password"}
                                 value={confirmPassword}
-                                onChange={(e) => setConfirmPassword(e.target.value)}
+                                onChange={(e) =>
+                                    setConfirmPassword(e.target.value)
+                                }
                                 placeholder="Confirmez votre nouveau mot de passe"
                                 disabled={isLoading}
                                 className="max-w-md pr-10"
@@ -186,19 +214,21 @@ export function ChangePasswordCard({ className }: ChangePasswordCardProps) {
                                 type="button"
                                 variant="ghost"
                                 size="sm"
-                                className="absolute right-0 top-0 h-full px-3 hover:bg-transparent"
-                                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                                className="absolute top-0 right-0 h-full px-3 hover:bg-transparent"
+                                onClick={() =>
+                                    setShowConfirmPassword(!showConfirmPassword)
+                                }
                                 disabled={isLoading}
                             >
                                 {showConfirmPassword ? (
-                                    <RiEyeOffLine className="w-4 h-4" />
+                                    <RiEyeOffLine className="h-4 w-4" />
                                 ) : (
-                                    <RiEyeLine className="w-4 h-4" />
+                                    <RiEyeLine className="h-4 w-4" />
                                 )}
                             </Button>
                         </div>
                         {confirmPassword && newPassword !== confirmPassword && (
-                            <p className="text-sm text-red-600">
+                            <p className="text-red-600 text-sm">
                                 Les mots de passe ne correspondent pas
                             </p>
                         )}
@@ -208,11 +238,17 @@ export function ChangePasswordCard({ className }: ChangePasswordCardProps) {
                         <Checkbox
                             id="revoke-sessions"
                             checked={revokeOtherSessions}
-                            onCheckedChange={(checked) => setRevokeOtherSessions(!!checked)}
+                            onCheckedChange={(checked) =>
+                                setRevokeOtherSessions(!!checked)
+                            }
                             disabled={isLoading}
                         />
-                        <Label htmlFor="revoke-sessions" className="text-sm font-normal">
-                            Déconnecter tous les autres appareils après le changement
+                        <Label
+                            htmlFor="revoke-sessions"
+                            className="font-normal text-sm"
+                        >
+                            Déconnecter tous les autres appareils après le
+                            changement
                         </Label>
                     </div>
 
@@ -220,20 +256,26 @@ export function ChangePasswordCard({ className }: ChangePasswordCardProps) {
                         <Button
                             type="submit"
                             disabled={
-                                isLoading || 
-                                !currentPassword || 
-                                !newPassword || 
+                                isLoading ||
+                                !currentPassword ||
+                                !newPassword ||
                                 !confirmPassword ||
                                 !isPasswordValid(newPassword) ||
                                 newPassword !== confirmPassword ||
                                 currentPassword === newPassword
                             }
                         >
-                            {isLoading && <RiLoader4Line className="w-4 h-4 mr-2 animate-spin" />}
-                            {isLoading ? "Modification..." : "Changer le mot de passe"}
+                            {isLoading && (
+                                <RiLoader4Line className="mr-2 h-4 w-4 animate-spin" />
+                            )}
+                            {isLoading
+                                ? "Modification..."
+                                : "Changer le mot de passe"}
                         </Button>
-                        
-                        {(currentPassword || newPassword || confirmPassword) && (
+
+                        {(currentPassword ||
+                            newPassword ||
+                            confirmPassword) && (
                             <Button
                                 type="button"
                                 variant="outline"

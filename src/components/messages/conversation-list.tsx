@@ -31,7 +31,10 @@ interface ConversationListProps {
     onSelectConversation: (conversationId: string) => void
 }
 
-async function fetchConversations(): Promise<{ success: boolean; data: Conversation[] }> {
+async function fetchConversations(): Promise<{
+    success: boolean
+    data: Conversation[]
+}> {
     const response = await fetch("/api/conversations")
     if (!response.ok) {
         throw new Error("Failed to fetch conversations")
@@ -39,12 +42,19 @@ async function fetchConversations(): Promise<{ success: boolean; data: Conversat
     return response.json()
 }
 
-export function ConversationList({ selectedConversationId, onSelectConversation }: ConversationListProps) {
-    const { data: response, isLoading, error } = useQuery({
+export function ConversationList({
+    selectedConversationId,
+    onSelectConversation
+}: ConversationListProps) {
+    const {
+        data: response,
+        isLoading,
+        error
+    } = useQuery({
         queryKey: ["conversations"],
         queryFn: fetchConversations,
         refetchInterval: 5000, // Poll every 5 seconds
-        staleTime: 30 * 1000, // 30 seconds
+        staleTime: 30 * 1000 // 30 seconds
     })
 
     const conversations = response?.data || []
@@ -60,8 +70,8 @@ export function ConversationList({ selectedConversationId, onSelectConversation 
     if (isLoading) {
         return (
             <div className="p-4 text-center">
-                <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-600 mx-auto mb-2"></div>
-                <p className="text-sm text-gray-500">Chargement...</p>
+                <div className="mx-auto mb-2 h-6 w-6 animate-spin rounded-full border-blue-600 border-b-2" />
+                <p className="text-gray-500 text-sm">Chargement...</p>
             </div>
         )
     }
@@ -70,8 +80,9 @@ export function ConversationList({ selectedConversationId, onSelectConversation 
         return (
             <div className="p-4 text-center text-gray-500">
                 <p>Aucune conversation pour le moment</p>
-                <p className="text-sm mt-1">
-                    Contactez des vendeurs depuis leurs annonces pour commencer à échanger
+                <p className="mt-1 text-sm">
+                    Contactez des vendeurs depuis leurs annonces pour commencer
+                    à échanger
                 </p>
             </div>
         )
@@ -84,57 +95,78 @@ export function ConversationList({ selectedConversationId, onSelectConversation 
                     <button
                         key={conversation.id}
                         onClick={() => onSelectConversation(conversation.id)}
-                        className={`w-full p-4 text-left hover:bg-gray-50 transition-colors ${
-                            selectedConversationId === conversation.id ? "bg-blue-50 border-r-2 border-blue-600" : ""
+                        className={`w-full p-4 text-left transition-colors hover:bg-gray-50 ${
+                            selectedConversationId === conversation.id
+                                ? "border-blue-600 border-r-2 bg-blue-50"
+                                : ""
                         }`}
                     >
                         <div className="flex items-start gap-3">
                             <Avatar className="h-10 w-10 flex-shrink-0">
-                                {(conversation.otherParticipant?.avatarUrl || 
-                                  conversation.otherParticipant?.avatar || 
-                                  (conversation.otherParticipant?.name && `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(conversation.otherParticipant.name)}`)) ? (
+                                {conversation.otherParticipant?.avatarUrl ||
+                                conversation.otherParticipant?.avatar ||
+                                (conversation.otherParticipant?.name &&
+                                    `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(conversation.otherParticipant.name)}`) ? (
                                     <img
-                                        src={conversation.otherParticipant.avatarUrl || 
-                                             conversation.otherParticipant.avatar || 
-                                             `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(conversation.otherParticipant?.name || 'User')}`}
-                                        alt={conversation.otherParticipant?.name || "Avatar"}
-                                        className="h-full w-full object-cover rounded-full"
+                                        src={
+                                            conversation.otherParticipant
+                                                .avatarUrl ||
+                                            conversation.otherParticipant
+                                                .avatar ||
+                                            `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(conversation.otherParticipant?.name || "User")}`
+                                        }
+                                        alt={
+                                            conversation.otherParticipant
+                                                ?.name || "Avatar"
+                                        }
+                                        className="h-full w-full rounded-full object-cover"
                                     />
                                 ) : (
-                                    <div className="h-full w-full bg-gray-300 flex items-center justify-center text-gray-600 font-medium text-sm rounded-full">
-                                        {conversation.otherParticipant?.name?.charAt(0).toUpperCase() || "?"}
+                                    <div className="flex h-full w-full items-center justify-center rounded-full bg-gray-300 font-medium text-gray-600 text-sm">
+                                        {conversation.otherParticipant?.name
+                                            ?.charAt(0)
+                                            .toUpperCase() || "?"}
                                     </div>
                                 )}
                             </Avatar>
-                            
-                            <div className="flex-1 min-w-0">
-                                <div className="flex items-center justify-between mb-1">
-                                    <h3 className="font-medium text-gray-900 truncate">
-                                        {conversation.otherParticipant?.name || "Utilisateur"}
+
+                            <div className="min-w-0 flex-1">
+                                <div className="mb-1 flex items-center justify-between">
+                                    <h3 className="truncate font-medium text-gray-900">
+                                        {conversation.otherParticipant?.name ||
+                                            "Utilisateur"}
                                     </h3>
                                     {conversation.lastMessageAt && (
-                                        <span className="text-xs text-gray-500 flex-shrink-0">
-                                            {formatDistanceToNow(new Date(conversation.lastMessageAt), {
-                                                addSuffix: true,
-                                                locale: fr,
-                                            })}
+                                        <span className="flex-shrink-0 text-gray-500 text-xs">
+                                            {formatDistanceToNow(
+                                                new Date(
+                                                    conversation.lastMessageAt
+                                                ),
+                                                {
+                                                    addSuffix: true,
+                                                    locale: fr
+                                                }
+                                            )}
                                         </span>
                                     )}
                                 </div>
-                                
+
                                 {conversation.listing && (
-                                    <div className="flex items-center gap-2 mb-1">
-                                        <Badge variant="outline" className="text-xs">
+                                    <div className="mb-1 flex items-center gap-2">
+                                        <Badge
+                                            variant="outline"
+                                            className="text-xs"
+                                        >
                                             {conversation.listing.listingType}
                                         </Badge>
-                                        <span className="text-xs text-gray-500 truncate">
+                                        <span className="truncate text-gray-500 text-xs">
                                             {conversation.listing.title}
                                         </span>
                                     </div>
                                 )}
-                                
+
                                 {conversation.lastMessageContent && (
-                                    <p className="text-sm text-gray-600 truncate">
+                                    <p className="truncate text-gray-600 text-sm">
                                         {conversation.lastMessageContent}
                                     </p>
                                 )}

@@ -67,7 +67,7 @@ const ConnectedTriangles = ({
                     stroke="#10b981"
                     strokeLinecap="round"
                     opacity={hovered && hovered !== "remplacement" ? 0.35 : 1}
-                    className="transition-all duration-200 ease-out cursor-pointer"
+                    className="cursor-pointer transition-all duration-200 ease-out"
                     onMouseEnter={() => setHovered("remplacement")}
                     onMouseLeave={() => setHovered(null)}
                 >
@@ -85,7 +85,7 @@ const ConnectedTriangles = ({
                     stroke="#2563eb"
                     strokeLinecap="round"
                     opacity={hovered && hovered !== "collaboration" ? 0.35 : 1}
-                    className="transition-all duration-200 ease-out cursor-pointer"
+                    className="cursor-pointer transition-all duration-200 ease-out"
                     onMouseEnter={() => setHovered("collaboration")}
                     onMouseLeave={() => setHovered(null)}
                 >
@@ -101,7 +101,7 @@ const ConnectedTriangles = ({
                 <g
                     strokeLinecap="round"
                     opacity={hovered && hovered !== "cession" ? 0.35 : 1}
-                    className="transition-all duration-200 ease-out cursor-pointer"
+                    className="cursor-pointer transition-all duration-200 ease-out"
                     onMouseEnter={() => setHovered("cession")}
                     onMouseLeave={() => setHovered(null)}
                 >
@@ -129,7 +129,7 @@ const ConnectedTriangles = ({
                 <g fontSize="12" fontWeight={600} textAnchor="middle">
                     {/* Remplacement label @ (168,176) */}
                     <g
-                        className="transition-all duration-200 ease-out cursor-pointer"
+                        className="cursor-pointer transition-all duration-200 ease-out"
                         onMouseEnter={() => setHovered("remplacement")}
                         onMouseLeave={() => setHovered(null)}
                     >
@@ -140,7 +140,11 @@ const ConnectedTriangles = ({
                             height="24"
                             rx="12"
                             fill="#ffffff"
-                            stroke={hovered === "remplacement" ? "#10b981" : "#e5e7eb"}
+                            stroke={
+                                hovered === "remplacement"
+                                    ? "#10b981"
+                                    : "#e5e7eb"
+                            }
                             strokeWidth={hovered === "remplacement" ? 2 : 1}
                         />
                         <text x="168" y="180" fill="#374151">
@@ -149,7 +153,7 @@ const ConnectedTriangles = ({
                     </g>
                     {/* Collaboration label @ (312,176) */}
                     <g
-                        className="transition-all duration-200 ease-out cursor-pointer"
+                        className="cursor-pointer transition-all duration-200 ease-out"
                         onMouseEnter={() => setHovered("collaboration")}
                         onMouseLeave={() => setHovered(null)}
                     >
@@ -160,7 +164,11 @@ const ConnectedTriangles = ({
                             height="24"
                             rx="12"
                             fill="#ffffff"
-                            stroke={hovered === "collaboration" ? "#2563eb" : "#e5e7eb"}
+                            stroke={
+                                hovered === "collaboration"
+                                    ? "#2563eb"
+                                    : "#e5e7eb"
+                            }
                             strokeWidth={hovered === "collaboration" ? 2 : 1}
                         />
                         <text x="312" y="180" fill="#374151">
@@ -169,7 +177,7 @@ const ConnectedTriangles = ({
                     </g>
                     {/* Cession label @ (240,300) */}
                     <g
-                        className="transition-all duration-200 ease-out cursor-pointer"
+                        className="cursor-pointer transition-all duration-200 ease-out"
                         onMouseEnter={() => setHovered("cession")}
                         onMouseLeave={() => setHovered(null)}
                     >
@@ -180,7 +188,9 @@ const ConnectedTriangles = ({
                             height="24"
                             rx="12"
                             fill="#ffffff"
-                            stroke={hovered === "cession" ? "#14b8a6" : "#e5e7eb"}
+                            stroke={
+                                hovered === "cession" ? "#14b8a6" : "#e5e7eb"
+                            }
                             strokeWidth={hovered === "cession" ? 2 : 1}
                         />
                         <text x="240" y="304" fill="#374151">

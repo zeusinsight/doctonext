@@ -1,8 +1,8 @@
-import { NextRequest, NextResponse } from "next/server"
+import { type NextRequest, NextResponse } from "next/server"
 import { auth } from "@/lib/auth"
-import { 
-    getListingById, 
-    updateListing, 
+import {
+    getListingById,
+    updateListing,
     deleteListing,
     incrementListingViews
 } from "@/lib/actions/listings"
@@ -13,7 +13,7 @@ export async function GET(
     request: NextRequest,
     { params }: { params: Promise<{ id: string }> }
 ) {
-    try {   
+    try {
         const listing = await getListingById((await params).id)
 
         if (!listing) {
@@ -24,7 +24,7 @@ export async function GET(
         }
 
         // Increment view count (fire and forget)
-        incrementListingViews((await params).id).catch(error => 
+        incrementListingViews((await params).id).catch((error) =>
             console.error("Failed to increment views:", error)
         )
 
@@ -34,9 +34,12 @@ export async function GET(
         })
     } catch (error) {
         console.error("Error fetching listing:", error)
-        
+
         return NextResponse.json(
-            { success: false, error: "Erreur lors de la récupération de l'annonce" },
+            {
+                success: false,
+                error: "Erreur lors de la récupération de l'annonce"
+            },
             { status: 500 }
         )
     }
@@ -60,7 +63,7 @@ export async function PUT(
         }
 
         const body = await request.json()
-        
+
         // Validate request body
         const validatedData = updateListingSchema.parse(body)
 
@@ -80,7 +83,7 @@ export async function PUT(
         }
     } catch (error) {
         console.error("Error updating listing:", error)
-        
+
         if (error instanceof Error) {
             return NextResponse.json(
                 { success: false, error: error.message },
@@ -89,7 +92,10 @@ export async function PUT(
         }
 
         return NextResponse.json(
-            { success: false, error: "Erreur lors de la mise à jour de l'annonce" },
+            {
+                success: false,
+                error: "Erreur lors de la mise à jour de l'annonce"
+            },
             { status: 500 }
         )
     }
@@ -128,9 +134,12 @@ export async function DELETE(
         }
     } catch (error) {
         console.error("Error deleting listing:", error)
-        
+
         return NextResponse.json(
-            { success: false, error: "Erreur lors de la suppression de l'annonce" },
+            {
+                success: false,
+                error: "Erreur lors de la suppression de l'annonce"
+            },
             { status: 500 }
         )
     }

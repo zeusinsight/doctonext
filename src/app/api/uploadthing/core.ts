@@ -8,7 +8,7 @@ const f = createUploadthing({
             message: err.message || "Failed to upload file",
             cause: err.cause instanceof Error ? err.cause.message : undefined
         }
-    },
+    }
 })
 
 export const ourFileRouter = {
@@ -22,7 +22,7 @@ export const ourFileRouter = {
         .middleware(async ({ req }) => {
             try {
                 // Generate a unique filename with timestamp
-                const date = new Date().toISOString().split('T')[0]
+                const date = new Date().toISOString().split("T")[0]
                 const timestamp = Date.now().toString(36)
                 const fileName = `${date}_${timestamp}`
 
@@ -57,7 +57,7 @@ export const ourFileRouter = {
         .middleware(async ({ req }) => {
             try {
                 // Generate a unique filename with timestamp
-                const date = new Date().toISOString().split('T')[0]
+                const date = new Date().toISOString().split("T")[0]
                 const timestamp = Date.now().toString(36)
                 const fileName = `listing_${date}_${timestamp}`
 
@@ -71,7 +71,7 @@ export const ourFileRouter = {
         })
         .onUploadComplete(async ({ file }) => {
             try {
-                return { 
+                return {
                     ufsUrl: file.ufsUrl,
                     fileName: file.name,
                     fileSize: file.size,
@@ -92,7 +92,7 @@ export const ourFileRouter = {
         .middleware(async ({ req }) => {
             try {
                 // Generate a unique filename with timestamp
-                const date = new Date().toISOString().split('T')[0]
+                const date = new Date().toISOString().split("T")[0]
                 const timestamp = Date.now().toString(36)
                 const fileName = `blog_${date}_${timestamp}`
 

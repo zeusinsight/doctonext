@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server"
+import { type NextRequest, NextResponse } from "next/server"
 import { auth } from "@/lib/auth"
 import { headers } from "next/headers"
 import { getContractStatus } from "@/lib/services/contract-service"
@@ -8,8 +8,8 @@ export async function GET(
     { params }: { params: Promise<{ id: string }> }
 ) {
     try {
-        const session = await auth.api.getSession({ 
-            headers: await headers() 
+        const session = await auth.api.getSession({
+            headers: await headers()
         })
 
         if (!session) {
@@ -32,15 +32,14 @@ export async function GET(
         }
 
         // Ensure user has permission to view this contract
-        if (contract.senderId !== session.user.id && contract.recipientId !== session.user.id) {
-            return NextResponse.json(
-                { error: "Unauthorized" },
-                { status: 403 }
-            )
+        if (
+            contract.senderId !== session.user.id &&
+            contract.recipientId !== session.user.id
+        ) {
+            return NextResponse.json({ error: "Unauthorized" }, { status: 403 })
         }
 
         return NextResponse.json(contract)
-
     } catch (error) {
         console.error("Contract status error:", error)
         return NextResponse.json(

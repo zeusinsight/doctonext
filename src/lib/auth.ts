@@ -23,7 +23,7 @@ export const auth = betterAuth({
         usePlural: true,
         schema
     }),
-    
+
     emailAndPassword: {
         rememberMe: true,
         enabled: true,

@@ -12,7 +12,7 @@ export function useFavorites() {
             try {
                 const response = await fetch("/api/favorites")
                 const data = await response.json()
-                
+
                 if (data.success && data.data) {
                     setFavorites(new Set(data.data))
                 }
@@ -22,73 +22,89 @@ export function useFavorites() {
                 setIsLoaded(true)
             }
         }
-        
+
         loadFavorites()
     }, [])
 
-    const toggleFavorite = useCallback(async (listingId: string) => {
-        try {
-            // Optimistic update
-            const wasAlreadyFavorite = favorites.has(listingId)
-            setFavorites(prev => {
-                const newFavorites = new Set(prev)
-                if (newFavorites.has(listingId)) {
-                    newFavorites.delete(listingId)
-                } else {
-                    newFavorites.add(listingId)
-                }
-                return newFavorites
-            })
-
-            // Make API call
-            const response = await fetch("/api/favorites/toggle", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({ listingId }),
-            })
-
-            const data = await response.json()
-            
-            if (!data.success) {
-                // Revert optimistic update on failure
-                setFavorites(prev => {
+    const toggleFavorite = useCallback(
+        async (listingId: string) => {
+            try {
+                // Optimistic update
+                const wasAlreadyFavorite = favorites.has(listingId)
+                setFavorites((prev) => {
                     const newFavorites = new Set(prev)
-                    if (wasAlreadyFavorite) {
-                        newFavorites.add(listingId)
-                    } else {
+                    if (newFavorites.has(listingId)) {
                         newFavorites.delete(listingId)
+                    } else {
+                        newFavorites.add(listingId)
                     }
                     return newFavorites
                 })
-                throw new Error(data.error || "Failed to toggle favorite")
+
+                // Make API call
+                const response = await fetch("/api/favorites/toggle", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ listingId })
+                })
+
+                const data = await response.json()
+
+                if (!data.success) {
+                    // Revert optimistic update on failure
+                    setFavorites((prev) => {
+                        const newFavorites = new Set(prev)
+                        if (wasAlreadyFavorite) {
+                            newFavorites.add(listingId)
+                        } else {
+                            newFavorites.delete(listingId)
+                        }
+                        return newFavorites
+                    })
+                    throw new Error(data.error || "Failed to toggle favorite")
+                }
+
+                return { success: true, isFavorite: data.isFavorite }
+            } catch (error) {
+                console.error("Error toggling favorite:", error)
+                return {
+                    success: false,
+                    error:
+                        error instanceof Error ? error.message : "Unknown error"
+                }
             }
+        },
+        [favorites]
+    )
 
-            return { success: true, isFavorite: data.isFavorite }
-        } catch (error) {
-            console.error("Error toggling favorite:", error)
-            return { success: false, error: error instanceof Error ? error.message : "Unknown error" }
-        }
-    }, [favorites])
+    const isFavorite = useCallback(
+        (listingId: string) => {
+            return favorites.has(listingId)
+        },
+        [favorites]
+    )
 
-    const isFavorite = useCallback((listingId: string) => {
-        return favorites.has(listingId)
-    }, [favorites])
+    const addFavorite = useCallback(
+        async (listingId: string) => {
+            if (!favorites.has(listingId)) {
+                return await toggleFavorite(listingId)
+            }
+            return { success: true, isFavorite: true }
+        },
+        [favorites, toggleFavorite]
+    )
 
-    const addFavorite = useCallback(async (listingId: string) => {
-        if (!favorites.has(listingId)) {
-            return await toggleFavorite(listingId)
-        }
-        return { success: true, isFavorite: true }
-    }, [favorites, toggleFavorite])
-
-    const removeFavorite = useCallback(async (listingId: string) => {
-        if (favorites.has(listingId)) {
-            return await toggleFavorite(listingId)
-        }
-        return { success: true, isFavorite: false }
-    }, [favorites, toggleFavorite])
+    const removeFavorite = useCallback(
+        async (listingId: string) => {
+            if (favorites.has(listingId)) {
+                return await toggleFavorite(listingId)
+            }
+            return { success: true, isFavorite: false }
+        },
+        [favorites, toggleFavorite]
+    )
 
     const getFavoriteCount = useCallback(() => {
         return favorites.size

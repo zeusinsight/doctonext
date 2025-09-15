@@ -1,9 +1,9 @@
-import { Metadata } from "next"
+import type { Metadata } from "next"
 import { notFound } from "next/navigation"
 import Image from "next/image"
 import Link from "next/link"
 import { ArticleContent } from "@/components/blog/article-content"
-import { ArticleCard } from "@/components/blog/article-card";
+import { ArticleCard } from "@/components/blog/article-card"
 import { ShareButton } from "@/components/blog/share-button"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -53,28 +53,28 @@ async function getBlogArticle(slug: string): Promise<BlogArticle | null> {
         const { eq, and, ne } = await import("drizzle-orm")
         const { getCurrentUser } = await import("@/lib/auth-utils")
         const readingTime = (await import("reading-time")).default
-        
+
         const user = await getCurrentUser()
         const isAdmin = (user as any)?.role === "admin"
-        
+
         // Build where conditions
-        let conditions = [eq(blogArticles.slug, slug)]
-        
+        const conditions = [eq(blogArticles.slug, slug)]
+
         // Only show published articles unless user is admin
         if (!isAdmin) {
             conditions.push(eq(blogArticles.isPublished, true))
         }
-        
+
         const [article] = await db
             .select()
             .from(blogArticles)
             .where(and(...conditions))
             .limit(1)
-        
+
         if (!article) {
             return null
         }
-        
+
         // Get related articles (same tags, excluding current article)
         const relatedArticles = await db
             .select({
@@ -94,34 +94,39 @@ async function getBlogArticle(slug: string): Promise<BlogArticle | null> {
                 )
             )
             .limit(3)
-        
+
         // Add reading time and related articles
         return {
             ...article,
             readingTime: readingTime(article.content).text,
             relatedArticles
         }
-        
     } catch (error) {
         console.error("Error fetching blog article:", error)
         return null
     }
 }
 
-export async function generateMetadata({ params }: BlogArticlePageProps): Promise<Metadata> {
+export async function generateMetadata({
+    params
+}: BlogArticlePageProps): Promise<Metadata> {
     const { slug } = await params
     const article = await getBlogArticle(slug)
-    
+
     if (!article) {
         return {
             title: "Article non trouvé - Doctonext",
-            description: "L'article demandé n'existe pas ou n'est plus disponible."
+            description:
+                "L'article demandé n'existe pas ou n'est plus disponible."
         }
     }
-    
+
     const title = article.seoTitle || article.title
-    const description = article.seoDescription || article.excerpt || "Découvrez cet article sur Doctonext"
-    
+    const description =
+        article.seoDescription ||
+        article.excerpt ||
+        "Découvrez cet article sur Doctonext"
+
     return {
         title: `${title} - Blog Doctonext`,
         description,
@@ -132,14 +137,16 @@ export async function generateMetadata({ params }: BlogArticlePageProps): Promis
             type: "article",
             publishedTime: article.publishedAt?.toISOString(),
             modifiedTime: article.updatedAt.toISOString(),
-            images: article.featuredImage ? [
-                {
-                    url: article.featuredImage,
-                    width: 1200,
-                    height: 630,
-                    alt: article.title
-                }
-            ] : undefined,
+            images: article.featuredImage
+                ? [
+                      {
+                          url: article.featuredImage,
+                          width: 1200,
+                          height: 630,
+                          alt: article.title
+                      }
+                  ]
+                : undefined,
             tags: article.tags || undefined
         },
         twitter: {
@@ -151,16 +158,20 @@ export async function generateMetadata({ params }: BlogArticlePageProps): Promis
     }
 }
 
-export default async function BlogArticlePage({ params }: BlogArticlePageProps) {
+export default async function BlogArticlePage({
+    params
+}: BlogArticlePageProps) {
     const { slug } = await params
     const article = await getBlogArticle(slug)
-    
+
     if (!article) {
         notFound()
     }
-    
-    const publishedDate = article.publishedAt ? new Date(article.publishedAt) : null
-    
+
+    const publishedDate = article.publishedAt
+        ? new Date(article.publishedAt)
+        : null
+
     return (
         <div className="container mx-auto px-4 py-8">
             {/* Back Button */}
@@ -172,25 +183,27 @@ export default async function BlogArticlePage({ params }: BlogArticlePageProps) 
                     </Button>
                 </Link>
             </div>
-            
-            <div className="max-w-4xl mx-auto">
+
+            <div className="mx-auto max-w-4xl">
                 {/* Article Header */}
                 <header className="mb-8">
                     {/* Article Meta */}
-                    <div className="flex items-center gap-4 text-sm text-muted-foreground mb-4">
+                    <div className="mb-4 flex items-center gap-4 text-muted-foreground text-sm">
                         {publishedDate && (
                             <>
                                 <div className="flex items-center gap-1">
                                     <Calendar className="h-4 w-4" />
                                     <span>
-                                        {format(publishedDate, "d MMMM yyyy", { locale: fr })}
+                                        {format(publishedDate, "d MMMM yyyy", {
+                                            locale: fr
+                                        })}
                                     </span>
                                 </div>
                                 <span>·</span>
                                 <span>
-                                    {formatDistanceToNow(publishedDate, { 
-                                        addSuffix: true, 
-                                        locale: fr 
+                                    {formatDistanceToNow(publishedDate, {
+                                        addSuffix: true,
+                                        locale: fr
                                     })}
                                 </span>
                             </>
@@ -205,22 +218,22 @@ export default async function BlogArticlePage({ params }: BlogArticlePageProps) 
                             </>
                         )}
                     </div>
-                    
+
                     {/* Title */}
-                    <h1 className="text-4xl font-bold mb-4 leading-tight">
+                    <h1 className="mb-4 font-bold text-4xl leading-tight">
                         {article.title}
                     </h1>
-                    
+
                     {/* Excerpt */}
                     {article.excerpt && (
-                        <p className="text-xl text-muted-foreground mb-6 leading-relaxed">
+                        <p className="mb-6 text-muted-foreground text-xl leading-relaxed">
                             {article.excerpt}
                         </p>
                     )}
-                    
+
                     {/* Tags */}
                     {article.tags && article.tags.length > 0 && (
-                        <div className="flex flex-wrap gap-2 mb-6">
+                        <div className="mb-6 flex flex-wrap gap-2">
                             {article.tags.map((tag) => (
                                 <Badge key={tag} variant="outline">
                                     {tag}
@@ -228,10 +241,10 @@ export default async function BlogArticlePage({ params }: BlogArticlePageProps) 
                             ))}
                         </div>
                     )}
-                    
+
                     {/* Featured Image */}
                     {article.featuredImage && (
-                        <div className="relative aspect-video overflow-hidden rounded-lg mb-8">
+                        <div className="relative mb-8 aspect-video overflow-hidden rounded-lg">
                             <Image
                                 src={article.featuredImage}
                                 alt={article.title}
@@ -241,40 +254,45 @@ export default async function BlogArticlePage({ params }: BlogArticlePageProps) 
                             />
                         </div>
                     )}
-                    
+
                     {/* Share Button */}
-                    <div className="flex justify-end mb-6">
-                        <ShareButton 
+                    <div className="mb-6 flex justify-end">
+                        <ShareButton
                             title={article.title}
                             excerpt={article.excerpt}
                             slug={article.slug}
                         />
                     </div>
                 </header>
-                
+
                 <Separator className="mb-8" />
-                
+
                 {/* Article Content */}
                 <main className="mb-12">
                     <ArticleContent content={article.content} />
                 </main>
-                
+
                 <Separator className="mb-8" />
-                
+
                 {/* Related Articles */}
-                {article.relatedArticles && article.relatedArticles.length > 0 && (
-                    <section>
-                        <h2 className="text-2xl font-bold mb-6">Articles recommandés</h2>
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                            {article.relatedArticles.map((relatedArticle) => (
-                                <ArticleCard 
-                                    key={relatedArticle.id} 
-                                    article={relatedArticle} 
-                                />
-                            ))}
-                        </div>
-                    </section>
-                )}
+                {article.relatedArticles &&
+                    article.relatedArticles.length > 0 && (
+                        <section>
+                            <h2 className="mb-6 font-bold text-2xl">
+                                Articles recommandés
+                            </h2>
+                            <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+                                {article.relatedArticles.map(
+                                    (relatedArticle) => (
+                                        <ArticleCard
+                                            key={relatedArticle.id}
+                                            article={relatedArticle}
+                                        />
+                                    )
+                                )}
+                            </div>
+                        </section>
+                    )}
             </div>
         </div>
     )

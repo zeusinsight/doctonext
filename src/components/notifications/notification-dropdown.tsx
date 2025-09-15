@@ -1,7 +1,10 @@
 "use client"
 
 import { useQuery, useQueryClient } from "@tanstack/react-query"
-import { getUserNotifications, markAllNotificationsAsRead } from "@/lib/actions/notifications"
+import {
+    getUserNotifications,
+    markAllNotificationsAsRead
+} from "@/lib/actions/notifications"
 import { NotificationItem } from "./notification-item"
 import { Button } from "@/components/ui/button"
 import { ScrollArea } from "@/components/ui/scroll-area"
@@ -14,12 +17,16 @@ interface NotificationDropdownProps {
 
 export function NotificationDropdown({ onClose }: NotificationDropdownProps) {
     const queryClient = useQueryClient()
-    
-    const { data: response, isLoading, error } = useQuery({
-        queryKey: ['notifications'],
+
+    const {
+        data: response,
+        isLoading,
+        error
+    } = useQuery({
+        queryKey: ["notifications"],
         queryFn: getUserNotifications,
         refetchOnWindowFocus: true,
-        staleTime: 30 * 1000, // 30 seconds
+        staleTime: 30 * 1000 // 30 seconds
     })
 
     const notifications = response?.data || []
@@ -30,8 +37,10 @@ export function NotificationDropdown({ onClose }: NotificationDropdownProps) {
             const result = await markAllNotificationsAsRead()
             if (result.success) {
                 // Invalidate queries to refresh the UI
-                queryClient.invalidateQueries({ queryKey: ['notifications'] })
-                queryClient.invalidateQueries({ queryKey: ['notifications', 'unread-count'] })
+                queryClient.invalidateQueries({ queryKey: ["notifications"] })
+                queryClient.invalidateQueries({
+                    queryKey: ["notifications", "unread-count"]
+                })
                 toast.success("Toutes les notifications marquées comme lues")
             } else {
                 toast.error("Erreur lors de la mise à jour")
@@ -43,7 +52,7 @@ export function NotificationDropdown({ onClose }: NotificationDropdownProps) {
 
     if (error) {
         return (
-            <div className="w-80 bg-white rounded-lg shadow-lg border p-4">
+            <div className="w-80 rounded-lg border bg-white p-4 shadow-lg">
                 <div className="text-center text-red-600">
                     Erreur lors du chargement des notifications
                 </div>
@@ -52,19 +61,21 @@ export function NotificationDropdown({ onClose }: NotificationDropdownProps) {
     }
 
     return (
-        <div className="w-96 bg-white rounded-lg shadow-lg border overflow-hidden">
+        <div className="w-96 overflow-hidden rounded-lg border bg-white shadow-lg">
             {/* Header */}
-            <div className="p-4 border-b bg-gray-50">
+            <div className="border-b bg-gray-50 p-4">
                 <div className="flex items-center justify-between">
-                    <h3 className="font-semibold text-gray-900">Notifications</h3>
+                    <h3 className="font-semibold text-gray-900">
+                        Notifications
+                    </h3>
                     {hasUnread && (
                         <Button
                             variant="ghost"
                             size="sm"
                             onClick={handleMarkAllAsRead}
-                            className="text-sm text-blue-600 hover:text-blue-800"
+                            className="text-blue-600 text-sm hover:text-blue-800"
                         >
-                            <CheckCheck className="w-4 h-4 mr-1" />
+                            <CheckCheck className="mr-1 h-4 w-4" />
                             Tout marquer comme lu
                         </Button>
                     )}
@@ -75,32 +86,32 @@ export function NotificationDropdown({ onClose }: NotificationDropdownProps) {
             {isLoading ? (
                 <div className="divide-y divide-gray-100">
                     {Array.from({ length: 3 }).map((_, i) => (
-                        <div key={i} className="p-4 animate-pulse">
+                        <div key={i} className="animate-pulse p-4">
                             <div className="flex items-start gap-3">
                                 {/* Icon skeleton */}
-                                <div className="w-8 h-8 bg-gray-200 rounded-full shrink-0"></div>
-                                
-                                <div className="flex-1 min-w-0">
+                                <div className="h-8 w-8 shrink-0 rounded-full bg-gray-200" />
+
+                                <div className="min-w-0 flex-1">
                                     <div className="flex items-start justify-between gap-2">
                                         <div className="flex-1">
                                             {/* Title skeleton */}
-                                            <div className="h-4 bg-gray-200 rounded w-3/4 mb-2"></div>
-                                            
+                                            <div className="mb-2 h-4 w-3/4 rounded bg-gray-200" />
+
                                             {/* Description skeleton */}
                                             <div className="space-y-1">
-                                                <div className="h-3 bg-gray-200 rounded w-full"></div>
-                                                <div className="h-3 bg-gray-200 rounded w-2/3"></div>
+                                                <div className="h-3 w-full rounded bg-gray-200" />
+                                                <div className="h-3 w-2/3 rounded bg-gray-200" />
                                             </div>
                                         </div>
-                                        
+
                                         {/* Timestamp skeleton */}
-                                        <div className="h-3 bg-gray-200 rounded w-16 shrink-0"></div>
+                                        <div className="h-3 w-16 shrink-0 rounded bg-gray-200" />
                                     </div>
-                                    
+
                                     {/* Read indicator skeleton */}
-                                    <div className="flex justify-between items-center mt-3">
-                                        <div className="w-2 h-2 bg-gray-200 rounded-full"></div>
-                                        <div className="h-3 bg-gray-200 rounded w-20"></div>
+                                    <div className="mt-3 flex items-center justify-between">
+                                        <div className="h-2 w-2 rounded-full bg-gray-200" />
+                                        <div className="h-3 w-20 rounded bg-gray-200" />
                                     </div>
                                 </div>
                             </div>
@@ -109,8 +120,8 @@ export function NotificationDropdown({ onClose }: NotificationDropdownProps) {
                 </div>
             ) : notifications.length === 0 ? (
                 <div className="p-8 text-center">
-                    <Bell className="w-8 h-8 text-gray-400 mx-auto mb-3" />
-                    <p className="text-sm text-gray-500">Aucune notification</p>
+                    <Bell className="mx-auto mb-3 h-8 w-8 text-gray-400" />
+                    <p className="text-gray-500 text-sm">Aucune notification</p>
                 </div>
             ) : (
                 <ScrollArea className="max-h-96">
@@ -128,7 +139,6 @@ export function NotificationDropdown({ onClose }: NotificationDropdownProps) {
                     </div>
                 </ScrollArea>
             )}
-
         </div>
     )
 }

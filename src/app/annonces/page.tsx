@@ -19,7 +19,6 @@ import { createSavedSearch } from "@/lib/actions/saved-searches"
 import { toast } from "sonner"
 import { authClient } from "@/lib/auth-client"
 
-
 // Dynamic imports to prevent SSR issues
 const FranceMap = dynamic(
     () => import("@/components/map/france-map").then((mod) => mod.FranceMap),
@@ -65,7 +64,6 @@ function ListingsContent() {
         filterListings()
     }, [listings, searchQuery, activeTab, filters])
 
-
     // Cleanup timeout on component unmount
     useEffect(() => {
         return () => {
@@ -89,7 +87,6 @@ function ListingsContent() {
             setLoading(false)
         }
     }
-
 
     const filterListings = () => {
         let filtered = [...listings]
@@ -159,19 +156,22 @@ function ListingsContent() {
         setFilteredListings(filtered)
     }
 
-    const handleSearch = useCallback((query: string) => {
-        // Clear previous timeout
-        if (searchTimeoutRef.current) {
-            clearTimeout(searchTimeoutRef.current)
-        }
+    const handleSearch = useCallback(
+        (query: string) => {
+            // Clear previous timeout
+            if (searchTimeoutRef.current) {
+                clearTimeout(searchTimeoutRef.current)
+            }
 
-        // Set new timeout for debounced search - reduced from 600ms to 300ms
-        searchTimeoutRef.current = setTimeout(() => {
-            setSearchQuery(query)
-            // Reset URL search params when performing a new search
-            router.push("/annonces", { scroll: false })
-        }, 300) // 300ms debounce delay for faster response
-    }, [router])
+            // Set new timeout for debounced search - reduced from 600ms to 300ms
+            searchTimeoutRef.current = setTimeout(() => {
+                setSearchQuery(query)
+                // Reset URL search params when performing a new search
+                router.push("/annonces", { scroll: false })
+            }, 300) // 300ms debounce delay for faster response
+        },
+        [router]
+    )
 
     const handleTabChange = (
         tab: "all" | "sales" | "replacements" | "collaborations"
@@ -194,7 +194,9 @@ function ListingsContent() {
         }
 
         if (!session?.user) {
-            toast.error("Vous devez être connecté pour sauvegarder une recherche")
+            toast.error(
+                "Vous devez être connecté pour sauvegarder une recherche"
+            )
             return
         }
 
@@ -207,7 +209,11 @@ function ListingsContent() {
                 activeTab: activeTab !== "all" ? activeTab : undefined
             }
 
-            const result = await createSavedSearch(searchName, searchCriteria as ListingFilters, emailAlerts)
+            const result = await createSavedSearch(
+                searchName,
+                searchCriteria as ListingFilters,
+                emailAlerts
+            )
             if (result.success) {
                 toast.success("Recherche sauvegardée avec succès")
                 setShowSaveSearch(false)
@@ -221,7 +227,6 @@ function ListingsContent() {
             setIsSaving(false)
         }
     }
-
 
     // Calculate active filters count
     const activeFiltersCount =
@@ -272,58 +277,58 @@ function ListingsContent() {
                                             className="overflow-hidden rounded-xl border border-gray-100 bg-white"
                                         >
                                             {/* Image skeleton */}
-                                            <div className="relative aspect-[4/3] bg-gray-200 animate-pulse">
+                                            <div className="relative aspect-[4/3] animate-pulse bg-gray-200">
                                                 {/* Badge skeletons */}
                                                 <div className="absolute top-2 left-2">
-                                                    <div className="h-5 w-16 bg-gray-300 rounded-full animate-pulse" />
+                                                    <div className="h-5 w-16 animate-pulse rounded-full bg-gray-300" />
                                                 </div>
                                                 <div className="absolute top-2 right-2">
-                                                    <div className="h-5 w-14 bg-gray-300 rounded-full animate-pulse" />
+                                                    <div className="h-5 w-14 animate-pulse rounded-full bg-gray-300" />
                                                 </div>
                                                 {/* Favorite button skeleton */}
-                                                <div className="absolute bottom-2 right-2">
-                                                    <div className="h-8 w-8 bg-gray-300 rounded-full animate-pulse" />
+                                                <div className="absolute right-2 bottom-2">
+                                                    <div className="h-8 w-8 animate-pulse rounded-full bg-gray-300" />
                                                 </div>
                                             </div>
-                                            
+
                                             {/* Content skeleton */}
-                                            <div className="p-4 space-y-2">
+                                            <div className="space-y-2 p-4">
                                                 {/* Title and price */}
                                                 <div className="flex items-start justify-between gap-2">
-                                                    <div className="h-4 bg-gray-200 rounded animate-pulse flex-1" />
-                                                    <div className="h-4 w-16 bg-gray-200 rounded animate-pulse shrink-0" />
+                                                    <div className="h-4 flex-1 animate-pulse rounded bg-gray-200" />
+                                                    <div className="h-4 w-16 shrink-0 animate-pulse rounded bg-gray-200" />
                                                 </div>
-                                                
+
                                                 {/* Description */}
                                                 <div className="space-y-1">
-                                                    <div className="h-3 bg-gray-200 rounded animate-pulse w-full" />
-                                                    <div className="h-3 bg-gray-200 rounded animate-pulse w-3/4" />
+                                                    <div className="h-3 w-full animate-pulse rounded bg-gray-200" />
+                                                    <div className="h-3 w-3/4 animate-pulse rounded bg-gray-200" />
                                                 </div>
-                                                
+
                                                 {/* Location */}
                                                 <div className="pt-1">
-                                                    <div className="h-3 w-20 bg-gray-200 rounded animate-pulse" />
+                                                    <div className="h-3 w-20 animate-pulse rounded bg-gray-200" />
                                                 </div>
                                             </div>
                                         </div>
                                     ))}
                                 </div>
                             ) : (
-                                <div className="h-[600px] bg-gray-200 animate-pulse rounded-lg" />
+                                <div className="h-[600px] animate-pulse rounded-lg bg-gray-200" />
                             )}
                         </div>
                     </div>
                 ) : (
                     <>
-                        {(viewMode === "list" && sortedListings.length > 0) || (viewMode === "map") ? (
+                        {(viewMode === "list" && sortedListings.length > 0) ||
+                        viewMode === "map" ? (
                             <div>
                                 <h2 className="mb-6 font-bold text-2xl">
                                     {viewMode === "list"
                                         ? `Toutes les annonces (${sortedListings.length})`
-                                        : "Carte de France"
-                                    }
+                                        : "Carte de France"}
                                 </h2>
-                                
+
                                 {viewMode === "list" ? (
                                     <div className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4">
                                         {sortedListings.map((listing) => (
@@ -353,79 +358,103 @@ function ListingsContent() {
                                     Essayez de modifier vos critères de
                                     recherche
                                 </p>
-                                
+
                                 {/* Save Search Section */}
-                                {session?.user && (searchQuery || activeFiltersCount > 0) && (
-                                    <div className="mt-8 w-full max-w-md">
-                                        {!showSaveSearch ? (
-                                            <Button
-                                                variant="default"
-                                                className="w-full bg-blue-600 hover:bg-blue-700 text-white"
-                                                onClick={() => setShowSaveSearch(true)}
-                                            >
-                                                <Bell className="w-4 h-4 mr-2" />
-                                                Sauvegarder cette recherche et recevoir des alertes
-                                            </Button>
-                                        ) : (
-                                            <div className="space-y-4 border border-gray-200 rounded-lg p-4">
-                                                <div className="space-y-2">
-                                                    <Label htmlFor="search-name">Nom de la recherche</Label>
-                                                    <Input
-                                                        id="search-name"
-                                                        value={searchName}
-                                                        onChange={(e) => setSearchName(e.target.value)}
-                                                        placeholder="Ex: Cabinets de généralistes en Île-de-France"
-                                                        disabled={isSaving}
-                                                    />
+                                {session?.user &&
+                                    (searchQuery || activeFiltersCount > 0) && (
+                                        <div className="mt-8 w-full max-w-md">
+                                            {!showSaveSearch ? (
+                                                <Button
+                                                    variant="default"
+                                                    className="w-full bg-blue-600 text-white hover:bg-blue-700"
+                                                    onClick={() =>
+                                                        setShowSaveSearch(true)
+                                                    }
+                                                >
+                                                    <Bell className="mr-2 h-4 w-4" />
+                                                    Sauvegarder cette recherche
+                                                    et recevoir des alertes
+                                                </Button>
+                                            ) : (
+                                                <div className="space-y-4 rounded-lg border border-gray-200 p-4">
+                                                    <div className="space-y-2">
+                                                        <Label htmlFor="search-name">
+                                                            Nom de la recherche
+                                                        </Label>
+                                                        <Input
+                                                            id="search-name"
+                                                            value={searchName}
+                                                            onChange={(e) =>
+                                                                setSearchName(
+                                                                    e.target
+                                                                        .value
+                                                                )
+                                                            }
+                                                            placeholder="Ex: Cabinets de généralistes en Île-de-France"
+                                                            disabled={isSaving}
+                                                        />
+                                                    </div>
+                                                    <div className="flex items-center justify-between">
+                                                        <Label
+                                                            htmlFor="email-alerts"
+                                                            className="cursor-pointer"
+                                                        >
+                                                            Recevoir des alertes
+                                                            par email
+                                                        </Label>
+                                                        <Switch
+                                                            id="email-alerts"
+                                                            checked={
+                                                                emailAlerts
+                                                            }
+                                                            onCheckedChange={
+                                                                setEmailAlerts
+                                                            }
+                                                            disabled={isSaving}
+                                                        />
+                                                    </div>
+                                                    <div className="flex gap-2">
+                                                        <Button
+                                                            variant="outline"
+                                                            onClick={() => {
+                                                                setShowSaveSearch(
+                                                                    false
+                                                                )
+                                                                setSearchName(
+                                                                    ""
+                                                                )
+                                                            }}
+                                                            disabled={isSaving}
+                                                            className="flex-1"
+                                                        >
+                                                            Annuler
+                                                        </Button>
+                                                        <Button
+                                                            onClick={
+                                                                handleSaveSearch
+                                                            }
+                                                            disabled={isSaving}
+                                                            className="flex-1"
+                                                        >
+                                                            {isSaving ? (
+                                                                "Sauvegarde..."
+                                                            ) : (
+                                                                <>
+                                                                    <Check className="mr-2 h-4 w-4" />
+                                                                    Sauvegarder
+                                                                </>
+                                                            )}
+                                                        </Button>
+                                                    </div>
                                                 </div>
-                                                <div className="flex items-center justify-between">
-                                                    <Label htmlFor="email-alerts" className="cursor-pointer">
-                                                        Recevoir des alertes par email
-                                                    </Label>
-                                                    <Switch
-                                                        id="email-alerts"
-                                                        checked={emailAlerts}
-                                                        onCheckedChange={setEmailAlerts}
-                                                        disabled={isSaving}
-                                                    />
-                                                </div>
-                                                <div className="flex gap-2">
-                                                    <Button
-                                                        variant="outline"
-                                                        onClick={() => {
-                                                            setShowSaveSearch(false)
-                                                            setSearchName("")
-                                                        }}
-                                                        disabled={isSaving}
-                                                        className="flex-1"
-                                                    >
-                                                        Annuler
-                                                    </Button>
-                                                    <Button 
-                                                        onClick={handleSaveSearch}
-                                                        disabled={isSaving}
-                                                        className="flex-1"
-                                                    >
-                                                        {isSaving ? (
-                                                            "Sauvegarde..."
-                                                        ) : (
-                                                            <>
-                                                                <Check className="w-4 h-4 mr-2" />
-                                                                Sauvegarder
-                                                            </>
-                                                        )}
-                                                    </Button>
-                                                </div>
-                                            </div>
-                                        )}
-                                    </div>
-                                )}
+                                            )}
+                                        </div>
+                                    )}
                             </div>
                         )}
                     </>
                 )}
             </div>
-
         </>
     )
 }

@@ -10,15 +10,8 @@ import {
     DialogContent,
     DialogHeader,
     DialogTitle,
-    DialogFooter,
+    DialogFooter
 } from "@/components/ui/dialog"
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from "@/components/ui/select"
 import { Badge } from "@/components/ui/badge"
 import { Switch } from "@/components/ui/switch"
 import { X, Bell, Check } from "lucide-react"
@@ -73,43 +66,43 @@ export function ListingsFilterModal({
     }, [filters])
 
     const handleSpecialtyToggle = (specialty: string) => {
-        setLocalFilters(prev => ({
+        setLocalFilters((prev) => ({
             ...prev,
             specialties: prev.specialties.includes(specialty)
-                ? prev.specialties.filter(s => s !== specialty)
+                ? prev.specialties.filter((s) => s !== specialty)
                 : [...prev.specialties, specialty]
         }))
     }
 
     const handleRegionToggle = (region: string) => {
-        setLocalFilters(prev => ({
+        setLocalFilters((prev) => ({
             ...prev,
             regions: prev.regions.includes(region)
-                ? prev.regions.filter(r => r !== region)
+                ? prev.regions.filter((r) => r !== region)
                 : [...prev.regions, region]
         }))
     }
 
     const handleListingTypeToggle = (type: string) => {
-        setLocalFilters(prev => ({
+        setLocalFilters((prev) => ({
             ...prev,
             listingTypes: prev.listingTypes.includes(type)
-                ? prev.listingTypes.filter(t => t !== type)
+                ? prev.listingTypes.filter((t) => t !== type)
                 : [...prev.listingTypes, type]
         }))
     }
 
     const handleCollaborationTypeToggle = (type: string) => {
-        setLocalFilters(prev => ({
+        setLocalFilters((prev) => ({
             ...prev,
             collaborationTypes: prev.collaborationTypes.includes(type)
-                ? prev.collaborationTypes.filter(t => t !== type)
+                ? prev.collaborationTypes.filter((t) => t !== type)
                 : [...prev.collaborationTypes, type]
         }))
     }
 
     const handleBoostPlusToggle = (checked: boolean) => {
-        setLocalFilters(prev => ({
+        setLocalFilters((prev) => ({
             ...prev,
             isBoostPlus: checked ? true : undefined
         }))
@@ -140,13 +133,19 @@ export function ListingsFilterModal({
         }
 
         if (!session?.user) {
-            toast.error("Vous devez être connecté pour sauvegarder une recherche")
+            toast.error(
+                "Vous devez être connecté pour sauvegarder une recherche"
+            )
             return
         }
 
         setIsSaving(true)
         try {
-            const result = await createSavedSearch(searchName, localFilters, emailAlerts)
+            const result = await createSavedSearch(
+                searchName,
+                localFilters,
+                emailAlerts
+            )
             if (result.success) {
                 toast.success("Recherche sauvegardée avec succès")
                 setShowSaveSearch(false)
@@ -162,7 +161,7 @@ export function ListingsFilterModal({
         }
     }
 
-    const activeFiltersCount = 
+    const activeFiltersCount =
         localFilters.specialties.length +
         localFilters.regions.length +
         localFilters.listingTypes.length +
@@ -171,7 +170,7 @@ export function ListingsFilterModal({
 
     return (
         <Dialog open={isOpen} onOpenChange={onClose}>
-            <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
+            <DialogContent className="max-h-[80vh] max-w-2xl overflow-y-auto">
                 <DialogHeader>
                     <DialogTitle>Filtrer les annonces</DialogTitle>
                 </DialogHeader>
@@ -179,19 +178,29 @@ export function ListingsFilterModal({
                 <div className="space-y-6 py-4">
                     {/* Listing Types */}
                     <div className="space-y-3">
-                        <Label className="text-sm font-medium">Type d'annonce</Label>
+                        <Label className="font-medium text-sm">
+                            Type d'annonce
+                        </Label>
                         <div className="flex flex-wrap gap-2">
                             {LISTING_TYPES.map((type) => (
                                 <Badge
                                     key={type.value}
-                                    variant={localFilters.listingTypes.includes(type.value) ? "default" : "outline"}
+                                    variant={
+                                        localFilters.listingTypes.includes(
+                                            type.value
+                                        )
+                                            ? "default"
+                                            : "outline"
+                                    }
                                     className="cursor-pointer hover:bg-primary/80"
-                                    onClick={() => handleListingTypeToggle(type.value)}
+                                    onClick={() =>
+                                        handleListingTypeToggle(type.value)
+                                    }
                                 >
                                     {type.label}
-                                    {localFilters.listingTypes.includes(type.value) && (
-                                        <X className="w-3 h-3 ml-1" />
-                                    )}
+                                    {localFilters.listingTypes.includes(
+                                        type.value
+                                    ) && <X className="ml-1 h-3 w-3" />}
                                 </Badge>
                             ))}
                         </div>
@@ -200,19 +209,31 @@ export function ListingsFilterModal({
                     {/* Collaboration Types */}
                     {localFilters.listingTypes.includes("collaboration") && (
                         <div className="space-y-3">
-                            <Label className="text-sm font-medium">Types de collaboration</Label>
+                            <Label className="font-medium text-sm">
+                                Types de collaboration
+                            </Label>
                             <div className="flex flex-wrap gap-2">
                                 {COLLABORATION_TYPES.map((type) => (
                                     <Badge
                                         key={type.value}
-                                        variant={localFilters.collaborationTypes.includes(type.value) ? "default" : "outline"}
+                                        variant={
+                                            localFilters.collaborationTypes.includes(
+                                                type.value
+                                            )
+                                                ? "default"
+                                                : "outline"
+                                        }
                                         className="cursor-pointer hover:bg-primary/80"
-                                        onClick={() => handleCollaborationTypeToggle(type.value)}
+                                        onClick={() =>
+                                            handleCollaborationTypeToggle(
+                                                type.value
+                                            )
+                                        }
                                     >
                                         {type.label}
-                                        {localFilters.collaborationTypes.includes(type.value) && (
-                                            <X className="w-3 h-3 ml-1" />
-                                        )}
+                                        {localFilters.collaborationTypes.includes(
+                                            type.value
+                                        ) && <X className="ml-1 h-3 w-3" />}
                                     </Badge>
                                 ))}
                             </div>
@@ -221,18 +242,27 @@ export function ListingsFilterModal({
 
                     {/* Specialties */}
                     <div className="space-y-3">
-                        <Label className="text-sm font-medium">Spécialités</Label>
-                        <div className="grid grid-cols-2 gap-2 max-h-40 overflow-y-auto border rounded p-3">
+                        <Label className="font-medium text-sm">
+                            Spécialités
+                        </Label>
+                        <div className="grid max-h-40 grid-cols-2 gap-2 overflow-y-auto rounded border p-3">
                             {SPECIALTIES.map((specialty) => (
-                                <div key={specialty} className="flex items-center space-x-2">
+                                <div
+                                    key={specialty}
+                                    className="flex items-center space-x-2"
+                                >
                                     <Checkbox
                                         id={`specialty-${specialty}`}
-                                        checked={localFilters.specialties.includes(specialty)}
-                                        onCheckedChange={() => handleSpecialtyToggle(specialty)}
+                                        checked={localFilters.specialties.includes(
+                                            specialty
+                                        )}
+                                        onCheckedChange={() =>
+                                            handleSpecialtyToggle(specialty)
+                                        }
                                     />
                                     <Label
                                         htmlFor={`specialty-${specialty}`}
-                                        className="text-sm cursor-pointer"
+                                        className="cursor-pointer text-sm"
                                     >
                                         {specialty}
                                     </Label>
@@ -245,11 +275,13 @@ export function ListingsFilterModal({
                                     <Badge
                                         key={specialty}
                                         variant="secondary"
-                                        className="text-xs cursor-pointer"
-                                        onClick={() => handleSpecialtyToggle(specialty)}
+                                        className="cursor-pointer text-xs"
+                                        onClick={() =>
+                                            handleSpecialtyToggle(specialty)
+                                        }
                                     >
                                         {specialty}
-                                        <X className="w-3 h-3 ml-1" />
+                                        <X className="ml-1 h-3 w-3" />
                                     </Badge>
                                 ))}
                             </div>
@@ -258,18 +290,25 @@ export function ListingsFilterModal({
 
                     {/* Regions */}
                     <div className="space-y-3">
-                        <Label className="text-sm font-medium">Régions</Label>
-                        <div className="grid grid-cols-2 gap-2 max-h-40 overflow-y-auto border rounded p-3">
+                        <Label className="font-medium text-sm">Régions</Label>
+                        <div className="grid max-h-40 grid-cols-2 gap-2 overflow-y-auto rounded border p-3">
                             {FRENCH_REGIONS.map((region) => (
-                                <div key={region} className="flex items-center space-x-2">
+                                <div
+                                    key={region}
+                                    className="flex items-center space-x-2"
+                                >
                                     <Checkbox
                                         id={`region-${region}`}
-                                        checked={localFilters.regions.includes(region)}
-                                        onCheckedChange={() => handleRegionToggle(region)}
+                                        checked={localFilters.regions.includes(
+                                            region
+                                        )}
+                                        onCheckedChange={() =>
+                                            handleRegionToggle(region)
+                                        }
                                     />
                                     <Label
                                         htmlFor={`region-${region}`}
-                                        className="text-sm cursor-pointer"
+                                        className="cursor-pointer text-sm"
                                     >
                                         {region}
                                     </Label>
@@ -282,11 +321,13 @@ export function ListingsFilterModal({
                                     <Badge
                                         key={region}
                                         variant="secondary"
-                                        className="text-xs cursor-pointer"
-                                        onClick={() => handleRegionToggle(region)}
+                                        className="cursor-pointer text-xs"
+                                        onClick={() =>
+                                            handleRegionToggle(region)
+                                        }
                                     >
                                         {region}
-                                        <X className="w-3 h-3 ml-1" />
+                                        <X className="ml-1 h-3 w-3" />
                                     </Badge>
                                 ))}
                             </div>
@@ -300,7 +341,10 @@ export function ListingsFilterModal({
                             checked={localFilters.isBoostPlus === true}
                             onCheckedChange={handleBoostPlusToggle}
                         />
-                        <Label htmlFor="boost-plus" className="text-sm cursor-pointer">
+                        <Label
+                            htmlFor="boost-plus"
+                            className="cursor-pointer text-sm"
+                        >
                             Afficher uniquement les annonces Boost+
                         </Label>
                     </div>
@@ -311,26 +355,34 @@ export function ListingsFilterModal({
                             {!showSaveSearch ? (
                                 <Button
                                     variant="default"
-                                    className="w-full bg-blue-600 hover:bg-blue-700 text-white"
+                                    className="w-full bg-blue-600 text-white hover:bg-blue-700"
                                     onClick={() => setShowSaveSearch(true)}
                                 >
-                                    <Bell className="w-4 h-4 mr-2" />
-                                    Sauvegarder cette recherche et recevoir des alertes
+                                    <Bell className="mr-2 h-4 w-4" />
+                                    Sauvegarder cette recherche et recevoir des
+                                    alertes
                                 </Button>
                             ) : (
                                 <div className="space-y-4">
                                     <div className="space-y-2">
-                                        <Label htmlFor="search-name">Nom de la recherche</Label>
+                                        <Label htmlFor="search-name">
+                                            Nom de la recherche
+                                        </Label>
                                         <Input
                                             id="search-name"
                                             value={searchName}
-                                            onChange={(e) => setSearchName(e.target.value)}
+                                            onChange={(e) =>
+                                                setSearchName(e.target.value)
+                                            }
                                             placeholder="Ex: Cabinets de généralistes en Île-de-France"
                                             disabled={isSaving}
                                         />
                                     </div>
                                     <div className="flex items-center justify-between">
-                                        <Label htmlFor="email-alerts" className="cursor-pointer">
+                                        <Label
+                                            htmlFor="email-alerts"
+                                            className="cursor-pointer"
+                                        >
                                             Recevoir des alertes par email
                                         </Label>
                                         <Switch
@@ -351,7 +403,7 @@ export function ListingsFilterModal({
                                         >
                                             Annuler
                                         </Button>
-                                        <Button 
+                                        <Button
                                             onClick={handleSaveSearch}
                                             disabled={isSaving}
                                         >
@@ -359,7 +411,7 @@ export function ListingsFilterModal({
                                                 "Sauvegarde..."
                                             ) : (
                                                 <>
-                                                    <Check className="w-4 h-4 mr-2" />
+                                                    <Check className="mr-2 h-4 w-4" />
                                                     Sauvegarder
                                                 </>
                                             )}
@@ -372,10 +424,12 @@ export function ListingsFilterModal({
                 </div>
 
                 <DialogFooter>
-                    <div className="flex items-center justify-between w-full">
-                        <div className="text-sm text-muted-foreground">
+                    <div className="flex w-full items-center justify-between">
+                        <div className="text-muted-foreground text-sm">
                             {activeFiltersCount > 0 && (
-                                <span>{activeFiltersCount} filtre(s) actif(s)</span>
+                                <span>
+                                    {activeFiltersCount} filtre(s) actif(s)
+                                </span>
                             )}
                         </div>
                         <div className="flex gap-2">

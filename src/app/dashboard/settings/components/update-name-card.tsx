@@ -1,7 +1,13 @@
 "use client"
 
 import { useState } from "react"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle
+} from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -21,7 +27,7 @@ export function UpdateNameCard({ className }: UpdateNameCardProps) {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
-        
+
         if (!name.trim()) {
             toast.error("Le nom ne peut pas être vide")
             return
@@ -38,7 +44,7 @@ export function UpdateNameCard({ className }: UpdateNameCardProps) {
             await authClient.updateUser({
                 name: name.trim()
             })
-            
+
             toast.success("Nom mis à jour avec succès")
         } catch (error) {
             console.error("Error updating name:", error)
@@ -55,7 +61,8 @@ export function UpdateNameCard({ className }: UpdateNameCardProps) {
             <CardHeader>
                 <CardTitle>Nom complet</CardTitle>
                 <CardDescription>
-                    Modifiez votre nom complet. Ce nom sera affiché sur votre profil.
+                    Modifiez votre nom complet. Ce nom sera affiché sur votre
+                    profil.
                 </CardDescription>
             </CardHeader>
             <CardContent>
@@ -72,21 +79,29 @@ export function UpdateNameCard({ className }: UpdateNameCardProps) {
                             className="max-w-md"
                         />
                     </div>
-                    
+
                     <div className="flex gap-2">
                         <Button
                             type="submit"
-                            disabled={isLoading || !name.trim() || name === session?.user?.name}
+                            disabled={
+                                isLoading ||
+                                !name.trim() ||
+                                name === session?.user?.name
+                            }
                         >
-                            {isLoading && <RiLoader4Line className="w-4 h-4 mr-2 animate-spin" />}
+                            {isLoading && (
+                                <RiLoader4Line className="mr-2 h-4 w-4 animate-spin" />
+                            )}
                             {isLoading ? "Mise à jour..." : "Mettre à jour"}
                         </Button>
-                        
+
                         {name !== session?.user?.name && (
                             <Button
                                 type="button"
                                 variant="outline"
-                                onClick={() => setName(session?.user?.name || "")}
+                                onClick={() =>
+                                    setName(session?.user?.name || "")
+                                }
                                 disabled={isLoading}
                             >
                                 Annuler

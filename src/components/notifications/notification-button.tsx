@@ -14,10 +14,10 @@ export function NotificationButton() {
 
     // Fetch unread count with TanStack Query
     const { data: response } = useQuery({
-        queryKey: ['notifications', 'unread-count'],
+        queryKey: ["notifications", "unread-count"],
         queryFn: getUnreadNotificationCount,
         refetchOnWindowFocus: true,
-        staleTime: 30 * 1000, // 30 seconds
+        staleTime: 30 * 1000 // 30 seconds
     })
 
     const unreadCount = response?.count || 0
@@ -26,7 +26,7 @@ export function NotificationButton() {
     useEffect(() => {
         function handleClickOutside(event: MouseEvent) {
             if (
-                dropdownRef.current && 
+                dropdownRef.current &&
                 !dropdownRef.current.contains(event.target as Node) &&
                 buttonRef.current &&
                 !buttonRef.current.contains(event.target as Node)
@@ -36,22 +36,23 @@ export function NotificationButton() {
         }
 
         if (isOpen) {
-            document.addEventListener('mousedown', handleClickOutside)
-            return () => document.removeEventListener('mousedown', handleClickOutside)
+            document.addEventListener("mousedown", handleClickOutside)
+            return () =>
+                document.removeEventListener("mousedown", handleClickOutside)
         }
     }, [isOpen])
 
     // Handle escape key
     useEffect(() => {
         function handleEscape(event: KeyboardEvent) {
-            if (event.key === 'Escape') {
+            if (event.key === "Escape") {
                 setIsOpen(false)
             }
         }
 
         if (isOpen) {
-            document.addEventListener('keydown', handleEscape)
-            return () => document.removeEventListener('keydown', handleEscape)
+            document.addEventListener("keydown", handleEscape)
+            return () => document.removeEventListener("keydown", handleEscape)
         }
     }, [isOpen])
 
@@ -60,49 +61,55 @@ export function NotificationButton() {
             <button
                 ref={buttonRef}
                 onClick={() => setIsOpen(!isOpen)}
-                className="relative flex flex-col items-center gap-1 p-2 cursor-pointer group transition-colors"
+                className="group relative flex cursor-pointer flex-col items-center gap-1 p-2 transition-colors"
                 aria-label="Notifications"
             >
                 <div className="relative">
-                    <Bell className={cn(
-                        "h-6 w-6 transition-colors",
-                        isOpen 
-                            ? "text-blue-600" 
-                            : "text-muted-foreground group-hover:text-foreground"
-                    )} />
-                    
+                    <Bell
+                        className={cn(
+                            "h-6 w-6 transition-colors",
+                            isOpen
+                                ? "text-blue-600"
+                                : "text-muted-foreground group-hover:text-foreground"
+                        )}
+                    />
+
                     {/* Unread count badge */}
                     {unreadCount > 0 && (
-                        <div className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full min-w-[18px] h-[18px] flex items-center justify-center font-medium">
-                            {unreadCount > 99 ? '99+' : unreadCount}
+                        <div className="-top-2 -right-2 absolute flex h-[18px] min-w-[18px] items-center justify-center rounded-full bg-red-500 font-medium text-white text-xs">
+                            {unreadCount > 99 ? "99+" : unreadCount}
                         </div>
                     )}
                 </div>
-                
-                <span className={cn(
-                    "text-sm transition-colors",
-                    isOpen
-                        ? "text-blue-600 font-medium"
-                        : "text-muted-foreground group-hover:text-foreground"
-                )}>
+
+                <span
+                    className={cn(
+                        "text-sm transition-colors",
+                        isOpen
+                            ? "font-medium text-blue-600"
+                            : "text-muted-foreground group-hover:text-foreground"
+                    )}
+                >
                     Notifications
                 </span>
-                
+
                 {/* Active indicator */}
-                <div className={cn(
-                    "absolute bottom-0 left-1/2 h-0.5 bg-blue-600 transition-all duration-300 ease-out",
-                    isOpen
-                        ? "w-full -translate-x-1/2"
-                        : "w-0 group-hover:w-full group-hover:-translate-x-1/2"
-                )} />
+                <div
+                    className={cn(
+                        "absolute bottom-0 left-1/2 h-0.5 bg-blue-600 transition-all duration-300 ease-out",
+                        isOpen
+                            ? "-translate-x-1/2 w-full"
+                            : "group-hover:-translate-x-1/2 w-0 group-hover:w-full"
+                    )}
+                />
             </button>
 
             {/* Dropdown */}
             {isOpen && (
-                <div 
+                <div
                     ref={dropdownRef}
-                    className="absolute top-full right-0 mt-2 z-50 animate-in fade-in-0 zoom-in-95"
-                    style={{ transformOrigin: 'top right' }}
+                    className="fade-in-0 zoom-in-95 absolute top-full right-0 z-50 mt-2 animate-in"
+                    style={{ transformOrigin: "top right" }}
                 >
                     <NotificationDropdown onClose={() => setIsOpen(false)} />
                 </div>

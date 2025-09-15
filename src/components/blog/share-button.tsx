@@ -13,7 +13,7 @@ interface ShareButtonProps {
 export function ShareButton({ title, excerpt, slug }: ShareButtonProps) {
     const handleShare = async () => {
         const url = window.location.href
-        
+
         try {
             if (navigator.share) {
                 await navigator.share({
@@ -38,12 +38,8 @@ export function ShareButton({ title, excerpt, slug }: ShareButtonProps) {
     }
 
     return (
-        <Button 
-            variant="outline" 
-            size="sm"
-            onClick={handleShare}
-        >
-            <Share2 className="h-4 w-4 mr-2" />
+        <Button variant="outline" size="sm" onClick={handleShare}>
+            <Share2 className="mr-2 h-4 w-4" />
             Partager
         </Button>
     )

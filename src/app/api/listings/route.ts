@@ -1,13 +1,16 @@
-import { NextRequest, NextResponse } from "next/server"
+import { type NextRequest, NextResponse } from "next/server"
 import { auth } from "@/lib/auth"
 import { createListing, getPublicListings } from "@/lib/actions/listings"
-import { createListingSchema, listingFiltersSchema } from "@/lib/validations/listing"
+import {
+    createListingSchema,
+    listingFiltersSchema
+} from "@/lib/validations/listing"
 import { headers } from "next/headers"
 
 export async function GET(request: NextRequest) {
     try {
         const { searchParams } = new URL(request.url)
-        
+
         const filters = {
             listingType: searchParams.get("type") || undefined,
             specialty: searchParams.get("specialty") || undefined,
@@ -45,7 +48,7 @@ export async function GET(request: NextRequest) {
         })
     } catch (error) {
         console.error("Error fetching listings:", error)
-        
+
         if (error instanceof Error) {
             return NextResponse.json(
                 { success: false, error: error.message },
@@ -54,7 +57,10 @@ export async function GET(request: NextRequest) {
         }
 
         return NextResponse.json(
-            { success: false, error: "Erreur lors de la récupération des annonces" },
+            {
+                success: false,
+                error: "Erreur lors de la récupération des annonces"
+            },
             { status: 500 }
         )
     }
@@ -75,7 +81,7 @@ export async function POST(request: NextRequest) {
         }
 
         const body = await request.json()
-        
+
         // Validate request body
         const validatedData = createListingSchema.parse(body)
 
@@ -83,12 +89,15 @@ export async function POST(request: NextRequest) {
         const result = await createListing(validatedData)
 
         if (result.success) {
-            return NextResponse.json({
-                success: true,
-                data: {
-                    listingId: result.listingId
-                }
-            }, { status: 201 })
+            return NextResponse.json(
+                {
+                    success: true,
+                    data: {
+                        listingId: result.listingId
+                    }
+                },
+                { status: 201 }
+            )
         } else {
             return NextResponse.json(
                 { success: false, error: result.error },
@@ -97,7 +106,7 @@ export async function POST(request: NextRequest) {
         }
     } catch (error) {
         console.error("Error creating listing:", error)
-        
+
         if (error instanceof Error) {
             return NextResponse.json(
                 { success: false, error: error.message },
@@ -106,7 +115,10 @@ export async function POST(request: NextRequest) {
         }
 
         return NextResponse.json(
-            { success: false, error: "Erreur lors de la création de l'annonce" },
+            {
+                success: false,
+                error: "Erreur lors de la création de l'annonce"
+            },
             { status: 500 }
         )
     }

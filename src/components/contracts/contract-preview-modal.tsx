@@ -8,11 +8,18 @@ import {
     DialogHeader,
     DialogTitle,
     DialogDescription,
-    DialogFooter,
+    DialogFooter
 } from "@/components/ui/dialog"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { FileText, Users, Building, Handshake, Euro, ArrowRight } from "lucide-react"
+import {
+    FileText,
+    Users,
+    Building,
+    Handshake,
+    Euro,
+    ArrowRight
+} from "lucide-react"
 import { toast } from "sonner"
 
 interface ContractTemplate {
@@ -37,39 +44,48 @@ interface ContractPreviewModalProps {
 }
 
 // Contract templates - now using hardcoded ones for better UX, but could be fetched from API
-const getContractTemplates = (listingType: string, profession?: string): ContractTemplate[] => {
+const getContractTemplates = (
+    listingType: string,
+    profession?: string
+): ContractTemplate[] => {
     const baseTemplates: ContractTemplate[] = [
         {
             id: "replacement",
             name: "Contrat de remplacement Dentiste",
             contractType: "replacement",
-            description: "Contrat officiel pour le remplacement temporaire d'un professionnel de santé",
-            docusealTemplateId: "1723966", // You'll need to create these templates in DocuSeal
-            icon: Users,
+            description:
+                "Contrat officiel pour le remplacement temporaire d'un professionnel de santé",
+            docusealTemplateId: "1750262", // You'll need to create these templates in DocuSeal
+            icon: Users
         },
         {
             id: "transfer",
             name: "Contrat de Cession de Patientèle",
-            contractType: "transfer", 
-            description: "Contrat de cession de patientèle conforme aux réglementations professionnelles",
+            contractType: "transfer",
+            description:
+                "Contrat de cession de patientèle conforme aux réglementations professionnelles",
             docusealTemplateId: "2", // You'll need to create these templates in DocuSeal
-            icon: Building,
+            icon: Building
         },
         {
             id: "collaboration",
             name: "Contrat de Collaboration",
             contractType: "collaboration",
-            description: "Accord de collaboration entre professionnels de santé",
+            description:
+                "Accord de collaboration entre professionnels de santé",
             docusealTemplateId: "3", // You'll need to create these templates in DocuSeal
-            icon: Handshake,
-        },
+            icon: Handshake
+        }
     ]
 
     // Filter templates based on listing type
-    return baseTemplates.filter(template => {
-        if (listingType === "replacement") return template.contractType === "replacement"
-        if (listingType === "transfer") return template.contractType === "transfer"
-        if (listingType === "collaboration") return template.contractType === "collaboration"
+    return baseTemplates.filter((template) => {
+        if (listingType === "replacement")
+            return template.contractType === "replacement"
+        if (listingType === "transfer")
+            return template.contractType === "transfer"
+        if (listingType === "collaboration")
+            return template.contractType === "collaboration"
         return true // Show all templates if listing type doesn't match
     })
 }
@@ -85,7 +101,8 @@ export function ContractPreviewModal({
     userProfession,
     onContractPaid
 }: ContractPreviewModalProps) {
-    const [selectedTemplate, setSelectedTemplate] = useState<ContractTemplate | null>(null)
+    const [selectedTemplate, setSelectedTemplate] =
+        useState<ContractTemplate | null>(null)
     const [isLoading, setIsLoading] = useState(false)
 
     const templates = getContractTemplates(listingType, userProfession)
@@ -102,7 +119,7 @@ export function ContractPreviewModal({
             const response = await fetch("/api/contracts/checkout", {
                 method: "POST",
                 headers: {
-                    "Content-Type": "application/json",
+                    "Content-Type": "application/json"
                 },
                 body: JSON.stringify({
                     conversationId,
@@ -111,8 +128,8 @@ export function ContractPreviewModal({
                     senderId,
                     contractType: selectedTemplate.contractType,
                     docusealTemplateId: selectedTemplate.docusealTemplateId,
-                    templateId: null, // Using hardcoded templates for now
-                }),
+                    templateId: null // Using hardcoded templates for now
+                })
             })
 
             if (!response.ok) {
@@ -120,7 +137,7 @@ export function ContractPreviewModal({
             }
 
             const { checkoutUrl } = await response.json()
-            
+
             // Redirect to Stripe checkout
             window.location.href = checkoutUrl
         } catch (error) {
@@ -144,7 +161,7 @@ export function ContractPreviewModal({
             const response = await fetch("/api/contracts/dev-create", {
                 method: "POST",
                 headers: {
-                    "Content-Type": "application/json",
+                    "Content-Type": "application/json"
                 },
                 body: JSON.stringify({
                     conversationId,
@@ -153,8 +170,8 @@ export function ContractPreviewModal({
                     senderId,
                     contractType: selectedTemplate.contractType,
                     docusealTemplateId: selectedTemplate.docusealTemplateId,
-                    templateId: null, // Using hardcoded templates for now
-                }),
+                    templateId: null // Using hardcoded templates for now
+                })
             })
 
             if (!response.ok) {
@@ -162,7 +179,7 @@ export function ContractPreviewModal({
             }
 
             const { contractId } = await response.json()
-            
+
             // Directly trigger the callback
             onContractPaid(contractId)
             toast.success("Contrat créé (mode dev) - prêt pour signature!")
@@ -175,46 +192,54 @@ export function ContractPreviewModal({
     }
 
     return (
-        <Dialog open={isOpen} onOpenChange={onClose} >
-            <DialogContent className="max-w-6xl max-h-[90vh] w-full overflow-y-auto">
+        <Dialog open={isOpen} onOpenChange={onClose}>
+            <DialogContent className="max-h-[90vh] w-full max-w-6xl overflow-y-auto">
                 <DialogHeader>
                     <DialogTitle className="flex items-center gap-2">
                         <FileText className="h-5 w-5" />
                         Créer un contrat officiel
                     </DialogTitle>
                     <DialogDescription>
-                        Sélectionnez le type de contrat que vous souhaitez créer. 
-                        Tous nos contrats sont conformes aux réglementations des ordres professionnels.
+                        Sélectionnez le type de contrat que vous souhaitez
+                        créer. Tous nos contrats sont conformes aux
+                        réglementations des ordres professionnels.
                     </DialogDescription>
                 </DialogHeader>
 
                 <div className="space-y-4">
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
                         {templates.map((template) => {
                             const Icon = template.icon
-                            const isSelected = selectedTemplate?.id === template.id
-                            
+                            const isSelected =
+                                selectedTemplate?.id === template.id
+
                             return (
                                 <Card
                                     key={template.id}
                                     className={`cursor-pointer transition-all hover:shadow-md ${
                                         isSelected
-                                            ? "ring-2 ring-primary border-primary"
+                                            ? "border-primary ring-2 ring-primary"
                                             : "hover:border-gray-300"
                                     }`}
-                                    onClick={() => setSelectedTemplate(template)}
+                                    onClick={() =>
+                                        setSelectedTemplate(template)
+                                    }
                                 >
                                     <CardHeader className="pb-3">
                                         <div className="flex items-start justify-between">
                                             <Icon className="h-8 w-8 text-primary" />
                                             {isSelected && (
-                                                <Badge variant="default">Sélectionné</Badge>
+                                                <Badge variant="default">
+                                                    Sélectionné
+                                                </Badge>
                                             )}
                                         </div>
-                                        <CardTitle className="text-lg">{template.name}</CardTitle>
+                                        <CardTitle className="text-lg">
+                                            {template.name}
+                                        </CardTitle>
                                     </CardHeader>
                                     <CardContent>
-                                        <p className="text-sm text-muted-foreground">
+                                        <p className="text-muted-foreground text-sm">
                                             {template.description}
                                         </p>
                                     </CardContent>
@@ -228,12 +253,14 @@ export function ContractPreviewModal({
                             <CardContent className="pt-4">
                                 <div className="flex items-center justify-between">
                                     <div>
-                                        <h4 className="font-medium">Contrat sélectionné</h4>
-                                        <p className="text-sm text-muted-foreground">
+                                        <h4 className="font-medium">
+                                            Contrat sélectionné
+                                        </h4>
+                                        <p className="text-muted-foreground text-sm">
                                             {selectedTemplate.name}
                                         </p>
                                     </div>
-                                    <div className="flex items-center gap-2 text-lg font-semibold">
+                                    <div className="flex items-center gap-2 font-semibold text-lg">
                                         <Euro className="h-5 w-5" />
                                         5,00
                                     </div>
@@ -242,11 +269,18 @@ export function ContractPreviewModal({
                         </Card>
                     )}
 
-                    <div className="bg-muted/50 p-4 rounded-lg">
-                        <h4 className="font-medium mb-2">Ce qui est inclus :</h4>
-                        <ul className="text-sm text-muted-foreground space-y-1">
-                            <li>• Modèle conforme aux réglementations professionnelles</li>
-                            <li>• Pré-remplissage automatique avec vos données</li>
+                    <div className="rounded-lg bg-muted/50 p-4">
+                        <h4 className="mb-2 font-medium">
+                            Ce qui est inclus :
+                        </h4>
+                        <ul className="space-y-1 text-muted-foreground text-sm">
+                            <li>
+                                • Modèle conforme aux réglementations
+                                professionnelles
+                            </li>
+                            <li>
+                                • Pré-remplissage automatique avec vos données
+                            </li>
                             <li>• Signature électronique des deux parties</li>
                             <li>• Stockage sécurisé et téléchargement PDF</li>
                             <li>• Suivi du statut en temps réel</li>
@@ -258,24 +292,20 @@ export function ContractPreviewModal({
                     <Button variant="outline" onClick={onClose}>
                         Annuler
                     </Button>
-                    
+
                     {/* DEV: Show bypass button in development */}
-                    {process.env.NODE_ENV === 'development' && (
-                        <Button 
+                    {process.env.NODE_ENV === "development" && (
+                        <Button
                             variant="secondary"
                             onClick={handleDevBypass}
                             disabled={!selectedTemplate || isLoading}
-                            className="gap-2 border-2 border-dashed border-orange-300 bg-orange-50 text-orange-700 hover:bg-orange-100"
+                            className="gap-2 border-2 border-orange-300 border-dashed bg-orange-50 text-orange-700 hover:bg-orange-100"
                         >
-                            {isLoading ? (
-                                "Création..."
-                            ) : (
-                                "DEV: Bypass Payment"
-                            )}
+                            {isLoading ? "Création..." : "DEV: Bypass Payment"}
                         </Button>
                     )}
-                    
-                    <Button 
+
+                    <Button
                         onClick={handleContinue}
                         disabled={!selectedTemplate || isLoading}
                         className="gap-2"

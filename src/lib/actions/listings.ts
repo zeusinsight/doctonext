@@ -2,15 +2,29 @@
 
 import { auth } from "@/lib/auth"
 import { db } from "@/database/db"
-import { listings, listingLocations, transferDetails, replacementDetails, collaborationDetails, listingMedia, users } from "@/database/schema"
+import {
+    listings,
+    listingLocations,
+    transferDetails,
+    replacementDetails,
+    collaborationDetails,
+    listingMedia,
+    users
+} from "@/database/schema"
 import { eq, and, desc, asc, or, ilike, sql } from "drizzle-orm"
 import { headers } from "next/headers"
-import { redirect } from "next/navigation"
 import { revalidatePath } from "next/cache"
-import { createListingSchema, updateListingSchema } from "@/lib/validations/listing"
+import {
+    createListingSchema,
+    updateListingSchema
+} from "@/lib/validations/listing"
 import type { CreateListingData, UpdateListingData } from "@/types/listing"
 import { checkNewListingAgainstSavedSearches } from "@/lib/services/alert-service"
-import { geocodeAddress, geocodeByPostalCode, updateListingCoordinates } from "@/lib/services/geocoding"
+import {
+    geocodeAddress,
+    geocodeByPostalCode,
+    updateListingCoordinates
+} from "@/lib/services/geocoding"
 
 export async function createListing(data: CreateListingData) {
     try {
@@ -38,7 +52,9 @@ export async function createListing(data: CreateListingData) {
                     status: "active",
                     isBoostPlus: validatedData.isBoostPlus || false,
                     publishedAt: new Date(),
-                    expiresAt: validatedData.expiresAt ? new Date(validatedData.expiresAt) : null
+                    expiresAt: validatedData.expiresAt
+                        ? new Date(validatedData.expiresAt)
+                        : null
                 })
                 .returning()
 
@@ -46,7 +62,8 @@ export async function createListing(data: CreateListingData) {
             if (validatedData.location) {
                 // Synchronous approximate coordinates (department centroid) if missing
                 let lat: string | null = validatedData.location.latitude ?? null
-                let lng: string | null = validatedData.location.longitude ?? null
+                let lng: string | null =
+                    validatedData.location.longitude ?? null
 
                 if (!lat || !lng) {
                     try {
@@ -77,7 +94,10 @@ export async function createListing(data: CreateListingData) {
             }
 
             // Create type-specific details
-            if (validatedData.listingType === "transfer" && validatedData.transferDetails) {
+            if (
+                validatedData.listingType === "transfer" &&
+                validatedData.transferDetails
+            ) {
                 await tx.insert(transferDetails).values({
                     id: crypto.randomUUID(),
                     listingId: listing.id,
@@ -85,7 +105,10 @@ export async function createListing(data: CreateListingData) {
                 })
             }
 
-            if (validatedData.listingType === "replacement" && validatedData.replacementDetails) {
+            if (
+                validatedData.listingType === "replacement" &&
+                validatedData.replacementDetails
+            ) {
                 await tx.insert(replacementDetails).values({
                     id: crypto.randomUUID(),
                     listingId: listing.id,
@@ -93,7 +116,10 @@ export async function createListing(data: CreateListingData) {
                 })
             }
 
-            if (validatedData.listingType === "collaboration" && validatedData.collaborationDetails) {
+            if (
+                validatedData.listingType === "collaboration" &&
+                validatedData.collaborationDetails
+            ) {
                 const cd = validatedData.collaborationDetails
                 await tx.insert(collaborationDetails).values({
                     id: crypto.randomUUID(),
@@ -105,26 +131,31 @@ export async function createListing(data: CreateListingData) {
                     spaceArrangement: cd.spaceArrangement,
                     patientManagement: cd.patientManagement,
                     investmentRequired: cd.investmentRequired ?? false,
-                    investmentAmount: cd.investmentAmount == null ? null : String(cd.investmentAmount),
+                    investmentAmount:
+                        cd.investmentAmount == null
+                            ? null
+                            : String(cd.investmentAmount),
                     remunerationModel: cd.remunerationModel,
                     specialtiesWanted: cd.specialtiesWanted,
                     experienceRequired: cd.experienceRequired,
-                    valuesAndGoals: cd.valuesAndGoals,
+                    valuesAndGoals: cd.valuesAndGoals
                 })
             }
 
             // Create media files
             if (validatedData.media && validatedData.media.length > 0) {
-                const mediaToInsert = validatedData.media.map((file, index) => ({
-                    id: crypto.randomUUID(),
-                    listingId: listing.id,
-                    fileUrl: file.url,
-                    fileName: file.name,
-                    fileType: file.type,
-                    fileSize: file.size,
-                    displayOrder: index,
-                    uploadKey: null
-                }))
+                const mediaToInsert = validatedData.media.map(
+                    (file, index) => ({
+                        id: crypto.randomUUID(),
+                        listingId: listing.id,
+                        fileUrl: file.url,
+                        fileName: file.name,
+                        fileType: file.type,
+                        fileSize: file.size,
+                        displayOrder: index,
+                        uploadKey: null
+                    })
+                )
 
                 await tx.insert(listingMedia).values(mediaToInsert)
             }
@@ -148,6 +179,7 @@ export async function createListing(data: CreateListingData) {
             })
 
         // Fire-and-forget precise geocoding to refine coordinates
+
         ;(async () => {
             try {
                 if (validatedData.location) {
@@ -161,7 +193,11 @@ export async function createListing(data: CreateListingData) {
                     }
                 }
             } catch (e) {
-                console.warn("Background precise geocoding failed for listing", result.id, e)
+                console.warn(
+                    "Background precise geocoding failed for listing",
+                    result.id,
+                    e
+                )
             }
         })()
 
@@ -171,11 +207,17 @@ export async function createListing(data: CreateListingData) {
         if (error instanceof Error) {
             return { success: false, error: error.message }
         }
-        return { success: false, error: "Erreur lors de la création de l'annonce" }
+        return {
+            success: false,
+            error: "Erreur lors de la création de l'annonce"
+        }
     }
 }
 
-export async function updateListing(listingId: string, data: UpdateListingData) {
+export async function updateListing(
+    listingId: string,
+    data: UpdateListingData
+) {
     try {
         const session = await auth.api.getSession({
             headers: await headers()
@@ -191,7 +233,12 @@ export async function updateListing(listingId: string, data: UpdateListingData) 
         const [existingListing] = await db
             .select()
             .from(listings)
-            .where(and(eq(listings.id, listingId), eq(listings.userId, session.user.id)))
+            .where(
+                and(
+                    eq(listings.id, listingId),
+                    eq(listings.userId, session.user.id)
+                )
+            )
             .limit(1)
 
         if (!existingListing) {
@@ -215,7 +262,8 @@ export async function updateListing(listingId: string, data: UpdateListingData) 
             if (validatedData.location) {
                 // Compute approximate coords if missing
                 let lat: string | null = validatedData.location.latitude ?? null
-                let lng: string | null = validatedData.location.longitude ?? null
+                let lng: string | null =
+                    validatedData.location.longitude ?? null
 
                 if (!lat || !lng) {
                     try {
@@ -228,7 +276,10 @@ export async function updateListing(listingId: string, data: UpdateListingData) 
                             lng = approx.longitude.toString()
                         }
                     } catch (e) {
-                        console.warn("Approx geocoding failed on update (postal code)", e)
+                        console.warn(
+                            "Approx geocoding failed on update (postal code)",
+                            e
+                        )
                     }
                 }
 
@@ -247,21 +298,30 @@ export async function updateListing(listingId: string, data: UpdateListingData) 
             }
 
             // Update type-specific details
-            if (existingListing.listingType === "transfer" && validatedData.transferDetails) {
+            if (
+                existingListing.listingType === "transfer" &&
+                validatedData.transferDetails
+            ) {
                 await tx
                     .update(transferDetails)
                     .set(validatedData.transferDetails)
                     .where(eq(transferDetails.listingId, listingId))
             }
 
-            if (existingListing.listingType === "replacement" && validatedData.replacementDetails) {
+            if (
+                existingListing.listingType === "replacement" &&
+                validatedData.replacementDetails
+            ) {
                 await tx
                     .update(replacementDetails)
                     .set(validatedData.replacementDetails)
                     .where(eq(replacementDetails.listingId, listingId))
             }
 
-            if (existingListing.listingType === "collaboration" && validatedData.collaborationDetails) {
+            if (
+                existingListing.listingType === "collaboration" &&
+                validatedData.collaborationDetails
+            ) {
                 const cd = validatedData.collaborationDetails
                 await tx
                     .update(collaborationDetails)
@@ -269,15 +329,19 @@ export async function updateListing(listingId: string, data: UpdateListingData) 
                         collaborationType: cd.collaborationType,
                         durationExpectation: cd.durationExpectation,
                         activityDistribution: cd.activityDistribution,
-                        activityDistributionDetails: cd.activityDistributionDetails,
+                        activityDistributionDetails:
+                            cd.activityDistributionDetails,
                         spaceArrangement: cd.spaceArrangement,
                         patientManagement: cd.patientManagement,
                         investmentRequired: cd.investmentRequired,
-                        investmentAmount: cd.investmentAmount == null ? null : String(cd.investmentAmount),
+                        investmentAmount:
+                            cd.investmentAmount == null
+                                ? null
+                                : String(cd.investmentAmount),
                         remunerationModel: cd.remunerationModel,
                         specialtiesWanted: cd.specialtiesWanted,
                         experienceRequired: cd.experienceRequired,
-                        valuesAndGoals: cd.valuesAndGoals,
+                        valuesAndGoals: cd.valuesAndGoals
                     })
                     .where(eq(collaborationDetails.listingId, listingId))
             }
@@ -287,6 +351,7 @@ export async function updateListing(listingId: string, data: UpdateListingData) 
         revalidatePath(`/annonces/${listingId}`)
 
         // Background precise geocoding after update (non-blocking)
+
         ;(async () => {
             try {
                 if (validatedData.location) {
@@ -300,7 +365,11 @@ export async function updateListing(listingId: string, data: UpdateListingData) 
                     }
                 }
             } catch (e) {
-                console.warn("Background precise geocoding failed for update", listingId, e)
+                console.warn(
+                    "Background precise geocoding failed for update",
+                    listingId,
+                    e
+                )
             }
         })()
 
@@ -310,7 +379,10 @@ export async function updateListing(listingId: string, data: UpdateListingData) 
         if (error instanceof Error) {
             return { success: false, error: error.message }
         }
-        return { success: false, error: "Erreur lors de la mise à jour de l'annonce" }
+        return {
+            success: false,
+            error: "Erreur lors de la mise à jour de l'annonce"
+        }
     }
 }
 
@@ -328,7 +400,12 @@ export async function deleteListing(listingId: string) {
         const [existingListing] = await db
             .select()
             .from(listings)
-            .where(and(eq(listings.id, listingId), eq(listings.userId, session.user.id)))
+            .where(
+                and(
+                    eq(listings.id, listingId),
+                    eq(listings.userId, session.user.id)
+                )
+            )
             .limit(1)
 
         if (!existingListing) {
@@ -353,7 +430,10 @@ export async function deleteListing(listingId: string) {
         if (error instanceof Error) {
             return { success: false, error: error.message }
         }
-        return { success: false, error: "Erreur lors de la suppression de l'annonce" }
+        return {
+            success: false,
+            error: "Erreur lors de la suppression de l'annonce"
+        }
     }
 }
 
@@ -523,7 +603,12 @@ export async function getPublicListings(filters?: {
         }
 
         if (filters?.collaborationType) {
-            conditions.push(eq(collaborationDetails.collaborationType, filters.collaborationType))
+            conditions.push(
+                eq(
+                    collaborationDetails.collaborationType,
+                    filters.collaborationType
+                )
+            )
         }
 
         if (filters?.search) {
@@ -547,10 +632,18 @@ export async function getPublicListings(filters?: {
             case "price_low":
                 // For price sorting, we need to join with transferDetails or replacementDetails
                 // We'll use COALESCE to get the first non-null price value
-                orderByClause = [asc(sql`COALESCE(${transferDetails.salePrice}, ${replacementDetails.dailyRate}, 0)`)]
+                orderByClause = [
+                    asc(
+                        sql`COALESCE(${transferDetails.salePrice}, ${replacementDetails.dailyRate}, 0)`
+                    )
+                ]
                 break
             case "price_high":
-                orderByClause = [desc(sql`COALESCE(${transferDetails.salePrice}, ${replacementDetails.dailyRate}, 0)`)]
+                orderByClause = [
+                    desc(
+                        sql`COALESCE(${transferDetails.salePrice}, ${replacementDetails.dailyRate}, 0)`
+                    )
+                ]
                 break
             default: // "newest" or undefined
                 orderByClause = [desc(listings.publishedAt)]
@@ -580,22 +673,34 @@ export async function getPublicListings(filters?: {
                 investmentAmount: collaborationDetails.investmentAmount
             })
             .from(listings)
-            .leftJoin(listingLocations, eq(listings.id, listingLocations.listingId))
-            .leftJoin(transferDetails, eq(listings.id, transferDetails.listingId))
-            .leftJoin(replacementDetails, eq(listings.id, replacementDetails.listingId))
-            .leftJoin(collaborationDetails, eq(listings.id, collaborationDetails.listingId))
+            .leftJoin(
+                listingLocations,
+                eq(listings.id, listingLocations.listingId)
+            )
+            .leftJoin(
+                transferDetails,
+                eq(listings.id, transferDetails.listingId)
+            )
+            .leftJoin(
+                replacementDetails,
+                eq(listings.id, replacementDetails.listingId)
+            )
+            .leftJoin(
+                collaborationDetails,
+                eq(listings.id, collaborationDetails.listingId)
+            )
             .where(conditions.length > 0 ? and(...conditions) : undefined)
             .orderBy(...orderByClause)
 
         // Apply pagination if provided
         const limit = filters?.limit || 20
         const offset = filters?.offset || 0
-        
+
         const publicListings = await baseQuery.limit(limit).offset(offset)
 
         // Fetch first image for each listing
-        const listingIds = publicListings.map(l => l.id).filter(Boolean)
-        
+        const listingIds = publicListings.map((l) => l.id).filter(Boolean)
+
         if (listingIds.length > 0) {
             const firstImages = await db
                 .select({
@@ -606,28 +711,37 @@ export async function getPublicListings(filters?: {
                 .from(listingMedia)
                 .where(
                     and(
-                        sql`${listingMedia.listingId} IN (${sql.join(listingIds.map(id => sql`${id}`), sql`, `)})`,
+                        sql`${listingMedia.listingId} IN (${sql.join(
+                            listingIds.map((id) => sql`${id}`),
+                            sql`, `
+                        )})`,
                         eq(listingMedia.displayOrder, 0)
                     )
                 )
-            
+
             // Create a map of listing ID to first image
-            const imageMap = new Map(firstImages.map(img => [img.listingId, img]))
-            
+            const imageMap = new Map(
+                firstImages.map((img) => [img.listingId, img])
+            )
+
             // Add first image to each listing
-            const listingsWithImages = publicListings.map(listing => ({
+            const listingsWithImages = publicListings.map((listing) => ({
                 ...listing,
-                media: imageMap.has(listing.id) ? [{
-                    id: listing.id,
-                    fileUrl: imageMap.get(listing.id)!.fileUrl,
-                    fileName: imageMap.get(listing.id)!.fileName
-                }] : []
+                media: imageMap.has(listing.id)
+                    ? [
+                          {
+                              id: listing.id,
+                              fileUrl: imageMap.get(listing.id)!.fileUrl,
+                              fileName: imageMap.get(listing.id)!.fileName
+                          }
+                      ]
+                    : []
             }))
-            
+
             return listingsWithImages
         }
 
-        return publicListings.map(listing => ({
+        return publicListings.map((listing) => ({
             ...listing,
             media: []
         }))
@@ -651,7 +765,12 @@ export async function updateListingStatus(listingId: string, status: string) {
         const [existingListing] = await db
             .select()
             .from(listings)
-            .where(and(eq(listings.id, listingId), eq(listings.userId, session.user.id)))
+            .where(
+                and(
+                    eq(listings.id, listingId),
+                    eq(listings.userId, session.user.id)
+                )
+            )
             .limit(1)
 
         if (!existingListing) {
@@ -675,7 +794,10 @@ export async function updateListingStatus(listingId: string, status: string) {
         if (error instanceof Error) {
             return { success: false, error: error.message }
         }
-        return { success: false, error: "Erreur lors de la mise à jour du statut" }
+        return {
+            success: false,
+            error: "Erreur lors de la mise à jour du statut"
+        }
     }
 }
 

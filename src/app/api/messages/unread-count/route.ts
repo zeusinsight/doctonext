@@ -12,14 +12,20 @@ export async function GET() {
         })
 
         if (!session) {
-            return NextResponse.json({ error: "Authentication requise" }, { status: 401 })
+            return NextResponse.json(
+                { error: "Authentication requise" },
+                { status: 401 }
+            )
         }
 
         // Count unread messages where user is the recipient
         const unreadMessages = await db
             .select({ count: messages.id })
             .from(messages)
-            .innerJoin(conversations, eq(messages.conversationId, conversations.id))
+            .innerJoin(
+                conversations,
+                eq(messages.conversationId, conversations.id)
+            )
             .where(
                 and(
                     eq(messages.recipientId, session.user.id),
@@ -32,9 +38,9 @@ export async function GET() {
                 )
             )
 
-        return NextResponse.json({ 
-            success: true, 
-            count: unreadMessages.length 
+        return NextResponse.json({
+            success: true,
+            count: unreadMessages.length
         })
     } catch (error) {
         console.error("Error counting unread messages:", error)

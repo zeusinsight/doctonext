@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server"
+import { type NextRequest, NextResponse } from "next/server"
 import { auth } from "@/lib/auth"
 import { headers } from "next/headers"
 import { createDocusealSubmission } from "@/lib/services/contract-service"
@@ -8,8 +8,8 @@ export async function POST(
     { params }: { params: Promise<{ id: string }> }
 ) {
     try {
-        const session = await auth.api.getSession({ 
-            headers: await headers() 
+        const session = await auth.api.getSession({
+            headers: await headers()
         })
 
         if (!session) {
@@ -31,7 +31,6 @@ export async function POST(
             ...result,
             embedUrl: userEmbedUrl
         })
-
     } catch (error) {
         console.error("Create submission error:", error)
         return NextResponse.json(

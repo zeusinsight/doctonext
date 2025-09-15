@@ -1,17 +1,23 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useEffect } from "react"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue
+} from "@/components/ui/select"
 import { Checkbox } from "@/components/ui/checkbox"
 import { ArrowLeft, ArrowRight } from "lucide-react"
 import { replacementDetailsStepSchema } from "@/lib/validations/listing"
-import { ReplacementDetailsStepData } from "@/types/listing"
+import type { ReplacementDetailsStepData } from "@/types/listing"
 
 interface ReplacementDetailsStepProps {
     data?: ReplacementDetailsStepData
@@ -30,7 +36,12 @@ const DAYS_OF_WEEK = [
     { value: "sunday", label: "Dimanche" }
 ] as const
 
-export function ReplacementDetailsStep({ data, onDataChange, onNext, onPrevious }: ReplacementDetailsStepProps) {
+export function ReplacementDetailsStep({
+    data,
+    onDataChange,
+    onNext,
+    onPrevious
+}: ReplacementDetailsStepProps) {
     const {
         register,
         handleSubmit,
@@ -46,8 +57,11 @@ export function ReplacementDetailsStep({ data, onDataChange, onNext, onPrevious 
 
     useEffect(() => {
         if (data) {
-            Object.keys(data).forEach(key => {
-                setValue(key as keyof ReplacementDetailsStepData, data[key as keyof ReplacementDetailsStepData])
+            Object.keys(data).forEach((key) => {
+                setValue(
+                    key as keyof ReplacementDetailsStepData,
+                    data[key as keyof ReplacementDetailsStepData]
+                )
             })
         }
     }, [data, setValue])
@@ -57,7 +71,10 @@ export function ReplacementDetailsStep({ data, onDataChange, onNext, onPrevious 
         onNext()
     }
 
-    const handleFormChange = (field: keyof ReplacementDetailsStepData, value: any) => {
+    const handleFormChange = (
+        field: keyof ReplacementDetailsStepData,
+        value: any
+    ) => {
         setValue(field, value, { shouldValidate: true })
         const currentData = watch()
         onDataChange({ ...currentData, [field]: value })
@@ -66,20 +83,22 @@ export function ReplacementDetailsStep({ data, onDataChange, onNext, onPrevious 
     const handleWorkingDaysChange = (day: string, checked: boolean) => {
         const currentDays = watch("workingDays") || []
         let newDays: string[]
-        
+
         if (checked) {
             newDays = [...currentDays, day]
         } else {
-            newDays = currentDays.filter(d => d !== day)
+            newDays = currentDays.filter((d) => d !== day)
         }
-        
+
         handleFormChange("workingDays", newDays)
     }
 
     return (
         <div className="space-y-6">
             <div>
-                <h3 className="text-lg font-semibold">Détails du remplacement</h3>
+                <h3 className="font-semibold text-lg">
+                    Détails du remplacement
+                </h3>
                 <p className="text-muted-foreground">
                     Remplissez les informations spécifiques à votre remplacement
                 </p>
@@ -88,23 +107,33 @@ export function ReplacementDetailsStep({ data, onDataChange, onNext, onPrevious 
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
                 {/* Replacement Type */}
                 <div className="space-y-2">
-                    <Label htmlFor="replacementType">Type de remplacement</Label>
+                    <Label htmlFor="replacementType">
+                        Type de remplacement
+                    </Label>
                     <Select
                         value={watch("replacementType") || ""}
-                        onValueChange={(value) => handleFormChange("replacementType", value)}
+                        onValueChange={(value) =>
+                            handleFormChange("replacementType", value)
+                        }
                     >
                         <SelectTrigger>
                             <SelectValue placeholder="Sélectionnez le type" />
                         </SelectTrigger>
                         <SelectContent>
-                            <SelectItem value="temporary">Temporaire</SelectItem>
-                            <SelectItem value="long_term">Long terme</SelectItem>
-                            <SelectItem value="weekend">Weekend/Vacances</SelectItem>
+                            <SelectItem value="temporary">
+                                Temporaire
+                            </SelectItem>
+                            <SelectItem value="long_term">
+                                Long terme
+                            </SelectItem>
+                            <SelectItem value="weekend">
+                                Weekend/Vacances
+                            </SelectItem>
                         </SelectContent>
                     </Select>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                     {/* Start Date */}
                     <div className="space-y-2">
                         <Label htmlFor="startDate">Date de début</Label>
@@ -112,7 +141,9 @@ export function ReplacementDetailsStep({ data, onDataChange, onNext, onPrevious 
                             id="startDate"
                             type="date"
                             {...register("startDate")}
-                            onChange={(e) => handleFormChange("startDate", e.target.value)}
+                            onChange={(e) =>
+                                handleFormChange("startDate", e.target.value)
+                            }
                         />
                     </div>
 
@@ -123,7 +154,9 @@ export function ReplacementDetailsStep({ data, onDataChange, onNext, onPrevious 
                             id="endDate"
                             type="date"
                             {...register("endDate")}
-                            onChange={(e) => handleFormChange("endDate", e.target.value)}
+                            onChange={(e) =>
+                                handleFormChange("endDate", e.target.value)
+                            }
                         />
                     </div>
                 </div>
@@ -131,15 +164,28 @@ export function ReplacementDetailsStep({ data, onDataChange, onNext, onPrevious 
                 {/* Working Days */}
                 <div className="space-y-3">
                     <Label>Jours de travail</Label>
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                    <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
                         {DAYS_OF_WEEK.map(({ value, label }) => (
-                            <div key={value} className="flex items-center space-x-2">
+                            <div
+                                key={value}
+                                className="flex items-center space-x-2"
+                            >
                                 <Checkbox
                                     id={`workingDay_${value}`}
-                                    checked={(watch("workingDays") || []).includes(value)}
-                                    onCheckedChange={(checked) => handleWorkingDaysChange(value, checked === true)}
+                                    checked={(
+                                        watch("workingDays") || []
+                                    ).includes(value)}
+                                    onCheckedChange={(checked) =>
+                                        handleWorkingDaysChange(
+                                            value,
+                                            checked === true
+                                        )
+                                    }
                                 />
-                                <Label htmlFor={`workingDay_${value}`} className="text-sm">
+                                <Label
+                                    htmlFor={`workingDay_${value}`}
+                                    className="text-sm"
+                                >
                                     {label}
                                 </Label>
                             </div>
@@ -147,33 +193,48 @@ export function ReplacementDetailsStep({ data, onDataChange, onNext, onPrevious 
                     </div>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                     {/* Daily Rate */}
                     <div className="space-y-2">
-                        <Label htmlFor="dailyRate">Rémunération journalière (€)</Label>
+                        <Label htmlFor="dailyRate">
+                            Rémunération journalière (€)
+                        </Label>
                         <Input
                             id="dailyRate"
                             type="number"
                             placeholder="Ex: 300"
                             {...register("dailyRate")}
-                            onChange={(e) => handleFormChange("dailyRate", e.target.value)}
+                            onChange={(e) =>
+                                handleFormChange("dailyRate", e.target.value)
+                            }
                         />
                         {errors.dailyRate && (
-                            <p className="text-sm text-destructive">{errors.dailyRate.message}</p>
+                            <p className="text-destructive text-sm">
+                                {errors.dailyRate.message}
+                            </p>
                         )}
                     </div>
 
                     {/* Fee Share Percentage */}
                     <div className="space-y-2">
-                        <Label htmlFor="feeSharePercentage">Pourcentage de rétrocession (%) *</Label>
+                        <Label htmlFor="feeSharePercentage">
+                            Pourcentage de rétrocession (%) *
+                        </Label>
                         <Input
                             id="feeSharePercentage"
                             placeholder="Ex: 65"
                             {...register("feeSharePercentage")}
-                            onChange={(e) => handleFormChange("feeSharePercentage", e.target.value)}
+                            onChange={(e) =>
+                                handleFormChange(
+                                    "feeSharePercentage",
+                                    e.target.value
+                                )
+                            }
                         />
                         {errors.feeSharePercentage && (
-                            <p className="text-sm text-destructive">{errors.feeSharePercentage.message}</p>
+                            <p className="text-destructive text-sm">
+                                {errors.feeSharePercentage.message}
+                            </p>
                         )}
                     </div>
                 </div>
@@ -185,7 +246,9 @@ export function ReplacementDetailsStep({ data, onDataChange, onNext, onPrevious 
                         id="practicalTerms"
                         placeholder="Décrivez les conditions spécifiques, horaires, etc..."
                         {...register("practicalTerms")}
-                        onChange={(e) => handleFormChange("practicalTerms", e.target.value)}
+                        onChange={(e) =>
+                            handleFormChange("practicalTerms", e.target.value)
+                        }
                     />
                 </div>
 
@@ -195,7 +258,12 @@ export function ReplacementDetailsStep({ data, onDataChange, onNext, onPrevious 
                         <Checkbox
                             id="hasAssistant"
                             checked={watch("hasAssistant") ?? false}
-                            onCheckedChange={(checked) => handleFormChange("hasAssistant", checked === true)}
+                            onCheckedChange={(checked) =>
+                                handleFormChange(
+                                    "hasAssistant",
+                                    checked === true
+                                )
+                            }
                         />
                         <Label htmlFor="hasAssistant">
                             Secrétaire/assistante sur place
@@ -206,7 +274,12 @@ export function ReplacementDetailsStep({ data, onDataChange, onNext, onPrevious 
                         <Checkbox
                             id="housingProvided"
                             checked={watch("housingProvided") ?? false}
-                            onCheckedChange={(checked) => handleFormChange("housingProvided", checked === true)}
+                            onCheckedChange={(checked) =>
+                                handleFormChange(
+                                    "housingProvided",
+                                    checked === true
+                                )
+                            }
                         />
                         <Label htmlFor="housingProvided">
                             Hébergement fourni
@@ -216,7 +289,11 @@ export function ReplacementDetailsStep({ data, onDataChange, onNext, onPrevious 
 
                 {/* Action Buttons */}
                 <div className="flex justify-between pt-4">
-                    <Button type="button" variant="outline" onClick={onPrevious}>
+                    <Button
+                        type="button"
+                        variant="outline"
+                        onClick={onPrevious}
+                    >
                         <ArrowLeft className="mr-2 h-4 w-4" />
                         Précédent
                     </Button>

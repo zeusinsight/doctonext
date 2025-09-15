@@ -1,15 +1,21 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useEffect } from "react"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue
+} from "@/components/ui/select"
 import { ArrowLeft, ArrowRight } from "lucide-react"
 import { locationStepSchema } from "@/lib/validations/listing"
-import { LocationStepData } from "@/types/listing"
+import type { LocationStepData } from "@/types/listing"
 import { FRENCH_REGIONS } from "@/types/listing"
 
 interface LocationStepProps {
@@ -19,7 +25,12 @@ interface LocationStepProps {
     onPrevious: () => void
 }
 
-export function LocationStep({ data, onDataChange, onNext, onPrevious }: LocationStepProps) {
+export function LocationStep({
+    data,
+    onDataChange,
+    onNext,
+    onPrevious
+}: LocationStepProps) {
     const {
         register,
         handleSubmit,
@@ -62,14 +73,18 @@ export function LocationStep({ data, onDataChange, onNext, onPrevious }: Locatio
                     id="address"
                     placeholder="Ex: 123 Rue de la République"
                     {...register("address")}
-                    onChange={(e) => handleFormChange("address", e.target.value)}
+                    onChange={(e) =>
+                        handleFormChange("address", e.target.value)
+                    }
                 />
                 {errors.address && (
-                    <p className="text-sm text-destructive">{errors.address.message}</p>
+                    <p className="text-destructive text-sm">
+                        {errors.address.message}
+                    </p>
                 )}
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                 {/* Postal Code */}
                 <div className="space-y-2">
                     <Label htmlFor="postalCode">Code postal *</Label>
@@ -77,10 +92,14 @@ export function LocationStep({ data, onDataChange, onNext, onPrevious }: Locatio
                         id="postalCode"
                         placeholder="Ex: 75015"
                         {...register("postalCode")}
-                        onChange={(e) => handleFormChange("postalCode", e.target.value)}
+                        onChange={(e) =>
+                            handleFormChange("postalCode", e.target.value)
+                        }
                     />
                     {errors.postalCode && (
-                        <p className="text-sm text-destructive">{errors.postalCode.message}</p>
+                        <p className="text-destructive text-sm">
+                            {errors.postalCode.message}
+                        </p>
                     )}
                 </div>
 
@@ -91,21 +110,27 @@ export function LocationStep({ data, onDataChange, onNext, onPrevious }: Locatio
                         id="city"
                         placeholder="Ex: Paris"
                         {...register("city")}
-                        onChange={(e) => handleFormChange("city", e.target.value)}
+                        onChange={(e) =>
+                            handleFormChange("city", e.target.value)
+                        }
                     />
                     {errors.city && (
-                        <p className="text-sm text-destructive">{errors.city.message}</p>
+                        <p className="text-destructive text-sm">
+                            {errors.city.message}
+                        </p>
                     )}
                 </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                 {/* Region */}
                 <div className="space-y-2">
                     <Label htmlFor="region">Région *</Label>
                     <Select
                         value={watch("region") || ""}
-                        onValueChange={(value) => handleFormChange("region", value)}
+                        onValueChange={(value) =>
+                            handleFormChange("region", value)
+                        }
                     >
                         <SelectTrigger>
                             <SelectValue placeholder="Sélectionnez une région" />
@@ -119,7 +144,9 @@ export function LocationStep({ data, onDataChange, onNext, onPrevious }: Locatio
                         </SelectContent>
                     </Select>
                     {errors.region && (
-                        <p className="text-sm text-destructive">{errors.region.message}</p>
+                        <p className="text-destructive text-sm">
+                            {errors.region.message}
+                        </p>
                     )}
                 </div>
 
@@ -130,14 +157,17 @@ export function LocationStep({ data, onDataChange, onNext, onPrevious }: Locatio
                         id="department"
                         placeholder="Ex: Paris"
                         {...register("department")}
-                        onChange={(e) => handleFormChange("department", e.target.value)}
+                        onChange={(e) =>
+                            handleFormChange("department", e.target.value)
+                        }
                     />
                     {errors.department && (
-                        <p className="text-sm text-destructive">{errors.department.message}</p>
+                        <p className="text-destructive text-sm">
+                            {errors.department.message}
+                        </p>
                     )}
                 </div>
             </div>
-
 
             {/* Action Buttons */}
             <div className="flex justify-between pt-4">

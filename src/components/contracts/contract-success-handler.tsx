@@ -21,8 +21,10 @@ export function ContractSuccessHandler() {
             // Payment successful, show signing modal
             setContractId(contractSuccess)
             setShowSigningModal(true)
-            toast.success("Paiement effectué avec succès! Vous pouvez maintenant signer le contrat.")
-            
+            toast.success(
+                "Paiement effectué avec succès! Vous pouvez maintenant signer le contrat."
+            )
+
             // Clean up URL parameters
             const cleanUrl = window.location.pathname
             router.replace(cleanUrl, { scroll: false })
@@ -32,8 +34,10 @@ export function ContractSuccessHandler() {
             // User clicked email link to resume signing
             setContractId(contractResume)
             setShowSigningModal(true)
-            toast.info("Contrat ouvert depuis votre email. Vous pouvez continuer la signature.")
-            
+            toast.info(
+                "Contrat ouvert depuis votre email. Vous pouvez continuer la signature."
+            )
+
             // Clean up URL parameters
             const cleanUrl = window.location.pathname
             router.replace(cleanUrl, { scroll: false })
@@ -41,7 +45,7 @@ export function ContractSuccessHandler() {
 
         if (contractCancelled) {
             toast.error("Paiement annulé. Le contrat n'a pas été créé.")
-            
+
             // Clean up URL parameters
             const cleanUrl = window.location.pathname
             router.replace(cleanUrl, { scroll: false })

@@ -1,4 +1,14 @@
-import { pgTable, text, timestamp, boolean, integer, decimal, date, jsonb, bigint } from "drizzle-orm/pg-core";
+import {
+    pgTable,
+    text,
+    timestamp,
+    boolean,
+    integer,
+    decimal,
+    date,
+    jsonb,
+    bigint
+} from "drizzle-orm/pg-core"
 
 export const users = pgTable("users", {
     id: text("id").primaryKey(),
@@ -22,13 +32,10 @@ export const users = pgTable("users", {
     rppsNumber: text("rpps_number"),
     adeliNumber: text("adeli_number"),
     phone: text("phone"),
-    isVerifiedProfessional: boolean("is_verified_professional")
-        .default(false),
+    isVerifiedProfessional: boolean("is_verified_professional").default(false),
     role: text("role").$type<"user" | "admin">().default("user"),
     bio: text("bio")
-});
-
-
+})
 
 export const sessions = pgTable("sessions", {
     id: text("id").primaryKey(),
@@ -75,19 +82,19 @@ export const verifications = pgTable("verifications", {
 })
 
 export const subscriptions = pgTable("subscriptions", {
-	id: text('id').primaryKey(),
-	plan: text('plan').notNull(),
-	referenceId: text('reference_id').notNull(),
-	stripeCustomerId: text('stripe_customer_id'),
-	stripeSubscriptionId: text('stripe_subscription_id'),
-	status: text('status').default("incomplete"),
-	periodStart: timestamp('period_start'),
+    id: text("id").primaryKey(),
+    plan: text("plan").notNull(),
+    referenceId: text("reference_id").notNull(),
+    stripeCustomerId: text("stripe_customer_id"),
+    stripeSubscriptionId: text("stripe_subscription_id"),
+    status: text("status").default("incomplete"),
+    periodStart: timestamp("period_start"),
     periodEnd: timestamp("period_end"),
     cancelAtPeriodEnd: boolean("cancel_at_period_end"),
     seats: integer("seats"),
-    trialStart: timestamp('trial_start'),
-    trialEnd: timestamp('trial_end')
-});
+    trialStart: timestamp("trial_start"),
+    trialEnd: timestamp("trial_end")
+})
 
 export const listings = pgTable("listings", {
     id: text("id").primaryKey(),
@@ -116,7 +123,7 @@ export const listings = pgTable("listings", {
         .notNull(),
     publishedAt: timestamp("published_at"),
     expiresAt: timestamp("expires_at")
-});
+})
 
 export const listingLocations = pgTable("listing_locations", {
     id: text("id").primaryKey(),
@@ -131,7 +138,7 @@ export const listingLocations = pgTable("listing_locations", {
     department: text("department"),
     latitude: decimal("latitude"),
     longitude: decimal("longitude")
-});
+})
 
 export const transferDetails = pgTable("transfer_details", {
     id: text("id").primaryKey(),
@@ -153,7 +160,7 @@ export const transferDetails = pgTable("transfer_details", {
     equipmentIncluded: boolean("equipment_included")
         .$defaultFn(() => false)
         .notNull()
-});
+})
 
 export const replacementDetails = pgTable("replacement_details", {
     id: text("id").primaryKey(),
@@ -174,7 +181,7 @@ export const replacementDetails = pgTable("replacement_details", {
     feeSharePercentage: decimal("fee_share_percentage"),
     dailyRate: bigint("daily_rate", { mode: "number" }),
     practicalTerms: text("practical_terms")
-});
+})
 
 export const collaborationDetails = pgTable("collaboration_details", {
     id: text("id").primaryKey(),
@@ -196,7 +203,7 @@ export const collaborationDetails = pgTable("collaboration_details", {
     specialtiesWanted: text("specialties_wanted").array(),
     experienceRequired: text("experience_required"),
     valuesAndGoals: text("values_and_goals")
-});
+})
 
 export const listingMedia = pgTable("listing_media", {
     id: text("id").primaryKey(),
@@ -214,12 +221,13 @@ export const listingMedia = pgTable("listing_media", {
     createdAt: timestamp("created_at")
         .$defaultFn(() => new Date())
         .notNull()
-});
+})
 
 export const conversations = pgTable("conversations", {
     id: text("id").primaryKey(),
-    listingId: text("listing_id")
-        .references(() => listings.id, { onDelete: "cascade" }),
+    listingId: text("listing_id").references(() => listings.id, {
+        onDelete: "cascade"
+    }),
     participant1Id: text("participant_1_id")
         .notNull()
         .references(() => users.id, { onDelete: "cascade" }),
@@ -234,7 +242,7 @@ export const conversations = pgTable("conversations", {
     updatedAt: timestamp("updated_at")
         .$defaultFn(() => new Date())
         .notNull()
-});
+})
 
 export const messages = pgTable("messages", {
     id: text("id").primaryKey(),
@@ -247,8 +255,9 @@ export const messages = pgTable("messages", {
     recipientId: text("recipient_id")
         .notNull()
         .references(() => users.id, { onDelete: "cascade" }),
-    listingId: text("listing_id")
-        .references(() => listings.id, { onDelete: "cascade" }),
+    listingId: text("listing_id").references(() => listings.id, {
+        onDelete: "cascade"
+    }),
     content: text("content").notNull(),
     isRead: boolean("is_read")
         .$defaultFn(() => false)
@@ -259,7 +268,7 @@ export const messages = pgTable("messages", {
     updatedAt: timestamp("updated_at")
         .$defaultFn(() => new Date())
         .notNull()
-});
+})
 
 export const favorites = pgTable("favorites", {
     id: text("id").primaryKey(),
@@ -272,7 +281,7 @@ export const favorites = pgTable("favorites", {
     createdAt: timestamp("created_at")
         .$defaultFn(() => new Date())
         .notNull()
-});
+})
 
 export const savedSearches = pgTable("saved_searches", {
     id: text("id").primaryKey(),
@@ -294,7 +303,7 @@ export const savedSearches = pgTable("saved_searches", {
     updatedAt: timestamp("updated_at")
         .$defaultFn(() => new Date())
         .notNull()
-});
+})
 
 export const alertNotifications = pgTable("alert_notifications", {
     id: text("id").primaryKey(),
@@ -313,7 +322,7 @@ export const alertNotifications = pgTable("alert_notifications", {
     emailSent: boolean("email_sent")
         .$defaultFn(() => false)
         .notNull()
-});
+})
 
 export const blogArticles = pgTable("blog_articles", {
     id: text("id").primaryKey(),
@@ -322,8 +331,9 @@ export const blogArticles = pgTable("blog_articles", {
     content: text("content").notNull(),
     excerpt: text("excerpt"),
     featuredImage: text("featured_image"),
-    authorId: text("author_id")
-        .references(() => users.id, { onDelete: "set null" }),
+    authorId: text("author_id").references(() => users.id, {
+        onDelete: "set null"
+    }),
     isPublished: boolean("is_published")
         .$defaultFn(() => false)
         .notNull(),
@@ -337,7 +347,7 @@ export const blogArticles = pgTable("blog_articles", {
     updatedAt: timestamp("updated_at")
         .$defaultFn(() => new Date())
         .notNull()
-});
+})
 
 export const contractTemplates = pgTable("contract_templates", {
     id: text("id").primaryKey(),
@@ -361,12 +371,13 @@ export const contractTemplates = pgTable("contract_templates", {
     updatedAt: timestamp("updated_at")
         .$defaultFn(() => new Date())
         .notNull()
-});
+})
 
 export const contracts = pgTable("contracts", {
     id: text("id").primaryKey(),
-    conversationId: text("conversation_id")
-        .references(() => conversations.id, { onDelete: "cascade" }),
+    conversationId: text("conversation_id").references(() => conversations.id, {
+        onDelete: "cascade"
+    }),
     listingId: text("listing_id")
         .notNull()
         .references(() => listings.id, { onDelete: "cascade" }),
@@ -377,12 +388,17 @@ export const contracts = pgTable("contracts", {
         .notNull()
         .references(() => users.id, { onDelete: "cascade" }),
     contractType: text("contract_type").notNull(),
-    templateId: text("template_id")
-        .references(() => contractTemplates.id),
+    templateId: text("template_id").references(() => contractTemplates.id),
     docusealTemplateId: text("docuseal_template_id"),
     docusealSubmissionId: text("docuseal_submission_id"),
     status: text("status")
-        .$type<"pending_payment" | "pending_signature" | "in_progress" | "completed" | "cancelled">()
+        .$type<
+            | "pending_payment"
+            | "pending_signature"
+            | "in_progress"
+            | "completed"
+            | "cancelled"
+        >()
         .$defaultFn(() => "pending_payment")
         .notNull(),
     contractData: jsonb("contract_data"),
@@ -398,7 +414,7 @@ export const contracts = pgTable("contracts", {
     updatedAt: timestamp("updated_at")
         .$defaultFn(() => new Date())
         .notNull()
-});
+})
 
 export const listingAnalytics = pgTable("listing_analytics", {
     id: text("id").primaryKey(),
@@ -406,15 +422,14 @@ export const listingAnalytics = pgTable("listing_analytics", {
         .notNull()
         .references(() => listings.id, { onDelete: "cascade" }),
     eventType: text("event_type").notNull(),
-    userId: text("user_id")
-        .references(() => users.id, { onDelete: "cascade" }),
+    userId: text("user_id").references(() => users.id, { onDelete: "cascade" }),
     ipAddress: text("ip_address"),
     userAgent: text("user_agent"),
     referrer: text("referrer"),
     createdAt: timestamp("created_at")
         .$defaultFn(() => new Date())
         .notNull()
-});
+})
 
 export const notifications = pgTable("notifications", {
     id: text("id").primaryKey(),
@@ -432,4 +447,4 @@ export const notifications = pgTable("notifications", {
         .$defaultFn(() => new Date())
         .notNull(),
     readAt: timestamp("read_at")
-});
+})

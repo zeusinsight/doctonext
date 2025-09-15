@@ -2,12 +2,17 @@
 
 import { DocusealApi } from "@docuseal/api"
 import { db } from "@/database/db"
-import { contracts, contractTemplates, listings, users } from "@/database/schema"
+import {
+    contracts,
+    contractTemplates,
+    listings,
+    users
+} from "@/database/schema"
 import { eq, and } from "drizzle-orm"
 import { nanoid } from "nanoid"
 
 const docuseal = new DocusealApi({
-    key: process.env.DOCUSEAL_API_KEY!,
+    key: process.env.DOCUSEAL_API_KEY!
 })
 
 export interface ContractTemplate {
@@ -48,7 +53,10 @@ export interface ContractData {
     additionalTerms?: string
 }
 
-export async function getContractTemplates(profession: string, contractType?: string) {
+export async function getContractTemplates(
+    profession: string,
+    contractType?: string
+) {
     const templates = await db
         .select()
         .from(contractTemplates)
@@ -56,7 +64,9 @@ export async function getContractTemplates(profession: string, contractType?: st
             and(
                 eq(contractTemplates.profession, profession),
                 eq(contractTemplates.isActive, true),
-                contractType ? eq(contractTemplates.contractType, contractType) : undefined
+                contractType
+                    ? eq(contractTemplates.contractType, contractType)
+                    : undefined
             )
         )
 
@@ -73,13 +83,13 @@ export async function createContract(params: {
     docusealTemplateId?: string
 }) {
     const contractId = nanoid()
-    
+
     // Get listing and user details
     const [listing] = await db
         .select()
         .from(listings)
         .where(eq(listings.id, params.listingId))
-    
+
     const [sender, recipient] = await Promise.all([
         db.select().from(users).where(eq(users.id, params.senderId)),
         db.select().from(users).where(eq(users.id, params.recipientId))
@@ -93,7 +103,7 @@ export async function createContract(params: {
     const contractData: ContractData = {
         listingId: params.listingId,
         listingTitle: listing.title,
-        location: "Location TBD", // Will be filled from listing location
+        location: "Location TBD" // Will be filled from listing location
         // Additional fields will be populated from listing details
     }
 
@@ -105,7 +115,7 @@ export async function createContract(params: {
             email: sender[0].email,
             profession: sender[0].profession || undefined,
             rppsNumber: sender[0].rppsNumber || undefined,
-            adeliNumber: sender[0].adeliNumber || undefined,
+            adeliNumber: sender[0].adeliNumber || undefined
         },
         recipient: {
             id: recipient[0].id,
@@ -113,7 +123,7 @@ export async function createContract(params: {
             email: recipient[0].email,
             profession: recipient[0].profession || undefined,
             rppsNumber: recipient[0].rppsNumber || undefined,
-            adeliNumber: recipient[0].adeliNumber || undefined,
+            adeliNumber: recipient[0].adeliNumber || undefined
         }
     }
 
@@ -132,7 +142,7 @@ export async function createContract(params: {
             status: "pending_payment",
             contractData,
             parties,
-            expiresAt: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // 30 days
+            expiresAt: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000) // 30 days
         })
         .returning()
 
@@ -153,9 +163,12 @@ export async function createDocusealSubmission(contractId: string) {
     const contractData = contract.contractData as ContractData
 
     // Create DocuSeal submission
-    console.log("Creating DocuSeal submission with template ID:", contract.docusealTemplateId)
+    console.log(
+        "Creating DocuSeal submission with template ID:",
+        contract.docusealTemplateId
+    )
     console.log("Submitters:", parties)
-    
+
     const submission = await docuseal.createSubmission({
         template_id: parseInt(contract.docusealTemplateId),
         send_email: false, // We'll handle this manually
@@ -163,12 +176,12 @@ export async function createDocusealSubmission(contractId: string) {
             {
                 role: "First Party",
                 email: parties.initiator.email,
-                name: parties.initiator.name,
+                name: parties.initiator.name
             },
             {
-                role: "Second Party", 
+                role: "Second Party",
                 email: parties.recipient.email,
-                name: parties.recipient.name,
+                name: parties.recipient.name
             }
         ]
     })
@@ -179,17 +192,18 @@ export async function createDocusealSubmission(contractId: string) {
         .set({
             docusealSubmissionId: submission.id.toString(),
             status: "pending_signature",
-            updatedAt: new Date(),
+            updatedAt: new Date()
         })
         .where(eq(contracts.id, contractId))
 
     console.log("DocuSeal submission response:", submission)
-    
+
     // Store embed URLs for both submitters
-    const submitterEmbedUrls = submission.submitters?.reduce((acc: any, submitter: any) => {
-        acc[submitter.email] = submitter.embed_src
-        return acc
-    }, {}) || {}
+    const submitterEmbedUrls =
+        submission.submitters?.reduce((acc: any, submitter: any) => {
+            acc[submitter.email] = submitter.embed_src
+            return acc
+        }, {}) || {}
 
     // Update contract with submission info and embed URLs
     await db
@@ -199,10 +213,10 @@ export async function createDocusealSubmission(contractId: string) {
                 ...contractData,
                 submitterEmbedUrls
             },
-            updatedAt: new Date(),
+            updatedAt: new Date()
         })
         .where(eq(contracts.id, contractId))
-    
+
     return {
         submissionId: submission.id,
         submitterEmbedUrls
@@ -225,12 +239,12 @@ export async function getContractStatus(contractId: string) {
             const submission = await docuseal.getSubmission(
                 parseInt(contract.docusealSubmissionId)
             )
-            
+
             // Update local status based on DocuSeal status
             let newStatus = contract.status
             if (submission.completed_at) {
                 newStatus = "completed"
-            } else if (submission.submitters?.some(s => s.completed_at)) {
+            } else if (submission.submitters?.some((s) => s.completed_at)) {
                 newStatus = "in_progress"
             }
 
@@ -239,9 +253,11 @@ export async function getContractStatus(contractId: string) {
                     .update(contracts)
                     .set({
                         status: newStatus as any,
-                        signedAt: submission.completed_at ? new Date(submission.completed_at) : null,
+                        signedAt: submission.completed_at
+                            ? new Date(submission.completed_at)
+                            : null,
                         documentUrl: submission.audit_log_url,
-                        updatedAt: new Date(),
+                        updatedAt: new Date()
                     })
                     .where(eq(contracts.id, contractId))
             }
@@ -249,7 +265,7 @@ export async function getContractStatus(contractId: string) {
             return {
                 ...contract,
                 status: newStatus,
-                docusealStatus: submission,
+                docusealStatus: submission
             }
         } catch (error) {
             console.error("Error fetching DocuSeal submission:", error)
@@ -265,7 +281,7 @@ export async function getUserContracts(userId: string) {
             contract: contracts,
             listing: {
                 title: listings.title,
-                listingType: listings.listingType,
+                listingType: listings.listingType
             }
         })
         .from(contracts)
@@ -287,7 +303,11 @@ export async function downloadSignedContract(contractId: string) {
         .from(contracts)
         .where(eq(contracts.id, contractId))
 
-    if (!contract || !contract.docusealSubmissionId || contract.status !== "completed") {
+    if (
+        !contract ||
+        !contract.docusealSubmissionId ||
+        contract.status !== "completed"
+    ) {
         throw new Error("Contract not found or not completed")
     }
 
@@ -310,7 +330,10 @@ export async function downloadSignedContract(contractId: string) {
     }
 }
 
-export async function sendFirstPartySignedEmail(contractId: string, signerEmail: string) {
+export async function sendFirstPartySignedEmail(
+    contractId: string,
+    signerEmail: string
+) {
     try {
         const [contract] = await db
             .select()
@@ -325,15 +348,23 @@ export async function sendFirstPartySignedEmail(contractId: string, signerEmail:
         const contractData = contract.contractData as ContractData
 
         // Find the signer and recipient
-        const signer = parties.initiator.email === signerEmail ? parties.initiator : parties.recipient
-        const recipient = parties.initiator.email === signerEmail ? parties.recipient : parties.initiator
+        const signer =
+            parties.initiator.email === signerEmail
+                ? parties.initiator
+                : parties.recipient
+        const recipient =
+            parties.initiator.email === signerEmail
+                ? parties.recipient
+                : parties.initiator
 
         if (!signer) {
             throw new Error("Signer not found in contract parties")
         }
 
         // Import email template
-        const { ContractFirstSignatureEmail } = await import("@/components/emails/contract-first-signature-template")
+        const { ContractFirstSignatureEmail } = await import(
+            "@/components/emails/contract-first-signature-template"
+        )
         const { renderAsync } = await import("@react-email/render")
         const { Resend } = await import("resend")
 
@@ -350,9 +381,10 @@ export async function sendFirstPartySignedEmail(contractId: string, signerEmail:
         )
 
         const { error } = await resend.emails.send({
-            from: process.env.MAIL_FROM || "noreply@doctonext.com",
+            from: process.env.MAIL_FROM || "noreply@doctonext.fr",
             to: signerEmail,
-            subject: "Signature confirmée ✅ - Contrat en attente de la deuxième signature",
+            subject:
+                "Signature confirmée ✅ - Contrat en attente de la deuxième signature",
             html: emailHtml
         })
 
@@ -369,7 +401,10 @@ export async function sendFirstPartySignedEmail(contractId: string, signerEmail:
     }
 }
 
-export async function sendSecondPartyNotificationEmail(contractId: string, recipientEmail: string) {
+export async function sendSecondPartyNotificationEmail(
+    contractId: string,
+    recipientEmail: string
+) {
     try {
         const [contract] = await db
             .select()
@@ -384,15 +419,23 @@ export async function sendSecondPartyNotificationEmail(contractId: string, recip
         const contractData = contract.contractData as ContractData
 
         // Find the recipient and signer
-        const recipient = parties.initiator.email === recipientEmail ? parties.initiator : parties.recipient
-        const signer = parties.initiator.email === recipientEmail ? parties.recipient : parties.initiator
+        const recipient =
+            parties.initiator.email === recipientEmail
+                ? parties.initiator
+                : parties.recipient
+        const signer =
+            parties.initiator.email === recipientEmail
+                ? parties.recipient
+                : parties.initiator
 
         if (!recipient) {
             throw new Error("Recipient not found in contract parties")
         }
 
         // Import email template
-        const { ContractAwaitingSignatureEmail } = await import("@/components/emails/contract-awaiting-signature-template")
+        const { ContractAwaitingSignatureEmail } = await import(
+            "@/components/emails/contract-awaiting-signature-template"
+        )
         const { renderAsync } = await import("@react-email/render")
         const { Resend } = await import("resend")
 
@@ -411,14 +454,17 @@ export async function sendSecondPartyNotificationEmail(contractId: string, recip
         )
 
         const { error } = await resend.emails.send({
-            from: process.env.MAIL_FROM || "noreply@doctonext.com",
+            from: process.env.MAIL_FROM || "noreply@doctonext.fr",
             to: recipientEmail,
             subject: `📋 Signature requise - Contrat de ${signer.name}`,
             html: emailHtml
         })
 
         if (error) {
-            console.error("Error sending second party notification email:", error)
+            console.error(
+                "Error sending second party notification email:",
+                error
+            )
             return false
         }
 
@@ -445,45 +491,54 @@ export async function sendContractCompletedEmail(contractId: string) {
         const contractData = contract.contractData as ContractData
 
         // Import email template
-        const { ContractCompletedEmail } = await import("@/components/emails/contract-completed-template")
+        const { ContractCompletedEmail } = await import(
+            "@/components/emails/contract-completed-template"
+        )
         const { renderAsync } = await import("@react-email/render")
         const { Resend } = await import("resend")
 
         const resend = new Resend(process.env.RESEND_API_KEY)
 
         // Send completion email to both parties
-        const emailPromises = [parties.initiator, parties.recipient].map(async (party) => {
-            const emailHtml = await renderAsync(
-                ContractCompletedEmail({
-                    recipientName: party.name,
-                    contractType: contract.contractType,
-                    listingTitle: contractData.listingTitle,
-                    location: contractData.location,
-                    contractId: contractId,
-                    documentUrl: contract.documentUrl || undefined
+        const emailPromises = [parties.initiator, parties.recipient].map(
+            async (party) => {
+                const emailHtml = await renderAsync(
+                    ContractCompletedEmail({
+                        recipientName: party.name,
+                        contractType: contract.contractType,
+                        listingTitle: contractData.listingTitle,
+                        location: contractData.location,
+                        contractId: contractId,
+                        documentUrl: contract.documentUrl || undefined
+                    })
+                )
+
+                const { error } = await resend.emails.send({
+                    from: process.env.MAIL_FROM || "noreply@doctonext.com",
+                    to: party.email,
+                    subject: "🎉 Contrat finalisé avec succès !",
+                    html: emailHtml
                 })
-            )
 
-            const { error } = await resend.emails.send({
-                from: process.env.MAIL_FROM || "noreply@doctonext.com",
-                to: party.email,
-                subject: "🎉 Contrat finalisé avec succès !",
-                html: emailHtml
-            })
+                if (error) {
+                    console.error(
+                        `Error sending completion email to ${party.email}:`,
+                        error
+                    )
+                    return false
+                }
 
-            if (error) {
-                console.error(`Error sending completion email to ${party.email}:`, error)
-                return false
+                console.log(`Contract completion email sent to: ${party.email}`)
+                return true
             }
-
-            console.log(`Contract completion email sent to: ${party.email}`)
-            return true
-        })
+        )
 
         const results = await Promise.all(emailPromises)
         const successCount = results.filter(Boolean).length
 
-        console.log(`Contract completion emails: ${successCount}/2 sent successfully`)
+        console.log(
+            `Contract completion emails: ${successCount}/2 sent successfully`
+        )
         return successCount > 0
     } catch (error) {
         console.error("Error sending contract completion emails:", error)

@@ -12,26 +12,32 @@ interface MessageInputProps {
     onMessageSent: () => void
 }
 
-export function MessageInput({ conversationId, onMessageSent }: MessageInputProps) {
+export function MessageInput({
+    conversationId,
+    onMessageSent
+}: MessageInputProps) {
     const [content, setContent] = useState("")
     const [isSending, setIsSending] = useState(false)
     const queryClient = useQueryClient()
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
-        
+
         if (!content.trim() || isSending) return
 
         setIsSending(true)
 
         try {
-            const response = await fetch(`/api/conversations/${conversationId}/messages`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({ content: content.trim() }),
-            })
+            const response = await fetch(
+                `/api/conversations/${conversationId}/messages`,
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ content: content.trim() })
+                }
+            )
 
             const result = await response.json()
 
@@ -39,7 +45,9 @@ export function MessageInput({ conversationId, onMessageSent }: MessageInputProp
                 setContent("")
                 onMessageSent()
                 // Update unread count for other users
-                queryClient.invalidateQueries({ queryKey: ["messages", "unread-count"] })
+                queryClient.invalidateQueries({
+                    queryKey: ["messages", "unread-count"]
+                })
                 toast.success("Message envoyé")
             } else {
                 toast.error(result.error || "Erreur lors de l'envoi")
@@ -67,7 +75,7 @@ export function MessageInput({ conversationId, onMessageSent }: MessageInputProp
                     onChange={(e) => setContent(e.target.value)}
                     onKeyPress={handleKeyPress}
                     placeholder="Écrivez votre message..."
-                    className="flex-1 min-h-[60px] max-h-32 resize-none"
+                    className="max-h-32 min-h-[60px] flex-1 resize-none"
                     disabled={isSending}
                 />
                 <Button

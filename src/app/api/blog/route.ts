@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server"
+import { type NextRequest, NextResponse } from "next/server"
 import { db } from "@/database/db"
 import { blogArticles } from "@/database/schema"
 import { eq, desc, and, ilike, or, sql } from "drizzle-orm"
@@ -26,16 +26,17 @@ export async function GET(request: NextRequest) {
         const limit = parseInt(searchParams.get("limit") || "12")
         const search = searchParams.get("search")
         const category = searchParams.get("category")
-        const includeUnpublished = searchParams.get("includeUnpublished") === "true"
-        
+        const includeUnpublished =
+            searchParams.get("includeUnpublished") === "true"
+
         const offset = (page - 1) * limit
-        
+
         // Check if user is admin for unpublished content
         const user = await getCurrentUser()
         const isAdmin = (user as any)?.role === "admin"
-        
-        let conditions = []
-        
+
+        const conditions = []
+
         // Only show published articles unless user is admin and specifically requests unpublished
         if (!includeUnpublished) {
             conditions.push(eq(blogArticles.isPublished, true))
@@ -44,7 +45,7 @@ export async function GET(request: NextRequest) {
             conditions.push(eq(blogArticles.isPublished, true))
         }
         // If includeUnpublished is true AND user is admin, show all articles (no filter)
-        
+
         // Search functionality
         if (search) {
             conditions.push(
@@ -55,34 +56,40 @@ export async function GET(request: NextRequest) {
                 )
             )
         }
-        
+
         // Category filtering (using tags)
         if (category) {
             // Use SQL array contains operator for PostgreSQL
-            conditions.push(sql`${blogArticles.tags} @> ARRAY[${category}]::text[]`)
+            conditions.push(
+                sql`${blogArticles.tags} @> ARRAY[${category}]::text[]`
+            )
         }
-        
-        const whereClause = conditions.length > 0 ? and(...conditions) : undefined
-        
+
+        const whereClause =
+            conditions.length > 0 ? and(...conditions) : undefined
+
         const articles = await db
             .select()
             .from(blogArticles)
             .where(whereClause)
-            .orderBy(desc(blogArticles.publishedAt), desc(blogArticles.createdAt))
+            .orderBy(
+                desc(blogArticles.publishedAt),
+                desc(blogArticles.createdAt)
+            )
             .limit(limit)
             .offset(offset)
-        
+
         // Get total count for pagination
         const totalResult = await db
             .select({ count: blogArticles.id })
             .from(blogArticles)
             .where(whereClause)
-        
+
         const total = totalResult.length
         const totalPages = Math.ceil(total / limit)
-        
+
         // Add reading time to articles and transform field names
-        const articlesWithReadingTime = articles.map(article => ({
+        const articlesWithReadingTime = articles.map((article) => ({
             id: article.id,
             title: article.title,
             slug: article.slug,
@@ -99,7 +106,7 @@ export async function GET(request: NextRequest) {
             updatedAt: article.updatedAt,
             readingTime: readingTime(article.content).text
         }))
-        
+
         return NextResponse.json({
             articles: articlesWithReadingTime,
             pagination: {
@@ -111,7 +118,6 @@ export async function GET(request: NextRequest) {
                 hasPreviousPage: page > 1
             }
         })
-        
     } catch (error) {
         console.error("Error fetching blog articles:", error)
         return NextResponse.json(
@@ -125,16 +131,16 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
     try {
         const user = await requireAdmin()
-        
+
         const body = await request.json()
         const validatedData = createBlogSchema.parse(body)
-        
+
         // Generate slug from title
-        const baseSlug = slugify(validatedData.title, { 
-            lower: true, 
-            strict: true 
+        const baseSlug = slugify(validatedData.title, {
+            lower: true,
+            strict: true
         })
-        
+
         // Ensure slug is unique
         let slug = baseSlug
         let counter = 1
@@ -144,21 +150,23 @@ export async function POST(request: NextRequest) {
                 .from(blogArticles)
                 .where(eq(blogArticles.slug, slug))
                 .limit(1)
-            
+
             if (existing.length === 0) break
-            
+
             slug = `${baseSlug}-${counter}`
             counter++
         }
-        
+
         // Generate excerpt if not provided
         let excerpt = validatedData.excerpt
         if (!excerpt) {
             // Extract first 200 characters of content (stripped of HTML)
-            const plainText = validatedData.content.replace(/<[^>]*>/g, '')
-            excerpt = plainText.substring(0, 200) + (plainText.length > 200 ? '...' : '')
+            const plainText = validatedData.content.replace(/<[^>]*>/g, "")
+            excerpt =
+                plainText.substring(0, 200) +
+                (plainText.length > 200 ? "..." : "")
         }
-        
+
         const articleData = {
             id: crypto.randomUUID(),
             title: validatedData.title,
@@ -175,14 +183,13 @@ export async function POST(request: NextRequest) {
             createdAt: new Date(),
             updatedAt: new Date()
         }
-        
+
         const [newArticle] = await db
             .insert(blogArticles)
             .values(articleData)
             .returning()
-        
+
         return NextResponse.json(newArticle, { status: 201 })
-        
     } catch (error) {
         if (error instanceof z.ZodError) {
             return NextResponse.json(
@@ -190,7 +197,7 @@ export async function POST(request: NextRequest) {
                 { status: 400 }
             )
         }
-        
+
         console.error("Error creating blog article:", error)
         return NextResponse.json(
             { error: "Failed to create article" },

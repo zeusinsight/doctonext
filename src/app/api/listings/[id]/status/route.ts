@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server"
+import { type NextRequest, NextResponse } from "next/server"
 import { auth } from "@/lib/auth"
 import { updateListingStatus } from "@/lib/actions/listings"
 import { listingStatusSchema } from "@/lib/validations/listing"
@@ -22,12 +22,15 @@ export async function PATCH(
         }
 
         const body = await request.json()
-        
+
         // Validate request body
         const validatedData = listingStatusSchema.parse(body)
 
         // Update listing status using server action
-        const result = await updateListingStatus((await params).id, validatedData.status)
+        const result = await updateListingStatus(
+            (await params).id,
+            validatedData.status
+        )
 
         if (result.success) {
             return NextResponse.json({
@@ -45,7 +48,7 @@ export async function PATCH(
         }
     } catch (error) {
         console.error("Error updating listing status:", error)
-        
+
         if (error instanceof Error) {
             return NextResponse.json(
                 { success: false, error: error.message },
@@ -54,7 +57,10 @@ export async function PATCH(
         }
 
         return NextResponse.json(
-            { success: false, error: "Erreur lors de la mise à jour du statut" },
+            {
+                success: false,
+                error: "Erreur lors de la mise à jour du statut"
+            },
             { status: 500 }
         )
     }

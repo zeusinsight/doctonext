@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server"
+import { type NextRequest, NextResponse } from "next/server"
 import { auth } from "@/lib/auth"
 import { headers } from "next/headers"
 import { createContract } from "@/lib/services/contract-service"
@@ -8,7 +8,7 @@ import { eq } from "drizzle-orm"
 
 export async function POST(req: NextRequest) {
     // Only allow this in development
-    if (process.env.NODE_ENV !== 'development') {
+    if (process.env.NODE_ENV !== "development") {
         return NextResponse.json(
             { error: "Not available in production" },
             { status: 403 }
@@ -16,8 +16,8 @@ export async function POST(req: NextRequest) {
     }
 
     try {
-        const session = await auth.api.getSession({ 
-            headers: await headers() 
+        const session = await auth.api.getSession({
+            headers: await headers()
         })
 
         if (!session) {
@@ -48,10 +48,7 @@ export async function POST(req: NextRequest) {
 
         // Ensure the current user is the sender
         if (session.user.id !== senderId) {
-            return NextResponse.json(
-                { error: "Unauthorized" },
-                { status: 403 }
-            )
+            return NextResponse.json({ error: "Unauthorized" }, { status: 403 })
         }
 
         // Create contract record
@@ -62,7 +59,7 @@ export async function POST(req: NextRequest) {
             recipientId,
             contractType,
             templateId,
-            docusealTemplateId,
+            docusealTemplateId
         })
 
         // DEV: Immediately mark as paid and ready for signing
@@ -71,7 +68,7 @@ export async function POST(req: NextRequest) {
             .set({
                 paidAt: new Date(),
                 status: "pending_signature",
-                updatedAt: new Date(),
+                updatedAt: new Date()
             })
             .where(eq(contracts.id, contract.id))
 
@@ -79,7 +76,6 @@ export async function POST(req: NextRequest) {
             contractId: contract.id,
             message: "Contract created and marked as paid (dev mode)"
         })
-
     } catch (error) {
         console.error("Dev contract creation error:", error)
         return NextResponse.json(

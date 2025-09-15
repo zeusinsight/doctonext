@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server"
+import { type NextRequest, NextResponse } from "next/server"
 import { db } from "@/database/db"
 import { blogArticles } from "@/database/schema"
 import { eq, and, ne } from "drizzle-orm"
@@ -14,28 +14,28 @@ export async function GET(
         const { slug } = await params
         const user = await getCurrentUser()
         const isAdmin = (user as any)?.role === "admin"
-        
+
         // Build where conditions
-        let conditions = [eq(blogArticles.slug, slug)]
-        
+        const conditions = [eq(blogArticles.slug, slug)]
+
         // Only show published articles unless user is admin
         if (!isAdmin) {
             conditions.push(eq(blogArticles.isPublished, true))
         }
-        
+
         const [article] = await db
             .select()
             .from(blogArticles)
             .where(and(...conditions))
             .limit(1)
-        
+
         if (!article) {
             return NextResponse.json(
                 { error: "Article not found" },
                 { status: 404 }
             )
         }
-        
+
         // Get related articles (same tags, excluding current article)
         const relatedArticles = await db
             .select({
@@ -55,16 +55,15 @@ export async function GET(
                 )
             )
             .limit(3)
-        
+
         // Add reading time
         const articleWithReadingTime = {
             ...article,
             readingTime: readingTime(article.content).text,
             relatedArticles
         }
-        
+
         return NextResponse.json(articleWithReadingTime)
-        
     } catch (error) {
         console.error("Error fetching blog article:", error)
         return NextResponse.json(

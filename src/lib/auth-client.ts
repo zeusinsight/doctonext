@@ -10,7 +10,7 @@ export const authClient = createAuthClient({
     ],
     onError: (ctx: any) => {
         // Handle the error
-        if(ctx.error.status === 403) {
+        if (ctx.error.status === 403) {
             toast.error("Veuillez vérifier votre adresse email")
         } else {
             toast.error(ctx.error.message)

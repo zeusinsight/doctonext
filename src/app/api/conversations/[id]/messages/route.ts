@@ -17,7 +17,10 @@ export async function GET(
         })
 
         if (!session) {
-            return NextResponse.json({ error: "Authentication requise" }, { status: 401 })
+            return NextResponse.json(
+                { error: "Authentication requise" },
+                { status: 401 }
+            )
         }
 
         const conversationId = (await params).id
@@ -38,7 +41,10 @@ export async function GET(
             .limit(1)
 
         if (conversation.length === 0) {
-            return NextResponse.json({ error: "Conversation non trouvée" }, { status: 404 })
+            return NextResponse.json(
+                { error: "Conversation non trouvée" },
+                { status: 404 }
+            )
         }
 
         // Get messages with sender info
@@ -85,7 +91,10 @@ export async function POST(
         })
 
         if (!session) {
-            return NextResponse.json({ error: "Authentication requise" }, { status: 401 })
+            return NextResponse.json(
+                { error: "Authentication requise" },
+                { status: 401 }
+            )
         }
 
         const conversationId = (await params).id
@@ -114,13 +123,17 @@ export async function POST(
             .limit(1)
 
         if (conversation.length === 0) {
-            return NextResponse.json({ error: "Conversation non trouvée" }, { status: 404 })
+            return NextResponse.json(
+                { error: "Conversation non trouvée" },
+                { status: 404 }
+            )
         }
 
         const conv = conversation[0]
-        const recipientId = conv.participant1Id === session.user.id 
-            ? conv.participant2Id 
-            : conv.participant1Id
+        const recipientId =
+            conv.participant1Id === session.user.id
+                ? conv.participant2Id
+                : conv.participant1Id
 
         // Create message
         const [newMessage] = await db
@@ -169,7 +182,7 @@ export async function POST(
             .limit(1)
 
         let listingTitle: string | undefined
-        
+
         // Get listing title if conversation is about a listing
         if (conv.listingId) {
             const [listing] = await db
@@ -177,7 +190,7 @@ export async function POST(
                 .from(listings)
                 .where(eq(listings.id, conv.listingId))
                 .limit(1)
-            
+
             listingTitle = listing?.title
         }
 
@@ -191,8 +204,11 @@ export async function POST(
                 content.trim(),
                 conversationId,
                 listingTitle
-            ).catch(error => {
-                console.error("Failed to send message notification email:", error)
+            ).catch((error) => {
+                console.error(
+                    "Failed to send message notification email:",
+                    error
+                )
             })
         }
 

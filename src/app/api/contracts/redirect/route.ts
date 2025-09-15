@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server"
+import { type NextRequest, NextResponse } from "next/server"
 import { auth } from "@/lib/auth"
 import { headers } from "next/headers"
 import { db } from "@/database/db"
@@ -7,8 +7,8 @@ import { eq } from "drizzle-orm"
 
 export async function GET(req: NextRequest) {
     try {
-        const session = await auth.api.getSession({ 
-            headers: await headers() 
+        const session = await auth.api.getSession({
+            headers: await headers()
         })
 
         const { searchParams } = new URL(req.url)
@@ -46,8 +46,8 @@ export async function GET(req: NextRequest) {
         // Check if user has permission to access this contract
         const userEmail = session.user.email
         const parties = contract.parties as any
-        const hasPermission = 
-            parties.initiator.email === userEmail || 
+        const hasPermission =
+            parties.initiator.email === userEmail ||
             parties.recipient.email === userEmail
 
         if (!hasPermission) {
@@ -59,20 +59,22 @@ export async function GET(req: NextRequest) {
 
         // Build redirect URL based on contract status and user role
         let redirectUrl = "/dashboard/messages"
-        
+
         if (conversationId) {
             redirectUrl = `/dashboard/messages/${conversationId}`
         }
 
         // Add contract resume parameter if contract is still in signing process
-        if (contract.status === "pending_signature" || contract.status === "in_progress") {
+        if (
+            contract.status === "pending_signature" ||
+            contract.status === "in_progress"
+        ) {
             const separator = redirectUrl.includes("?") ? "&" : "?"
             redirectUrl += `${separator}contract_resume=${contractId}`
         }
 
         // Redirect to the appropriate page
         return NextResponse.redirect(new URL(redirectUrl, req.url))
-
     } catch (error) {
         console.error("Contract redirect error:", error)
         return NextResponse.json(

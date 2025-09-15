@@ -1,9 +1,8 @@
-import { NextRequest, NextResponse } from "next/server"
+import { type NextRequest, NextResponse } from "next/server"
 import Stripe from "stripe"
 import { db } from "@/database/db"
 import { contracts } from "@/database/schema"
 import { eq } from "drizzle-orm"
-import { headers } from "next/headers"
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!)
 
@@ -38,11 +37,15 @@ export async function POST(req: NextRequest) {
         // Handle the event
         switch (event.type) {
             case "checkout.session.completed":
-                await handleCheckoutSessionCompleted(event.data.object as Stripe.Checkout.Session)
+                await handleCheckoutSessionCompleted(
+                    event.data.object as Stripe.Checkout.Session
+                )
                 break
 
             case "payment_intent.succeeded":
-                await handlePaymentIntentSucceeded(event.data.object as Stripe.PaymentIntent)
+                await handlePaymentIntentSucceeded(
+                    event.data.object as Stripe.PaymentIntent
+                )
                 break
 
             default:
@@ -50,7 +53,6 @@ export async function POST(req: NextRequest) {
         }
 
         return NextResponse.json({ received: true })
-
     } catch (error) {
         console.error("Stripe webhook error:", error)
         return NextResponse.json(
@@ -60,7 +62,9 @@ export async function POST(req: NextRequest) {
     }
 }
 
-async function handleCheckoutSessionCompleted(session: Stripe.Checkout.Session) {
+async function handleCheckoutSessionCompleted(
+    session: Stripe.Checkout.Session
+) {
     const contractId = session.metadata?.contractId
 
     if (!contractId) {
@@ -76,7 +80,7 @@ async function handleCheckoutSessionCompleted(session: Stripe.Checkout.Session) 
                 stripePaymentIntentId: session.payment_intent as string,
                 paidAt: new Date(),
                 status: "pending_signature",
-                updatedAt: new Date(),
+                updatedAt: new Date()
             })
             .where(eq(contracts.id, contractId))
 
@@ -84,13 +88,14 @@ async function handleCheckoutSessionCompleted(session: Stripe.Checkout.Session) 
 
         // TODO: Send notification to both parties that contract is ready for signing
         // await sendContractReadyEmail(contractId)
-
     } catch (error) {
         console.error("Error updating contract after payment:", error)
     }
 }
 
-async function handlePaymentIntentSucceeded(paymentIntent: Stripe.PaymentIntent) {
+async function handlePaymentIntentSucceeded(
+    paymentIntent: Stripe.PaymentIntent
+) {
     console.log("Payment intent succeeded:", paymentIntent.id)
     // Additional logic if needed
 }

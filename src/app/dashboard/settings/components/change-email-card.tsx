@@ -1,7 +1,13 @@
 "use client"
 
 import { useState } from "react"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle
+} from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -28,7 +34,7 @@ export function ChangeEmailCard({ className }: ChangeEmailCardProps) {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
-        
+
         if (!email.trim()) {
             toast.error("L'adresse email ne peut pas être vide")
             return
@@ -51,14 +57,18 @@ export function ChangeEmailCard({ className }: ChangeEmailCardProps) {
                 newEmail: email.trim(),
                 callbackURL: "/dashboard/settings"
             })
-            
+
             setPendingEmail(email.trim())
             setEmail("")
-            toast.success("Email de vérification envoyé à votre nouvelle adresse")
+            toast.success(
+                "Email de vérification envoyé à votre nouvelle adresse"
+            )
         } catch (error: any) {
             console.error("Error changing email:", error)
             if (error.message?.includes("already exists")) {
-                toast.error("Cette adresse email est déjà utilisée par un autre compte")
+                toast.error(
+                    "Cette adresse email est déjà utilisée par un autre compte"
+                )
             } else {
                 toast.error("Erreur lors du changement d'email")
             }
@@ -89,23 +99,34 @@ export function ChangeEmailCard({ className }: ChangeEmailCardProps) {
             <CardHeader>
                 <CardTitle>Adresse email</CardTitle>
                 <CardDescription>
-                    Modifiez votre adresse email. Un email de vérification sera envoyé à votre nouvelle adresse.
+                    Modifiez votre adresse email. Un email de vérification sera
+                    envoyé à votre nouvelle adresse.
                 </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
                 <div className="flex items-center gap-3">
                     <div className="flex-1">
-                        <Label className="text-sm font-medium">Email actuel</Label>
-                        <div className="flex items-center gap-2 mt-1">
-                            <span className="text-sm text-gray-600">{session?.user?.email}</span>
+                        <Label className="font-medium text-sm">
+                            Email actuel
+                        </Label>
+                        <div className="mt-1 flex items-center gap-2">
+                            <span className="text-gray-600 text-sm">
+                                {session?.user?.email}
+                            </span>
                             {session?.user?.emailVerified ? (
-                                <Badge variant="secondary" className="text-green-700 bg-green-50">
-                                    <RiCheckLine className="w-3 h-3 mr-1" />
+                                <Badge
+                                    variant="secondary"
+                                    className="bg-green-50 text-green-700"
+                                >
+                                    <RiCheckLine className="mr-1 h-3 w-3" />
                                     Vérifié
                                 </Badge>
                             ) : (
-                                <Badge variant="secondary" className="text-amber-700 bg-amber-50">
-                                    <RiAlertLine className="w-3 h-3 mr-1" />
+                                <Badge
+                                    variant="secondary"
+                                    className="bg-amber-50 text-amber-700"
+                                >
+                                    <RiAlertLine className="mr-1 h-3 w-3" />
                                     Non vérifié
                                 </Badge>
                             )}
@@ -114,16 +135,17 @@ export function ChangeEmailCard({ className }: ChangeEmailCardProps) {
                 </div>
 
                 {pendingEmail && (
-                    <div className="p-3 bg-blue-50 border border-blue-200 rounded-lg">
-                        <div className="flex items-center gap-2 mb-2">
-                            <RiAlertLine className="w-4 h-4 text-blue-600" />
-                            <span className="text-sm font-medium text-blue-900">
+                    <div className="rounded-lg border border-blue-200 bg-blue-50 p-3">
+                        <div className="mb-2 flex items-center gap-2">
+                            <RiAlertLine className="h-4 w-4 text-blue-600" />
+                            <span className="font-medium text-blue-900 text-sm">
                                 Changement d'email en attente
                             </span>
                         </div>
-                        <p className="text-sm text-blue-700 mb-3">
-                            Un email de vérification a été envoyé à <strong>{pendingEmail}</strong>. 
-                            Cliquez sur le lien dans l'email pour confirmer le changement.
+                        <p className="mb-3 text-blue-700 text-sm">
+                            Un email de vérification a été envoyé à{" "}
+                            <strong>{pendingEmail}</strong>. Cliquez sur le lien
+                            dans l'email pour confirmer le changement.
                         </p>
                         <Button
                             type="button"
@@ -139,7 +161,9 @@ export function ChangeEmailCard({ className }: ChangeEmailCardProps) {
 
                 <form onSubmit={handleSubmit} className="space-y-4">
                     <div className="space-y-2">
-                        <Label htmlFor="new-email">Nouvelle adresse email</Label>
+                        <Label htmlFor="new-email">
+                            Nouvelle adresse email
+                        </Label>
                         <Input
                             id="new-email"
                             type="email"
@@ -150,16 +174,23 @@ export function ChangeEmailCard({ className }: ChangeEmailCardProps) {
                             className="max-w-md"
                         />
                     </div>
-                    
+
                     <div className="flex gap-2">
                         <Button
                             type="submit"
-                            disabled={isLoading || !email.trim() || !isValidEmail(email) || email === session?.user?.email}
+                            disabled={
+                                isLoading ||
+                                !email.trim() ||
+                                !isValidEmail(email) ||
+                                email === session?.user?.email
+                            }
                         >
-                            {isLoading && <RiLoader4Line className="w-4 h-4 mr-2 animate-spin" />}
+                            {isLoading && (
+                                <RiLoader4Line className="mr-2 h-4 w-4 animate-spin" />
+                            )}
                             {isLoading ? "Envoi..." : "Changer l'email"}
                         </Button>
-                        
+
                         {email && (
                             <Button
                                 type="button"

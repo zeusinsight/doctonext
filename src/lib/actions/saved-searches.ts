@@ -6,7 +6,7 @@ import { savedSearches, alertNotifications } from "@/database/schema"
 import { eq, and, desc } from "drizzle-orm"
 import { headers } from "next/headers"
 import { revalidatePath } from "next/cache"
-import { ListingFilters } from "@/components/listings/listings-filter-modal"
+import type { ListingFilters } from "@/components/listings/listings-filter-modal"
 
 export async function createSavedSearch(
     name: string,
@@ -35,24 +35,33 @@ export async function createSavedSearch(
             .limit(1)
 
         if (existingSearch.length > 0) {
-            return { success: false, error: "Une recherche avec ce nom existe déjà" }
+            return {
+                success: false,
+                error: "Une recherche avec ce nom existe déjà"
+            }
         }
 
         // Create new saved search
-        const [newSearch] = await db.insert(savedSearches).values({
-            id: crypto.randomUUID(),
-            userId: session.user.id,
-            name,
-            searchCriteria,
-            emailAlertsEnabled,
-            isActive: true
-        }).returning()
+        const [newSearch] = await db
+            .insert(savedSearches)
+            .values({
+                id: crypto.randomUUID(),
+                userId: session.user.id,
+                name,
+                searchCriteria,
+                emailAlertsEnabled,
+                isActive: true
+            })
+            .returning()
 
         revalidatePath("/dashboard/saved-searches")
         return { success: true, data: newSearch }
     } catch (error) {
         console.error("Error creating saved search:", error)
-        return { success: false, error: "Échec de la sauvegarde de la recherche" }
+        return {
+            success: false,
+            error: "Échec de la sauvegarde de la recherche"
+        }
     }
 }
 
@@ -75,7 +84,11 @@ export async function getUserSavedSearches() {
         return { success: true, data: searches }
     } catch (error) {
         console.error("Error fetching saved searches:", error)
-        return { success: false, error: "Échec de la récupération des recherches", data: [] }
+        return {
+            success: false,
+            error: "Échec de la récupération des recherches",
+            data: []
+        }
     }
 }
 
@@ -127,7 +140,10 @@ export async function updateSavedSearch(
         return { success: true, data: updatedSearch }
     } catch (error) {
         console.error("Error updating saved search:", error)
-        return { success: false, error: "Échec de la mise à jour de la recherche" }
+        return {
+            success: false,
+            error: "Échec de la mise à jour de la recherche"
+        }
     }
 }
 
@@ -160,7 +176,10 @@ export async function deleteSavedSearch(id: string) {
         return { success: true }
     } catch (error) {
         console.error("Error deleting saved search:", error)
-        return { success: false, error: "Échec de la suppression de la recherche" }
+        return {
+            success: false,
+            error: "Échec de la suppression de la recherche"
+        }
     }
 }
 

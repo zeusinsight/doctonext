@@ -16,19 +16,19 @@ interface ContactSellerButtonProps {
     className?: string
 }
 
-export function ContactSellerButton({ 
-    listingId, 
-    sellerId, 
-    sellerName, 
+export function ContactSellerButton({
+    listingId,
+    sellerId,
+    sellerName,
     listingTitle,
-    className 
+    className
 }: ContactSellerButtonProps) {
     const [isCreatingConversation, setIsCreatingConversation] = useState(false)
     const router = useRouter()
 
     const { data: session } = useQuery({
         queryKey: ["auth", "session"],
-        queryFn: () => authClient.getSession(),
+        queryFn: () => authClient.getSession()
     })
 
     const handleContact = async () => {
@@ -49,12 +49,12 @@ export function ContactSellerButton({
             const response = await fetch("/api/conversations", {
                 method: "POST",
                 headers: {
-                    "Content-Type": "application/json",
+                    "Content-Type": "application/json"
                 },
                 body: JSON.stringify({
                     listingId,
-                    participantId: sellerId,
-                }),
+                    participantId: sellerId
+                })
             })
 
             const result = await response.json()
@@ -65,11 +65,14 @@ export function ContactSellerButton({
                 } else {
                     toast.success(`Conversation créée avec ${sellerName}`)
                 }
-                
+
                 // Redirect to messages page
                 router.push("/dashboard/messages")
             } else {
-                toast.error(result.error || "Erreur lors de la création de la conversation")
+                toast.error(
+                    result.error ||
+                        "Erreur lors de la création de la conversation"
+                )
             }
         } catch (error) {
             console.error("Error creating conversation:", error)
@@ -81,21 +84,22 @@ export function ContactSellerButton({
 
     return (
         <>
-            <Button 
-                className={className || "w-full"} 
+            <Button
+                className={className || "w-full"}
                 size="lg"
                 onClick={handleContact}
                 disabled={isCreatingConversation}
             >
                 <MessageCircle className="mr-2 h-4 w-4" />
-                {isCreatingConversation ? "Création..." : "Contacter le vendeur"}
+                {isCreatingConversation
+                    ? "Création..."
+                    : "Contacter le vendeur"}
             </Button>
 
-            <p className="text-center text-xs text-muted-foreground">
-                {session?.data?.user 
-                    ? "Démarrez une conversation sécurisée" 
-                    : "Connectez-vous pour contacter le vendeur"
-                }
+            <p className="text-center text-muted-foreground text-xs">
+                {session?.data?.user
+                    ? "Démarrez une conversation sécurisée"
+                    : "Connectez-vous pour contacter le vendeur"}
             </p>
         </>
     )

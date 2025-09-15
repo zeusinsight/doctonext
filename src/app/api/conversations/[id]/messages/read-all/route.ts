@@ -15,7 +15,10 @@ export async function PATCH(
         })
 
         if (!session) {
-            return NextResponse.json({ error: "Authentication requise" }, { status: 401 })
+            return NextResponse.json(
+                { error: "Authentication requise" },
+                { status: 401 }
+            )
         }
 
         const conversationId = (await params).id
@@ -36,7 +39,10 @@ export async function PATCH(
             .limit(1)
 
         if (conversation.length === 0) {
-            return NextResponse.json({ error: "Conversation non trouvée" }, { status: 404 })
+            return NextResponse.json(
+                { error: "Conversation non trouvée" },
+                { status: 404 }
+            )
         }
 
         // Mark all messages in conversation as read (only messages where user is recipient)

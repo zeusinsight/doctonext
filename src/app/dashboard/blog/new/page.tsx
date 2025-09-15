@@ -3,17 +3,22 @@
 import { useState, useTransition } from "react"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
-import { requireAdmin } from "@/lib/auth-utils"
-import { ArticleEditor } from "@/components/blog/article-editor";
-import { Button } from "@/components/ui/button";
+import { ArticleEditor } from "@/components/blog/article-editor"
+import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Switch } from "@/components/ui/switch";
-import { Separator } from "@/components/ui/separator"
-import { ArrowLeft, Save, Eye, X, Upload, Image as ImageIcon } from "lucide-react"
+import { Switch } from "@/components/ui/switch"
+import {
+    ArrowLeft,
+    Save,
+    Eye,
+    X,
+    Upload,
+    Image as ImageIcon
+} from "lucide-react"
 import { toast } from "sonner"
 import { UploadButton } from "@uploadthing/react"
 import type { OurFileRouter } from "@/app/api/uploadthing/core"
@@ -50,7 +55,7 @@ export default function NewBlogArticlePage() {
     const [isPreviewMode, setIsPreviewMode] = useState(false)
     const [newTag, setNewTag] = useState("")
     const [isImageUploading, setIsImageUploading] = useState(false)
-    
+
     const [form, setForm] = useState<NewArticleForm>({
         title: "",
         content: "",
@@ -63,7 +68,7 @@ export default function NewBlogArticlePage() {
     })
 
     const updateForm = (field: keyof NewArticleForm, value: any) => {
-        setForm(prev => ({ ...prev, [field]: value }))
+        setForm((prev) => ({ ...prev, [field]: value }))
     }
 
     const addTag = (tag: string) => {
@@ -75,7 +80,10 @@ export default function NewBlogArticlePage() {
     }
 
     const removeTag = (tagToRemove: string) => {
-        updateForm("tags", form.tags.filter(tag => tag !== tagToRemove))
+        updateForm(
+            "tags",
+            form.tags.filter((tag) => tag !== tagToRemove)
+        )
     }
 
     const handleSubmit = async (asDraft = false) => {
@@ -105,16 +113,23 @@ export default function NewBlogArticlePage() {
                 }
 
                 const article = await response.json()
-                
+
                 toast.success(
-                    asDraft ? "Article sauvegardé en brouillon" : 
-                    form.isPublished ? "Article publié avec succès" : "Article créé"
+                    asDraft
+                        ? "Article sauvegardé en brouillon"
+                        : form.isPublished
+                          ? "Article publié avec succès"
+                          : "Article créé"
                 )
-                
+
                 router.push(`/dashboard/blog/${article.id}/edit`)
             } catch (error) {
                 console.error("Error creating article:", error)
-                toast.error(error instanceof Error ? error.message : "Erreur lors de la création")
+                toast.error(
+                    error instanceof Error
+                        ? error.message
+                        : "Erreur lors de la création"
+                )
             }
         })
     }
@@ -130,19 +145,21 @@ export default function NewBlogArticlePage() {
                         </Button>
                     </Link>
                     <div>
-                        <h1 className="text-2xl font-bold text-white">Nouvel article</h1>
+                        <h1 className="font-bold text-2xl text-white">
+                            Nouvel article
+                        </h1>
                         <p className="text-muted-foreground text-white">
                             Créez un nouvel article pour votre blog
                         </p>
                     </div>
                 </div>
-                
+
                 <div className="flex items-center gap-2">
                     <Button
                         variant="outline"
                         onClick={() => setIsPreviewMode(!isPreviewMode)}
                     >
-                        <Eye className="h-4 w-4 mr-2" />
+                        <Eye className="mr-2 h-4 w-4" />
                         {isPreviewMode ? "Éditer" : "Aperçu"}
                     </Button>
                     <Button
@@ -150,21 +167,25 @@ export default function NewBlogArticlePage() {
                         onClick={() => handleSubmit(true)}
                         disabled={isPending}
                     >
-                        <Save className="h-4 w-4 mr-2" />
+                        <Save className="mr-2 h-4 w-4" />
                         Brouillon
                     </Button>
                     <Button
                         onClick={() => handleSubmit(false)}
-                        disabled={isPending || !form.title.trim() || !form.content.trim()}
+                        disabled={
+                            isPending ||
+                            !form.title.trim() ||
+                            !form.content.trim()
+                        }
                     >
                         {form.isPublished ? "Publier" : "Créer"}
                     </Button>
                 </div>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
                 {/* Main Content */}
-                <div className="lg:col-span-2 space-y-6">
+                <div className="space-y-6 lg:col-span-2">
                     <Card>
                         <CardHeader>
                             <CardTitle>Contenu de l'article</CardTitle>
@@ -175,7 +196,9 @@ export default function NewBlogArticlePage() {
                                 <Input
                                     id="title"
                                     value={form.title}
-                                    onChange={(e) => updateForm("title", e.target.value)}
+                                    onChange={(e) =>
+                                        updateForm("title", e.target.value)
+                                    }
                                     placeholder="Titre de votre article"
                                     className="text-lg"
                                 />
@@ -186,7 +209,9 @@ export default function NewBlogArticlePage() {
                                 <Textarea
                                     id="excerpt"
                                     value={form.excerpt}
-                                    onChange={(e) => updateForm("excerpt", e.target.value)}
+                                    onChange={(e) =>
+                                        updateForm("excerpt", e.target.value)
+                                    }
                                     placeholder="Résumé court de votre article (optionnel)"
                                     rows={3}
                                 />
@@ -196,7 +221,9 @@ export default function NewBlogArticlePage() {
                                 <Label>Contenu *</Label>
                                 <ArticleEditor
                                     content={form.content}
-                                    onChange={(content) => updateForm("content", content)}
+                                    onChange={(content) =>
+                                        updateForm("content", content)
+                                    }
                                     placeholder="Rédigez le contenu de votre article..."
                                 />
                             </div>
@@ -213,11 +240,15 @@ export default function NewBlogArticlePage() {
                         </CardHeader>
                         <CardContent className="space-y-4">
                             <div className="flex items-center justify-between">
-                                <Label htmlFor="publish">Publier immédiatement</Label>
+                                <Label htmlFor="publish">
+                                    Publier immédiatement
+                                </Label>
                                 <Switch
                                     id="publish"
                                     checked={form.isPublished}
-                                    onCheckedChange={(checked) => updateForm("isPublished", checked)}
+                                    onCheckedChange={(checked) =>
+                                        updateForm("isPublished", checked)
+                                    }
                                 />
                             </div>
                         </CardContent>
@@ -236,50 +267,63 @@ export default function NewBlogArticlePage() {
                                             src={form.featuredImage}
                                             alt="Image à la une"
                                             fill
-                                            className="object-cover rounded"
+                                            className="rounded object-cover"
                                         />
                                     </div>
                                     <Button
                                         variant="outline"
                                         size="sm"
-                                        onClick={() => updateForm("featuredImage", "")}
+                                        onClick={() =>
+                                            updateForm("featuredImage", "")
+                                        }
                                         className="w-full"
                                     >
                                         Supprimer l&apos;image
                                     </Button>
                                 </div>
                             ) : (
-                                <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-gray-400 transition-colors">
+                                <div className="rounded-lg border-2 border-gray-300 border-dashed p-6 text-center transition-colors hover:border-gray-400">
                                     <div className="flex flex-col items-center space-y-4">
-                                        <div className="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center">
-                                            <ImageIcon className="w-6 h-6 text-gray-500" />
+                                        <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gray-100">
+                                            <ImageIcon className="h-6 w-6 text-gray-500" />
                                         </div>
                                         <div>
-                                            <h3 className="text-sm font-medium text-gray-900 mb-1">
+                                            <h3 className="mb-1 font-medium text-gray-900 text-sm">
                                                 Ajouter une image à la une
                                             </h3>
-                                            <p className="text-xs text-gray-500">
+                                            <p className="text-gray-500 text-xs">
                                                 PNG, JPG jusqu'à 10MB
                                             </p>
                                         </div>
-                                        <UploadButton<OurFileRouter, "blogImageUploader">
+                                        <UploadButton<
+                                            OurFileRouter,
+                                            "blogImageUploader"
+                                        >
                                             endpoint="blogImageUploader"
                                             onUploadBegin={() => {
                                                 setIsImageUploading(true)
                                             }}
                                             onClientUploadComplete={(res) => {
                                                 setIsImageUploading(false)
-                                                updateForm("featuredImage", res[0]?.ufsUrl || "")
-                                                toast.success("Image téléchargée !")
+                                                updateForm(
+                                                    "featuredImage",
+                                                    res[0]?.ufsUrl || ""
+                                                )
+                                                toast.success(
+                                                    "Image téléchargée !"
+                                                )
                                             }}
                                             onUploadError={(error) => {
                                                 setIsImageUploading(false)
-                                                toast.error(`Erreur: ${error.message}`)
+                                                toast.error(
+                                                    `Erreur: ${error.message}`
+                                                )
                                             }}
                                             appearance={{
-                                                button: `${isImageUploading 
-                                                    ? "bg-gray-400 cursor-not-allowed" 
-                                                    : "bg-blue-600 hover:bg-blue-700"
+                                                button: `${
+                                                    isImageUploading
+                                                        ? "bg-gray-400 cursor-not-allowed"
+                                                        : "bg-blue-600 hover:bg-blue-700"
                                                 } text-white px-4 py-2 rounded-md text-sm font-medium transition-colors`,
                                                 allowedContent: "hidden"
                                             }}
@@ -288,13 +332,15 @@ export default function NewBlogArticlePage() {
                                                     <div className="flex items-center gap-2">
                                                         {isImageUploading ? (
                                                             <>
-                                                                <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                                                                <div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
                                                                 Téléchargement...
                                                             </>
                                                         ) : (
                                                             <>
-                                                                <Upload className="w-4 h-4" />
-                                                                {ready ? "Choisir un fichier" : "Préparation..."}
+                                                                <Upload className="h-4 w-4" />
+                                                                {ready
+                                                                    ? "Choisir un fichier"
+                                                                    : "Préparation..."}
                                                             </>
                                                         )}
                                                     </div>
@@ -319,7 +365,9 @@ export default function NewBlogArticlePage() {
                                     <Input
                                         id="new-tag"
                                         value={newTag}
-                                        onChange={(e) => setNewTag(e.target.value)}
+                                        onChange={(e) =>
+                                            setNewTag(e.target.value)
+                                        }
                                         placeholder="Nouveau tag"
                                         onKeyDown={(e) => {
                                             if (e.key === "Enter") {
@@ -341,11 +389,15 @@ export default function NewBlogArticlePage() {
 
                             <div>
                                 <Label>Tags suggérés</Label>
-                                <div className="flex flex-wrap gap-1 mt-2">
+                                <div className="mt-2 flex flex-wrap gap-1">
                                     {PREDEFINED_TAGS.map((tag) => (
                                         <Badge
                                             key={tag}
-                                            variant={form.tags.includes(tag) ? "default" : "outline"}
+                                            variant={
+                                                form.tags.includes(tag)
+                                                    ? "default"
+                                                    : "outline"
+                                            }
                                             className="cursor-pointer"
                                             onClick={() => {
                                                 if (form.tags.includes(tag)) {
@@ -364,13 +416,19 @@ export default function NewBlogArticlePage() {
                             {form.tags.length > 0 && (
                                 <div>
                                     <Label>Tags sélectionnés</Label>
-                                    <div className="flex flex-wrap gap-1 mt-2">
+                                    <div className="mt-2 flex flex-wrap gap-1">
                                         {form.tags.map((tag) => (
-                                            <Badge key={tag} variant="default" className="gap-1">
+                                            <Badge
+                                                key={tag}
+                                                variant="default"
+                                                className="gap-1"
+                                            >
                                                 {tag}
                                                 <button
-                                                    onClick={() => removeTag(tag)}
-                                                    className="hover:bg-white/20 rounded"
+                                                    onClick={() =>
+                                                        removeTag(tag)
+                                                    }
+                                                    className="rounded hover:bg-white/20"
                                                 >
                                                     <X className="h-3 w-3" />
                                                 </button>
@@ -393,26 +451,35 @@ export default function NewBlogArticlePage() {
                                 <Input
                                     id="seo-title"
                                     value={form.seoTitle}
-                                    onChange={(e) => updateForm("seoTitle", e.target.value)}
+                                    onChange={(e) =>
+                                        updateForm("seoTitle", e.target.value)
+                                    }
                                     placeholder="Titre pour les moteurs de recherche"
                                     maxLength={60}
                                 />
-                                <p className="text-xs text-muted-foreground mt-1">
+                                <p className="mt-1 text-muted-foreground text-xs">
                                     {form.seoTitle.length}/60 caractères
                                 </p>
                             </div>
 
                             <div>
-                                <Label htmlFor="seo-description">Description SEO</Label>
+                                <Label htmlFor="seo-description">
+                                    Description SEO
+                                </Label>
                                 <Textarea
                                     id="seo-description"
                                     value={form.seoDescription}
-                                    onChange={(e) => updateForm("seoDescription", e.target.value)}
+                                    onChange={(e) =>
+                                        updateForm(
+                                            "seoDescription",
+                                            e.target.value
+                                        )
+                                    }
                                     placeholder="Description pour les moteurs de recherche"
                                     rows={3}
                                     maxLength={160}
                                 />
-                                <p className="text-xs text-muted-foreground mt-1">
+                                <p className="mt-1 text-muted-foreground text-xs">
                                     {form.seoDescription.length}/160 caractères
                                 </p>
                             </div>

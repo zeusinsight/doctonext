@@ -1,16 +1,16 @@
 import { db } from "@/database/db"
-import { 
-    savedSearches, 
-    alertNotifications, 
-    listings, 
+import {
+    savedSearches,
+    alertNotifications,
+    listings,
     listingLocations,
-    users 
+    users
 } from "@/database/schema"
-import { eq, and, gt, inArray, sql } from "drizzle-orm"
+import { eq, and } from "drizzle-orm"
 import { Resend } from "resend"
 import { ListingAlertEmail } from "@/components/emails/listing-alert-template"
 import { MessageNotificationEmail } from "@/components/emails/message-notification-template"
-import { ListingFilters } from "@/components/listings/listings-filter-modal"
+import type { ListingFilters } from "@/components/listings/listings-filter-modal"
 import { renderAsync } from "@react-email/render"
 import { createNotification } from "@/lib/actions/notifications"
 
@@ -28,7 +28,9 @@ interface ListingWithLocation {
     }
 }
 
-export async function checkNewListingAgainstSavedSearches(newListingId: string) {
+export async function checkNewListingAgainstSavedSearches(
+    newListingId: string
+) {
     try {
         // Get the new listing with location
         const [newListing] = await db
@@ -43,7 +45,10 @@ export async function checkNewListingAgainstSavedSearches(newListingId: string) 
                 region: listingLocations.region
             })
             .from(listings)
-            .leftJoin(listingLocations, eq(listings.id, listingLocations.listingId))
+            .leftJoin(
+                listingLocations,
+                eq(listings.id, listingLocations.listingId)
+            )
             .where(eq(listings.id, newListingId))
             .limit(1)
 
@@ -72,7 +77,7 @@ export async function checkNewListingAgainstSavedSearches(newListingId: string) 
         }
 
         const matchingSearches = []
-        
+
         // Check if the new listing matches each saved search
         for (const search of activeSearches) {
             const criteria = search.searchCriteria as ListingFilters
@@ -87,14 +92,20 @@ export async function checkNewListingAgainstSavedSearches(newListingId: string) 
 
             // Check specialty
             if (matches && criteria.specialties?.length > 0) {
-                if (!newListing.specialty || !criteria.specialties.includes(newListing.specialty)) {
+                if (
+                    !newListing.specialty ||
+                    !criteria.specialties.includes(newListing.specialty)
+                ) {
                     matches = false
                 }
             }
 
             // Check region
             if (matches && criteria.regions?.length > 0) {
-                if (!newListing.region || !criteria.regions.includes(newListing.region)) {
+                if (
+                    !newListing.region ||
+                    !criteria.regions.includes(newListing.region)
+                ) {
                     matches = false
                 }
             }
@@ -116,13 +127,16 @@ export async function checkNewListingAgainstSavedSearches(newListingId: string) 
         }
 
         // Group matching searches by user
-        const searchesByUser = matchingSearches.reduce((acc, search) => {
-            if (!acc[search.userId]) {
-                acc[search.userId] = []
-            }
-            acc[search.userId].push(search)
-            return acc
-        }, {} as Record<string, typeof matchingSearches>)
+        const searchesByUser = matchingSearches.reduce(
+            (acc, search) => {
+                if (!acc[search.userId]) {
+                    acc[search.userId] = []
+                }
+                acc[search.userId].push(search)
+                return acc
+            },
+            {} as Record<string, typeof matchingSearches>
+        )
 
         let emailsSent = 0
 
@@ -165,7 +179,9 @@ export async function checkNewListingAgainstSavedSearches(newListingId: string) 
                     .limit(1)
 
                 if (existingNotification.length > 0) {
-                    console.log(`Alert already sent for listing ${newListingId} and search ${search.id}`)
+                    console.log(
+                        `Alert already sent for listing ${newListingId} and search ${search.id}`
+                    )
                     continue // Skip this one, already sent
                 }
 
@@ -179,7 +195,7 @@ export async function checkNewListingAgainstSavedSearches(newListingId: string) 
 
                 if (emailSent) {
                     emailsSent++
-                    
+
                     // Update last alert sent timestamp
                     await db
                         .update(savedSearches)
@@ -198,7 +214,7 @@ export async function checkNewListingAgainstSavedSearches(newListingId: string) 
                     // Create a notification for the user
                     await createNotification(
                         userId,
-                        'saved_search_alert',
+                        "saved_search_alert",
                         `Nouvelle annonce correspondante`,
                         `Une nouvelle annonce correspond à votre recherche "${search.name}"`,
                         {
@@ -212,8 +228,8 @@ export async function checkNewListingAgainstSavedSearches(newListingId: string) 
             }
         }
 
-        return { 
-            success: true, 
+        return {
+            success: true,
             message: `Sent ${emailsSent} email(s) to ${Object.keys(searchesByUser).length} user(s)`,
             stats: {
                 matchingSearches: matchingSearches.length,
@@ -222,7 +238,10 @@ export async function checkNewListingAgainstSavedSearches(newListingId: string) 
             }
         }
     } catch (error) {
-        console.error("Error checking new listing against saved searches:", error)
+        console.error(
+            "Error checking new listing against saved searches:",
+            error
+        )
         return { success: false, error: "Failed to check listing" }
     }
 }
@@ -235,7 +254,8 @@ export async function sendAlertEmail(
     savedSearchId: string
 ): Promise<boolean> {
     try {
-        const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://doctonext.com"
+        const siteUrl =
+            process.env.NEXT_PUBLIC_SITE_URL || "https://doctonext.com"
         const unsubscribeUrl = `${siteUrl}/api/alerts/unsubscribe?id=${savedSearchId}`
 
         const emailHtml = await renderAsync(
@@ -304,4 +324,3 @@ export async function sendMessageNotificationEmail(
         return false
     }
 }
-

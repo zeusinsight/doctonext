@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server"
+import { type NextRequest, NextResponse } from "next/server"
 import { auth } from "@/lib/auth"
 import { headers } from "next/headers"
 import { db } from "@/database/db"
@@ -10,8 +10,8 @@ export async function GET(
     { params }: { params: Promise<{ id: string }> }
 ) {
     try {
-        const session = await auth.api.getSession({ 
-            headers: await headers() 
+        const session = await auth.api.getSession({
+            headers: await headers()
         })
 
         if (!session) {
@@ -47,19 +47,15 @@ export async function GET(
 
         // Verify user has permission to view this contract
         const parties = contract.parties as any
-        const hasPermission = 
+        const hasPermission =
             parties.initiator.email === session.user.email ||
             parties.recipient.email === session.user.email
 
         if (!hasPermission) {
-            return NextResponse.json(
-                { error: "Unauthorized" },
-                { status: 403 }
-            )
+            return NextResponse.json({ error: "Unauthorized" }, { status: 403 })
         }
 
         return NextResponse.json(contract)
-
     } catch (error) {
         console.error("Get conversation contract error:", error)
         return NextResponse.json(

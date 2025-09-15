@@ -6,7 +6,7 @@ import { FileText, ArrowLeft } from "lucide-react"
 export default function BlogArticleNotFound() {
     return (
         <div className="container mx-auto px-4 py-8">
-            <div className="max-w-2xl mx-auto">
+            <div className="mx-auto max-w-2xl">
                 {/* Back Button */}
                 <div className="mb-6">
                     <Link href="/blog">
@@ -16,20 +16,21 @@ export default function BlogArticleNotFound() {
                         </Button>
                     </Link>
                 </div>
-                
+
                 <Card>
                     <CardContent className="flex flex-col items-center justify-center py-12">
-                        <FileText className="h-16 w-16 text-muted-foreground mb-6" />
-                        <h1 className="text-2xl font-bold mb-4">Article non trouvé</h1>
-                        <p className="text-muted-foreground text-center mb-6 max-w-md">
-                            L'article que vous recherchez n'existe pas ou n'est plus disponible. 
-                            Il a peut-être été supprimé ou déplacé.
+                        <FileText className="mb-6 h-16 w-16 text-muted-foreground" />
+                        <h1 className="mb-4 font-bold text-2xl">
+                            Article non trouvé
+                        </h1>
+                        <p className="mb-6 max-w-md text-center text-muted-foreground">
+                            L'article que vous recherchez n'existe pas ou n'est
+                            plus disponible. Il a peut-être été supprimé ou
+                            déplacé.
                         </p>
                         <div className="flex gap-4">
                             <Link href="/blog">
-                                <Button>
-                                    Parcourir le blog
-                                </Button>
+                                <Button>Parcourir le blog</Button>
                             </Link>
                             <Link href="/">
                                 <Button variant="outline">

@@ -12,30 +12,30 @@ interface BlogPaginationProps {
     hasPreviousPage: boolean
 }
 
-export function BlogPagination({ 
-    currentPage, 
-    totalPages, 
-    hasNextPage, 
-    hasPreviousPage 
+export function BlogPagination({
+    currentPage,
+    totalPages,
+    hasNextPage,
+    hasPreviousPage
 }: BlogPaginationProps) {
     const router = useRouter()
     const searchParams = useSearchParams()
     const [isPending, startTransition] = useTransition()
-    
+
     const navigateToPage = (page: number) => {
         const params = new URLSearchParams(searchParams.toString())
         params.set("page", page.toString())
-        
+
         startTransition(() => {
             router.push(`/blog?${params.toString()}`)
         })
     }
-    
+
     // Generate page numbers to show
     const getVisiblePages = () => {
         const pages: number[] = []
         const maxVisible = 5
-        
+
         if (totalPages <= maxVisible) {
             // Show all pages if total is small
             for (let i = 1; i <= totalPages; i++) {
@@ -45,7 +45,7 @@ export function BlogPagination({
             // Show pages around current page
             const start = Math.max(1, currentPage - 2)
             const end = Math.min(totalPages, currentPage + 2)
-            
+
             // Always show first page
             if (start > 1) {
                 pages.push(1)
@@ -53,12 +53,12 @@ export function BlogPagination({
                     pages.push(-1) // Ellipsis
                 }
             }
-            
+
             // Show pages around current
             for (let i = start; i <= end; i++) {
                 pages.push(i)
             }
-            
+
             // Always show last page
             if (end < totalPages) {
                 if (end < totalPages - 1) {
@@ -67,14 +67,14 @@ export function BlogPagination({
                 pages.push(totalPages)
             }
         }
-        
+
         return pages
     }
-    
+
     if (totalPages <= 1) return null
-    
+
     const visiblePages = getVisiblePages()
-    
+
     return (
         <div className="flex items-center justify-center space-x-2">
             <Button
@@ -86,17 +86,22 @@ export function BlogPagination({
                 <ChevronLeft className="h-4 w-4" />
                 Précédent
             </Button>
-            
+
             <div className="flex items-center space-x-1">
-                {visiblePages.map((page, index) => (
+                {visiblePages.map((page, index) =>
                     page === -1 ? (
-                        <span key={`ellipsis-${index}`} className="px-2 text-muted-foreground">
+                        <span
+                            key={`ellipsis-${index}`}
+                            className="px-2 text-muted-foreground"
+                        >
                             ...
                         </span>
                     ) : (
                         <Button
                             key={page}
-                            variant={page === currentPage ? "default" : "outline"}
+                            variant={
+                                page === currentPage ? "default" : "outline"
+                            }
                             size="sm"
                             onClick={() => navigateToPage(page)}
                             disabled={isPending}
@@ -105,9 +110,9 @@ export function BlogPagination({
                             {page}
                         </Button>
                     )
-                ))}
+                )}
             </div>
-            
+
             <Button
                 variant="outline"
                 size="sm"

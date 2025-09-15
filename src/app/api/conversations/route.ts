@@ -12,7 +12,10 @@ export async function GET() {
         })
 
         if (!session) {
-            return NextResponse.json({ error: "Authentication requise" }, { status: 401 })
+            return NextResponse.json(
+                { error: "Authentication requise" },
+                { status: 401 }
+            )
         }
 
         const userConversations = await db
@@ -79,7 +82,10 @@ export async function POST(request: Request) {
         })
 
         if (!session) {
-            return NextResponse.json({ error: "Authentication requise" }, { status: 401 })
+            return NextResponse.json(
+                { error: "Authentication requise" },
+                { status: 401 }
+            )
         }
 
         const { listingId, participantId } = await request.json()
@@ -113,10 +119,10 @@ export async function POST(request: Request) {
             .limit(1)
 
         if (existingConversation.length > 0) {
-            return NextResponse.json({ 
-                success: true, 
+            return NextResponse.json({
+                success: true,
                 data: existingConversation[0],
-                existing: true 
+                existing: true
             })
         }
 
@@ -133,10 +139,10 @@ export async function POST(request: Request) {
             })
             .returning()
 
-        return NextResponse.json({ 
-            success: true, 
+        return NextResponse.json({
+            success: true,
             data: newConversation,
-            existing: false 
+            existing: false
         })
     } catch (error) {
         console.error("Error creating conversation:", error)

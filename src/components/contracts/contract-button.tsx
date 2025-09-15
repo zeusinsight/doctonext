@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import { useQuery } from "@tanstack/react-query"
 import { Button } from "@/components/ui/button"
 import { FileText, CheckCircle, Clock, Loader2 } from "lucide-react"
@@ -33,7 +33,9 @@ export function ContractButton({
         queryKey: ["conversation-contract", conversationId],
         queryFn: async () => {
             if (!conversationId) return null
-            const response = await fetch(`/api/conversations/${conversationId}/contract`)
+            const response = await fetch(
+                `/api/conversations/${conversationId}/contract`
+            )
             if (!response.ok) {
                 if (response.status === 404) return null // No contract found
                 throw new Error("Failed to fetch contract")
@@ -66,9 +68,11 @@ export function ContractButton({
             return {
                 text: "Créer un contrat",
                 icon: FileText,
-                variant: "outline" as const,
+                variant: "default" as const,
                 onClick: () => setShowPreview(true),
-                disabled: false
+                disabled: false,
+                className:
+                    "bg-blue-600 hover:bg-blue-700 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-200 border-0"
             }
         }
 
@@ -80,7 +84,8 @@ export function ContractButton({
                     variant: "outline" as const,
                     onClick: handleExistingContractClick,
                     disabled: false,
-                    className: "border-green-500 text-green-700 hover:bg-green-50"
+                    className:
+                        "border-green-500 text-green-700 hover:bg-green-50"
                 }
             case "in_progress":
                 return {
@@ -89,7 +94,8 @@ export function ContractButton({
                     variant: "outline" as const,
                     onClick: handleExistingContractClick,
                     disabled: false,
-                    className: "border-orange-500 text-orange-700 hover:bg-orange-50"
+                    className:
+                        "border-orange-500 text-orange-700 hover:bg-orange-50"
                 }
             case "pending_signature":
                 return {
@@ -118,8 +124,8 @@ export function ContractButton({
             <Button
                 onClick={buttonConfig.onClick}
                 variant={buttonConfig.variant}
-                size="sm"
-                className={`gap-2 ${buttonConfig.className || ""}`}
+                size="default"
+                className={`w-full gap-2 ${buttonConfig.className || ""}`}
                 disabled={buttonConfig.disabled || isLoading}
             >
                 {isLoading ? (

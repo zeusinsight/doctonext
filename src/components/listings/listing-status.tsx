@@ -5,7 +5,7 @@ import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuItem,
-    DropdownMenuTrigger,
+    DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu"
 import { Button } from "@/components/ui/button"
 import { ChevronDown } from "lucide-react"
@@ -23,39 +23,43 @@ interface ListingStatusProps {
     className?: string
 }
 
-const statusConfig: Record<ListingStatusType, {
-    label: string
-    variant: "default" | "secondary" | "outline" | "destructive"
-    className?: string
-}> = {
-    active: { 
-        label: "Actif", 
+const statusConfig: Record<
+    ListingStatusType,
+    {
+        label: string
+        variant: "default" | "secondary" | "outline" | "destructive"
+        className?: string
+    }
+> = {
+    active: {
+        label: "Actif",
         variant: "default",
         className: "bg-green-500 hover:bg-green-600 text-white border-green-500"
     },
-    inactive: { 
-        label: "Inactif", 
-        variant: "secondary" 
+    inactive: {
+        label: "Inactif",
+        variant: "secondary"
     },
-    sold: { 
-        label: "Vendu", 
+    sold: {
+        label: "Vendu",
         variant: "outline",
         className: "bg-blue-50 text-blue-700 border-blue-200 hover:bg-blue-100"
     },
-    expired: { 
-        label: "Expiré", 
+    expired: {
+        label: "Expiré",
         variant: "destructive"
     }
 }
 
-export function ListingStatus({ 
-    status, 
-    listingId, 
-    editable = false, 
+export function ListingStatus({
+    status,
+    listingId,
+    editable = false,
     onStatusChange,
-    className 
+    className
 }: ListingStatusProps) {
-    const [currentStatus, setCurrentStatus] = useState<ListingStatusType>(status)
+    const [currentStatus, setCurrentStatus] =
+        useState<ListingStatusType>(status)
     const [isUpdating, setIsUpdating] = useState(false)
 
     const config = statusConfig[currentStatus]
@@ -70,18 +74,23 @@ export function ListingStatus({
                 await onStatusChange(newStatus)
             } else if (listingId) {
                 // Default API call if no custom handler provided
-                const response = await fetch(`/api/listings/${listingId}/status`, {
-                    method: "PATCH",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({ status: newStatus }),
-                })
+                const response = await fetch(
+                    `/api/listings/${listingId}/status`,
+                    {
+                        method: "PATCH",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({ status: newStatus })
+                    }
+                )
 
                 const data = await response.json()
-                
+
                 if (!data.success) {
-                    throw new Error(data.error || "Erreur lors de la mise à jour du statut")
+                    throw new Error(
+                        data.error || "Erreur lors de la mise à jour du statut"
+                    )
                 }
             }
 
@@ -97,8 +106,8 @@ export function ListingStatus({
 
     if (!editable) {
         return (
-            <Badge 
-                variant={config.variant} 
+            <Badge
+                variant={config.variant}
                 className={cn(config.className, className)}
             >
                 {config.label}
@@ -115,8 +124,8 @@ export function ListingStatus({
                     className={cn("h-7 gap-1", className)}
                     disabled={isUpdating}
                 >
-                    <Badge 
-                        variant={config.variant} 
+                    <Badge
+                        variant={config.variant}
                         className={cn("pointer-events-none", config.className)}
                     >
                         {config.label}
@@ -128,13 +137,18 @@ export function ListingStatus({
                 {Object.entries(statusConfig).map(([key, value]) => (
                     <DropdownMenuItem
                         key={key}
-                        onClick={() => handleStatusChange(key as ListingStatusType)}
+                        onClick={() =>
+                            handleStatusChange(key as ListingStatusType)
+                        }
                         disabled={key === currentStatus}
                         className={key === currentStatus ? "opacity-50" : ""}
                     >
-                        <Badge 
-                            variant={value.variant} 
-                            className={cn("pointer-events-none", value.className)}
+                        <Badge
+                            variant={value.variant}
+                            className={cn(
+                                "pointer-events-none",
+                                value.className
+                            )}
                         >
                             {value.label}
                         </Badge>
@@ -146,18 +160,18 @@ export function ListingStatus({
 }
 
 // Export a read-only version for use in cards and lists
-export function ListingStatusBadge({ 
-    status, 
-    className 
-}: { 
+export function ListingStatusBadge({
+    status,
+    className
+}: {
     status: ListingStatusType
-    className?: string 
+    className?: string
 }) {
     const config = statusConfig[status]
-    
+
     return (
-        <Badge 
-            variant={config.variant} 
+        <Badge
+            variant={config.variant}
             className={cn(config.className, className)}
         >
             {config.label}

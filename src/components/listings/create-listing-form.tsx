@@ -2,21 +2,9 @@
 
 import { useState, useCallback } from "react"
 import { useRouter } from "next/navigation"
-import { Button } from "@/components/ui/button"
 import { Progress } from "@/components/ui/progress"
-import { ArrowLeft, ArrowRight, CheckCircle } from "lucide-react"
 import { toast } from "sonner"
-import { 
-    CreateListingFormData, 
-    FormStep,
-    BasicInfoStepData,
-    LocationStepData,
-    TransferDetailsStepData,
-    ReplacementDetailsStepData,
-    CollaborationDetailsStepData,
-    MediaUploadData,
-    ReviewStepData
-} from "@/types/listing"
+import type { CreateListingFormData, FormStep } from "@/types/listing"
 import { BasicInfoStep } from "./steps/basic-info-step"
 import { LocationStep } from "./steps/location-step"
 import { TransferDetailsStep } from "./steps/transfer-details-step"
@@ -25,14 +13,20 @@ import { CollaborationDetailsStep } from "./steps/collaboration-details-step"
 import { MediaUploadStep } from "./steps/media-upload-step"
 import { ReviewStep } from "./steps/review-step"
 
-const STEPS: FormStep[] = ["basic-info", "location", "details", "media", "review"]
+const STEPS: FormStep[] = [
+    "basic-info",
+    "location",
+    "details",
+    "media",
+    "review"
+]
 
 const STEP_NAMES = {
     "basic-info": "Informations de base",
-    "location": "Localisation",
-    "details": "Détails spécifiques",
-    "media": "Photos & Documents",
-    "review": "Révision & Publication"
+    location: "Localisation",
+    details: "Détails spécifiques",
+    media: "Photos & Documents",
+    review: "Révision & Publication"
 }
 
 export function CreateListingForm() {
@@ -45,7 +39,7 @@ export function CreateListingForm() {
     const progress = ((currentStepIndex + 1) / STEPS.length) * 100
 
     const handleStepData = useCallback((stepName: string, data: any) => {
-        setFormData(prev => ({
+        setFormData((prev) => ({
             ...prev,
             [stepName]: data
         }))
@@ -68,7 +62,7 @@ export function CreateListingForm() {
     const handleSubmit = async () => {
         try {
             setIsSubmitting(true)
-            
+
             // Prepare the data for API submission
             const submissionData = {
                 title: formData.basicInfo?.title || "",
@@ -77,28 +71,39 @@ export function CreateListingForm() {
                 specialty: formData.basicInfo?.specialty || "",
                 isBoostPlus: formData.review?.isBoostPlus || false,
                 expiresAt: formData.review?.expiresAt,
-                location: formData.location ? {
-                    address: formData.location.address,
-                    postalCode: formData.location.postalCode,
-                    city: formData.location.city,
-                    region: formData.location.region,
-                    department: formData.location.department,
-                    latitude: formData.location.latitude,
-                    longitude: formData.location.longitude,
-                    // medicalDensityZone and densityScore removed
-                } : undefined,
-                transferDetails: formData.basicInfo?.listingType === "transfer" ? formData.transferDetails : undefined,
-                replacementDetails: formData.basicInfo?.listingType === "replacement" ? formData.replacementDetails : undefined,
-                collaborationDetails: formData.basicInfo?.listingType === "collaboration" ? formData.collaborationDetails : undefined,
+                location: formData.location
+                    ? {
+                          address: formData.location.address,
+                          postalCode: formData.location.postalCode,
+                          city: formData.location.city,
+                          region: formData.location.region,
+                          department: formData.location.department,
+                          latitude: formData.location.latitude,
+                          longitude: formData.location.longitude
+                          // medicalDensityZone and densityScore removed
+                      }
+                    : undefined,
+                transferDetails:
+                    formData.basicInfo?.listingType === "transfer"
+                        ? formData.transferDetails
+                        : undefined,
+                replacementDetails:
+                    formData.basicInfo?.listingType === "replacement"
+                        ? formData.replacementDetails
+                        : undefined,
+                collaborationDetails:
+                    formData.basicInfo?.listingType === "collaboration"
+                        ? formData.collaborationDetails
+                        : undefined,
                 media: formData.media?.files || []
             }
 
             const response = await fetch("/api/listings", {
                 method: "POST",
                 headers: {
-                    "Content-Type": "application/json",
+                    "Content-Type": "application/json"
                 },
-                body: JSON.stringify(submissionData),
+                body: JSON.stringify(submissionData)
             })
 
             const result = await response.json()
@@ -107,7 +112,9 @@ export function CreateListingForm() {
                 toast.success("Annonce créée avec succès !")
                 router.push("/dashboard/annonces")
             } else {
-                toast.error(result.error || "Erreur lors de la création de l'annonce")
+                toast.error(
+                    result.error || "Erreur lors de la création de l'annonce"
+                )
             }
         } catch (error) {
             console.error("Error creating listing:", error)
@@ -120,7 +127,9 @@ export function CreateListingForm() {
     const canProceed = () => {
         switch (currentStep) {
             case "basic-info":
-                return formData.basicInfo?.title && formData.basicInfo?.listingType
+                return (
+                    formData.basicInfo?.title && formData.basicInfo?.listingType
+                )
             case "location":
                 return formData.location?.city && formData.location?.region
             case "details":
@@ -146,7 +155,9 @@ export function CreateListingForm() {
                 return (
                     <BasicInfoStep
                         data={formData.basicInfo}
-                        onDataChange={(data) => handleStepData("basicInfo", data)}
+                        onDataChange={(data) =>
+                            handleStepData("basicInfo", data)
+                        }
                         onNext={handleNext}
                     />
                 )
@@ -154,18 +165,22 @@ export function CreateListingForm() {
                 return (
                     <LocationStep
                         data={formData.location}
-                        onDataChange={(data) => handleStepData("location", data)}
+                        onDataChange={(data) =>
+                            handleStepData("location", data)
+                        }
                         onNext={handleNext}
                         onPrevious={handlePrevious}
                     />
                 )
-            case "details":
+            case "details": {
                 const listingType = formData.basicInfo?.listingType
                 if (listingType === "transfer") {
                     return (
                         <TransferDetailsStep
                             data={formData.transferDetails}
-                            onDataChange={(data) => handleStepData("transferDetails", data)}
+                            onDataChange={(data) =>
+                                handleStepData("transferDetails", data)
+                            }
                             onNext={handleNext}
                             onPrevious={handlePrevious}
                         />
@@ -174,7 +189,9 @@ export function CreateListingForm() {
                     return (
                         <ReplacementDetailsStep
                             data={formData.replacementDetails}
-                            onDataChange={(data) => handleStepData("replacementDetails", data)}
+                            onDataChange={(data) =>
+                                handleStepData("replacementDetails", data)
+                            }
                             onNext={handleNext}
                             onPrevious={handlePrevious}
                         />
@@ -184,12 +201,15 @@ export function CreateListingForm() {
                     return (
                         <CollaborationDetailsStep
                             data={formData.collaborationDetails}
-                            onDataChange={(data) => handleStepData("collaborationDetails", data)}
+                            onDataChange={(data) =>
+                                handleStepData("collaborationDetails", data)
+                            }
                             onNext={handleNext}
                             onPrevious={handlePrevious}
                         />
                     )
                 }
+            }
             case "media":
                 return (
                     <MediaUploadStep
@@ -218,21 +238,25 @@ export function CreateListingForm() {
         <div className="">
             {/* Progress Bar */}
             <div className="space-y-2">
-                <div className="flex justify-between text-sm text-muted-foreground">
-                    <span>Étape {currentStepIndex + 1} sur {STEPS.length}</span>
+                <div className="flex justify-between text-muted-foreground text-sm">
+                    <span>
+                        Étape {currentStepIndex + 1} sur {STEPS.length}
+                    </span>
                     <span>{Math.round(progress)}%</span>
                 </div>
                 <Progress value={progress} className="w-full" />
                 <div className="text-center">
-                    <h2 className="text-lg font-semibold">
-                        {currentStep === "details" 
-                            ? formData.basicInfo?.listingType === "transfer" 
+                    <h2 className="font-semibold text-lg">
+                        {currentStep === "details"
+                            ? formData.basicInfo?.listingType === "transfer"
                                 ? "Détails de la cession"
-                                : formData.basicInfo?.listingType === "replacement"
-                                    ? "Détails du remplacement" 
-                                    : formData.basicInfo?.listingType === "collaboration"
-                                        ? "Détails de la collaboration"
-                                        : "Détails spécifiques"
+                                : formData.basicInfo?.listingType ===
+                                    "replacement"
+                                  ? "Détails du remplacement"
+                                  : formData.basicInfo?.listingType ===
+                                      "collaboration"
+                                    ? "Détails de la collaboration"
+                                    : "Détails spécifiques"
                             : STEP_NAMES[currentStep]}
                     </h2>
                 </div>
@@ -240,9 +264,7 @@ export function CreateListingForm() {
 
             {/* Step Content */}
             <div className="min-h-[400px] ">
-                <div className="w-full max-w-5xl min-w-4xl">
-                    {renderStep()}
-                </div>
+                <div className="w-full min-w-4xl max-w-5xl">{renderStep()}</div>
             </div>
         </div>
     )

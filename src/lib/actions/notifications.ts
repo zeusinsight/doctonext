@@ -5,7 +5,6 @@ import { db } from "@/database/db"
 import { notifications } from "@/database/schema"
 import { eq, and, desc } from "drizzle-orm"
 import { headers } from "next/headers"
-import { revalidatePath } from "next/cache"
 
 export interface NotificationData {
     [key: string]: any
@@ -31,7 +30,11 @@ export async function getUserNotifications() {
         return { success: true, data: userNotifications }
     } catch (error) {
         console.error("Error fetching notifications:", error)
-        return { success: false, error: "Erreur lors de la récupération", data: [] }
+        return {
+            success: false,
+            error: "Erreur lors de la récupération",
+            data: []
+        }
     }
 }
 

@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server"
+import { type NextRequest, NextResponse } from "next/server"
 import { checkNewListingAgainstSavedSearches } from "@/lib/services/alert-service"
 
 export async function GET(request: NextRequest) {
@@ -9,9 +9,9 @@ export async function GET(request: NextRequest) {
 
         if (!listingId) {
             return NextResponse.json(
-                { 
+                {
                     error: "Missing listingId parameter",
-                    usage: "GET /api/alerts/check?listingId=<id>" 
+                    usage: "GET /api/alerts/check?listingId=<id>"
                 },
                 { status: 400 }
             )
@@ -22,10 +22,7 @@ export async function GET(request: NextRequest) {
         const apiKey = process.env.ALERTS_API_KEY
 
         if (apiKey && authHeader !== `Bearer ${apiKey}`) {
-            return NextResponse.json(
-                { error: "Unauthorized" },
-                { status: 401 }
-            )
+            return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
         }
 
         // Check alerts for the specific listing

@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server"
+import { type NextRequest, NextResponse } from "next/server"
 import { db } from "@/database/db"
 import { savedSearches } from "@/database/schema"
 import { eq } from "drizzle-orm"
@@ -57,14 +57,17 @@ export async function GET(request: NextRequest) {
                 </body>
                 </html>
                 `,
-                { status: 400, headers: { "Content-Type": "text/html; charset=utf-8" } }
+                {
+                    status: 400,
+                    headers: { "Content-Type": "text/html; charset=utf-8" }
+                }
             )
         }
 
         // Disable email alerts for this saved search
         const [updatedSearch] = await db
             .update(savedSearches)
-            .set({ 
+            .set({
                 emailAlertsEnabled: false,
                 updatedAt: new Date()
             })
@@ -120,7 +123,10 @@ export async function GET(request: NextRequest) {
                 </body>
                 </html>
                 `,
-                { status: 404, headers: { "Content-Type": "text/html; charset=utf-8" } }
+                {
+                    status: 404,
+                    headers: { "Content-Type": "text/html; charset=utf-8" }
+                }
             )
         }
 
@@ -210,7 +216,10 @@ export async function GET(request: NextRequest) {
             </body>
             </html>
             `,
-            { status: 200, headers: { "Content-Type": "text/html; charset=utf-8" } }
+            {
+                status: 200,
+                headers: { "Content-Type": "text/html; charset=utf-8" }
+            }
         )
     } catch (error) {
         console.error("Error unsubscribing from alerts:", error)
@@ -262,7 +271,10 @@ export async function GET(request: NextRequest) {
             </body>
             </html>
             `,
-            { status: 500, headers: { "Content-Type": "text/html; charset=utf-8" } }
+            {
+                status: 500,
+                headers: { "Content-Type": "text/html; charset=utf-8" }
+            }
         )
     }
 }

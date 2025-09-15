@@ -11,25 +11,19 @@ interface ListingDetailActionsProps {
     location?: { city: string | null } | null
 }
 
-export function ListingDetailActions({ 
-    listingId, 
+export function ListingDetailActions({
+    listingId,
     listingTitle,
     listingType,
     specialty,
     location
 }: ListingDetailActionsProps) {
     const description = `${listingType === "transfer" ? "Cession" : listingType === "replacement" ? "Remplacement" : "Collaboration"} - ${specialty || "Médical"} à ${location?.city || "France"}`
-    
+
     return (
         <div className="flex gap-2">
-            <FavoriteButton 
-                listingId={listingId}
-                listingTitle={listingTitle}
-            />
-            <ShareButton 
-                title={listingTitle}
-                description={description}
-            />
+            <FavoriteButton listingId={listingId} listingTitle={listingTitle} />
+            <ShareButton title={listingTitle} description={description} />
         </div>
     )
 }

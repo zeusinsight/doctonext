@@ -17,7 +17,7 @@ interface FavoriteButtonProps {
     onToggle?: (isFavorite: boolean) => void
 }
 
-export function FavoriteButton({ 
+export function FavoriteButton({
     listingId,
     listingTitle = "cette annonce",
     className,
@@ -39,17 +39,17 @@ export function FavoriteButton({
     const handleClick = async (e: React.MouseEvent) => {
         e.preventDefault()
         e.stopPropagation()
-        
+
         const wasAlreadyFavorite = isFavorited
         setIsAnimating(true)
-        
+
         try {
             // Update favorites via database
             const result = await toggleFavorite(listingId)
-            
+
             if (result.success) {
                 const newFavoriteState = result.isFavorite!
-                
+
                 // Show toast notification
                 if (showToast) {
                     if (newFavoriteState) {
@@ -74,13 +74,16 @@ export function FavoriteButton({
                         })
                     }
                 }
-                
+
                 // Call optional callback
                 onToggle?.(newFavoriteState)
             } else {
                 // Show error toast
                 if (showToast) {
-                    toast.error(result.error || "Erreur lors de la mise à jour des favoris")
+                    toast.error(
+                        result.error ||
+                            "Erreur lors de la mise à jour des favoris"
+                    )
                 }
             }
         } catch (error) {
@@ -101,17 +104,21 @@ export function FavoriteButton({
             className={cn(
                 "transition-all",
                 isAnimating && "scale-110",
-                isFavorited && variant === "ghost" ? "bg-red-50 hover:bg-red-100 border-red-200" : "",
+                isFavorited && variant === "ghost"
+                    ? "border-red-200 bg-red-50 hover:bg-red-100"
+                    : "",
                 className
             )}
             onClick={handleClick}
-            aria-label={isFavorited ? "Retirer des favoris" : "Ajouter aux favoris"}
+            aria-label={
+                isFavorited ? "Retirer des favoris" : "Ajouter aux favoris"
+            }
         >
-            <Heart 
+            <Heart
                 className={cn(
                     "h-4 w-4 transition-all",
-                    isFavorited 
-                        ? "fill-red-500 text-red-500" 
+                    isFavorited
+                        ? "fill-red-500 text-red-500"
                         : "fill-none text-gray-600 hover:text-red-400",
                     isAnimating && "animate-pulse"
                 )}

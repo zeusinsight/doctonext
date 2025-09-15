@@ -1,6 +1,14 @@
 import { auth } from "@/lib/auth"
 import { db } from "@/database/db"
-import { conversations, listings, listingLocations, transferDetails, replacementDetails, collaborationDetails, users } from "@/database/schema"
+import {
+    conversations,
+    listings,
+    listingLocations,
+    transferDetails,
+    replacementDetails,
+    collaborationDetails,
+    users
+} from "@/database/schema"
 import { eq, and, or } from "drizzle-orm"
 import { headers } from "next/headers"
 import { NextResponse } from "next/server"
@@ -15,7 +23,10 @@ export async function GET(
         })
 
         if (!session) {
-            return NextResponse.json({ error: "Authentication requise" }, { status: 401 })
+            return NextResponse.json(
+                { error: "Authentication requise" },
+                { status: 401 }
+            )
         }
 
         const conversationId = (await params).id
@@ -27,7 +38,7 @@ export async function GET(
                     id: conversations.id,
                     listingId: conversations.listingId,
                     participant1Id: conversations.participant1Id,
-                    participant2Id: conversations.participant2Id,
+                    participant2Id: conversations.participant2Id
                 },
                 listing: {
                     id: listings.id,
@@ -38,14 +49,14 @@ export async function GET(
                     status: listings.status,
                     createdAt: listings.createdAt,
                     publishedAt: listings.publishedAt,
-                    userId: listings.userId,
+                    userId: listings.userId
                 },
                 location: {
                     address: listingLocations.address,
                     city: listingLocations.city,
                     postalCode: listingLocations.postalCode,
                     region: listingLocations.region,
-                    department: listingLocations.department,
+                    department: listingLocations.department
                 },
                 owner: {
                     id: users.id,
@@ -54,12 +65,15 @@ export async function GET(
                     specialty: users.specialty,
                     isVerifiedProfessional: users.isVerifiedProfessional,
                     avatar: users.avatar,
-                    avatarUrl: users.image,
+                    avatarUrl: users.image
                 }
             })
             .from(conversations)
             .leftJoin(listings, eq(conversations.listingId, listings.id))
-            .leftJoin(listingLocations, eq(listings.id, listingLocations.listingId))
+            .leftJoin(
+                listingLocations,
+                eq(listings.id, listingLocations.listingId)
+            )
             .leftJoin(users, eq(listings.userId, users.id))
             .where(
                 and(
@@ -73,13 +87,19 @@ export async function GET(
             .limit(1)
 
         if (conversationWithListing.length === 0) {
-            return NextResponse.json({ error: "Conversation non trouvée" }, { status: 404 })
+            return NextResponse.json(
+                { error: "Conversation non trouvée" },
+                { status: 404 }
+            )
         }
 
         const result = conversationWithListing[0]
 
         if (!result.listing) {
-            return NextResponse.json({ error: "Annonce non trouvée" }, { status: 404 })
+            return NextResponse.json(
+                { error: "Annonce non trouvée" },
+                { status: 404 }
+            )
         }
 
         // Get type-specific details
@@ -107,8 +127,8 @@ export async function GET(
             details = collaborationDetail[0] || null
         }
 
-        return NextResponse.json({ 
-            success: true, 
+        return NextResponse.json({
+            success: true,
             data: {
                 listing: result.listing,
                 location: result.location,
