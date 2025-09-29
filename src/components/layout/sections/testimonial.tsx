@@ -27,12 +27,10 @@ const animatedFeatures = [
 ]
 
 export const TestimonialSection = () => {
-    const duplicatedFeatures = [...animatedFeatures, ...animatedFeatures]
-
     return (
         <section
             id="testimonials"
-            className="overflow-hidden bg-white py-16 lg:py-24"
+            className="overflow-hidden bg-blue-50 py-16 lg:py-24"
         >
             <div className="container mx-auto px-4">
                 <div className="mb-12 text-center">
@@ -42,23 +40,43 @@ export const TestimonialSection = () => {
                 </div>
 
                 <div className="relative">
-                    <div className="flex animate-marquee hover:animate-pause">
-                        {duplicatedFeatures.map((feature, index) => (
-                            <div
-                                key={index}
-                                className="mx-8 min-w-[280px] flex-shrink-0 rounded-xl border border-gray-200 bg-gray-50 p-6 text-center transition-shadow hover:shadow-lg"
-                            >
-                                <div className="mb-4 text-4xl">
-                                    {feature.icon}
+                    <div className="flex w-max animate-marquee hover:animate-pause">
+                        <div className="flex gap-16 pr-8">
+                            {animatedFeatures.map((feature, index) => (
+                                <div
+                                    key={`a-${index}`}
+                                    className="min-w-[280px] flex-shrink-0 rounded-xl border border-gray-100 bg-white p-6 text-center transition-shadow hover:shadow-md"
+                                >
+                                    <div className="mb-4 text-4xl">
+                                        {feature.icon}
+                                    </div>
+                                    <h3 className="mb-3 font-semibold text-gray-900 text-xl">
+                                        {feature.title}
+                                    </h3>
+                                    <p className="text-gray-600 text-sm leading-relaxed">
+                                        {feature.description}
+                                    </p>
                                 </div>
-                                <h3 className="mb-3 font-semibold text-gray-900 text-xl">
-                                    {feature.title}
-                                </h3>
-                                <p className="text-gray-600 text-sm leading-relaxed">
-                                    {feature.description}
-                                </p>
-                            </div>
-                        ))}
+                            ))}
+                        </div>
+                        <div className="flex gap-16 pl-8" aria-hidden="true">
+                            {animatedFeatures.map((feature, index) => (
+                                <div
+                                    key={`b-${index}`}
+                                    className="min-w-[280px] flex-shrink-0 rounded-xl border border-gray-100 bg-white p-6 text-center transition-shadow hover:shadow-md"
+                                >
+                                    <div className="mb-4 text-4xl">
+                                        {feature.icon}
+                                    </div>
+                                    <h3 className="mb-3 font-semibold text-gray-900 text-xl">
+                                        {feature.title}
+                                    </h3>
+                                    <p className="text-gray-600 text-sm leading-relaxed">
+                                        {feature.description}
+                                    </p>
+                                </div>
+                            ))}
+                        </div>
                     </div>
                 </div>
             </div>
@@ -74,7 +92,8 @@ export const TestimonialSection = () => {
         }
 
         .animate-marquee {
-          animation: marquee 20s linear infinite;
+          animation: marquee 28s linear infinite;
+          will-change: transform;
         }
 
         .animate-pause:hover {

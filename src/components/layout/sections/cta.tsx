@@ -19,7 +19,7 @@ export const CTASection = () => {
                         <Link href="/annonces">
                             <Button
                                 size="lg"
-                                className="flex items-center gap-2 bg-white px-8 py-6 font-semibold text-blue-600 text-lg hover:bg-blue-50"
+                                className="flex items-center gap-2 bg-white px-8 py-6 font-semibold text-blue-600 text-lg hover:bg-blue-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70 focus-visible:ring-offset-2 focus-visible:ring-offset-blue-600"
                             >
                                 <Search className="h-5 w-5" />
                                 Explorer les annonces
@@ -28,7 +28,7 @@ export const CTASection = () => {
                         <Link href="/dashboard/annonces/new">
                             <Button
                                 size="lg"
-                                className="flex items-center gap-2 bg-green-600 px-8 py-6 font-semibold text-lg text-white hover:bg-green-700"
+                                className="flex items-center gap-2 bg-green-600 px-8 py-6 font-semibold text-lg text-white hover:bg-green-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70 focus-visible:ring-offset-2 focus-visible:ring-offset-green-700"
                             >
                                 <FileText className="h-5 w-5" />
                                 Déposer une annonce

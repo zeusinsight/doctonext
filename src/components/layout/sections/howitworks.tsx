@@ -33,7 +33,7 @@ const steps = [
 
 export const HowItWorksSection = () => {
     return (
-        <section className="bg-gray-50 py-20">
+        <section className="bg-blue-50 py-20">
             <div className="container mx-auto px-4">
                 <div className="mb-12 text-center">
                     <h2 className="mb-4 font-bold text-4xl text-gray-900 md:text-5xl">
@@ -51,7 +51,7 @@ export const HowItWorksSection = () => {
                         return (
                             <Card
                                 key={index}
-                                className="border-gray-200 bg-white p-6 text-center transition-shadow hover:shadow-lg"
+                                className="border-gray-100 bg-white p-6 text-center transition-shadow hover:shadow-md"
                             >
                                 <div className="mb-4 flex justify-center">
                                     <div className="flex h-16 w-16 items-center justify-center rounded-full bg-blue-50">

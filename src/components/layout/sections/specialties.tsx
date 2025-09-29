@@ -18,7 +18,7 @@ const SpecialtyCard = ({
     return (
         <Link
             href={href}
-            className="group hover:-translate-y-1 block rounded-xl border border-gray-200 bg-white p-6 transition-all duration-300 hover:shadow-lg"
+            className="group block h-full rounded-xl border border-gray-100 bg-white p-6 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md"
         >
             <div className="flex flex-col items-center space-y-3 text-center">
                 <div
@@ -94,7 +94,7 @@ export const SpecialtiesSection = () => {
     ]
 
     return (
-        <section className="bg-gray-50 py-16 lg:py-24">
+        <section className="bg-blue-50 py-16 lg:py-24">
             <div className="container mx-auto px-4">
                 <div className="mb-12 text-center">
                     <h2 className="mb-4 font-bold text-3xl text-gray-900 lg:text-4xl">

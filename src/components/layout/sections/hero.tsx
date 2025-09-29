@@ -20,7 +20,7 @@ const ConnectedTriangles = ({
         "remplacement" | "collaboration" | "cession" | null
     >(null)
     return (
-        <div className="relative flex h-[360px] w-full items-center justify-center md:h-[420px]">
+        <div className="relative flex h-[300px] w-full items-center justify-center md:h-[420px]">
             {/* subtle glow background */}
             <div className="-z-10 absolute inset-0 bg-gradient-to-b from-blue-50/60 via-white to-white" />
             <svg
@@ -62,9 +62,9 @@ const ConnectedTriangles = ({
                 </defs>
 
                 {/* Triangle connecting lines (with hover emphasis) */}
-                {/* Remplacement: dotted, green */}
+                {/* Remplacement: dotted, unified blue */}
                 <g
-                    stroke="#10b981"
+                    stroke="#2563eb"
                     strokeLinecap="round"
                     opacity={hovered && hovered !== "remplacement" ? 0.35 : 1}
                     className="cursor-pointer transition-all duration-200 ease-out"
@@ -76,7 +76,6 @@ const ConnectedTriangles = ({
                         y1="52"
                         x2="96"
                         y2="300"
-                        strokeDasharray="1 8"
                         strokeWidth={hovered === "remplacement" ? 6 : 4}
                     />
                 </g>
@@ -97,7 +96,7 @@ const ConnectedTriangles = ({
                         strokeWidth={hovered === "collaboration" ? 6 : 4}
                     />
                 </g>
-                {/* Cession: dashed, teal with white underlay */}
+                {/* Cession: solid, unified blue */}
                 <g
                     strokeLinecap="round"
                     opacity={hovered && hovered !== "cession" ? 0.35 : 1}
@@ -110,17 +109,8 @@ const ConnectedTriangles = ({
                         y1="300"
                         x2="360"
                         y2="300"
-                        stroke="#ffffff"
+                        stroke="#2563eb"
                         strokeOpacity="0.9"
-                        strokeWidth={hovered === "cession" ? 8 : 6}
-                    />
-                    <line
-                        x1="120"
-                        y1="300"
-                        x2="360"
-                        y2="300"
-                        stroke="#14b8a6"
-                        strokeDasharray="8 6"
                         strokeWidth={hovered === "cession" ? 6 : 4}
                     />
                 </g>
@@ -293,9 +283,12 @@ const ConnectedTriangles = ({
 
 export const HeroSection = () => {
     return (
-        <section className="relative w-full overflow-hidden bg-white">
+        <section className="relative w-full overflow-hidden bg-blue-50">
             {/* decorative gradient */}
-            <div className="-top-48 -z-10 pointer-events-none absolute inset-x-0 h-72 bg-gradient-to-b from-blue-50 via-white to-transparent" />
+            <div
+                aria-hidden="true"
+                className="-top-48 -z-10 pointer-events-none absolute inset-x-0 h-72 bg-gradient-to-b from-blue-50 via-white to-transparent"
+            />
             <div className="container mx-auto px-4 py-16 lg:py-24">
                 <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
                     {/* Left Content */}
