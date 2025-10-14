@@ -8,16 +8,16 @@ import { SmartListingButton } from "../ui/smart-listing-button"
 
 export const Navbar = () => {
     return (
-        <div className="sticky top-0 z-50 w-full border-gray-200 border-b bg-gray-50 shadow-sm">
+        <div className="sticky top-0 z-50 w-full border-gray-200 border-b bg-white shadow-sm">
             <div className="mx-auto flex w-full max-w-6xl items-center gap-4 px-6 py-4">
                 {/* Logo */}
                 <Link href="/" className="flex flex-shrink-0 items-center">
                     <Image
                         src="/logo.png"
                         alt="DoctoNext"
-                        width={120}
-                        height={40}
-                        className="h-6 w-auto"
+                        width={130}
+                        height={20}
+                        className=" w-auto"
                     />
                 </Link>
 

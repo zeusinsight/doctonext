@@ -11,7 +11,7 @@ type TriangleLabels = {
   c: string;
 };
 
-const ConnectedTriangles = ({
+export const ConnectedTriangles = ({
   labels = { a: "Titulaires", b: "Remplaçants", c: "Associés" },
 }: {
   labels?: TriangleLabels;
@@ -198,7 +198,7 @@ const ConnectedTriangles = ({
               cy="300"
               r="24"
               fill="url(#nodeBg)"
-              stroke="#10b981"
+              stroke="#2563eb"
               strokeWidth="2"
             />
             <text
@@ -206,7 +206,7 @@ const ConnectedTriangles = ({
               y="344"
               textAnchor="middle"
               fontSize="13"
-              fill="#111827"
+              fill="#2563eb"
             >
               {labels.b}
             </text>
@@ -218,7 +218,7 @@ const ConnectedTriangles = ({
               cy="300"
               r="24"
               fill="url(#nodeBg)"
-              stroke="#7c3aed"
+              stroke="#2563eb"
               strokeWidth="2"
             />
             <text
@@ -226,7 +226,7 @@ const ConnectedTriangles = ({
               y="344"
               textAnchor="middle"
               fontSize="13"
-              fill="#111827"
+              fill="#2563eb"
             >
               {labels.c}
             </text>

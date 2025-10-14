@@ -48,7 +48,7 @@ export const FooterSection = () => {
                 <div className="grid grid-cols-1 gap-8 md:grid-cols-4">
                     {/* Brand Section */}
                     <div className="col-span-1">
-                        <h3 className="mb-4 font-bold text-2xl">Doctonext</h3>
+                        <h3 className="mb-4 font-bold text-2xl">CareEvo</h3>
                         <p className="mb-6 text-gray-400">
                             La première plateforme dédiée à la vente et à
                             l'achat de patientèle et de fonds de commerce dans
@@ -118,11 +118,11 @@ export const FooterSection = () => {
                         <ul className="space-y-2">
                             <li>
                                 <a
-                                    href="mailto:contact@doctonext.fr"
+                                    href="mailto:contact@careevo.fr"
                                     className="flex items-center gap-2 text-gray-400 transition-colors hover:text-white"
                                 >
                                     <Mail className="h-4 w-4" />
-                                    contact@doctonext.fr
+                                    contact@careevo.fr
                                 </a>
                             </li>
                             <li>
@@ -142,7 +142,7 @@ export const FooterSection = () => {
                 <div className="mt-8 border-gray-800 border-t pt-8">
                     <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
                         <p className="text-gray-400 text-sm">
-                            © 2025 Doctonext. Tous droits réservés.
+                            © 2025 CareEvo. Tous droits réservés.
                         </p>
                         <div className="flex gap-6 text-sm">
                             <Link

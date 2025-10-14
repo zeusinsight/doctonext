@@ -20,18 +20,15 @@ export default function ProtectedPage({
                         <header className="flex items-center justify-between border-gray-200 border-b bg-gray-50 py-4 shadow-sm">
                             <div className="mx-auto flex w-full max-w-6xl items-center gap-4 px-6">
                                 {/* Logo */}
-                                <Link
-                                    href="/"
-                                    className="flex flex-shrink-0 items-center"
-                                >
-                                    <Image
-                                        src="/logo.png"
-                                        alt="DoctoNext"
-                                        width={120}
-                                        height={40}
-                                        className="h-6 w-auto"
-                                    />
-                                </Link>
+                <Link href="/" className="flex flex-shrink-0 items-center">
+                    <Image
+                        src="/logo.png"
+                        alt="DoctoNext"
+                        width={130}
+                        height={20}
+                        className=" w-auto"
+                    />
+                </Link>
 
                                 {/* Navigation buttons */}
                                 <Button

@@ -40,7 +40,7 @@ export function NavUserPublic() {
     // If user is not authenticated
     if (!session?.user && !isPending) {
         return (
-            <div className="flex items-center gap-4 rounded-lg bg-gray-50 px-3 py-2">
+            <div className="flex items-center gap-4 rounded-lg  px-3 py-2">
                 <Link
                     href="/login"
                     className="group relative flex cursor-pointer flex-col items-center gap-1 p-2"
@@ -88,7 +88,7 @@ export function NavUserPublic() {
     // Show loading state
     if (isPending) {
         return (
-            <div className="flex items-center gap-4 rounded-lg bg-gray-50 px-3 py-2">
+            <div className="flex items-center gap-4 rounded-lg px-3 py-2">
                 <div className="relative flex flex-col items-center gap-1 p-2">
                     <RiHeartLine className="h-6 w-6 text-muted-foreground" />
                     <span className="text-muted-foreground text-sm">
@@ -140,7 +140,7 @@ export function NavUserPublic() {
             .slice(0, 2) || "Inv"
 
     return (
-        <div className="flex items-center gap-4 rounded-lg bg-gray-50 px-3 py-2">
+        <div className="flex items-center gap-4 rounded-lg  px-3 py-2">
             <Link
                 href="/dashboard/favorites"
                 className="group relative flex cursor-pointer flex-col items-center gap-1 p-2"
