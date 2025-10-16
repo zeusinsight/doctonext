@@ -26,7 +26,7 @@ export function ListingAlertEmail({
     listings,
     unsubscribeUrl
 }: ListingAlertEmailProps) {
-    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://doctonext.com"
+    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://careevo.com"
 
     const formatListingType = (type: string) => {
         switch (type) {
@@ -248,7 +248,7 @@ export function ListingAlertEmail({
     return EmailTemplate({
         heading: `Nouvelles annonces pour "${searchName}"`,
         content,
-        siteName: "Doctonext",
+        siteName: "Care Evo",
         baseUrl: siteUrl,
         imageUrl: `${siteUrl}/logo.png`
     })

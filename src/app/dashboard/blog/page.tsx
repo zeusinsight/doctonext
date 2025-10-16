@@ -96,7 +96,7 @@ async function getBlogArticles(
 }
 
 export const metadata: Metadata = {
-    title: "Gestion du Blog - Dashboard Doctonext",
+    title: "Gestion du Blog - Dashboard Care Evo",
     description:
         "Gérez vos articles de blog, créez du contenu et suivez les performances."
 }

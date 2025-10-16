@@ -20,7 +20,7 @@ export function ContractAwaitingSignatureEmail({
     contractId,
     conversationId
 }: ContractAwaitingSignatureEmailProps) {
-    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://doctonext.com"
+    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://careevo.com"
     const signContractUrl = `${siteUrl}/api/contracts/redirect?contractId=${contractId}&conversationId=${conversationId}`
 
     const getContractTypeLabel = (type: string) => {
@@ -350,7 +350,7 @@ export function ContractAwaitingSignatureEmail({
     return EmailTemplate({
         heading: `Contrat à signer de ${signerName}`,
         content,
-        siteName: "Doctonext",
+        siteName: "Care Evo",
         baseUrl: siteUrl,
         imageUrl: `${siteUrl}/logo.png`
     })

@@ -115,7 +115,7 @@ export async function generateMetadata({
 
     if (!article) {
         return {
-            title: "Article non trouvé - Doctonext",
+            title: "Article non trouvé - Care Evo",
             description:
                 "L'article demandé n'existe pas ou n'est plus disponible."
         }
@@ -125,10 +125,10 @@ export async function generateMetadata({
     const description =
         article.seoDescription ||
         article.excerpt ||
-        "Découvrez cet article sur Doctonext"
+        "Découvrez cet article sur Care Evo"
 
     return {
-        title: `${title} - Blog Doctonext`,
+        title: `${title} - Blog Care Evo`,
         description,
         keywords: article.tags?.join(", "),
         openGraph: {

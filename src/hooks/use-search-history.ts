@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 
-const SEARCH_HISTORY_KEY = "doctonext-search-history"
+const SEARCH_HISTORY_KEY = "careevo-search-history"
 const MAX_HISTORY_ITEMS = 10
 
 export interface SearchHistoryItem {

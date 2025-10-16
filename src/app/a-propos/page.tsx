@@ -25,7 +25,7 @@ export default function AboutPage() {
                     <div className="mx-auto max-w-4xl text-center">
                         <h1 className="font-bold text-4xl text-gray-900 tracking-tight sm:text-6xl">
                             À propos de{" "}
-                            <span className="text-blue-600">DoctoNext</span>
+                            <span className="text-blue-600">Care Evo</span>
                         </h1>
                         <p className="mt-6 text-gray-600 text-lg leading-8">
                             La plateforme de référence pour les professionnels
@@ -67,7 +67,7 @@ export default function AboutPage() {
                                         <Heart className="h-6 w-6 text-blue-600" />
                                     </div>
                                     <p className="text-gray-700 text-lg leading-relaxed">
-                                        DoctoNext connecte les professionnels de
+                                        Care Evo connecte les professionnels de
                                         santé pour faciliter les cessions de
                                         cabinets, les remplacements et les
                                         collaborations. Notre objectif est de
@@ -87,7 +87,7 @@ export default function AboutPage() {
                     <div className="mx-auto max-w-6xl">
                         <div className="mb-12 text-center">
                             <h2 className="mb-4 font-bold text-3xl text-gray-900">
-                                Pourquoi choisir DoctoNext ?
+                                Pourquoi choisir Care Evo ?
                             </h2>
                             <p className="text-gray-600 text-lg">
                                 Une plateforme pensée par et pour les
@@ -201,7 +201,7 @@ export default function AboutPage() {
                     <div className="mx-auto max-w-4xl">
                         <div className="mb-12 text-center">
                             <h2 className="mb-4 font-bold text-3xl text-gray-900">
-                                DoctoNext en chiffres
+                                Care Evo en chiffres
                             </h2>
                             <p className="text-gray-600 text-lg">
                                 Une plateforme en croissance constante au
@@ -345,17 +345,17 @@ export default function AboutPage() {
                 </section>
 
                 {/* CTA Section */}
-                <section className="bg-blue-600 px-4 py-16 sm:px-6 lg:px-8">
+                <section className="bg-care-evo-primary px-4 py-16 sm:px-6 lg:px-8">
                     <div className="mx-auto max-w-4xl text-center">
                         <h2 className="mb-4 font-bold text-3xl text-white">
                             Prêt à donner un nouvel élan à votre carrière ?
                         </h2>
-                        <p className="mb-8 text-blue-100 text-lg">
-                            Rejoignez DoctoNext aujourd'hui et découvrez les
+                        <p className="mb-8 text-blue-50 text-lg">
+                            Rejoignez Care Evo aujourd'hui et découvrez les
                             opportunités qui vous attendent.
                         </p>
                         <div className="flex flex-col justify-center gap-4 sm:flex-row">
-                            <Button asChild size="lg" variant="secondary">
+                            <Button asChild size="lg" variant="secondary" className="bg-white text-care-evo-primary hover:bg-gray-100">
                                 <Link href="/annonces">
                                     Parcourir les annonces
                                 </Link>
@@ -364,7 +364,7 @@ export default function AboutPage() {
                                 asChild
                                 size="lg"
                                 variant="outline"
-                                className="border-white text-white hover:bg-white hover:text-blue-600"
+                                className="border-white text-white hover:bg-care-evo-accent hover:text-white hover:border-care-evo-accent"
                             >
                                 <Link href="/dashboard/listings/new">
                                     Publier une annonce

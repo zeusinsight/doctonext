@@ -40,7 +40,7 @@ export const HowItWorksSection = () => {
             Comment ça marche ?
           </h2>
           <p className="mx-auto max-w-3xl text-gray-600 text-lg md:text-xl">
-            Doctonext simplifie l'achat et la vente de patientèle et de fonds de
+            Care Evo simplifie l'achat et la vente de patientèle et de fonds de
             commerce dans le domaine médical
           </p>
         </div>

@@ -25,7 +25,7 @@ export async function geocodeByCity(
         url.searchParams.set("addressdetails", "1")
 
         const response = await fetch(url.toString(), {
-            headers: { "User-Agent": "Doctonext/1.0 (contact@doctonext.com)" }
+            headers: { "User-Agent": "CareEvo/1.0 (contact@careevo.com)" }
         })
         if (response.status === 429)
             return { error: "Rate limit exceeded", code: "RATE_LIMITED" }
@@ -82,7 +82,7 @@ export async function geocodeAddress(
 
         const response = await fetch(url.toString(), {
             headers: {
-                "User-Agent": "Doctonext/1.0 (contact@doctonext.com)" // Required by Nominatim
+                "User-Agent": "CareEvo/1.0 (contact@careevo.com)" // Required by Nominatim
             }
         })
 

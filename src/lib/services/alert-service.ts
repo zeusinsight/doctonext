@@ -255,7 +255,7 @@ export async function sendAlertEmail(
 ): Promise<boolean> {
     try {
         const siteUrl =
-            process.env.NEXT_PUBLIC_SITE_URL || "https://doctonext.com"
+            process.env.NEXT_PUBLIC_SITE_URL || "https://careevo.com"
         const unsubscribeUrl = `${siteUrl}/api/alerts/unsubscribe?id=${savedSearchId}`
 
         const emailHtml = await renderAsync(
@@ -269,7 +269,7 @@ export async function sendAlertEmail(
         )
 
         const { error } = await resend.emails.send({
-            from: process.env.MAIL_FROM || "noreply@doctonext.com",
+            from: process.env.MAIL_FROM || "noreply@careevo.com",
             to: userEmail,
             subject: `${listings.length} nouvelle(s) annonce(s) pour "${searchName}"`,
             html: emailHtml
@@ -307,7 +307,7 @@ export async function sendMessageNotificationEmail(
         )
 
         const { error } = await resend.emails.send({
-            from: process.env.MAIL_FROM || "noreply@doctonext.com",
+            from: process.env.MAIL_FROM || "noreply@careevo.com",
             to: recipientEmail,
             subject: `Nouveau message de ${senderName}`,
             html: emailHtml

@@ -2,6 +2,7 @@
 import { Search, Plus } from "lucide-react";
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { SmartListingButton } from "@/components/ui/smart-listing-button";
 
@@ -271,24 +272,37 @@ export const HeroSection = () => {
       />
       <div className="container mx-auto px-4 py-16 lg:py-24">
         <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
-          {/* Center Content */}
-          <div className="col-span-2 space-y-6 text-center text-gray-900">
-            <h1 className="font-semibold text-4xl leading-tight tracking-tight md:text-5xl lg:text-6xl">
-              Care Evo : votre carrière médicale, réinventée
+          {/* Left Content */}
+          <div className="space-y-8 text-gray-900">
+            {/* Care Evo Logo */}
+            <div className="flex justify-center lg:justify-start">
+              <Image
+                src="/logo.png"
+                alt="Care Evo"
+                width={150}
+                height={50}
+                className="h-auto w-40"
+              />
+            </div>
+
+            {/* Main Title */}
+            <h1 className="font-bold text-4xl leading-tight tracking-tight md:text-5xl lg:text-6xl text-center lg:text-left">
+              Réinventez votre
+              <br />
+              <span className="text-care-evo-primary">carrière médicale</span>
             </h1>
 
-            <p className="mx-auto max-w-3xl text-gray-600 text-lg leading-relaxed md:text-xl">
-              installation, remplacement, collaboration…
-              <br />
-              Tout est centralisé sur une seule plateforme, 100 % gratuite, avec
-              messagerie sécurisée et signature en ligne.
+            {/* Subtitle */}
+            <p className="text-gray-600 text-lg leading-relaxed md:text-xl text-center lg:text-left">
+              Installation, remplacement, collaboration… Tout est centralisé sur une seule plateforme, 100 % gratuite, avec messagerie sécurisée et signature en ligne.
             </p>
 
-            <div className="flex flex-col justify-center gap-4 pt-4 sm:flex-row">
+            {/* CTA Buttons */}
+            <div className="flex flex-col justify-center gap-4 pt-4 sm:flex-row lg:justify-start">
               <Button
                 asChild
                 size="lg"
-                className="rounded-lg bg-blue-600 text-white shadow-lg hover:bg-blue-700 hover:shadow-xl transition-all duration-200"
+                className="rounded-lg bg-care-evo-primary text-white shadow-lg hover:bg-care-evo-primary-dark hover:shadow-xl transition-all duration-200"
               >
                 <Link href="/annonces" className="flex items-center gap-2">
                   <Search className="size-5" />
@@ -300,7 +314,7 @@ export const HeroSection = () => {
                 asChild
                 size="lg"
                 variant="outline"
-                className="rounded-lg border-2 border-blue-600 text-blue-600 hover:bg-blue-50 transition-all duration-200"
+                className="rounded-lg border-2 border-care-evo-accent text-care-evo-accent hover:bg-care-evo-accent hover:text-white transition-all duration-200"
               >
                 <SmartListingButton className="flex items-center gap-2">
                   <Plus className="size-5" />
@@ -310,8 +324,8 @@ export const HeroSection = () => {
             </div>
           </div>
 
-          {/* Bottom - Relationship diagram */}
-          <div className="relative col-span-2">
+          {/* Right - Relationship diagram */}
+          <div className="relative hidden lg:block">
             <ConnectedTriangles />
           </div>
         </div>

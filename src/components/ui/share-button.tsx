@@ -31,7 +31,7 @@ interface ShareButtonProps {
 export function ShareButton({
     url,
     title = "Découvrez cette annonce",
-    description = "Annonce médicale sur Doctonext",
+    description = "Annonce médicale sur Care Evo",
     className,
     variant = "outline",
     size = "icon"

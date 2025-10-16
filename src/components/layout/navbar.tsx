@@ -14,7 +14,7 @@ export const Navbar = () => {
                 <Link href="/" className="flex flex-shrink-0 items-center">
                     <Image
                         src="/logo.png"
-                        alt="DoctoNext"
+                        alt="Care Evo"
                         width={130}
                         height={20}
                         className=" w-auto"
@@ -24,18 +24,16 @@ export const Navbar = () => {
                 {/* Navigation buttons */}
                 <Button
                     asChild
-                    variant="default"
                     size="sm"
-                    className="flex-shrink-0 whitespace-nowrap bg-blue-600 hover:bg-blue-700"
+                                    className="flex-shrink-0 whitespace-nowrap bg-blue-600 hover:bg-blue-700"
                 >
                     <SmartListingButton>Déposer une annonce</SmartListingButton>
                 </Button>
 
                 <Button
                     asChild
-                    variant="default"
                     size="sm"
-                    className="flex-shrink-0 whitespace-nowrap bg-green-600 hover:bg-green-700"
+                                    className="flex-shrink-0 whitespace-nowrap bg-green-600 hover:bg-green-700"
                 >
                     <Link href="/annonces">Annonces</Link>
                 </Button>

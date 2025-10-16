@@ -502,7 +502,7 @@ export function ReviewStep({
                 <Button
                     onClick={onSubmit}
                     disabled={isSubmitting}
-                    className="bg-green-600 hover:bg-green-700"
+                    className="bg-care-evo-primary hover:bg-care-evo-primary-dark"
                 >
                     {isSubmitting ? (
                         "Publication..."

@@ -16,7 +16,7 @@ export async function GET(request: NextRequest) {
                 <head>
                     <meta charset="UTF-8">
                     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                    <title>Erreur - Doctonext</title>
+                    <title>Erreur - Care Evo</title>
                     <style>
                         body { 
                             font-family: system-ui, -apple-system, sans-serif;
@@ -82,7 +82,7 @@ export async function GET(request: NextRequest) {
                 <head>
                     <meta charset="UTF-8">
                     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                    <title>Recherche non trouvée - Doctonext</title>
+                    <title>Recherche non trouvée - Care Evo</title>
                     <style>
                         body { 
                             font-family: system-ui, -apple-system, sans-serif;
@@ -137,7 +137,7 @@ export async function GET(request: NextRequest) {
             <head>
                 <meta charset="UTF-8">
                 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                <title>Désabonnement réussi - Doctonext</title>
+                <title>Désabonnement réussi - Care Evo</title>
                 <style>
                     body { 
                         font-family: system-ui, -apple-system, sans-serif;
@@ -230,7 +230,7 @@ export async function GET(request: NextRequest) {
             <head>
                 <meta charset="UTF-8">
                 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                <title>Erreur - Doctonext</title>
+                <title>Erreur - Care Evo</title>
                 <style>
                     body { 
                         font-family: system-ui, -apple-system, sans-serif;

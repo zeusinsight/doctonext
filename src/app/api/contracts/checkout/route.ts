@@ -63,7 +63,7 @@ export async function POST(req: NextRequest) {
                         currency: "eur",
                         product_data: {
                             name: "Création de contrat professionnel",
-                            description: `Contrat de ${contractType} - DoctoNext`
+                            description: `Contrat de ${contractType} - Care Evo`
                         },
                         unit_amount: 500 // €5.00 in cents
                     },

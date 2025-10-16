@@ -381,7 +381,7 @@ export async function sendFirstPartySignedEmail(
         )
 
         const { error } = await resend.emails.send({
-            from: process.env.MAIL_FROM || "noreply@doctonext.fr",
+            from: process.env.MAIL_FROM || "noreply@careevo.fr",
             to: signerEmail,
             subject:
                 "Signature confirmée ✅ - Contrat en attente de la deuxième signature",
@@ -454,7 +454,7 @@ export async function sendSecondPartyNotificationEmail(
         )
 
         const { error } = await resend.emails.send({
-            from: process.env.MAIL_FROM || "noreply@doctonext.fr",
+            from: process.env.MAIL_FROM || "noreply@careevo.fr",
             to: recipientEmail,
             subject: `📋 Signature requise - Contrat de ${signer.name}`,
             html: emailHtml
@@ -514,7 +514,7 @@ export async function sendContractCompletedEmail(contractId: string) {
                 )
 
                 const { error } = await resend.emails.send({
-                    from: process.env.MAIL_FROM || "noreply@doctonext.com",
+                    from: process.env.MAIL_FROM || "noreply@careevo.com",
                     to: party.email,
                     subject: "🎉 Contrat finalisé avec succès !",
                     html: emailHtml

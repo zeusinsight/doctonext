@@ -1,39 +1,61 @@
 import { Card, CardContent } from "@/components/ui/card";
-import { SectionTitle } from "./section-title";
+import { Star } from "lucide-react";
 
 const testimonials = [
     {
-        quote: "CareEvo a transformé ma recherche de collaboration. J'ai trouvé le partenaire idéal en quelques semaines seulement.",
+        quote: "Care Evo a transformé ma recherche de collaboration. J'ai trouvé le partenaire idéal en quelques semaines seulement.",
         name: "Dr. Sophie Dubois",
         title: "Médecin Généraliste",
+        rating: 5,
     },
     {
         quote: "La plateforme est incroyablement intuitive. J'ai pu publier mon annonce et recevoir des candidatures qualifiées très rapidement.",
         name: "Dr. Antoine Martin",
         title: "Dentiste",
+        rating: 5,
     },
     {
-        quote: "Grâce à CareEvo, j'ai trouvé un remplaçant de confiance pour mon cabinet en un temps record. Je recommande vivement!",
+        quote: "Grâce à Care Evo, j'ai trouvé un remplaçant de confiance pour mon cabinet en un temps record. Je recommande vivement!",
         name: "Dr. Isabelle Lefevre",
         title: "Kinésithérapeute",
+        rating: 5,
     },
 ];
 
 export const TestimonialsSection = () => {
     return (
-        <section className="bg-gray-50 py-16 sm:py-24">
+        <section className="bg-gradient-to-br from-white via-care-evo-primary/2 to-care-evo-accent/2 py-16 sm:py-24">
             <div className="container mx-auto px-4">
-                <SectionTitle
-                    subtitle="Ce que nos utilisateurs disent de nous"
-                    title="Des milliers de professionnels nous font confiance"
-                />
+                <div className="mx-auto max-w-3xl text-center mb-12">
+                    <h2 className="mb-4 text-3xl font-bold text-gray-900 md:text-4xl">
+                        Des milliers de professionnels nous font confiance
+                    </h2>
+                    <p className="text-lg text-gray-600">
+                        Rejoignez une communauté de professionnels de la santé qui transforment leur carrière avec Care Evo.
+                    </p>
+                </div>
                 <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
                     {testimonials.map((testimonial) => (
-                        <Card key={testimonial.name} className="bg-white">
-                            <CardContent className="p-6">
-                                <p className="mb-4 text-gray-600">"{testimonial.quote}"</p>
-                                <p className="font-semibold text-gray-900">{testimonial.name}</p>
-                                <p className="text-sm text-gray-500">{testimonial.title}</p>
+                        <Card key={testimonial.name} className="border-0 bg-white shadow-md hover:shadow-lg transition-shadow">
+                            <CardContent className="p-8">
+                                {/* Star Rating */}
+                                <div className="mb-4 flex gap-1">
+                                    {Array.from({ length: testimonial.rating }).map((_, i) => (
+                                        <Star
+                                            key={i}
+                                            className="h-5 w-5 fill-care-evo-accent text-care-evo-accent"
+                                        />
+                                    ))}
+                                </div>
+                                {/* Quote */}
+                                <p className="mb-6 text-base leading-relaxed text-gray-700">
+                                    "{testimonial.quote}"
+                                </p>
+                                {/* Author */}
+                                <div className="border-t border-gray-200 pt-4">
+                                    <p className="font-semibold text-gray-900">{testimonial.name}</p>
+                                    <p className="text-sm text-care-evo-primary font-medium">{testimonial.title}</p>
+                                </div>
                             </CardContent>
                         </Card>
                     ))}

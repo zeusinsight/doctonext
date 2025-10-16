@@ -32,7 +32,7 @@
 
 class IndexedDBCache {
     private db: any = null
-    private dbName = "doctonext-map-cache"
+    private dbName = "careevo-map-cache"
     private version = 1
 
     async initialize(): Promise<void> {

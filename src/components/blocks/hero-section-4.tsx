@@ -1,6 +1,7 @@
 'use client'
 import React from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { Button } from '@/components/ui/button'
 import { InfiniteSlider } from '@/components/ui/infinite-slider'
 import { ProgressiveBlur } from '@/components/ui/progressive-blur'
@@ -12,25 +13,36 @@ export function HeroSection() {
         <>
             <main className="overflow-x-hidden">
                 <section>
-                    <div className="pb-12 pt-12 md:pb-32  lg:pt-22">
-                        <div className="relative mx-auto flex max-w-6xl flex-col px-6 lg:flex-row lg:items-center">
-                            <div className="mx-auto max-w-lg text-center lg:mx-0 lg:w-1/2 lg:shrink-0 lg:text-left">
-                                <h1 className="mt-8 max-w-2xl text-balance text-5xl font-medium md:text-6xl lg:mt-16 xl:text-7xl">Réinventez votre carrière médicale</h1>
-                                <p className="mt-8 max-w-2xl text-pretty text-lg">Plateforme centralisée pour votre carrière médicale,<br></br> installation - remplacement - collaboration</p>
+                    <div className="pb-12 pt-12 md:pb-24  lg:pt-22">
+                        <div className="relative mx-auto max-w-6xl px-6">
+                            <div className="flex flex-col lg:flex-row lg:items-center lg:gap-12">
+                                <div className="flex-1 text-center lg:text-left">
+                                    <div className="flex justify-center lg:justify-start">
+                                        <Image
+                                            src="/logo.png"
+                                            alt="Care Evo"
+                                            width={120}
+                                            height={40}
+                                            className="h-auto w-32"
+                                        />
+                                    </div>
+                                    <h1 className="text-5xl font-medium md:text-6xl lg:mt-2 lg:text-6xl max-w-6xl">Réinventez votre<br />carrière médicale</h1>
+                                    <p className="mt-6 text-pretty text-lg leading-relaxed text-gray-700 font-medium">Plateforme centralisée pour votre carrière médicale<br /><span className="text-care-evo-accent">Installation • Remplacement • Collaboration</span></p>
 
-                                <div className="mt-12 flex flex-col items-center justify-center gap-2 sm:flex-row lg:justify-start">
-                                    <Button
-                                        asChild
-                                        size="lg"
-                                        className="px-8 bg-blue-600 hover:bg-blue-700">
-                                        <Link href="/annonces">
-                                            <span className="text-nowrap text-lg">Accéder aux annonces</span>
-                                        </Link>
-                                    </Button>
+                                    <div className="mt-12 flex flex-col items-center justify-center gap-2 sm:flex-row lg:justify-start">
+                                        <Button
+                                            asChild
+                                            size="lg"
+                                            className="px-8 bg-care-evo-primary hover:bg-care-evo-primary-dark">
+                                            <Link href="/annonces">
+                                                <span className="text-nowrap text-lg">Accéder aux annonces</span>
+                                            </Link>
+                                        </Button>
+                                    </div>
                                 </div>
-                            </div>
-                            <div className="relative lg:w-1/2">
-                                <ConnectedTriangles />
+                                <div className="relative hidden flex-1 lg:block">
+                                    <ConnectedTriangles />
+                                </div>
                             </div>
                         </div>
                     </div>

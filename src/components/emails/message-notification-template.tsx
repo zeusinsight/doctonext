@@ -16,7 +16,7 @@ export function MessageNotificationEmail({
     conversationId,
     listingTitle
 }: MessageNotificationEmailProps) {
-    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://doctonext.com"
+    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://careevo.com"
     const conversationUrl = `${siteUrl}/dashboard/messages/${conversationId}`
 
     // Truncate message preview if too long
@@ -179,7 +179,7 @@ export function MessageNotificationEmail({
                 React.createElement(
                     "p",
                     { style: { marginBottom: "12px" } },
-                    "Vous recevez cet email car vous avez reçu un nouveau message sur Doctonext."
+                    "Vous recevez cet email car vous avez reçu un nouveau message sur Care Evo."
                 ),
                 React.createElement("p", null, [
                     React.createElement(
@@ -213,7 +213,7 @@ export function MessageNotificationEmail({
     return EmailTemplate({
         heading: `Nouveau message de ${senderName}`,
         content,
-        siteName: "Doctonext",
+        siteName: "Care Evo",
         baseUrl: siteUrl,
         imageUrl: `${siteUrl}/logo.png`
     })

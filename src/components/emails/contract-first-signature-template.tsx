@@ -16,7 +16,7 @@ export function ContractFirstSignatureEmail({
     listingTitle,
     location
 }: ContractFirstSignatureEmailProps) {
-    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://doctonext.com"
+    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://careevo.com"
 
     const getContractTypeLabel = (type: string) => {
         switch (type) {
@@ -197,7 +197,7 @@ export function ContractFirstSignatureEmail({
                 React.createElement(
                     "p",
                     { style: { marginBottom: "12px" } },
-                    "Vous recevez cet email car vous avez signé un contrat sur Doctonext."
+                    "Vous recevez cet email car vous avez signé un contrat sur Care Evo."
                 ),
                 React.createElement("p", null, [
                     React.createElement(
@@ -231,7 +231,7 @@ export function ContractFirstSignatureEmail({
     return EmailTemplate({
         heading: "Signature confirmée ✅",
         content,
-        siteName: "Doctonext",
+        siteName: "Care Evo",
         baseUrl: siteUrl,
         imageUrl: `${siteUrl}/logo.png`
     })

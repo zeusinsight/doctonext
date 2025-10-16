@@ -59,59 +59,59 @@ export const SpecialtiesSection = () => {
   const specialties = [
     {
       icon: <span className="text-3xl">👨‍⚕️</span>,
-      title: "Médecine générale",
+      title: "Médecin généraliste",
       count: counts[SPECIALTY_SLUG_TO_LABEL["medecine-generale"]] || 0,
       href: "/annonces?specialty=medecine-generale",
-      color: "bg-blue-600",
+      color: "bg-care-evo-primary",
     },
     {
       icon: <span className="text-3xl">🦷</span>,
-      title: "Dentistes",
+      title: "Dentiste",
       count: counts[SPECIALTY_SLUG_TO_LABEL["dentistes"]] || 0,
       href: "/annonces?specialty=dentistes",
-      color: "bg-green-600",
+      color: "bg-care-evo-accent",
     },
     {
       icon: <span className="text-3xl">💊</span>,
-      title: "Pharmacies",
+      title: "Pharmacien",
       count: counts[SPECIALTY_SLUG_TO_LABEL["pharmacies"]] || 0,
       href: "/annonces?specialty=pharmacies",
-      color: "bg-purple-600",
+      color: "bg-care-evo-primary-light",
     },
     {
       icon: <span className="text-3xl">🧠</span>,
-      title: "Kinésithérapie",
+      title: "Kinésithérapeute",
       count: counts[SPECIALTY_SLUG_TO_LABEL["kinesitherapie"]] || 0,
       href: "/annonces?specialty=kinesitherapie",
-      color: "bg-orange-600",
+      color: "bg-care-evo-accent-light",
     },
     {
       icon: <span className="text-3xl">🗣️</span>,
       title: "Orthophoniste",
       count: counts[SPECIALTY_SLUG_TO_LABEL["orthophoniste"]] || 0,
       href: "/annonces?specialty=orthophoniste",
-      color: "bg-pink-600",
+      color: "bg-care-evo-primary",
     },
     {
       icon: <span className="text-3xl">💉</span>,
       title: "Infirmier",
       count: counts[SPECIALTY_SLUG_TO_LABEL["infirmier"]] || 0,
       href: "/annonces?specialty=infirmier",
-      color: "bg-red-600",
+      color: "bg-care-evo-accent",
     },
     {
       icon: <span className="text-3xl">👶</span>,
-      title: "Sage femme",
+      title: "Sage-femme",
       count: counts[SPECIALTY_SLUG_TO_LABEL["sage-femme"]] || 0,
       href: "/annonces?specialty=sage-femme",
-      color: "bg-indigo-600",
+      color: "bg-care-evo-primary-light",
     },
     {
-      icon: <span className="text-3xl">🤲</span>,
-      title: "Ostéopathe",
-      count: counts[SPECIALTY_SLUG_TO_LABEL["osteopathe"]] || 0,
-      href: "/annonces?specialty=osteopathe",
-      color: "bg-yellow-600",
+      icon: <span className="text-3xl">🦶</span>,
+      title: "Podologue",
+      count: counts[SPECIALTY_SLUG_TO_LABEL["podologie"]] || 0,
+      href: "/annonces?specialty=podologie",
+      color: "bg-care-evo-accent-light",
     },
   ];
 
@@ -140,7 +140,7 @@ export const SpecialtiesSection = () => {
         <div className="mt-12 text-center">
           <Link
             href="/annonces"
-            className="inline-flex items-center gap-2 font-medium text-blue-600 hover:text-blue-700"
+            className="inline-flex items-center gap-2 font-medium text-care-evo-primary hover:text-care-evo-primary-dark"
           >
             Voir toutes les spécialités
             <span className="text-xl">›</span>

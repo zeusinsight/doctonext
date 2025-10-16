@@ -50,9 +50,8 @@ export const FooterSection = () => {
                     <div className="col-span-1">
                         <h3 className="mb-4 font-bold text-2xl">CareEvo</h3>
                         <p className="mb-6 text-gray-400">
-                            La première plateforme dédiée à la vente et à
-                            l'achat de patientèle et de fonds de commerce dans
-                            le domaine médical.
+                            La première plateforme pour trouver toutes les
+                            opportunités médicales en ligne, 100 % gratuitement.
                         </p>
                         <div className="flex gap-4">
                             <Link
@@ -85,7 +84,7 @@ export const FooterSection = () => {
                     {/* Footer Links */}
                     {footerSections.map((section) => (
                         <div key={section.title}>
-                            <h4 className="mb-4 font-semibold text-green-400">
+                            <h4 className="mb-4 font-semibold text-care-evo-accent">
                                 {section.title}
                             </h4>
                             <ul className="space-y-2">
@@ -112,7 +111,7 @@ export const FooterSection = () => {
 
                     {/* Contact Section */}
                     <div>
-                        <h4 className="mb-4 font-semibold text-green-400">
+                        <h4 className="mb-4 font-semibold text-care-evo-accent">
                             Contact
                         </h4>
                         <ul className="space-y-2">

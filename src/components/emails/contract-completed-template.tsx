@@ -18,7 +18,7 @@ export function ContractCompletedEmail({
     contractId,
     documentUrl
 }: ContractCompletedEmailProps) {
-    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://doctonext.com"
+    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://careevo.com"
 
     const getContractTypeLabel = (type: string) => {
         switch (type) {
@@ -275,7 +275,7 @@ export function ContractCompletedEmail({
                 React.createElement(
                     "p",
                     { style: { marginBottom: "12px" } },
-                    "Félicitations pour la finalisation de ce contrat sur Doctonext !"
+                    "Félicitations pour la finalisation de ce contrat sur Care Evo !"
                 ),
                 React.createElement("p", null, [
                     React.createElement(
@@ -321,7 +321,7 @@ export function ContractCompletedEmail({
     return EmailTemplate({
         heading: "🎉 Contrat finalisé avec succès !",
         content,
-        siteName: "Doctonext",
+        siteName: "Care Evo",
         baseUrl: siteUrl,
         imageUrl: `${siteUrl}/logo.png`
     })

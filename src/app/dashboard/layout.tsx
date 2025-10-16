@@ -23,7 +23,7 @@ export default function ProtectedPage({
                 <Link href="/" className="flex flex-shrink-0 items-center">
                     <Image
                         src="/logo.png"
-                        alt="DoctoNext"
+                        alt="Care Evo"
                         width={130}
                         height={20}
                         className=" w-auto"

@@ -55,13 +55,37 @@ export default function Home() {
     <main className="bg-white">
       {/* Hero */}
       <HeroSection />
-      <section className="container mx-auto px-4 py-8 sm:py-24">
-        <div className="text-center">
-          <h2 className="mb-8 text-3xl font-bold text-gray-900 md:text-4xl">Notre Mission</h2>
-          <MagicText
-            className="mx-auto  max-w-4xl text-2xl text-gray-600 md:text-3xl"
-            text="Notre mission est de connecter les professionnels de la santé à travers la France pour créer des opportunités de carrière exceptionnelles et enrichissantes. Nous nous engageons à fournir une plateforme centralisée, intuitive, et entièrement gratuite qui simplifie la recherche de remplacements, de collaborations, ou de cessions de cabinet. Avec des outils comme la messagerie sécurisée et la signature électronique, nous visons à rendre chaque étape de votre parcours professionnel plus simple, plus rapide et plus transparente."
-          />
+      <section className="bg-gradient-to-br from-care-evo-primary/5 via-white to-care-evo-accent/5 py-16 sm:py-24">
+        <div className="container mx-auto px-4">
+          <div className="mx-auto max-w-3xl text-center">
+            <h2 className="mb-6 text-3xl font-bold text-gray-900 md:text-4xl">Notre Mission</h2>
+            <p className="mb-8 text-lg leading-relaxed text-gray-700 md:text-xl">
+              Connecter les professionnels de la santé pour créer des opportunités de carrière exceptionnelles.
+            </p>
+            <div className="grid gap-6 md:grid-cols-3">
+              <div className="rounded-lg bg-white p-6 shadow-sm hover:shadow-md transition-shadow">
+                <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-full bg-care-evo-primary/10">
+                  <span className="text-3xl">🎯</span>
+                </div>
+                <h3 className="mb-2 font-semibold text-gray-900">Simplifier</h3>
+                <p className="text-md text-gray-600">Une plateforme centralisée et intuitive pour tous vos besoins professionnels.</p>
+              </div>
+              <div className="rounded-lg bg-white p-6 shadow-sm hover:shadow-md transition-shadow">
+                <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-full bg-care-evo-accent/10">
+                  <span className="text-3xl">🔐</span>
+                </div>
+                <h3 className="mb-2 font-semibold text-gray-900">Sécuriser</h3>
+                <p className="text-md text-gray-600">Messagerie sécurisée et signature électronique pour vos transactions.</p>
+              </div>
+              <div className="rounded-lg bg-white p-6 shadow-sm hover:shadow-md transition-shadow">
+                <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-full bg-care-evo-primary/10">
+                  <span className="text-3xl">⚡</span>
+                </div>
+                <h3 className="mb-2 font-semibold text-gray-900">Accélérer</h3>
+                <p className="text-md text-gray-600">Trouvez les bonnes opportunités plus rapidement et efficacement.</p>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
       <SpecialtiesSection />

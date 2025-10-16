@@ -6,9 +6,7 @@ import {
   MessageCircle,
   Syringe,
   Baby,
-  Bone,
-  Heart,
-  Sparkles,
+  Footprints,
   type LucideIcon,
 } from "lucide-react";
 
@@ -20,7 +18,5 @@ export const SPECIALTY_ICONS: Record<string, LucideIcon> = {
   "Orthophoniste": MessageCircle,
   "Infirmier(ère)": Syringe,
   "Sage-femme": Baby,
-  "Ostéopathe": Bone,
-  "Cardiologue": Heart,
-  "Dermatologue": Sparkles,
+  "Podologue": Footprints,
 };

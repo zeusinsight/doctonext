@@ -81,7 +81,7 @@ export async function generateMetadata({
     searchParams
 }: BlogPageProps): Promise<Metadata> {
     const params = await searchParams
-    const baseTitle = "Blog - Doctonext"
+    const baseTitle = "Blog - Care Evo"
     const baseDescription =
         "Découvrez nos articles sur les transferts de patientèle, remplacements et collaborations médicales. Conseils, procédures et témoignages pour les professionnels de santé."
 
@@ -129,7 +129,7 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
         <div className="container mx-auto px-4 py-8">
             {/* Header */}
             <div className="mb-8 text-center">
-                <h1 className="mb-4 font-bold text-4xl">Blog Doctonext</h1>
+                <h1 className="mb-4 font-bold text-4xl">Blog Care Evo</h1>
                 <p className="mx-auto max-w-2xl text-muted-foreground text-xl">
                     Découvrez nos conseils, guides et témoignages pour réussir
                     vos transferts de patientèle et collaborations médicales

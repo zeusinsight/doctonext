@@ -22,7 +22,7 @@ const animatedFeatures = [
     icon: "📊",
     title: "96 %",
     description:
-      "des professionnels estiment que trouver un remplaçant ou un associé est un processus trop complexe. Doctonext simplifie tout.",
+      "des professionnels estiment que trouver un remplaçant ou un associé est un processus trop complexe. Care Evo simplifie tout.",
   },
 ];
 
@@ -35,7 +35,7 @@ export const TestimonialSection = () => {
       <div className="container mx-auto px-4">
         <div className="mb-12 text-center">
           <h2 className="mb-6 font-bold text-3xl text-gray-900 lg:text-4xl">
-            Pourquoi choisir Doctonext ?
+            Pourquoi choisir Care Evo ?
           </h2>
         </div>
 
