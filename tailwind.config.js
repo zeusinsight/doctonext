@@ -9,6 +9,9 @@ module.exports = {
     ],
     theme: {
         extend: {
+            fontFamily: {
+                sans: ['var(--font-poppins)', 'system-ui', 'sans-serif'],
+            },
             colors: {
                 offwhite: "#F5F3E7", // soft warm beige
                 "care-evo": {

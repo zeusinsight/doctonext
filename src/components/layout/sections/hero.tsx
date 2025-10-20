@@ -52,13 +52,13 @@ export const ConnectedTriangles = ({
           </filter>
         </defs>
 
-        {/* Triangle connecting lines (with hover emphasis) */}
-        {/* Remplacement: dotted, unified blue */}
+        {/* Triangle connecting lines (with hover emphasis) - Harmonisé avec les couleurs Care Evo */}
+        {/* Remplacement: dotted, Care Evo primary blue */}
         <g
-          stroke="#2563eb"
+          stroke="#1e40af"
           strokeLinecap="round"
           opacity={hovered && hovered !== "remplacement" ? 0.35 : 1}
-          className="cursor-pointer transition-all duration-200 ease-out"
+          className="cursor-pointer transition-all duration-300 ease-out"
           onMouseEnter={() => setHovered("remplacement")}
           onMouseLeave={() => setHovered(null)}
         >
@@ -70,12 +70,12 @@ export const ConnectedTriangles = ({
             strokeWidth={hovered === "remplacement" ? 6 : 4}
           />
         </g>
-        {/* Collaboration: solid, blue */}
+        {/* Collaboration: solid, Care Evo primary blue */}
         <g
-          stroke="#2563eb"
+          stroke="#1e40af"
           strokeLinecap="round"
           opacity={hovered && hovered !== "collaboration" ? 0.35 : 1}
-          className="cursor-pointer transition-all duration-200 ease-out"
+          className="cursor-pointer transition-all duration-300 ease-out"
           onMouseEnter={() => setHovered("collaboration")}
           onMouseLeave={() => setHovered(null)}
         >
@@ -87,11 +87,11 @@ export const ConnectedTriangles = ({
             strokeWidth={hovered === "collaboration" ? 6 : 4}
           />
         </g>
-        {/* Cession: solid, unified blue */}
+        {/* Cession: solid, Care Evo primary blue */}
         <g
           strokeLinecap="round"
           opacity={hovered && hovered !== "cession" ? 0.35 : 1}
-          className="cursor-pointer transition-all duration-200 ease-out"
+          className="cursor-pointer transition-all duration-300 ease-out"
           onMouseEnter={() => setHovered("cession")}
           onMouseLeave={() => setHovered(null)}
         >
@@ -100,7 +100,7 @@ export const ConnectedTriangles = ({
             y1="300"
             x2="360"
             y2="300"
-            stroke="#2563eb"
+            stroke="#1e40af"
             strokeOpacity="0.9"
             strokeWidth={hovered === "cession" ? 6 : 4}
           />
@@ -121,7 +121,7 @@ export const ConnectedTriangles = ({
               height="24"
               rx="12"
               fill="#ffffff"
-              stroke={hovered === "remplacement" ? "#10b981" : "#e5e7eb"}
+              stroke={hovered === "remplacement" ? "#14b8a6" : "#e5e7eb"}
               strokeWidth={hovered === "remplacement" ? 2 : 1}
             />
             <text x="168" y="180" fill="#374151">
@@ -130,7 +130,7 @@ export const ConnectedTriangles = ({
           </g>
           {/* Collaboration label @ (312,176) */}
           <g
-            className="cursor-pointer transition-all duration-200 ease-out"
+            className="cursor-pointer transition-all duration-300 ease-out"
             onMouseEnter={() => setHovered("collaboration")}
             onMouseLeave={() => setHovered(null)}
           >
@@ -141,7 +141,7 @@ export const ConnectedTriangles = ({
               height="24"
               rx="12"
               fill="#ffffff"
-              stroke={hovered === "collaboration" ? "#2563eb" : "#e5e7eb"}
+              stroke={hovered === "collaboration" ? "#1e40af" : "#e5e7eb"}
               strokeWidth={hovered === "collaboration" ? 2 : 1}
             />
             <text x="312" y="180" fill="#374151">
@@ -150,7 +150,7 @@ export const ConnectedTriangles = ({
           </g>
           {/* Cession label @ (240,300) */}
           <g
-            className="cursor-pointer transition-all duration-200 ease-out"
+            className="cursor-pointer transition-all duration-300 ease-out"
             onMouseEnter={() => setHovered("cession")}
             onMouseLeave={() => setHovered(null)}
           >
@@ -170,7 +170,7 @@ export const ConnectedTriangles = ({
           </g>
         </g>
 
-        {/* Nodes */}
+        {/* Nodes - Harmonisé avec Care Evo colors */}
         <g filter="url(#softShadow)">
           {/* Top node */}
           <g>
@@ -179,7 +179,7 @@ export const ConnectedTriangles = ({
               cy="52"
               r="24"
               fill="url(#nodeBg)"
-              stroke="#2563eb"
+              stroke="#1e40af"
               strokeWidth="2"
             />
             <text
@@ -199,7 +199,7 @@ export const ConnectedTriangles = ({
               cy="300"
               r="24"
               fill="url(#nodeBg)"
-              stroke="#2563eb"
+              stroke="#1e40af"
               strokeWidth="2"
             />
             <text
@@ -207,7 +207,7 @@ export const ConnectedTriangles = ({
               y="344"
               textAnchor="middle"
               fontSize="13"
-              fill="#2563eb"
+              fill="#1e40af"
             >
               {labels.b}
             </text>
@@ -219,7 +219,7 @@ export const ConnectedTriangles = ({
               cy="300"
               r="24"
               fill="url(#nodeBg)"
-              stroke="#2563eb"
+              stroke="#1e40af"
               strokeWidth="2"
             />
             <text
@@ -227,7 +227,7 @@ export const ConnectedTriangles = ({
               y="344"
               textAnchor="middle"
               fontSize="13"
-              fill="#2563eb"
+              fill="#1e40af"
             >
               {labels.c}
             </text>
@@ -274,27 +274,32 @@ export const HeroSection = () => {
         <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
           {/* Left Content */}
           <div className="space-y-8 text-gray-900">
-            {/* Care Evo Logo */}
+            {/* Care Evo Logo - Agrandie pour plus de présence visuelle */}
             <div className="flex justify-center lg:justify-start">
               <Image
                 src="/logo.png"
                 alt="Care Evo"
-                width={150}
-                height={50}
-                className="h-auto w-40"
+                width={180}
+                height={60}
+                className="h-auto w-48"
               />
             </div>
 
-            {/* Main Title */}
-            <h1 className="font-bold text-4xl leading-tight tracking-tight md:text-5xl lg:text-6xl text-center lg:text-left">
+            {/* Main Title - Amélioration du contraste et espacement */}
+            <h1 className="font-bold text-4xl leading-snug tracking-tight md:text-5xl lg:text-6xl text-center lg:text-left text-gray-900">
               Réinventez votre
               <br />
               <span className="text-care-evo-primary">carrière médicale</span>
             </h1>
 
-            {/* Subtitle */}
-            <p className="text-gray-600 text-lg leading-relaxed md:text-xl text-center lg:text-left">
-              Installation, remplacement, collaboration… Tout est centralisé sur une seule plateforme, 100 % gratuite, avec messagerie sécurisée et signature en ligne.
+            {/* Subtitle - Plus percutant */}
+            <p className="text-gray-700 text-lg leading-relaxed md:text-xl text-center lg:text-left font-medium">
+              La première plateforme qui connecte les professionnels de santé pour développer leur carrière, en toute simplicité.
+            </p>
+
+            {/* CTA discret */}
+            <p className="text-gray-600 text-base text-center lg:text-left italic">
+              Découvrez comment Care Evo peut transformer votre parcours professionnel.
             </p>
 
             {/* CTA Buttons */}
