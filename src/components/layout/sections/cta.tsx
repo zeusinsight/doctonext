@@ -18,7 +18,7 @@ export const CtaSection = () => {
                         <Link href="/annonces">
                             <Button
                                 size="lg"
-                                className="flex items-center gap-3 bg-care-evo-primary text-white px-10 py-7 font-semibold text-lg hover:bg-care-evo-primary-dark hover:scale-105 hover:shadow-2xl transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-care-evo-primary/50 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+                                className="flex items-center gap-3 bg-care-evo-primary/10 text-care-evo-primary border-2 border-care-evo-primary px-10 py-7 font-semibold text-lg hover:bg-care-evo-primary hover:text-white hover:scale-105 hover:shadow-2xl transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-care-evo-primary/50 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
                             >
                                 <Search className="h-6 w-6" />
                                 Explorer les annonces
@@ -28,7 +28,7 @@ export const CtaSection = () => {
                         <Link href="/annonces/new">
                             <Button
                                 size="lg"
-                                className="flex items-center gap-3 bg-care-evo-accent text-white px-10 py-7 font-semibold text-lg hover:bg-care-evo-accent-dark hover:scale-105 hover:shadow-2xl transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-care-evo-accent/50 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+                                className="flex items-center gap-3 bg-care-evo-accent/10 text-care-evo-accent border-2 border-care-evo-accent px-10 py-7 font-semibold text-lg hover:bg-care-evo-accent hover:text-white hover:scale-105 hover:shadow-2xl transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-care-evo-accent/50 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
                             >
                                 <FileText className="h-6 w-6" />
                                 Déposer une annonce
