@@ -9,25 +9,22 @@ export function LoginFormWrapper() {
       redirectTo="/dashboard"
       classNames={{
         base: "bg-white/95 backdrop-blur-md shadow-2xl",
-        header: "font-medium",
+        header: "font-medium text-care-evo-primary",
         content: "text-gray-700",
         footer: "text-gray-600",
-        footerLink: "hover:underline",
+        footerLink: "text-care-evo-primary hover:underline",
         form: {
           base: "space-y-2",
-          input: "border-gray-300",
+          input:
+            "border-gray-300 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-care-evo-primary",
           label: "text-gray-700 font-medium",
           button:
-            "text-white font-medium shadow-lg hover:shadow-xl transition-all",
+            "font-medium shadow-lg hover:shadow-xl transition-all",
+          primaryButton:
+            "bg-[#206dc5] text-white hover:opacity-90",
+          outlineButton:
+            "border-[#206dc5] text-[#206dc5] hover:bg-[#206dc5] hover:text-white",
           error: "text-red-600",
-        },
-      }}
-      style={{
-        header: { color: "#206dc5" },
-        footerLink: { color: "#206dc5" },
-        form: {
-          input: { borderColor: "#e5e7eb", outlineColor: "#206dc5" },
-          button: { backgroundColor: "#206dc5" },
         },
       }}
       localization={{

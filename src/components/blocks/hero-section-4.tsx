@@ -251,14 +251,23 @@ const HeroHeader = () => {
                 </ul>
               </div>
               <div className="flex w-full flex-col space-y-3 sm:flex-row sm:gap-3 sm:space-y-0 md:w-fit">
-                <Button asChild variant="outline" size="sm">
+                <Button
+                  asChild
+                  variant="outline"
+                  size="sm"
+                  className="border-[#206dc5] text-[#206dc5] hover:bg-[#206dc5] hover:text-white"
+                >
                   <Link href="#">
-                    <span>Login</span>
+                    <span>Se connecter</span>
                   </Link>
                 </Button>
-                <Button asChild size="sm">
+                <Button
+                  asChild
+                  size="sm"
+                  className="bg-[#14b8a6] text-white hover:opacity-90"
+                >
                   <Link href="#">
-                    <span>Sign Up</span>
+                    <span>S'inscrire</span>
                   </Link>
                 </Button>
               </div>

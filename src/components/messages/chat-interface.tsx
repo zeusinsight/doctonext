@@ -145,6 +145,9 @@ export function ChatInterface({
     );
   }
 
+  // Safe current user after auth guard
+  const currentUser = session!.data!.user!;
+
   // Shared listing details content for desktop panel and mobile sheet
   const ListingDetailsContent = () => {
     if (!selectedConversationId || !listingDetails) return null;
@@ -216,13 +219,13 @@ export function ChatInterface({
                 conversationId={selectedConversationId}
                 listingId={listingDetails.listing.id}
                 recipientId={
-                  selectedConversation.participant1Id === session.data.user.id
+                  selectedConversation.participant1Id === currentUser.id
                     ? selectedConversation.participant2Id
                     : selectedConversation.participant1Id
                 }
-                senderId={session.data.user.id}
+                senderId={currentUser.id}
                 listingType={listingDetails.listing.listingType}
-                userProfession={(session.data.user as any).profession}
+                userProfession={(currentUser as any).profession}
               />
             )}
             <Button asChild size="sm" className="w-full">
@@ -551,7 +554,7 @@ export function ChatInterface({
               {/* Messages */}
               <MessageList
                 conversationId={selectedConversationId}
-                currentUserId={session.data.user.id}
+                currentUserId={currentUser.id}
               />
 
               {/* Message Input */}
