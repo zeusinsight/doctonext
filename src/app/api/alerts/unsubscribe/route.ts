@@ -1,16 +1,16 @@
-import { type NextRequest, NextResponse } from "next/server"
-import { db } from "@/database/db"
-import { savedSearches } from "@/database/schema"
-import { eq } from "drizzle-orm"
+import { type NextRequest, NextResponse } from "next/server";
+import { db } from "@/database/db";
+import { savedSearches } from "@/database/schema";
+import { eq } from "drizzle-orm";
 
 export async function GET(request: NextRequest) {
-    try {
-        const searchParams = request.nextUrl.searchParams
-        const savedSearchId = searchParams.get("id")
+  try {
+    const searchParams = request.nextUrl.searchParams;
+    const savedSearchId = searchParams.get("id");
 
-        if (!savedSearchId) {
-            return new NextResponse(
-                `
+    if (!savedSearchId) {
+      return new NextResponse(
+        `
                 <!DOCTYPE html>
                 <html lang="fr">
                 <head>
@@ -18,7 +18,7 @@ export async function GET(request: NextRequest) {
                     <meta name="viewport" content="width=device-width, initial-scale=1.0">
                     <title>Erreur - Care Evo</title>
                     <style>
-                        body { 
+                        body {
                             font-family: system-ui, -apple-system, sans-serif;
                             display: flex;
                             justify-content: center;
@@ -39,7 +39,7 @@ export async function GET(request: NextRequest) {
                         p { color: #6b7280; margin-bottom: 1.5rem; }
                         a {
                             display: inline-block;
-                            background: #3b82f6;
+                            background: #4a8dd9;
                             color: white;
                             padding: 0.5rem 1rem;
                             border-radius: 0.375rem;
@@ -57,26 +57,26 @@ export async function GET(request: NextRequest) {
                 </body>
                 </html>
                 `,
-                {
-                    status: 400,
-                    headers: { "Content-Type": "text/html; charset=utf-8" }
-                }
-            )
-        }
+        {
+          status: 400,
+          headers: { "Content-Type": "text/html; charset=utf-8" },
+        },
+      );
+    }
 
-        // Disable email alerts for this saved search
-        const [updatedSearch] = await db
-            .update(savedSearches)
-            .set({
-                emailAlertsEnabled: false,
-                updatedAt: new Date()
-            })
-            .where(eq(savedSearches.id, savedSearchId))
-            .returning()
+    // Disable email alerts for this saved search
+    const [updatedSearch] = await db
+      .update(savedSearches)
+      .set({
+        emailAlertsEnabled: false,
+        updatedAt: new Date(),
+      })
+      .where(eq(savedSearches.id, savedSearchId))
+      .returning();
 
-        if (!updatedSearch) {
-            return new NextResponse(
-                `
+    if (!updatedSearch) {
+      return new NextResponse(
+        `
                 <!DOCTYPE html>
                 <html lang="fr">
                 <head>
@@ -84,7 +84,7 @@ export async function GET(request: NextRequest) {
                     <meta name="viewport" content="width=device-width, initial-scale=1.0">
                     <title>Recherche non trouvée - Care Evo</title>
                     <style>
-                        body { 
+                        body {
                             font-family: system-ui, -apple-system, sans-serif;
                             display: flex;
                             justify-content: center;
@@ -105,7 +105,7 @@ export async function GET(request: NextRequest) {
                         p { color: #6b7280; margin-bottom: 1.5rem; }
                         a {
                             display: inline-block;
-                            background: #3b82f6;
+                            background: #4a8dd9;
                             color: white;
                             padding: 0.5rem 1rem;
                             border-radius: 0.375rem;
@@ -123,15 +123,15 @@ export async function GET(request: NextRequest) {
                 </body>
                 </html>
                 `,
-                {
-                    status: 404,
-                    headers: { "Content-Type": "text/html; charset=utf-8" }
-                }
-            )
-        }
+        {
+          status: 404,
+          headers: { "Content-Type": "text/html; charset=utf-8" },
+        },
+      );
+    }
 
-        return new NextResponse(
-            `
+    return new NextResponse(
+      `
             <!DOCTYPE html>
             <html lang="fr">
             <head>
@@ -139,7 +139,7 @@ export async function GET(request: NextRequest) {
                 <meta name="viewport" content="width=device-width, initial-scale=1.0">
                 <title>Désabonnement réussi - Care Evo</title>
                 <style>
-                    body { 
+                    body {
                         font-family: system-ui, -apple-system, sans-serif;
                         display: flex;
                         justify-content: center;
@@ -186,7 +186,7 @@ export async function GET(request: NextRequest) {
                         text-decoration: none;
                     }
                     .primary {
-                        background: #3b82f6;
+                        background: #4a8dd9;
                         color: white;
                     }
                     .primary:hover { background: #2563eb; }
@@ -216,15 +216,15 @@ export async function GET(request: NextRequest) {
             </body>
             </html>
             `,
-            {
-                status: 200,
-                headers: { "Content-Type": "text/html; charset=utf-8" }
-            }
-        )
-    } catch (error) {
-        console.error("Error unsubscribing from alerts:", error)
-        return new NextResponse(
-            `
+      {
+        status: 200,
+        headers: { "Content-Type": "text/html; charset=utf-8" },
+      },
+    );
+  } catch (error) {
+    console.error("Error unsubscribing from alerts:", error);
+    return new NextResponse(
+      `
             <!DOCTYPE html>
             <html lang="fr">
             <head>
@@ -232,7 +232,7 @@ export async function GET(request: NextRequest) {
                 <meta name="viewport" content="width=device-width, initial-scale=1.0">
                 <title>Erreur - Care Evo</title>
                 <style>
-                    body { 
+                    body {
                         font-family: system-ui, -apple-system, sans-serif;
                         display: flex;
                         justify-content: center;
@@ -253,7 +253,7 @@ export async function GET(request: NextRequest) {
                     p { color: #6b7280; margin-bottom: 1.5rem; }
                     a {
                         display: inline-block;
-                        background: #3b82f6;
+                        background: #4a8dd9;
                         color: white;
                         padding: 0.5rem 1rem;
                         border-radius: 0.375rem;
@@ -271,10 +271,10 @@ export async function GET(request: NextRequest) {
             </body>
             </html>
             `,
-            {
-                status: 500,
-                headers: { "Content-Type": "text/html; charset=utf-8" }
-            }
-        )
-    }
+      {
+        status: 500,
+        headers: { "Content-Type": "text/html; charset=utf-8" },
+      },
+    );
+  }
 }

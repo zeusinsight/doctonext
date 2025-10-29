@@ -50,32 +50,38 @@ export function NavUser() {
     // Show loading state or return null if no session
     if (isPending) {
         return (
-            <div className="flex items-center gap-4 rounded-lg bg-gray-50 px-3 py-2">
+            <div className="flex items-center gap-2 sm:gap-4 rounded-lg bg-gray-50 px-2 py-1 sm:px-3 sm:py-2 flex-wrap md:flex-nowrap">
                 <Link
                     href="/dashboard/favorites"
-                    className="group relative flex cursor-pointer flex-col items-center gap-1 p-2"
+                    className="group relative flex cursor-pointer items-center gap-1 p-1 sm:p-2"
+                    aria-label="Favoris"
+                    title="Favoris"
                 >
                     <RiHeartLine className="h-6 w-6 text-muted-foreground transition-colors group-hover:text-foreground" />
-                    <span className="text-muted-foreground text-sm transition-colors group-hover:text-foreground">
+                    <span className="hidden sm:inline text-muted-foreground text-sm transition-colors group-hover:text-foreground">
                         Favoris
                     </span>
                     <div className="group-hover:-translate-x-1/2 absolute bottom-0 left-1/2 h-0.5 w-0 bg-blue-600 transition-all duration-300 ease-out group-hover:w-full" />
                 </Link>
                 <Link
                     href="/dashboard/messages"
-                    className="group relative flex cursor-pointer flex-col items-center gap-1 p-2"
+                    className="group relative flex cursor-pointer items-center gap-1 p-1 sm:p-2"
+                    aria-label="Messages"
+                    title="Messages"
                 >
                     <div className="relative">
                         <RiMessage3Line className="h-6 w-6 text-muted-foreground transition-colors group-hover:text-foreground" />
                     </div>
-                    <span className="text-muted-foreground text-sm transition-colors group-hover:text-foreground">
+                    <span className="hidden sm:inline text-muted-foreground text-sm transition-colors group-hover:text-foreground">
                         Messages
                     </span>
                     <div className="group-hover:-translate-x-1/2 absolute bottom-0 left-1/2 h-0.5 w-0 bg-blue-600 transition-all duration-300 ease-out group-hover:w-full" />
                 </Link>
-                <NotificationButton />
+                <div className="hidden sm:block">
+                    <NotificationButton layout="horizontal" buttonClassName="p-1 sm:p-2" />
+                </div>
                 <div className="flex items-center gap-2">
-                    <Avatar className="h-8 w-8">
+                    <Avatar className="h-6 w-6 sm:h-8 sm:w-8">
                         <AvatarFallback>...</AvatarFallback>
                     </Avatar>
                 </div>
@@ -85,32 +91,38 @@ export function NavUser() {
 
     if (!session?.user) {
         return (
-            <div className="flex items-center gap-4 rounded-lg bg-gray-50 px-3 py-2">
+            <div className="flex items-center gap-2 sm:gap-4 rounded-lg bg-gray-50 px-2 py-1 sm:px-3 sm:py-2 flex-wrap md:flex-nowrap">
                 <Link
                     href="/dashboard/favorites"
-                    className="group relative flex cursor-pointer flex-col items-center gap-1 p-2"
+                    className="group relative flex cursor-pointer items-center gap-1 p-1 sm:p-2"
+                    aria-label="Favoris"
+                    title="Favoris"
                 >
                     <RiHeartLine className="h-6 w-6 text-muted-foreground transition-colors group-hover:text-foreground" />
-                    <span className="text-muted-foreground text-sm transition-colors group-hover:text-foreground">
+                    <span className="hidden sm:inline text-muted-foreground text-sm transition-colors group-hover:text-foreground">
                         Favoris
                     </span>
                     <div className="group-hover:-translate-x-1/2 absolute bottom-0 left-1/2 h-0.5 w-0 bg-blue-600 transition-all duration-300 ease-out group-hover:w-full" />
                 </Link>
                 <Link
                     href="/dashboard/messages"
-                    className="group relative flex cursor-pointer flex-col items-center gap-1 p-2"
+                    className="group relative flex cursor-pointer items-center gap-1 p-1 sm:p-2"
+                    aria-label="Messages"
+                    title="Messages"
                 >
                     <div className="relative">
                         <RiMessage3Line className="h-6 w-6 text-muted-foreground transition-colors group-hover:text-foreground" />
                     </div>
-                    <span className="text-muted-foreground text-sm transition-colors group-hover:text-foreground">
+                    <span className="hidden sm:inline text-muted-foreground text-sm transition-colors group-hover:text-foreground">
                         Messages
                     </span>
                     <div className="group-hover:-translate-x-1/2 absolute bottom-0 left-1/2 h-0.5 w-0 bg-blue-600 transition-all duration-300 ease-out group-hover:w-full" />
                 </Link>
-                <NotificationButton />
+                <div className="hidden sm:block">
+                    <NotificationButton layout="horizontal" buttonClassName="p-1 sm:p-2" />
+                </div>
                 <div className="flex items-center gap-2">
-                    <Avatar className="h-8 w-8">
+                    <Avatar className="h-6 w-6 sm:h-8 sm:w-8">
                         <AvatarFallback>U</AvatarFallback>
                     </Avatar>
                 </div>
@@ -144,10 +156,12 @@ export function NavUser() {
     const isMessagesActive = pathname.startsWith("/dashboard/messages")
 
     return (
-        <div className="flex items-center gap-4 rounded-lg bg-gray-50 px-3 py-2">
+        <div className="flex items-center gap-2 sm:gap-4 rounded-lg bg-gray-50 px-2 py-1 sm:px-3 sm:py-2 flex-wrap md:flex-nowrap">
             <Link
                 href="/dashboard/favorites"
-                className="group relative flex cursor-pointer flex-col items-center gap-1 p-2"
+                className="group relative flex cursor-pointer items-center gap-1 p-1 sm:p-2"
+                aria-label="Favoris"
+                title="Favoris"
             >
                 <RiHeartLine
                     className={`h-6 w-6 transition-colors ${
@@ -157,7 +171,7 @@ export function NavUser() {
                     }`}
                 />
                 <span
-                    className={`text-sm transition-colors ${
+                    className={`hidden sm:inline text-sm transition-colors ${
                         isFavoritesActive
                             ? "font-medium text-blue-600"
                             : "text-muted-foreground group-hover:text-foreground"
@@ -175,7 +189,9 @@ export function NavUser() {
             </Link>
             <Link
                 href="/dashboard/messages"
-                className="group relative flex cursor-pointer flex-col items-center gap-1 p-2"
+                className="group relative flex cursor-pointer items-center gap-1 p-1 sm:p-2"
+                aria-label="Messages"
+                title="Messages"
             >
                 <div className="relative">
                     <RiMessage3Line
@@ -195,7 +211,7 @@ export function NavUser() {
                     )}
                 </div>
                 <span
-                    className={`text-sm transition-colors ${
+                    className={`hidden sm:inline text-sm transition-colors ${
                         isMessagesActive
                             ? "font-medium text-blue-600"
                             : "text-muted-foreground group-hover:text-foreground"
@@ -211,10 +227,14 @@ export function NavUser() {
                     }`}
                 />
             </Link>
-            <NotificationButton />
+            <div className="hidden sm:block">
+                <NotificationButton layout="horizontal" buttonClassName="p-1 sm:p-2" />
+            </div>
             <Link
                 href="/dashboard"
-                className="group relative flex cursor-pointer flex-col items-center gap-1 p-2"
+                className="group relative flex cursor-pointer items-center gap-1 p-1 sm:p-2"
+                aria-label="Profil"
+                title="Profil"
             >
                 <Avatar className="h-6 w-6">
                     <AvatarImage
@@ -223,7 +243,7 @@ export function NavUser() {
                     />
                     <AvatarFallback>{initials}</AvatarFallback>
                 </Avatar>
-                <span className="font-medium text-muted-foreground text-xs transition-colors group-hover:text-foreground">
+                <span className="hidden sm:inline font-medium text-muted-foreground text-xs transition-colors group-hover:text-foreground">
                     {displayName}
                 </span>
                 <div className="group-hover:-translate-x-1/2 absolute bottom-0 left-1/2 h-0.5 w-0 bg-blue-600 transition-all duration-300 ease-out group-hover:w-full" />

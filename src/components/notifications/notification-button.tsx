@@ -7,7 +7,19 @@ import { getUnreadNotificationCount } from "@/lib/actions/notifications"
 import { NotificationDropdown } from "./notification-dropdown"
 import { cn } from "@/lib/utils"
 
-export function NotificationButton() {
+interface NotificationButtonProps {
+    layout?: "vertical" | "horizontal"
+    hideLabelOnSmall?: boolean
+    className?: string
+    buttonClassName?: string
+}
+
+export function NotificationButton({
+    layout = "vertical",
+    hideLabelOnSmall = false,
+    className,
+    buttonClassName
+}: NotificationButtonProps) {
     const [isOpen, setIsOpen] = useState(false)
     const buttonRef = useRef<HTMLButtonElement>(null)
     const dropdownRef = useRef<HTMLDivElement>(null)
@@ -56,12 +68,21 @@ export function NotificationButton() {
         }
     }, [isOpen])
 
+    const orientationClasses =
+        layout === "horizontal"
+            ? "flex-row items-center gap-2"
+            : "flex-col items-center gap-1"
+
     return (
-        <div className="relative">
+        <div className={cn("relative", className)}>
             <button
                 ref={buttonRef}
                 onClick={() => setIsOpen(!isOpen)}
-                className="group relative flex cursor-pointer flex-col items-center gap-1 p-2 transition-colors"
+                className={cn(
+                    "group relative flex cursor-pointer p-2 transition-colors",
+                    orientationClasses,
+                    buttonClassName
+                )}
                 aria-label="Notifications"
             >
                 <div className="relative">
@@ -85,6 +106,7 @@ export function NotificationButton() {
                 <span
                     className={cn(
                         "text-sm transition-colors",
+                        hideLabelOnSmall && "hidden sm:inline",
                         isOpen
                             ? "font-medium text-blue-600"
                             : "text-muted-foreground group-hover:text-foreground"

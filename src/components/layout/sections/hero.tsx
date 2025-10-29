@@ -273,15 +273,16 @@ export const HeroSection = () => {
       <div className="container mx-auto px-4 py-16 lg:py-24">
         <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
           {/* Left Content */}
-          <div className="space-y-8 text-gray-900">
-            {/* Care Evo Logo */}
+          <div className="space-y-6 text-gray-900">
+            {/* Care Evo Logo - Agrandi */}
             <div className="flex justify-center lg:justify-start">
               <Image
                 src="/logo.png"
                 alt="Care Evo"
-                width={150}
-                height={50}
-                className="h-auto w-40"
+                width={220}
+                height={75}
+                className="h-auto w-56"
+                priority
               />
             </div>
 
@@ -292,9 +293,18 @@ export const HeroSection = () => {
               <span className="text-care-evo-primary">carrière médicale</span>
             </h1>
 
-            {/* Subtitle */}
+            {/* Subtitle - Nouveau texte */}
             <p className="text-gray-600 text-lg leading-relaxed md:text-xl text-center lg:text-left">
-              Installation, remplacement, collaboration… Tout est centralisé sur une seule plateforme, 100 % gratuite, avec messagerie sécurisée et signature en ligne.
+              La première plateforme qui
+              <br />
+              connecte les professionnels de santé pour développer leur
+              carrière, en toute simplicité.
+            </p>
+
+            {/* CTA discret - Nouveau */}
+            <p className="text-gray-500 text-base italic text-center lg:text-left">
+              Découvrez comment Care Evo peut transformer votre parcours
+              professionnel.
             </p>
 
             {/* CTA Buttons */}

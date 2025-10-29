@@ -14,7 +14,7 @@ export default async function ConversationPage({
 
     return (
         <div className="min-h-screen w-full space-y-6">
-            <div className="w-full max-w-7xl">
+            <div className="w-full">
                 <ChatInterface initialConversationId={id} />
                 <ContractSuccessHandler />
             </div>
