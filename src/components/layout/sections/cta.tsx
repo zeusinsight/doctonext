@@ -47,7 +47,7 @@ export const CtaSection = () => {
               </button>
             </Link>
 
-            <Link href="/dashboard/annonces">
+            <Link href="/dashboard/annonces/new">
               <button
                 className="flex items-center gap-2 px-8 py-6 font-semibold text-lg text-white transition-all duration-200 shadow-lg rounded-md"
                 style={{ backgroundColor: "#14b8a6" }}

@@ -1,0 +1,132 @@
+﻿CONDITIONS GÉNÉRALES D'UTILISATION (CGU) - CARE EVO
+
+Version : 1.0
+Date : [à compléter]
+
+Les présentes Conditions Générales d'Utilisation (ci-après " CGU ") ont pour objet de définir les règles d'accès et d'utilisation de la plateforme CARE EVO (ci-après " la Plateforme "), éditée par :
+
+CARE EVO - SAS au capital de 1 000 euros
+Siège social : 536 H chemin de Taurens, 83140 Six-Fours-les-Plages, France
+SIREN : 992 985 606
+TVA Intracommunautaire : FR15992985606
+Email contact : contact.careevo@gmail.com
+
+La Plateforme est accessible via l'adresse : [URL du site].
+
+ARTICLE 1 - OBJET DE LA PLATEFORME
+----------------------------------
+CARE EVO est une plateforme numérique permettant aux professionnels de santé :
+- de créer un compte professionnel ;
+- de consulter et publier des annonces liées à leur activité (remplacement, cession, association, installation) ;
+- d'échanger via une messagerie sécurisée ;
+- de générer et signer des contrats électroniquement.
+
+CARE EVO n'est pas une agence de placement et n'intervient pas dans la relation contractuelle entre utilisateurs. La Plateforme est un outil d'intermédiation technique.
+
+ARTICLE 2 - ACCEPTATION DES CGU
+-------------------------------
+L'utilisation de la Plateforme implique l'acceptation pleine et entière des présentes CGU.
+Tout utilisateur coche la case : " J'accepte les CGU ", ce qui constitue une acceptation contractuelle.
+
+ARTICLE 3 - CONDITIONS D'INSCRIPTION
+------------------------------------
+La Plateforme est strictement réservée aux professionnels de santé :
+médecins, chirurgiens-dentistes, kinésithérapeutes, orthophonistes, ostéopathes, sages-femmes, podologues et autres professionnels de santé pouvant exercer en libéral.
+
+Lors de l'inscription, l'utilisateur doit :
+- créer un compte (adresse e‑mail + mot de passe) ;
+- certifier l'exercice d'une profession de santé ;
+
+Le numéro RPPS ou ADELI peut être demandé :
+- facultatif à l'inscription ;
+- obligatoire pour certaines fonctionnalités (ex : dépôt d'annonce, signature d'un contrat).
+
+ARTICLE 4 - IDENTITÉ / VÉRIFICATION
+-----------------------------------
+CARE EVO peut vérifier l'identité de l'utilisateur en demandant :
+- un numéro RPPS / ADELI ;
+- une attestation d'inscription à l'Ordre ;
+- une copie d'un justificatif professionnel.
+
+CARE EVO peut suspendre ou supprimer un compte en cas de doute ou fraude.
+
+ARTICLE 5 - UTILISATION DE LA PLATEFORME
+----------------------------------------
+L'utilisateur s'engage à :
+- fournir des informations exactes ;
+- ne pas usurper l'identité d'un tiers ;
+- ne pas publier de fausses annonces ;
+- utiliser la messagerie uniquement à des fins professionnelles.
+
+Les pratiques suivantes sont strictement interdites :
+- spam / démarchage commercial non autorisé ;
+- transfert ou extraction massive de données ;
+- contournement des mesures de sécurité ;
+- publication d'annonces illégales, diffamatoires, ou non conformes aux règles ordinales.
+
+ARTICLE 6 - MESSAGERIE ET SIGNATURE ÉLECTRONIQUE
+-------------------------------------------------
+La messagerie permet des échanges professionnels sécurisés.
+
+Les documents signés via la Plateforme sont soumis à la réglementation européenne :
+- Règlement eIDAS (EU) n°910/2014 ;
+- Article 1367 du Code civil.
+
+Chaque utilisateur est responsable du contenu des documents signés.
+
+ARTICLE 7 - RESPONSABILITÉ
+--------------------------
+CARE EVO agit comme **hébergeur de contenus**.
+CARE EVO :
+- n'est pas partie aux contrats conclus entre utilisateurs ;
+- ne garantit pas l'exactitude des informations publiées par les utilisateurs ;
+- ne fournit aucun conseil juridique, médical ou fiscal.
+
+En cas de signalement de contenu illicite (LCEN / DSA), CARE EVO peut retirer le contenu.
+
+ARTICLE 8 - ACCESSIBILITÉ DE LA PLATEFORME
+------------------------------------------
+La Plateforme est accessible 24h/24 et 7j/7 sauf maintenance.
+CARE EVO peut suspendre temporairement l'accès pour raison technique.
+
+ARTICLE 9 - DONNÉES PERSONNELLES (RGPD)
+---------------------------------------
+CARE EVO agit en qualité de Responsable de traitement.
+Les données sont traitées conformément au RGPD.
+
+Droits utilisateur : accès, rectification, suppression, portabilité, opposition.
+Email RGPD : contact.careevo@gmail.com
+
+ARTICLE 10 - SÉCURITÉ ET HÉBERGEMENT
+------------------------------------
+CARE EVO utilise Vercel (serveurs situés dans l'Union Européenne).
+
+Les données sont chiffrées en transit (HTTPS).
+Les données de santé ne sont pas stockées.
+
+ARTICLE 11 - DURÉE / SUPPRESSION DU COMPTE
+------------------------------------------
+L'utilisateur peut supprimer son compte à tout moment.
+CARE EVO peut supprimer le compte en cas de :
+- fraude ;
+- non respect des CGU.
+
+ARTICLE 12 - TARIFS / FACTURATION
+----------------------------------
+L'utilisation de la Plateforme est gratuite pour publier des annonces et utiliser la messagerie.
+
+Certaines fonctionnalités peuvent être payantes, telles que :
+- signature électronique de contrat (ex : 15€ TTC)
+Les prix sont affichés avant paiement.
+
+ARTICLE 13 - PROPRIÉTÉ INTELLECTUELLE
+-------------------------------------
+Toute reproduction de CARE EVO ou extraction des données est interdite.
+
+ARTICLE 14 - DROIT APPLICABLE
+-----------------------------
+Les présentes CGU sont régies par le droit français.
+Tribunal compétent en cas de litige : Tribunal de Commerce de Toulon.
+
+Fin des CGU.
+

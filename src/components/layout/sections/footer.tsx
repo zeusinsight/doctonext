@@ -34,9 +34,16 @@ const footerSections: FooterSectionProps[] = [
         links: [
             { href: "/a-propos", label: "À propos" },
             { href: "/blog", label: "Blog" },
-            { href: "/contact", label: "Contact" },
-            { href: "/legal", label: "Mentions légales" },
-            { href: "/privacy", label: "Politique de confidentialité" }
+            { href: "/contact", label: "Contact" }
+        ]
+    },
+    {
+        title: "Légal",
+        links: [
+            { href: "/mentions-legales", label: "Mentions légales" },
+            { href: "/cgu", label: "CGU" },
+            { href: "/cgv", label: "CGV" },
+            { href: "/politique-de-confidentialite", label: "Confidentialité" }
         ]
     }
 ]
@@ -45,9 +52,9 @@ export const FooterSection = () => {
     return (
         <footer className="bg-gray-900 py-16 text-white">
             <div className="container mx-auto px-4">
-                <div className="grid grid-cols-1 gap-8 md:grid-cols-4">
+                <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-5">
                     {/* Brand Section */}
-                    <div className="col-span-1 md:border-r md:border-gray-800 md:pr-8">
+                    <div className="col-span-1 md:col-span-2 lg:col-span-1 lg:border-r lg:border-gray-800 lg:pr-8">
                         <h3 className="mb-4 font-bold text-2xl text-white">CareEvo</h3>
                         <p className="mb-6 text-gray-400 leading-relaxed">
                             La première plateforme pour trouver toutes les
@@ -82,8 +89,8 @@ export const FooterSection = () => {
                     </div>
 
                     {/* Footer Links */}
-                    {footerSections.map((section, index) => (
-                        <div key={section.title} className={index === 0 ? "md:border-r md:border-gray-800 md:pr-8" : ""}>
+                    {footerSections.map((section) => (
+                        <div key={section.title}>
                             <h4 className="mb-4 font-semibold text-care-evo-accent">
                                 {section.title}
                             </h4>
@@ -145,22 +152,28 @@ export const FooterSection = () => {
                         </p>
                         <div className="flex gap-6 text-sm flex-wrap justify-center">
                             <Link
-                                href="/legal"
+                                href="/mentions-legales"
                                 className="text-white transition-all duration-300 hover:text-care-evo-accent"
                             >
                                 Mentions légales
                             </Link>
                             <Link
-                                href="/privacy"
+                                href="/cgu"
                                 className="text-white transition-all duration-300 hover:text-care-evo-accent"
                             >
-                                Politique de confidentialité
+                                CGU
                             </Link>
                             <Link
                                 href="/cgv"
                                 className="text-white transition-all duration-300 hover:text-care-evo-accent"
                             >
                                 CGV
+                            </Link>
+                            <Link
+                                href="/politique-de-confidentialite"
+                                className="text-white transition-all duration-300 hover:text-care-evo-accent"
+                            >
+                                Confidentialité
                             </Link>
                         </div>
                     </div>

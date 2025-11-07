@@ -39,7 +39,7 @@ export const ContactSection = () => {
             firstName: "",
             lastName: "",
             email: "",
-            subject: "Web Development",
+            subject: "Question générale",
             message: ""
         }
     })
@@ -58,66 +58,65 @@ export const ContactSection = () => {
             <section className="grid grid-cols-1 gap-8 md:grid-cols-2">
                 <div>
                     <div className="mb-4">
-                        <h2 className="mb-2 text-lg text-primary tracking-wider">
+                        <h2 className="mb-2 text-lg text-care-evo-accent tracking-wider font-semibold">
                             Contact
                         </h2>
 
-                        <h2 className="font-bold text-3xl md:text-4xl">
-                            Connect with us
+                        <h2 className="font-bold text-3xl text-gray-900 md:text-4xl">
+                            Contactez-nous
                         </h2>
                     </div>
-                    <p className="mb-8 text-muted-foreground lg:w-5/6">
-                        We'd love to hear from you! Get in touch with us for any
-                        questions, inquiries, or collaboration opportunities.
-                        We're here to help.
+                    <p className="mb-8 text-gray-600 text-lg lg:w-5/6">
+                        Nous sommes là pour répondre à toutes vos questions concernant Care Evo.
+                        N'hésitez pas à nous contacter pour toute demande d'information.
                     </p>
 
                     <div className="flex flex-col gap-4">
                         <div>
-                            <div className="mb-1 flex gap-2">
-                                <Building2 />
-                                <div className="font-bold">Find us</div>
+                            <div className="mb-1 flex gap-2 items-center">
+                                <Building2 className="text-care-evo-primary h-5 w-5" />
+                                <div className="font-bold text-gray-900">Adresse</div>
                             </div>
 
-                            <div>
-                                742 Evergreen Terrace, Springfield, IL 62704
+                            <div className="text-gray-600">
+                                XX
                             </div>
                         </div>
 
                         <div>
-                            <div className="mb-1 flex gap-2">
-                                <Phone />
-                                <div className="font-bold">Call us</div>
+                            <div className="mb-1 flex gap-2 items-center">
+                                <Phone className="text-care-evo-primary h-5 w-5" />
+                                <div className="font-bold text-gray-900">Téléphone</div>
                             </div>
 
-                            <div>+1 (619) 123-4567</div>
+                            <div className="text-gray-600">+xx xx xx xx xx</div>
                         </div>
 
                         <div>
-                            <div className="mb-1 flex gap-2">
-                                <Mail />
-                                <div className="font-bold">Mail us</div>
+                            <div className="mb-1 flex gap-2 items-center">
+                                <Mail className="text-care-evo-primary h-5 w-5" />
+                                <div className="font-bold text-gray-900">Email</div>
                             </div>
 
-                            <div>{site.mailSupport}</div>
+                            <div className="text-gray-600">{site.mailSupport}</div>
                         </div>
 
                         <div>
-                            <div className="flex gap-2">
-                                <Clock />
-                                <div className="font-bold">Visit us</div>
+                            <div className="mb-1 flex gap-2 items-center">
+                                <Clock className="text-care-evo-primary h-5 w-5" />
+                                <div className="font-bold text-gray-900">Horaires</div>
                             </div>
 
-                            <div>
-                                <div>Monday - Friday</div>
-                                <div>8AM - 4PM</div>
+                            <div className="text-gray-600">
+                                <div>Lundi - Vendredi</div>
+                                <div>8h00 - 16h00</div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <Card className="bg-muted/60">
-                    <CardContent className="p-4">
+                <Card className="border-t-4 border-t-care-evo-accent bg-white shadow-md">
+                    <CardContent className="p-6">
                         <Form {...form}>
                             <form
                                 onSubmit={form.handleSubmit(onSubmit)}
@@ -130,11 +129,11 @@ export const ContactSection = () => {
                                         render={({ field }) => (
                                             <FormItem className="w-full">
                                                 <FormLabel>
-                                                    First Name
+                                                    Prénom
                                                 </FormLabel>
                                                 <FormControl>
                                                     <Input
-                                                        placeholder="Indie"
+                                                        placeholder="Jean"
                                                         {...field}
                                                     />
                                                 </FormControl>
@@ -147,10 +146,10 @@ export const ContactSection = () => {
                                         name="lastName"
                                         render={({ field }) => (
                                             <FormItem className="w-full">
-                                                <FormLabel>Last Name</FormLabel>
+                                                <FormLabel>Nom</FormLabel>
                                                 <FormControl>
                                                     <Input
-                                                        placeholder="CEO"
+                                                        placeholder="Dupont"
                                                         {...field}
                                                     />
                                                 </FormControl>
@@ -170,7 +169,7 @@ export const ContactSection = () => {
                                                 <FormControl>
                                                     <Input
                                                         type="email"
-                                                        placeholder="me@domain.com"
+                                                        placeholder="vous@exemple.fr"
                                                         {...field}
                                                     />
                                                 </FormControl>
@@ -186,7 +185,7 @@ export const ContactSection = () => {
                                         name="subject"
                                         render={({ field }) => (
                                             <FormItem>
-                                                <FormLabel>Subject</FormLabel>
+                                                <FormLabel>Sujet</FormLabel>
                                                 <Select
                                                     onValueChange={
                                                         field.onChange
@@ -195,24 +194,27 @@ export const ContactSection = () => {
                                                 >
                                                     <FormControl>
                                                         <SelectTrigger>
-                                                            <SelectValue placeholder="Select a subject" />
+                                                            <SelectValue placeholder="Sélectionnez un sujet" />
                                                         </SelectTrigger>
                                                     </FormControl>
                                                     <SelectContent>
-                                                        <SelectItem value="Web Development">
-                                                            Web Development
+                                                        <SelectItem value="Question générale">
+                                                            Question générale
                                                         </SelectItem>
-                                                        <SelectItem value="Mobile Development">
-                                                            Mobile Development
+                                                        <SelectItem value="Cession de cabinet">
+                                                            Cession de cabinet
                                                         </SelectItem>
-                                                        <SelectItem value="Figma Design">
-                                                            Figma Design
+                                                        <SelectItem value="Remplacement">
+                                                            Remplacement
                                                         </SelectItem>
-                                                        <SelectItem value="REST API">
-                                                            REST API
+                                                        <SelectItem value="Collaboration">
+                                                            Collaboration
                                                         </SelectItem>
-                                                        <SelectItem value="FullStack Project">
-                                                            FullStack Project
+                                                        <SelectItem value="Support technique">
+                                                            Support technique
+                                                        </SelectItem>
+                                                        <SelectItem value="Autre">
+                                                            Autre
                                                         </SelectItem>
                                                     </SelectContent>
                                                 </Select>
@@ -232,7 +234,7 @@ export const ContactSection = () => {
                                                 <FormControl>
                                                     <Textarea
                                                         rows={5}
-                                                        placeholder="Your message..."
+                                                        placeholder="Votre message..."
                                                         className="resize-none"
                                                         {...field}
                                                     />
@@ -244,8 +246,11 @@ export const ContactSection = () => {
                                     />
                                 </div>
 
-                                <Button className="mt-4 w-fit">
-                                    Send message
+                                <Button
+                                    className="mt-4 w-fit hover:opacity-90"
+                                    style={{ backgroundColor: "#206dc5" }}
+                                >
+                                    Envoyer le message
                                 </Button>
                             </form>
                         </Form>

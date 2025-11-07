@@ -118,6 +118,30 @@ export const SpecialtiesSection = () => {
   return (
     <section className="bg-gray-50 py-16 lg:py-24">
       <div className="container mx-auto px-4">
+        {/* Turquoise promotional banner */}
+        <div
+          className="relative mb-12 overflow-hidden rounded-2xl p-8 text-center shadow-lg md:p-12"
+          style={{
+            background: "linear-gradient(135deg, #14b8a6 0%, #2dd4bf 100%)",
+          }}
+        >
+          {/* Decorative accent line at top */}
+          <div
+            className="absolute top-0 left-0 right-0 h-1"
+            style={{
+              background:
+                "linear-gradient(to right, transparent, #ffffff, transparent)",
+            }}
+          ></div>
+
+          <h2 className="mb-3 font-bold text-3xl text-white md:text-4xl">
+            Trouvez votre prochaine opportunité
+          </h2>
+          <p className="mx-auto max-w-2xl text-white/90 text-lg">
+            Explorez les annonces par spécialité et découvrez les opportunités qui correspondent à votre profil professionnel
+          </p>
+        </div>
+
         <div className="mb-12 text-center">
           <h2 className="mb-4 font-bold text-3xl text-gray-900 lg:text-4xl">
             Choisissez votre domaine et découvrez les opportunités disponibles

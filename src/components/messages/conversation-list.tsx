@@ -31,6 +31,19 @@ interface ConversationListProps {
     onSelectConversation: (conversationId: string) => void
 }
 
+function getListingTypeLabel(listingType: string): string {
+    switch (listingType) {
+        case "replacement":
+            return "Remplacement"
+        case "transfer":
+            return "Cession"
+        case "collaboration":
+            return "Collaboration"
+        default:
+            return listingType
+    }
+}
+
 async function fetchConversations(): Promise<{
     success: boolean
     data: Conversation[]
@@ -157,7 +170,7 @@ export function ConversationList({
                                             variant="outline"
                                             className="text-xs"
                                         >
-                                            {conversation.listing.listingType}
+                                            {getListingTypeLabel(conversation.listing.listingType)}
                                         </Badge>
                                         <span className="truncate text-gray-500 text-xs">
                                             {conversation.listing.title}

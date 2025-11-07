@@ -21,9 +21,10 @@ export function HeroSection() {
                     <Image
                       src="/logo.png"
                       alt="Care Evo"
-                      width={200}
-                      height={67}
-                      className="h-auto w-60"
+                      width={400}
+                      height={134}
+                      className="h-auto w-72 object-cover"
+                      
                     />
                   </div>
                   <h1 className="text-5xl font-medium md:text-6xl lg:mt-2 lg:text-6xl max-w-6xl">
@@ -55,7 +56,7 @@ export function HeroSection() {
                         Accéder aux annonces
                       </button>
                     </Link>
-                    <Link href="/annonces/new">
+                    <Link href="/dashboard/annonces/new">
                       <button
                         className="inline-flex items-center justify-center rounded-md px-8 py-3 text-lg font-semibold text-white transition-colors shadow-lg"
                         style={{ backgroundColor: "#14b8a6" }}

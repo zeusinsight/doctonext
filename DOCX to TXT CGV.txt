@@ -1,0 +1,57 @@
+﻿CONDITIONS GÉNÉRALES DE VENTE (CGV) - CARE EVO
+Version et éditeur
+Version : 1.0 - Date : [à compléter]
+
+Les présentes Conditions Générales de Vente (ci-après " CGV ") régissent les modalités de vente de services optionnels proposés sur la plateforme CARE EVO (ci-après " la Plateforme "), éditée par :
+
+CARE EVO - SAS au capital de 1 000 €
+536 H chemin de Taurens, 83140 Six-Fours-les-Plages, France
+SIREN : 992 985 606
+TVA Intracommunautaire : FR15992985606
+Email : contact.careevo@gmail.com
+Objet
+Les CGV encadrent les prestations payantes disponibles sur la Plateforme, notamment et sans limitation :
+- la mise en avant d'annonces (" boost d'annonce ") ;
+- la signature de documents et contrats via signature électronique ;
+- d'autres services additionnels pouvant être ajoutés ultérieurement.
+
+L'utilisation des services gratuits demeure soumise aux CGU. Les CGV ne concernent que les fonctionnalités payantes.
+Services payants
+CARE EVO propose certains services optionnels payants. Les services disponibles et leurs conditions sont affichés dans l'interface utilisateur.
+
+Les services payants n'ont aucune obligation d'achat pour accéder à l'essentiel des fonctionnalités (publication d'annonces, messagerie, mise en relation).
+
+Les options payantes peuvent inclure :
+- Mise en avant / boost d'annonce avec visibilité accrue ;
+- Génération / Signature électronique de contrats.
+
+Aucun prix fixe n'est mentionné ici : le prix de chaque service est affiché au moment de l'achat.
+Commande et validation
+Toute commande d'un service payant est validée lorsque l'utilisateur :
+1. sélectionne l'option souhaitée,
+2. accepte les présentes CGV,
+3. procède au paiement.
+
+La validation constitue une signature électronique ayant valeur contractuelle.
+Prix
+Les prix des options payantes sont indiqués en euros, TTC, directement dans l'interface. CARE EVO se réserve le droit de modifier ses tarifs à tout moment. Les prix applicables sont ceux affichés au moment de la commande.
+Paiement
+Le paiement s'effectue par carte bancaire via un prestataire de paiement sécurisé (ex. Stripe).
+CARE EVO ne stocke aucune donnée bancaire.
+
+Le paiement est exigible au moment de la commande.
+Droit de rétractation
+Conformément à l'article L221-28 du Code de la consommation, le droit de rétractation ne s'applique pas aux services numériques pleinement exécutés avant la fin du délai légal.
+Responsabilité
+CARE EVO n'est pas responsable :
+- des informations publiées par les utilisateurs,
+- des contrats et accords entre utilisateurs.
+
+CARE EVO n'intervient pas dans la relation contractuelle entre utilisateurs.
+Résiliation / suppression du compte
+La suppression d'un compte utilisateur n'ouvre droit à aucun remboursement de services déjà consommés.
+Données personnelles (RGPD)
+Dans le cadre des services payants, CARE EVO traite des données de facturation.
+Pour toute information sur les traitements, se référer à la Politique de Confidentialité.
+Droit applicable
+Les présentes CGV sont soumises au droit français. Tout litige sera porté devant les tribunaux de Toulon, France.

@@ -6,7 +6,7 @@ export const site = {
   url: site_url,
   ogImage: `${site_url}/og.jpg`,
   logo: "/logo.svg",
-  mailSupport: "hello@delicads.com", // Support email address
+  mailSupport: "noreply@careevo.fr", // Support email address
   mailFrom: process.env.MAIL_FROM || "noreply@delicads.com", // Transactional email address
   links: {
     twitter: "https://twitter.com/CareEvo",

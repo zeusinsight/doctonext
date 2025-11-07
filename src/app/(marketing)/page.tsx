@@ -218,21 +218,26 @@ export default function Home() {
                 "Signez électroniquement et finalisez votre accord en toute légalité.",
             },
           ].map((step, i) => (
-            <div
-              key={i}
-              className="relative flex flex-col items-center text-center"
-            >
-              <div
-                className="flex h-12 w-12 items-center justify-center rounded-full text-xl font-bold text-white"
-                style={{ backgroundColor: "#206dc5" }}
-              >
-                {i + 1}
-              </div>
-              <h4 className="mt-4 font-semibold text-gray-900">{step.title}</h4>
-              <p className="mt-1 text-sm text-gray-500">{step.description}</p>
+            <div key={i} className="relative">
+              <Card className="h-full border border-gray-200 transition-shadow hover:shadow-xl">
+                <CardContent className="flex flex-col items-center p-6 text-center">
+                  <div
+                    className="flex h-12 w-12 items-center justify-center rounded-full text-xl font-bold text-white"
+                    style={{ backgroundColor: "#206dc5" }}
+                  >
+                    {i + 1}
+                  </div>
+                  <h4 className="mt-4 font-semibold text-gray-900">
+                    {step.title}
+                  </h4>
+                  <p className="mt-2 text-sm text-gray-600 leading-relaxed">
+                    {step.description}
+                  </p>
+                </CardContent>
+              </Card>
               {/* Flèche entre les étapes */}
               {i < 3 && (
-                <div className="absolute top-6 -right-4 hidden md:block text-care-evo-primary text-2xl">
+                <div className="absolute top-1/2 -translate-y-1/2 -right-4 hidden md:block text-care-evo-primary text-2xl">
                   →
                 </div>
               )}

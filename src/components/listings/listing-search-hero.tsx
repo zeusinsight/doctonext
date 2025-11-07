@@ -61,7 +61,7 @@ export function ListingSearchHero({
     ] as const
 
     return (
-        <div className="bg-gradient-to-r from-blue-600 to-blue-700 px-4 py-10">
+        <div className="px-4 py-10" style={{ background: "linear-gradient(to right, #14b8a6, #0d9488)" }}>
             <div className="container mx-auto max-w-7xl">
                 <h1 className="mb-5 font-semibold text-2xl text-white">
                     Explorez nos annonces
@@ -116,13 +116,13 @@ export function ListingSearchHero({
                         className={cn(
                             "relative h-11 border-0 bg-white text-gray-700 hover:bg-gray-50",
                             activeFiltersCount > 0 &&
-                                "bg-blue-50 text-blue-700 hover:bg-blue-100"
+                                "bg-care-evo-accent/10 text-care-evo-accent hover:bg-care-evo-accent/20"
                         )}
                     >
                         <Filter className="mr-2 h-4 w-4" />
                         Filtres
                         {activeFiltersCount > 0 && (
-                            <span className="ml-2 inline-flex items-center justify-center rounded-full bg-blue-600 px-2 py-1 font-bold text-white text-xs leading-none">
+                            <span className="ml-2 inline-flex items-center justify-center rounded-full bg-care-evo-accent px-2 py-1 font-bold text-white text-xs leading-none">
                                 {activeFiltersCount}
                             </span>
                         )}
@@ -137,9 +137,14 @@ export function ListingSearchHero({
                             className={cn(
                                 "rounded-md px-4 py-2 font-medium text-sm transition-colors",
                                 activeTab === tab.id
-                                    ? "bg-white text-blue-600"
-                                    : "bg-blue-500 text-white hover:bg-blue-400"
+                                    ? "bg-white text-care-evo-accent shadow-sm"
+                                    : "text-white hover:bg-white/20"
                             )}
+                            style={
+                                activeTab !== tab.id
+                                    ? { backgroundColor: "rgba(255, 255, 255, 0.1)" }
+                                    : undefined
+                            }
                         >
                             {tab.label}
                         </button>

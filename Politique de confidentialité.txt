@@ -1,0 +1,52 @@
+﻿POLITIQUE DE CONFIDENTIALITÉ - CARE EVO
+Version et éditeur
+Version : 1.0 - Date : [à compléter]
+
+La présente Politique de Confidentialité explique comment CARE EVO (SAS au capital de 1 000 € - SIREN 992 985 606 - Siège social : 536 H chemin de Taurens, 83140 Six-Fours-les-Plages - contact : contact.careevo@gmail.com)
+collecte, utilise et protège vos données personnelles conformément au RGPD (Règlement UE 2016/679).
+Finalités du traitement
+CARE EVO traite vos données pour :
+- création et gestion du compte utilisateur (profil professionnel) ;
+- mise en relation via la messagerie sécurisée ;
+- dépôt et consultation d'annonces ;
+- signature de documents et contrats ;
+- détection de fraude, modération des annonces ;
+- réalisations de statistiques d'utilisation.
+Données collectées
+Données d'identification : nom, prénom, email, mot de passe chiffré.
+Données professionnelles : profession de santé, RPPS / ADELI (facultatif à l'inscription, requis pour certaines fonctionnalités).
+Données de connexion et navigation : logs, IP, navigateur.
+Aucune donnée de santé n'est stockée.
+Base juridique (art. 6 RGPD)
+- Exécution du contrat (utilisation de la plateforme) ;
+- Consentement (cookies, communications marketing) ;
+- Intérêt légitime (sécurisation, prévention des fraudes).
+Destinataires
+Vos données ne sont jamais revendues.
+Destinataires possibles :
+- équipes CARE EVO ;
+- prestataires techniques (hébergeur : Vercel - UE) ;
+- prestataire de signature électronique (si utilisé).
+Durée de conservation
+- Compte utilisateur : durée de l'utilisation + 3 ans après la dernière activité ;
+- Documents signés : entre 5 et 10 ans (obligations légales) ;
+- Logs techniques : 12 mois.
+Sécurité & hébergement
+- Hébergement : Vercel (serveurs situés dans l'Union Européenne).
+- Chiffrement des données en transit (HTTPS / TLS).
+- Données stockées sur serveurs sécurisés.
+Cookies et tracking
+CARE EVO utilise des cookies pour :
+- amélioration de l'expérience utilisateur ;
+- analyse de fréquentation (statistiques).
+Vous pouvez accepter ou refuser les cookies à tout moment.
+Droits des utilisateurs
+Vous disposez des droits suivants : accès, rectification, suppression, restriction, opposition, portabilité.
+Demande par email : contact.careevo@gmail.com
+Réclamation autorité CNIL : www.cnil.fr
+Suppression de compte
+Vous pouvez supprimer votre compte et vos données depuis votre espace personnel ou par demande à contact.careevo@gmail.com
+La suppression est définitive.
+Modifications
+CARE EVO se réserve le droit de modifier cette politique.
+La version applicable est celle publiée sur le site à la date de consultation.

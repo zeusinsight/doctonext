@@ -1,0 +1,18 @@
+﻿MENTIONS LÉGALES - CARE EVO
+Version : 1.1 - Date de mise à jour : [à compléter]
+1) ÉDITEUR DU SITE / DE LA PLATEFORME
+Dénomination sociale : CARE EVO
+Forme juridique : SAS - Capital social : 1000 euros
+Siège social : 536 H chemin de Taurens, 83140 Six-Fours-les-Plages, France
+SIREN (RCS) : 992 985 606
+N° TVA intracommunautaire : FR15992985606
+Directeur de la publication : Maxime Meyer (Président)
+Contact : contact.careevo@gmail.com
+2) HÉBERGEUR
+Hébergeur : Vercel (hébergement européen - serveurs UE)
+Site : https://vercel.com/
+3) OBJET DE LA PLATEFORME
+Care Evo est une plateforme en ligne de mise en relation dédiée aux professionnels de santé libéraux.
+La plateforme permet : publication d'annonces, messagerie sécurisée, signature de contrats, création de profils, gestion des opportunités.
+4) CONTACTS LÉGAUX
+Support & juridique : contact.careevo@gmail.com

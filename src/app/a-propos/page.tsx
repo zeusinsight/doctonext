@@ -91,7 +91,9 @@ export default function AboutPage() {
         </section>
 
         {/* Features Section */}
-        <section className="bg-white px-4 py-16 sm:px-6 lg:px-8">
+        <section className="relative bg-white px-4 py-16 sm:px-6 lg:px-8">
+          {/* Colored accent line at top */}
+          <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-care-evo-primary to-transparent"></div>
           <div className="mx-auto max-w-6xl">
             <div className="mb-12 text-center">
               <h2 className="mb-4 font-bold text-3xl text-gray-900">
@@ -103,7 +105,7 @@ export default function AboutPage() {
             </div>
 
             <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
-              <Card>
+              <Card className="border-t-4 border-t-care-evo-primary">
                 <CardContent className="p-6">
                   <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-care-evo-primary/10">
                     <Shield className="h-6 w-6 text-care-evo-primary" />
@@ -118,7 +120,7 @@ export default function AboutPage() {
                 </CardContent>
               </Card>
 
-              <Card>
+              <Card className="border-t-4 border-t-care-evo-accent">
                 <CardContent className="p-6">
                   <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-care-evo-accent/10">
                     <Users className="h-6 w-6 text-care-evo-accent" />
@@ -133,7 +135,7 @@ export default function AboutPage() {
                 </CardContent>
               </Card>
 
-              <Card>
+              <Card className="border-t-4 border-t-care-evo-primary">
                 <CardContent className="p-6">
                   <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-care-evo-primary/10">
                     <MessageSquare className="h-6 w-6 text-care-evo-primary" />
@@ -148,7 +150,7 @@ export default function AboutPage() {
                 </CardContent>
               </Card>
 
-              <Card>
+              <Card className="border-t-4 border-t-care-evo-accent">
                 <CardContent className="p-6">
                   <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-care-evo-accent/10">
                     <FileText className="h-6 w-6 text-care-evo-accent" />
@@ -163,7 +165,7 @@ export default function AboutPage() {
                 </CardContent>
               </Card>
 
-              <Card>
+              <Card className="border-t-4 border-t-care-evo-primary">
                 <CardContent className="p-6">
                   <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-care-evo-primary/10">
                     <Clock className="h-6 w-6 text-care-evo-primary" />
@@ -178,7 +180,7 @@ export default function AboutPage() {
                 </CardContent>
               </Card>
 
-              <Card>
+              <Card className="border-t-4 border-t-care-evo-accent">
                 <CardContent className="p-6">
                   <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-care-evo-accent/10">
                     <Award className="h-6 w-6 text-care-evo-accent" />
@@ -254,7 +256,9 @@ export default function AboutPage() {
         </section>
 
         {/* Types of Services */}
-        <section className="bg-gray-50 px-4 py-16 sm:px-6 lg:px-8">
+        <section className="relative bg-gray-50 px-4 py-16 sm:px-6 lg:px-8">
+          {/* Colored accent line at top */}
+          <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-care-evo-accent to-transparent"></div>
           <div className="mx-auto max-w-4xl">
             <div className="mb-12 text-center">
               <h2 className="mb-4 font-bold text-3xl text-gray-900">
@@ -267,7 +271,7 @@ export default function AboutPage() {
             </div>
 
             <div className="space-y-6">
-              <Card>
+              <Card className="border-l-4 border-l-care-evo-primary">
                 <CardContent className="p-6">
                   <div className="flex items-start gap-4">
                     <Badge className="bg-care-evo-primary/10 text-care-evo-primary hover:bg-care-evo-primary/10">
@@ -288,7 +292,7 @@ export default function AboutPage() {
                 </CardContent>
               </Card>
 
-              <Card>
+              <Card className="border-l-4 border-l-care-evo-accent">
                 <CardContent className="p-6">
                   <div className="flex items-start gap-4">
                     <Badge className="bg-care-evo-accent/10 text-care-evo-accent hover:bg-care-evo-accent/10">
@@ -309,7 +313,7 @@ export default function AboutPage() {
                 </CardContent>
               </Card>
 
-              <Card>
+              <Card className="border-l-4 border-l-care-evo-primary">
                 <CardContent className="p-6">
                   <div className="flex items-start gap-4">
                     <Badge className="bg-care-evo-primary/10 text-care-evo-primary hover:bg-care-evo-primary/10">
