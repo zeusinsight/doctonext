@@ -7,9 +7,9 @@ export function getDefaultListingImage(
   listingType: "transfer" | "replacement" | "collaboration"
 ): string {
   const imageMap = {
-    transfer: "/default-images/transfer.jpg",
-    replacement: "/default-images/replacement.jpg",
-    collaboration: "/default-images/collaboration.jpg",
+    transfer: "/default-images/transfer.jpeg",
+    replacement: "/default-images/replacement.jpeg",
+    collaboration: "/default-images/collaboration.jpeg",
   };
 
   return imageMap[listingType];
