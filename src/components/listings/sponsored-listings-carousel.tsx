@@ -30,7 +30,7 @@ export function SponsoredListingsCarousel({
     }
 
     // For demo purposes, create mock listings if none provided
-    const displayListings =
+    const displayListings: (PublicListing | ListingWithDetails)[] =
         listings.length > 0
             ? listings
             : Array(6)
@@ -42,21 +42,18 @@ export function SponsoredListingsCarousel({
                           "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
                       listingType: "transfer" as const,
                       specialty: "Médecine générale",
-                      status: "active" as const,
                       isBoostPlus: true,
                       viewsCount: 0,
-                      contactsCount: 0,
                       createdAt: new Date(),
-                      updatedAt: new Date(),
                       publishedAt: new Date(),
-                      expiresAt: null,
-                      userId: "demo",
                       location: {
                           city: "Paris",
                           region: "Île-de-France",
-                          postalCode: "75000"
+                          postalCode: "75000",
+                          latitude: null,
+                          longitude: null
                       }
-                  }))
+                  })) satisfies PublicListing[]
 
     return (
         <div className="relative">

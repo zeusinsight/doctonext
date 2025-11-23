@@ -229,7 +229,9 @@ export async function getUserFavoritesWithDetails() {
                 location: {
                     city: listingLocations.city,
                     region: listingLocations.region,
-                    postalCode: listingLocations.postalCode
+                    postalCode: listingLocations.postalCode,
+                    latitude: listingLocations.latitude,
+                    longitude: listingLocations.longitude
                 }
             })
             .from(favorites)

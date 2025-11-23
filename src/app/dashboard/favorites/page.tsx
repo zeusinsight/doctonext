@@ -10,25 +10,12 @@ import { SponsoredListingCard } from "@/components/listings/sponsored-listing-ca
 import { ShareButton } from "@/components/ui/share-button"
 import { useFavoritesContext } from "@/contexts/favorites-context"
 import { toast } from "sonner"
+import type { PublicListing } from "@/types/listing"
 
-interface FavoriteListing {
+type FavoriteListing = PublicListing & {
     favoriteId: string
     favoriteCreatedAt: Date
-    id: string
-    title: string
-    description: string | null
-    listingType: "transfer" | "replacement" | "collaboration"
-    specialty: string | null
     status: string
-    isBoostPlus: boolean
-    viewsCount: number
-    createdAt: Date
-    publishedAt: Date | null
-    location: {
-        city: string | null
-        region: string | null
-        postalCode: string | null
-    } | null
     media: Array<{
         id: string
         fileUrl: string
