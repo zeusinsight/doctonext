@@ -169,7 +169,9 @@ export function DepartmentOverlay({
         });
 
         // Add click handler
-        polygon.on("click", () => {
+        polygon.on("click", (e) => {
+          console.log("DepartmentOverlay: Polygon clicked!", department.name, department.code);
+          e.originalEvent?.stopPropagation();
           onDepartmentClick?.(department);
         });
 

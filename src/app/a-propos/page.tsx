@@ -1,385 +1,244 @@
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import {
-  Users,
-  Shield,
-  Clock,
-  MessageSquare,
-  FileText,
-  Heart,
-  CheckCircle,
-  Award,
-  TrendingUp,
-} from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import { Navbar } from "@/components/layout/navbar";
 import { FooterSection } from "@/components/layout/sections/footer";
+import { Button } from "@/components/ui/button";
+import {
+  ShieldCheck,
+  Users,
+  Sparkles,
+  ArrowRight,
+  Building2,
+  UserRound,
+  Handshake,
+} from "lucide-react";
 
 export default function AboutPage() {
   return (
-    <>
+    <div className="min-h-screen bg-white font-sans text-gray-900">
       <Navbar />
-      <div className="min-h-screen bg-gradient-to-br from-care-evo-primary/5 via-white to-care-evo-accent/10">
-        {/* Hero Section */}
-        <section className="px-4 py-16 sm:px-6 lg:px-8">
-          <div className="mx-auto max-w-4xl text-center">
-            <h1 className="font-bold text-4xl text-gray-900 tracking-tight sm:text-6xl">
-              À propos de <span className="text-care-evo-primary">Care Evo</span>
+
+      {/* Hero Section - Clean & Minimal */}
+      <section className="relative pt-24 pb-20 sm:pt-32 sm:pb-24 bg-white">
+        <div className="mx-auto max-w-7xl px-6 lg:px-8">
+          <div className="mx-auto max-w-3xl text-center">
+            <h1 className="text-4xl font-semibold tracking-tight text-gray-900 sm:text-6xl">
+              Réinventer l'avenir de <br />
+              <span className="text-care-evo-primary">votre carrière médicale</span>
             </h1>
-            <p className="mt-6 text-gray-600 text-lg leading-8">
-              La plateforme de référence pour les professionnels de santé qui
-              souhaitent céder, reprendre ou collaborer dans le secteur médical.
+            <p className="mt-6 text-lg leading-8 text-gray-600">
+              Care Evo est la plateforme premium dédiée aux professionnels de santé. 
+              Nous simplifions les transitions, sécurisons les opportunités et connectons 
+              les talents du monde médical.
             </p>
             <div className="mt-10 flex items-center justify-center gap-x-6">
               <Button
                 asChild
                 size="lg"
-                className="hover:opacity-90"
-                style={{ backgroundColor: "#206dc5", color: "#ffffff" }}
+                className="hover:opacity-90 px-8 h-12 text-base"
+                style={{ backgroundColor: "#206dc5", color: "white" }}
               >
-                <Link href="/annonces">Explorer les annonces</Link>
+                <Link href="/annonces">Découvrir les opportunités</Link>
               </Button>
               <Button
                 asChild
-                variant="outline"
+                variant="ghost"
                 size="lg"
-                className="hover:opacity-90"
-                style={{
-                  backgroundColor: "transparent",
-                  color: "#206dc5",
-                  borderColor: "#206dc5",
-                }}
+                className="text-gray-900 hover:bg-gray-50 group h-12 text-base"
               >
-                <Link href="/dashboard/listings/new">Déposer une annonce</Link>
+                <Link href="/register" className="flex items-center gap-2">
+                  Nous rejoindre <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                </Link>
               </Button>
             </div>
           </div>
-        </section>
+        </div>
+      </section>
 
-        {/* Mission Section */}
-        <section className="px-4 py-16 sm:px-6 lg:px-8">
-          <div className="mx-auto max-w-4xl">
-            <div className="mb-12 text-center">
-              <h2 className="mb-4 font-bold text-3xl text-gray-900">
-                Notre Mission
-              </h2>
-              <p className="text-gray-600 text-lg">
-                Simplifier et sécuriser les transitions professionnelles dans le
-                domaine médical
-              </p>
+      {/* Visual / Story Section */}
+      <section className="py-16 sm:py-24 bg-neutral-50 overflow-hidden">
+        <div className="mx-auto max-w-7xl px-6 lg:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+            <div className="relative aspect-[4/3] lg:aspect-square overflow-hidden rounded-2xl bg-gray-100 shadow-xl">
+              <Image
+                src="/default-images/collaboration.jpeg"
+                alt="Collaboration médicale"
+                fill
+                className="object-cover"
+                priority
+              />
             </div>
-
-            <Card className="mb-8">
-              <CardContent className="p-8">
-                <div className="text-center">
-                  <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-care-evo-primary/10">
-                    <Heart className="h-6 w-6 text-care-evo-primary" />
+            <div>
+              <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl mb-6">
+                Une vision centrée sur l'humain et l'excellence
+              </h2>
+              <div className="space-y-6 text-lg text-gray-600 leading-relaxed">
+                <p>
+                  Le monde de la santé évolue rapidement. Les attentes des praticiens aussi. 
+                  Chez Care Evo, nous croyons que chaque transition professionnelle — qu'il s'agisse 
+                  d'une cession, d'une installation ou d'un remplacement — mérite d'être traitée 
+                  avec le plus grand soin.
+                </p>
+                <p>
+                  Notre mission est de créer un écosystème de confiance où l'expertise rencontre 
+                  l'opportunité. Nous ne sommes pas juste une plateforme d'annonces, nous sommes 
+                  le partenaire de votre évolution professionnelle.
+                </p>
+                <div className="pt-4 grid grid-cols-2 gap-8 border-t border-gray-200/60">
+                  <div>
+                    <div className="text-3xl font-bold text-care-evo-primary">500+</div>
+                    <div className="text-sm text-gray-500 mt-1">Praticiens</div>
                   </div>
-                  <p className="text-gray-700 text-lg leading-relaxed">
-                    Care Evo connecte les professionnels de santé pour faciliter
-                    les cessions de cabinets, les remplacements et les
-                    collaborations. Notre objectif est de créer un écosystème de
-                    confiance où chaque professionnel peut trouver les
-                    opportunités qui correspondent à ses aspirations et à son
-                    projet de carrière.
-                  </p>
+                  <div>
+                    <div className="text-3xl font-bold text-care-evo-primary">100%</div>
+                    <div className="text-sm text-gray-500 mt-1">Vérifié</div>
+                  </div>
                 </div>
-              </CardContent>
-            </Card>
-          </div>
-        </section>
-
-        {/* Features Section */}
-        <section className="relative bg-white px-4 py-16 sm:px-6 lg:px-8">
-          {/* Colored accent line at top */}
-          <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-care-evo-primary to-transparent"></div>
-          <div className="mx-auto max-w-6xl">
-            <div className="mb-12 text-center">
-              <h2 className="mb-4 font-bold text-3xl text-gray-900">
-                Pourquoi choisir Care Evo ?
-              </h2>
-              <p className="text-gray-600 text-lg">
-                Une plateforme pensée par et pour les professionnels de santé
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
-              <Card className="border-t-4 border-t-care-evo-primary">
-                <CardContent className="p-6">
-                  <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-care-evo-primary/10">
-                    <Shield className="h-6 w-6 text-care-evo-primary" />
-                  </div>
-                  <h3 className="mb-2 font-semibold text-gray-900 text-lg">
-                    Sécurité et Confiance
-                  </h3>
-                  <p className="text-gray-600">
-                    Vérification des profils, données sécurisées et processus
-                    transparents pour des transactions en toute confiance.
-                  </p>
-                </CardContent>
-              </Card>
-
-              <Card className="border-t-4 border-t-care-evo-accent">
-                <CardContent className="p-6">
-                  <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-care-evo-accent/10">
-                    <Users className="h-6 w-6 text-care-evo-accent" />
-                  </div>
-                  <h3 className="mb-2 font-semibold text-gray-900 text-lg">
-                    Communauté Active
-                  </h3>
-                  <p className="text-gray-600">
-                    Rejoignez une communauté de professionnels de santé
-                    partageant les mêmes valeurs et objectifs.
-                  </p>
-                </CardContent>
-              </Card>
-
-              <Card className="border-t-4 border-t-care-evo-primary">
-                <CardContent className="p-6">
-                  <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-care-evo-primary/10">
-                    <MessageSquare className="h-6 w-6 text-care-evo-primary" />
-                  </div>
-                  <h3 className="mb-2 font-semibold text-gray-900 text-lg">
-                    Communication Facilitée
-                  </h3>
-                  <p className="text-gray-600">
-                    Messagerie intégrée, outils de collaboration et suivi des
-                    échanges pour une communication fluide.
-                  </p>
-                </CardContent>
-              </Card>
-
-              <Card className="border-t-4 border-t-care-evo-accent">
-                <CardContent className="p-6">
-                  <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-care-evo-accent/10">
-                    <FileText className="h-6 w-6 text-care-evo-accent" />
-                  </div>
-                  <h3 className="mb-2 font-semibold text-gray-900 text-lg">
-                    Outils Professionnels
-                  </h3>
-                  <p className="text-gray-600">
-                    Génération de contrats, outils d'évaluation et
-                    accompagnement personnalisé pour vos projets.
-                  </p>
-                </CardContent>
-              </Card>
-
-              <Card className="border-t-4 border-t-care-evo-primary">
-                <CardContent className="p-6">
-                  <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-care-evo-primary/10">
-                    <Clock className="h-6 w-6 text-care-evo-primary" />
-                  </div>
-                  <h3 className="mb-2 font-semibold text-gray-900 text-lg">
-                    Gain de Temps
-                  </h3>
-                  <p className="text-gray-600">
-                    Interface intuitive, recherche avancée et notifications
-                    intelligentes pour optimiser votre recherche.
-                  </p>
-                </CardContent>
-              </Card>
-
-              <Card className="border-t-4 border-t-care-evo-accent">
-                <CardContent className="p-6">
-                  <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-care-evo-accent/10">
-                    <Award className="h-6 w-6 text-care-evo-accent" />
-                  </div>
-                  <h3 className="mb-2 font-semibold text-gray-900 text-lg">
-                    Expertise Reconnue
-                  </h3>
-                  <p className="text-gray-600">
-                    Une équipe d'experts du secteur médical pour vous
-                    accompagner dans tous vos projets professionnels.
-                  </p>
-                </CardContent>
-              </Card>
+              </div>
             </div>
           </div>
-        </section>
+        </div>
+      </section>
 
-        {/* Statistics Section */}
-        <section className="px-4 py-16 sm:px-6 lg:px-8">
-          <div className="mx-auto max-w-4xl">
-            <div className="mb-12 text-center">
-              <h2 className="mb-4 font-bold text-3xl text-gray-900">
-                Care Evo en chiffres
-              </h2>
-              <p className="text-gray-600 text-lg">
-                Une plateforme en croissance constante au service des
-                professionnels de santé
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
-              <Card>
-                <CardContent className="p-6 text-center">
-                  <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-care-evo-primary/10">
-                    <Users className="h-6 w-6 text-care-evo-primary" />
-                  </div>
-                  <div className="mb-2 font-bold text-3xl text-gray-900">
-                    500+
-                  </div>
-                  <div className="text-gray-600 text-sm">
-                    Professionnels inscrits
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardContent className="p-6 text-center">
-                  <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-care-evo-accent/10">
-                    <TrendingUp className="h-6 w-6 text-care-evo-accent" />
-                  </div>
-                  <div className="mb-2 font-bold text-3xl text-gray-900">
-                    200+
-                  </div>
-                  <div className="text-gray-600 text-sm">Annonces actives</div>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardContent className="p-6 text-center">
-                  <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-care-evo-primary/10">
-                    <CheckCircle className="h-6 w-6 text-care-evo-primary" />
-                  </div>
-                  <div className="mb-2 font-bold text-3xl text-gray-900">
-                    50+
-                  </div>
-                  <div className="text-gray-600 text-sm">
-                    Transactions réussies
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-          </div>
-        </section>
-
-        {/* Types of Services */}
-        <section className="relative bg-gray-50 px-4 py-16 sm:px-6 lg:px-8">
-          {/* Colored accent line at top */}
-          <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-care-evo-accent to-transparent"></div>
-          <div className="mx-auto max-w-4xl">
-            <div className="mb-12 text-center">
-              <h2 className="mb-4 font-bold text-3xl text-gray-900">
-                Nos Services
-              </h2>
-              <p className="text-gray-600 text-lg">
-                Trois types d'opportunités pour répondre à tous vos besoins
-                professionnels
-              </p>
-            </div>
-
-            <div className="space-y-6">
-              <Card className="border-l-4 border-l-care-evo-primary">
-                <CardContent className="p-6">
-                  <div className="flex items-start gap-4">
-                    <Badge className="bg-care-evo-primary/10 text-care-evo-primary hover:bg-care-evo-primary/10">
-                      Cession
-                    </Badge>
-                    <div className="flex-1">
-                      <h3 className="mb-2 font-semibold text-gray-900 text-lg">
-                        Cession de Cabinet
-                      </h3>
-                      <p className="text-gray-600">
-                        Vendez ou reprenez un cabinet médical en toute sérénité.
-                        Accédez aux informations financières, à la patientèle,
-                        aux équipements et bénéficiez d'un accompagnement
-                        personnalisé pour votre transaction.
-                      </p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card className="border-l-4 border-l-care-evo-accent">
-                <CardContent className="p-6">
-                  <div className="flex items-start gap-4">
-                    <Badge className="bg-care-evo-accent/10 text-care-evo-accent hover:bg-care-evo-accent/10">
-                      Remplacement
-                    </Badge>
-                    <div className="flex-1">
-                      <h3 className="mb-2 font-semibold text-gray-900 text-lg">
-                        Remplacement
-                      </h3>
-                      <p className="text-gray-600">
-                        Trouvez des remplacements temporaires, de long terme ou
-                        pour les week-ends. Que vous soyez remplaçant ou que
-                        vous cherchiez un remplaçant, connectez-vous facilement
-                        avec des professionnels qualifiés.
-                      </p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card className="border-l-4 border-l-care-evo-primary">
-                <CardContent className="p-6">
-                  <div className="flex items-start gap-4">
-                    <Badge className="bg-care-evo-primary/10 text-care-evo-primary hover:bg-care-evo-primary/10">
-                      Collaboration
-                    </Badge>
-                    <div className="flex-1">
-                      <h3 className="mb-2 font-semibold text-gray-900 text-lg">
-                        Collaboration
-                      </h3>
-                      <p className="text-gray-600">
-                        Développez votre pratique en association, partenariat ou
-                        dans un cabinet de groupe. Trouvez des collaborateurs
-                        partageant votre vision pour créer une pratique médicale
-                        enrichissante et durable.
-                      </p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-          </div>
-        </section>
-
-        {/* CTA Section */}
-        <section
-          className="relative px-4 py-16 sm:px-6 lg:px-8"
-          style={{ backgroundColor: "#206dc5" }}
-        >
-          {/* Séparation visuelle en haut */}
-          <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-care-evo-accent to-transparent"></div>
-
-          <div className="mx-auto max-w-4xl text-center">
-            <h2 className="mb-4 font-bold text-3xl text-white">
-              Prêt à donner un nouvel élan à votre carrière ?
+      {/* Values / Features - Clean Grid */}
+      <section className="py-24 sm:py-32 bg-white">
+        <div className="mx-auto max-w-7xl px-6 lg:px-8">
+          <div className="mx-auto max-w-2xl text-center mb-16">
+            <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+              L'Expérience Care Evo
             </h2>
-            <p className="mb-8 text-white/90 text-lg">
-              Rejoignez Care Evo aujourd'hui et découvrez les opportunités qui
-              vous attendent.
+            <p className="mt-4 text-lg text-gray-600">
+              Des outils pensés pour les exigences du secteur médical.
             </p>
-            <div className="flex flex-col justify-center gap-4 sm:flex-row">
-              <Button
-                asChild
-                size="lg"
-                className="hover:opacity-90"
-                style={{ backgroundColor: "#14b8a6", color: "#ffffff" }}
-              >
-                <Link href="/annonces">Parcourir les annonces</Link>
-              </Button>
-              <Button
-                asChild
-                size="lg"
-                variant="outline"
-                className="hover:opacity-90"
-                style={{
-                  backgroundColor: "transparent",
-                  color: "#ffffff",
-                  borderColor: "#ffffff",
-                }}
-              >
-                <Link href="/dashboard/listings/new">Publier une annonce</Link>
-              </Button>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12">
+            {/* Feature 1 */}
+            <div className="flex flex-col items-start p-8 rounded-2xl bg-gray-50 border border-gray-100 transition-all hover:shadow-lg hover:-translate-y-1 duration-300">
+              <div className="h-12 w-12 rounded-xl bg-care-evo-primary/10 flex items-center justify-center text-care-evo-primary mb-6">
+                <ShieldCheck className="h-6 w-6" />
+              </div>
+              <h3 className="text-xl font-semibold text-gray-900 mb-3">Sécurité Absolue</h3>
+              <p className="text-gray-600 leading-relaxed">
+                Chaque profil est rigoureusement vérifié. Vos données sont protégées. 
+                Échangez en toute sérénité avec des confrères certifiés.
+              </p>
+            </div>
+
+            {/* Feature 2 */}
+            <div className="flex flex-col items-start p-8 rounded-2xl bg-gray-50 border border-gray-100 transition-all hover:shadow-lg hover:-translate-y-1 duration-300">
+              <div className="h-12 w-12 rounded-xl bg-care-evo-accent/10 flex items-center justify-center text-care-evo-accent mb-6">
+                <Users className="h-6 w-6" />
+              </div>
+              <h3 className="text-xl font-semibold text-gray-900 mb-3">Réseau Qualifié</h3>
+              <p className="text-gray-600 leading-relaxed">
+                Accédez à une communauté active et pertinente. 
+                Trouvez le successeur ou le partenaire idéal qui partage vos valeurs.
+              </p>
+            </div>
+
+            {/* Feature 3 */}
+            <div className="flex flex-col items-start p-8 rounded-2xl bg-gray-50 border border-gray-100 transition-all hover:shadow-lg hover:-translate-y-1 duration-300">
+              <div className="h-12 w-12 rounded-xl bg-blue-500/10 flex items-center justify-center text-blue-600 mb-6">
+                <Sparkles className="h-6 w-6" />
+              </div>
+              <h3 className="text-xl font-semibold text-gray-900 mb-3">Simplicité Premium</h3>
+              <p className="text-gray-600 leading-relaxed">
+                Une interface fluide, sans publicité intrusive. 
+                Des outils de gestion efficaces pour gagner un temps précieux.
+              </p>
             </div>
           </div>
-        </section>
-      </div>
+        </div>
+      </section>
+
+      {/* Services Highlights */}
+      <section className="py-20 bg-gray-900 text-white">
+        <div className="mx-auto max-w-7xl px-6 lg:px-8">
+           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-12">
+             <div>
+               <h2 className="text-3xl font-bold sm:text-4xl mb-4">Trois piliers pour votre réussite</h2>
+               <p className="text-gray-400 text-lg">
+                 Que vous soyez en début de carrière ou à l'heure de la transmission, 
+                 nous avons la solution adaptée.
+               </p>
+             </div>
+             <div className="flex justify-start lg:justify-end">
+               <Button asChild variant="outline" className="bg-transparent border-gray-700 text-white hover:bg-gray-800 hover:text-white">
+                 <Link href="/annonces">Voir toutes les catégories</Link>
+               </Button>
+             </div>
+           </div>
+
+           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 border-t border-gray-800 pt-12">
+              <div className="group">
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="p-3 rounded-lg bg-gray-800 group-hover:bg-care-evo-primary transition-colors duration-300">
+                    <Building2 className="h-6 w-6 text-white" />
+                  </div>
+                  <h3 className="text-xl font-medium">Cession</h3>
+                </div>
+                <p className="text-gray-400 leading-relaxed">
+                  Transmission de cabinet, vente de patientèle ou de parts de SCM/SEL. 
+                  Valorisez votre patrimoine professionnel.
+                </p>
+              </div>
+
+              <div className="group">
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="p-3 rounded-lg bg-gray-800 group-hover:bg-care-evo-accent transition-colors duration-300">
+                    <UserRound className="h-6 w-6 text-white" />
+                  </div>
+                  <h3 className="text-xl font-medium">Remplacement</h3>
+                </div>
+                <p className="text-gray-400 leading-relaxed">
+                  Gérez vos absences ou trouvez des opportunités flexibles. 
+                  Un matching intelligent par spécialité et géographie.
+                </p>
+              </div>
+
+              <div className="group">
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="p-3 rounded-lg bg-gray-800 group-hover:bg-blue-500 transition-colors duration-300">
+                    <Handshake className="h-6 w-6 text-white" />
+                  </div>
+                  <h3 className="text-xl font-medium">Collaboration</h3>
+                </div>
+                <p className="text-gray-400 leading-relaxed">
+                  Rejoignez une équipe ou recrutez un associé. 
+                  Construisez l'avenir de la médecine de ville, ensemble.
+                </p>
+              </div>
+           </div>
+        </div>
+      </section>
+
+      {/* Final CTA */}
+      <section className="py-24 bg-white">
+        <div className="mx-auto max-w-4xl text-center px-6">
+          <h2 className="text-3xl font-bold text-gray-900 sm:text-5xl mb-6 tracking-tight">
+            Prêt à avancer ?
+          </h2>
+          <p className="text-xl text-gray-600 mb-10 max-w-2xl mx-auto">
+            Rejoignez des centaines de professionnels de santé qui font confiance à Care Evo.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Button 
+              asChild 
+              size="lg" 
+              className="hover:opacity-90 px-8 h-14 text-lg shadow-xl shadow-care-evo-primary/20"
+              style={{ backgroundColor: "#206dc5", color: "white" }}
+            >
+              <Link href="/register">Créer mon compte gratuitement</Link>
+            </Button>
+            <Button asChild variant="outline" size="lg" className="h-14 text-lg px-8 border-gray-200 hover:bg-gray-50 hover:text-gray-900">
+              <Link href="/contact">Nous contacter</Link>
+            </Button>
+          </div>
+        </div>
+      </section>
+
       <FooterSection />
-    </>
+    </div>
   );
 }

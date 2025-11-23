@@ -156,6 +156,8 @@ export type PublicListing = {
         city: string | null
         region: string | null
         postalCode: string | null
+        latitude: string | null
+        longitude: string | null
     } | null
     collaborationType?:
         | "association"

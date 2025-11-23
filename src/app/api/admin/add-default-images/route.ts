@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { db } from "@/database/db";
 import { listings, listingMedia } from "@/database/schema";
 import { eq, and, isNull } from "drizzle-orm";
+import { getDefaultListingImage } from "@/lib/utils/default-images";
 
 /**
  * API endpoint to add default images to listings that don't have any media
@@ -16,6 +17,7 @@ export async function POST() {
       .select({
         id: listings.id,
         listingType: listings.listingType,
+        specialty: listings.specialty,
       })
       .from(listings)
       .leftJoin(listingMedia, eq(listings.id, listingMedia.listingId))
@@ -31,24 +33,27 @@ export async function POST() {
       });
     }
 
-    // Prepare default image mappings
-    const defaultImageMap = {
-      transfer: "/default-images/transfer.jpeg",
-      replacement: "/default-images/replacement.jpeg",
-      collaboration: "/default-images/collaboration.jpeg",
-    };
-
     // Insert default images for each listing
-    const mediaToInsert = listingsWithoutMedia.map((listing) => ({
-      id: `default_${listing.id}_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
-      listingId: listing.id,
-      fileUrl: defaultImageMap[listing.listingType as keyof typeof defaultImageMap],
-      fileName: `default-${listing.listingType}.jpeg`,
-      fileType: "image/jpeg",
-      fileSize: null,
-      uploadKey: null,
-      displayOrder: 0,
-    }));
+    const mediaToInsert = listingsWithoutMedia.map((listing) => {
+      const fileUrl = getDefaultListingImage(
+        listing.listingType as "transfer" | "replacement" | "collaboration",
+        listing.specialty
+      );
+      const fileName = listing.specialty 
+        ? `default-${listing.specialty}-${listing.listingType}.jpg`
+        : `default-${listing.listingType}.jpg`;
+
+      return {
+        id: `default_${listing.id}_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+        listingId: listing.id,
+        fileUrl,
+        fileName,
+        fileType: "image/jpeg",
+        fileSize: null,
+        uploadKey: null,
+        displayOrder: 0,
+      };
+    });
 
     // Insert all default images in a batch
     await db.insert(listingMedia).values(mediaToInsert);

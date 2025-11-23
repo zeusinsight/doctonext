@@ -1,10 +1,11 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
-import { MapContainer, TileLayer, GeoJSON } from "react-leaflet";
+import { useState, useEffect, useCallback, useRef } from "react";
+import { MapContainer, TileLayer, GeoJSON, Marker, Popup } from "react-leaflet";
 import L from "leaflet";
 import type { FeatureCollection, Feature } from "geojson";
 import type { PublicListing } from "@/types/listing";
+import { SponsoredListingCard } from "@/components/listings/sponsored-listing-card";
 import { cn } from "@/lib/utils";
 import type {
   MedicalProfession,
@@ -207,6 +208,10 @@ export function FranceMap({
     useState<MedicalProfession>("chirurgiens-dentistes");
   const [parisArrondissements, setParisArrondissements] =
     useState<FeatureCollection<any> | null>(null);
+  const [lyonArrondissements, setLyonArrondissements] =
+    useState<FeatureCollection<any> | null>(null);
+  const [marseilleArrondissements, setMarseilleArrondissements] =
+    useState<FeatureCollection<any> | null>(null);
   const [dataLoaded, setDataLoaded] = useState(false);
 
   // Track current fetch request to cancel it if needed
@@ -215,9 +220,22 @@ export function FranceMap({
 
   // Map reference for programmatic control
   const [map, setMap] = useState<L.Map | null>(null);
+  const mapRef = useRef<L.Map | null>(null);
 
   // Type the town density data
   const densityData = townDensityData as TownMedicalZones;
+
+  // Refs for accessing latest data in stale closures
+  const parisArrondissementsRef = useRef<FeatureCollection<any> | null>(null);
+  const lyonArrondissementsRef = useRef<FeatureCollection<any> | null>(null);
+  const marseilleArrondissementsRef = useRef<FeatureCollection<any> | null>(null);
+
+  // Update refs when state changes
+  useEffect(() => {
+    parisArrondissementsRef.current = parisArrondissements;
+    lyonArrondissementsRef.current = lyonArrondissements;
+    marseilleArrondissementsRef.current = marseilleArrondissements;
+  }, [parisArrondissements, lyonArrondissements, marseilleArrondissements]);
 
   // Debug current state
   console.log(
@@ -255,6 +273,35 @@ export function FranceMap({
           parisData?.features?.length,
           "features",
         );
+
+        // Load Lyon arrondissements
+        try {
+          const lyonResponse = await fetch(
+            "/data/arrondissements_lyon.geojson",
+          );
+          if (lyonResponse.ok) {
+            const lyonData = await lyonResponse.json();
+            console.log("Lyon arrondissements loaded:", lyonData.features?.length, "features");
+            setLyonArrondissements(lyonData);
+          }
+        } catch (error) {
+          console.error("Failed to load Lyon arrondissements:", error);
+        }
+
+        // Load Marseille arrondissements
+        try {
+          const marseilleResponse = await fetch(
+            "/data/arrondissements_marseille.geojson",
+          );
+          if (marseilleResponse.ok) {
+            const marseilleData = await marseilleResponse.json();
+            console.log("Marseille arrondissements loaded:", marseilleData.features?.length, "features");
+            setMarseilleArrondissements(marseilleData);
+          }
+        } catch (error) {
+          console.error("Failed to load Marseille arrondissements:", error);
+        }
+
         setDataLoaded(true);
       } catch (error) {
         console.error("Failed to load map data:", error);
@@ -345,29 +392,127 @@ export function FranceMap({
       setLoadingDepartmentCode(departmentCode);
 
       // ZOOM FIRST - immediate visual feedback
+      const currentMap = mapRef.current;
+      console.log("Department clicked - attempting zoom:", {
+        departmentCode,
+        hasMap: !!currentMap,
+        hasGetBounds: layer && "getBounds" in layer,
+      });
       if (
-        map &&
+        currentMap &&
         "getBounds" in layer &&
         typeof layer.getBounds === "function"
       ) {
         const bounds = (layer as any).getBounds();
-        map.fitBounds(bounds, { padding: [20, 20] });
+        console.log("Zooming to bounds:", bounds);
+        currentMap.fitBounds(bounds, { padding: [20, 20] });
+      } else {
+        console.warn("Cannot zoom - missing map or layer bounds");
       }
 
-      // Special case for Paris - use local arrondissements data
+      // Special cases for Paris, Lyon, and Marseille - use local arrondissements data
       if (departmentCode === "75") {
+        const parisData = parisArrondissementsRef.current;
         console.log(
           "Clicked on Paris, checking data:",
-          !!parisArrondissements,
-          parisArrondissements?.features?.length,
+          !!parisData,
+          parisData?.features?.length,
         );
-        if (parisArrondissements) {
-          setCommuneData(parisArrondissements);
+        if (parisData) {
+          setCommuneData(parisData);
           setLoadingDepartmentCode(null);
           console.log("Paris data set successfully");
         } else {
           console.error("Paris arrondissements data not loaded yet");
           setLoadingDepartmentCode(null);
+        }
+        return;
+      }
+
+      if (departmentCode === "69") {
+        const lyonData = lyonArrondissementsRef.current;
+        console.log(
+          "Clicked on Rhône (69), loading communes + Lyon arrondissements"
+        );
+        
+        // Load all communes in the department
+        const abortController = new AbortController();
+        setCurrentAbortController(abortController);
+
+        const communeUrl = getCommuneUrl(departmentCode);
+        if (communeUrl) {
+          fetch(communeUrl, { signal: abortController.signal })
+            .then(response => response.json())
+            .then(communesData => {
+              // Merge Lyon arrondissements with other communes
+              if (lyonData && lyonData.features.length > 0) {
+                // Filter out the main Lyon commune (code 69123) to avoid overlap
+                const otherCommunes = communesData.features.filter((f: any) => 
+                  f.properties.code !== "69123"
+                );
+                
+                const mergedData = {
+                  type: "FeatureCollection" as const,
+                  features: [...lyonData.features, ...otherCommunes]
+                };
+                
+                console.log(`Merged ${lyonData.features.length} Lyon arrondissements with ${otherCommunes.length} other communes`);
+                setCommuneData(mergedData);
+              } else {
+                setCommuneData(communesData);
+              }
+              setLoadingDepartmentCode(null);
+            })
+            .catch(error => {
+              if (error.name !== 'AbortError') {
+                console.error("Failed to load Rhône communes:", error);
+              }
+              setLoadingDepartmentCode(null);
+            });
+        }
+        return;
+      }
+
+      if (departmentCode === "13") {
+        const marseilleData = marseilleArrondissementsRef.current;
+        console.log(
+          "Clicked on Bouches-du-Rhône (13), loading communes + Marseille arrondissements"
+        );
+        
+        // Load all communes in the department
+        const abortController = new AbortController();
+        setCurrentAbortController(abortController);
+
+        const communeUrl = getCommuneUrl(departmentCode);
+        if (communeUrl) {
+          fetch(communeUrl, { signal: abortController.signal })
+            .then(response => response.json())
+            .then(communesData => {
+              // Merge Marseille arrondissements with other communes
+              if (marseilleData && marseilleData.features.length > 0) {
+                // Filter out the main Marseille commune (code 13055) to avoid overlap
+                const otherCommunes = communesData.features.filter((f: any) => 
+                  f.properties.code !== "13055"
+                );
+                
+                const mergedData = {
+                  type: "FeatureCollection" as const,
+                  features: [...marseilleData.features, ...otherCommunes]
+                };
+                
+                console.log(`Merged ${marseilleData.features.length} Marseille arrondissements with ${otherCommunes.length} other communes`);
+                setCommuneData(mergedData);
+              } else {
+                setCommuneData(communesData);
+              }
+              setLoadingDepartmentCode(null);
+            })
+            .catch(error => {
+              if (error.name !== 'AbortError') {
+                console.error("Failed to load Bouches-du-Rhône communes:", error);
+              }
+              setLoadingDepartmentCode(null);
+            });
         }
         return;
       }
@@ -418,7 +563,7 @@ export function FranceMap({
         }
       }
     },
-    [currentAbortController, parisArrondissements],
+    [currentAbortController],
   );
 
   // Handle commune click
@@ -609,8 +754,11 @@ export function FranceMap({
         scrollWheelZoom={true}
         dragging={true}
         doubleClickZoom={true}
-        ref={(mapRef) => {
-          if (mapRef) setMap(mapRef);
+        ref={(mapInstance) => {
+          if (mapInstance) {
+            setMap(mapInstance);
+            mapRef.current = mapInstance;
+          }
         }}
       >
         <TileLayer
@@ -637,6 +785,32 @@ export function FranceMap({
             onEachFeature={onEachCommune}
           />
         )}
+
+        {/* Listings Markers */}
+        {listings.map((listing) => {
+          if (listing.location?.latitude && listing.location?.longitude) {
+            const lat = parseFloat(listing.location.latitude);
+            const lng = parseFloat(listing.location.longitude);
+
+            if (!isNaN(lat) && !isNaN(lng)) {
+              return (
+                <Marker key={listing.id} position={[lat, lng]}>
+                  <Popup className="p-0 !m-0 [&_.leaflet-popup-content-wrapper]:p-0 [&_.leaflet-popup-content]:m-0 [&_.leaflet-popup-content]:w-auto" maxWidth={320}>
+                    <div className="w-[280px]">
+                      <SponsoredListingCard
+                        listing={listing}
+                        orientation="horizontal"
+                        compact={true}
+                        className="border-0 shadow-none"
+                      />
+                    </div>
+                  </Popup>
+                </Marker>
+              );
+            }
+          }
+          return null;
+        })}
       </MapContainer>
 
       {/* Controls overlay */}

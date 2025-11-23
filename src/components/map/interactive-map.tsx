@@ -34,6 +34,7 @@ interface InteractiveMapProps {
 export interface MapRef {
     flyTo: (lat: number, lng: number, zoom?: number) => void
     setView: (lat: number, lng: number, zoom?: number) => void
+    fitBounds: (bounds: [[number, number], [number, number]], options?: L.FitBoundsOptions) => void
     getMap: () => LeafletMap | null
 }
 
@@ -105,6 +106,15 @@ export const InteractiveMap = forwardRef<MapRef, InteractiveMapProps>(
                             [lat, lng],
                             zoom || mapRef.current.getZoom()
                         )
+                    }
+                },
+                fitBounds: (bounds: [[number, number], [number, number]], options?: L.FitBoundsOptions) => {
+                    if (mapRef.current) {
+                        mapRef.current.fitBounds(bounds, {
+                            padding: [50, 50],
+                            duration: 1.5,
+                            ...options
+                        })
                     }
                 },
                 getMap: () => mapRef.current

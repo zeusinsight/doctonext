@@ -7,6 +7,7 @@ import { Eye, MapPin } from "lucide-react"
 import Link from "next/link"
 import Image from "next/image"
 import { cn } from "@/lib/utils"
+import { getDefaultListingImage } from "@/lib/utils/default-images"
 import type { ListingWithDetails, PublicListing } from "@/types/listing"
 
 interface ListingCardProps {
@@ -44,6 +45,8 @@ export function ListingCard({
         "media" in listing && listing.media?.length > 0
             ? listing.media[0]
             : null
+
+    const imageUrl = firstImage?.fileUrl || getDefaultListingImage(listing.listingType, listing.specialty)
 
     const formatPrice = (price: number | null | undefined) => {
         if (!price) return null
@@ -84,19 +87,13 @@ export function ListingCard({
                 )}
             >
                 <div className="relative aspect-[16/10] w-full bg-muted">
-                    {firstImage ? (
-                        <Image
-                            src={firstImage.fileUrl}
-                            alt={firstImage.fileName || listing.title}
-                            fill
-                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                            className="object-cover"
-                        />
-                    ) : (
-                        <div className="flex h-full w-full items-center justify-center text-muted-foreground/30">
-                            <Eye className="h-12 w-12" />
-                        </div>
-                    )}
+                    <Image
+                        src={imageUrl}
+                        alt={firstImage?.fileName || listing.title}
+                        fill
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                        className="object-cover"
+                    />
 
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
 

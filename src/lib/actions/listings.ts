@@ -642,6 +642,8 @@ export async function getPublicListings(filters?: {
           city: listingLocations.city,
           region: listingLocations.region,
           postalCode: listingLocations.postalCode,
+          latitude: listingLocations.latitude,
+          longitude: listingLocations.longitude,
         },
         collaborationType: collaborationDetails.collaborationType,
         // Pricing data

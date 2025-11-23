@@ -25,6 +25,7 @@ export interface MapNavigationControls {
 export function useMapNavigation(
     mapRef: React.RefObject<{
         flyTo: (lat: number, lng: number, zoom?: number) => void
+        fitBounds?: (bounds: [[number, number], [number, number]], options?: any) => void
     } | null>
 ): MapNavigationControls {
     const [state, setState] = useState<MapNavigationState>({
@@ -65,28 +66,13 @@ export function useMapNavigation(
                 hoveredLocation: null
             }))
 
-            // Calculate center from bounds and fly to department
-            if (mapRef.current) {
-                const centerLat =
-                    (department.bounds.north + department.bounds.south) / 2
-                const centerLng =
-                    (department.bounds.east + department.bounds.west) / 2
-
-                // Calculate appropriate zoom level based on bounds
-                const latDiff =
-                    department.bounds.north - department.bounds.south
-                const lngDiff = department.bounds.east - department.bounds.west
-                const maxDiff = Math.max(latDiff, lngDiff)
-
-                // Heuristic for zoom level based on bounds size
-                let zoom = 9
-                if (maxDiff < 0.5) zoom = 11
-                else if (maxDiff < 1) zoom = 10
-                else if (maxDiff < 2) zoom = 9
-                else if (maxDiff < 4) zoom = 8
-                else zoom = 7
-
-                mapRef.current.flyTo(centerLat, centerLng, zoom)
+            // Use fitBounds to automatically zoom to the department bounds
+            if (mapRef.current && mapRef.current.fitBounds) {
+                const bounds: [[number, number], [number, number]] = [
+                    [department.bounds.south, department.bounds.west],
+                    [department.bounds.north, department.bounds.east]
+                ]
+                mapRef.current.fitBounds(bounds)
             }
         },
         [mapRef, state]
