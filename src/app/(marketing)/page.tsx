@@ -106,145 +106,151 @@ export default function Home() {
         </div>
       </section>
       <SpecialtiesSection />
-      <section className="container mx-auto px-4 py-16 sm:py-24">
-        <SectionTitle
-          subtitle="Pourquoi choisir CareEvo?"
-          title="Une plateforme tout-en-un pour votre carrière"
-        />
+      <div className="bg-gradient-to-b from-blue-50/50 via-white to-blue-50/50">
+        <section className="py-16 sm:py-24">
+          <div className="container mx-auto px-4">
+            <SectionTitle
+              subtitle="Pourquoi choisir CareEvo?"
+              title="Une plateforme tout-en-un pour votre carrière"
+            />
 
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          <Card className="border-0 bg-background shadow-none">
-            <CardHeader className="flex items-center justify-center gap-4 pb-2">
-              <div
-                className="rounded-full p-3"
-                style={{
-                  backgroundColor: "#206dc5",
-                }}
-              >
-                <Clock className="h-7 w-7 text-white" />
-              </div>
-              <CardTitle style={{ color: "#206dc5" }}>Gain de temps</CardTitle>
-            </CardHeader>
-            <CardContent className="text-center text-muted-foreground">
-              Centralisez vos recherches et démarches pour vous concentrer sur
-              l'essentiel.
-            </CardContent>
-          </Card>
-          <Card className="border-0 bg-background shadow-none">
-            <CardHeader className="flex items-center justify-center gap-4 pb-2">
-              <div
-                className="rounded-full p-3"
-                style={{
-                  backgroundColor: "#206dc5",
-                }}
-              >
-                <MessageSquareLock className="h-7 w-7 text-white" />
-              </div>
-              <CardTitle style={{ color: "#206dc5" }}>
-                Messagerie sécurisée
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="text-center text-muted-foreground">
-              Échangez en toute confiance avec notre système de messagerie
-              cryptée.
-            </CardContent>
-          </Card>
-          <Card className="border-0 bg-background shadow-none">
-            <CardHeader className="flex items-center justify-center gap-4 pb-2">
-              <div
-                className="rounded-full p-3"
-                style={{
-                  backgroundColor: "#206dc5",
-                }}
-              >
-                <FileCheck2 className="h-7 w-7 text-white" />
-              </div>
-              <CardTitle style={{ color: "#206dc5" }}>
-                Signature électronique
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="text-center text-muted-foreground">
-              Signez vos contrats numériquement, en toute légalité et
-              simplicité.
-            </CardContent>
-          </Card>
-          <Card className="border-0 bg-background shadow-none">
-            <CardHeader className="flex items-center justify-center gap-4 pb-2">
-              <div
-                className="rounded-full p-3"
-                style={{
-                  backgroundColor: "#206dc5",
-                }}
-              >
-                <BadgeCheck className="h-7 w-7 text-white" />
-              </div>
-              <CardTitle style={{ color: "#206dc5" }}>
-                Conformité légale
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="text-center text-muted-foreground">
-              Accédez à des modèles de contrats validés par des experts
-              juridiques.
-            </CardContent>
-          </Card>
-        </div>
-      </section>
-
-      <section className="container mx-auto px-4 py-16 sm:py-24">
-        <SectionTitle
-          subtitle="Comment ça marche?"
-          title="Simple, rapide et efficace"
-        />
-        <div className="mx-auto grid max-w-5xl grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-4">
-          {[
-            {
-              title: "Créez votre compte",
-              description:
-                "Inscrivez-vous gratuitement et complétez votre profil en 2 minutes.",
-            },
-            {
-              title: "Publiez ou cherchez",
-              description:
-                "Publiez une annonce ou trouvez des opportunités par spécialité et lieu.",
-            },
-            {
-              title: "Échangez en sécurité",
-              description:
-                "Discutez via la messagerie sécurisée et partagez vos documents.",
-            },
-            {
-              title: "Finalisez en ligne",
-              description:
-                "Signez électroniquement et finalisez votre accord en toute légalité.",
-            },
-          ].map((step, i) => (
-            <div key={i} className="relative">
-              <Card className="h-full border border-gray-200 transition-shadow hover:shadow-xl">
-                <CardContent className="flex flex-col items-center p-6 text-center">
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+              <Card className="border-0 bg-transparent shadow-none">
+                <CardHeader className="flex items-center justify-center gap-4 pb-2">
                   <div
-                    className="flex h-12 w-12 items-center justify-center rounded-full text-xl font-bold text-white"
-                    style={{ backgroundColor: "#206dc5" }}
+                    className="rounded-full p-3"
+                    style={{
+                      backgroundColor: "#206dc5",
+                    }}
                   >
-                    {i + 1}
+                    <Clock className="h-7 w-7 text-white" />
                   </div>
-                  <h4 className="mt-4 font-semibold text-gray-900">
-                    {step.title}
-                  </h4>
-                  <p className="mt-2 text-sm text-gray-600 leading-relaxed">
-                    {step.description}
-                  </p>
+                  <CardTitle style={{ color: "#206dc5" }}>
+                    Gain de temps
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="text-center text-muted-foreground">
+                  Centralisez vos recherches et démarches pour vous concentrer sur
+                  l'essentiel.
                 </CardContent>
               </Card>
-              {/* Flèche entre les étapes */}
-              {i < 3 && (
-                <div className="absolute top-1/2 -translate-y-1/2 -right-4 hidden md:block text-care-evo-primary text-2xl">
-                  →
-                </div>
-              )}
+              <Card className="border-0 bg-transparent shadow-none">
+                <CardHeader className="flex items-center justify-center gap-4 pb-2">
+                  <div
+                    className="rounded-full p-3"
+                    style={{
+                      backgroundColor: "#206dc5",
+                    }}
+                  >
+                    <MessageSquareLock className="h-7 w-7 text-white" />
+                  </div>
+                  <CardTitle style={{ color: "#206dc5" }}>
+                    Messagerie sécurisée
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="text-center text-muted-foreground">
+                  Échangez en toute confiance avec notre système de messagerie
+                  cryptée.
+                </CardContent>
+              </Card>
+              <Card className="border-0 bg-transparent shadow-none">
+                <CardHeader className="flex items-center justify-center gap-4 pb-2">
+                  <div
+                    className="rounded-full p-3"
+                    style={{
+                      backgroundColor: "#206dc5",
+                    }}
+                  >
+                    <FileCheck2 className="h-7 w-7 text-white" />
+                  </div>
+                  <CardTitle style={{ color: "#206dc5" }}>
+                    Signature électronique
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="text-center text-muted-foreground">
+                  Signez vos contrats numériquement, en toute légalité et
+                  simplicité.
+                </CardContent>
+              </Card>
+              <Card className="border-0 bg-transparent shadow-none">
+                <CardHeader className="flex items-center justify-center gap-4 pb-2">
+                  <div
+                    className="rounded-full p-3"
+                    style={{
+                      backgroundColor: "#206dc5",
+                    }}
+                  >
+                    <BadgeCheck className="h-7 w-7 text-white" />
+                  </div>
+                  <CardTitle style={{ color: "#206dc5" }}>
+                    Conformité légale
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="text-center text-muted-foreground">
+                  Accédez à des modèles de contrats validés par des experts
+                  juridiques.
+                </CardContent>
+              </Card>
             </div>
-          ))}
-        </div>
-      </section>
+          </div>
+        </section>
+
+        <section className="py-16 sm:py-24">
+          <div className="container mx-auto px-4">
+            <SectionTitle
+              subtitle="Comment ça marche?"
+              title="Simple, rapide et efficace"
+            />
+            <div className="mx-auto grid max-w-5xl grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-4">
+              {[
+                {
+                  title: "Créez votre compte",
+                  description:
+                    "Inscrivez-vous gratuitement et complétez votre profil en 2 minutes.",
+                },
+                {
+                  title: "Publiez ou cherchez",
+                  description:
+                    "Publiez une annonce ou trouvez des opportunités par spécialité et lieu.",
+                },
+                {
+                  title: "Échangez en sécurité",
+                  description:
+                    "Discutez via la messagerie sécurisée et partagez vos documents.",
+                },
+                {
+                  title: "Finalisez en ligne",
+                  description:
+                    "Signez électroniquement et finalisez votre accord en toute légalité.",
+                },
+              ].map((step, i) => (
+                <div key={i} className="relative">
+                  <Card className="h-full border border-gray-200 transition-shadow hover:shadow-xl">
+                    <CardContent className="flex flex-col items-center p-6 text-center">
+                      <div
+                        className="flex h-12 w-12 items-center justify-center rounded-full text-xl font-bold text-white"
+                        style={{ backgroundColor: "#206dc5" }}
+                      >
+                        {i + 1}
+                      </div>
+                      <h4 className="mt-4 font-semibold text-gray-900">
+                        {step.title}
+                      </h4>
+                      <p className="mt-2 text-sm text-gray-600 leading-relaxed">
+                        {step.description}
+                      </p>
+                    </CardContent>
+                  </Card>
+                  {/* Ligne entre les étapes */}
+                  {i < 3 && (
+                    <div className="absolute top-1/2 -right-8 hidden h-0.5 w-8 -translate-y-1/2 bg-gray-300 md:block" />
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      </div>
       <TestimonialsSection />
       <CtaSection />
     </main>

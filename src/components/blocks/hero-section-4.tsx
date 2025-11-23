@@ -12,39 +12,37 @@ export function HeroSection() {
   return (
     <>
       <main className="overflow-x-hidden">
-        <section>
+        <section className="bg-gradient-to-b from-blue-100/50 to-white">
           <div className="pb-12 pt-12 md:pb-24  lg:pt-22">
             <div className="relative mx-auto max-w-6xl px-6">
-              <div className="flex flex-col lg:flex-row lg:items-center lg:gap-12">
-                <div className="flex-1 text-center lg:text-left">
-                  <div className="flex justify-center lg:justify-start">
+              <div className="flex flex-col items-center text-center">
+                <div className="mx-auto max-w-4xl">
+                  <div className="flex justify-center mb-8">
                     <Image
                       src="/logo.png"
-                      alt="Care Evo"
+                      alt="CareEvo"
                       width={400}
                       height={134}
-                      className="h-auto w-72 object-cover"
-                      
+                      className="h-auto w-82 object-cover"
                     />
                   </div>
-                  <h1 className="text-5xl font-medium md:text-6xl lg:mt-2 lg:text-6xl max-w-6xl">
+                  <h1 className="text-5xl font-bold md:text-6xl lg:text-7xl tracking-tight text-gray-900 mb-6">
                     Réinventez votre
-                    <br />
-                    carrière médicale
+                    <span className="block mt-2">carrière médicale</span>
                   </h1>
-                  <p className="mt-6 text-pretty text-lg leading-relaxed text-gray-700 font-medium">
-                    La première plateforme qui connecte les professionnels de
-                    santé pour développer leur carrière, en toute simplicité.
+                  <p className="mx-auto mt-6 max-w-2xl text-lg md:text-xl text-gray-600 font-medium leading-relaxed">
+                    La plateforme qui connecte les professionnels de
+                    santé pour développer leur carrière, en toute simplicité
                   </p>
-                  <p className="mt-4 text-gray-500 text-base italic">
-                    Découvrez comment Care Evo peut transformer votre parcours
+                  <p className="mx-auto mt-4 max-w-2xl text-base md:text-lg text-gray-500">
+                    Découvrez comment CareEvo peut transformer votre parcours
                     professionnel.
                   </p>
 
-                  <div className="mt-12 flex flex-col items-center justify-center gap-4 sm:flex-row lg:justify-start">
+                  <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
                     <Link href="/annonces">
                       <button
-                        className="inline-flex items-center justify-center rounded-md px-8 py-3 text-lg font-semibold text-white transition-colors shadow-lg"
+                        className="inline-flex items-center justify-center rounded-md px-8 py-4 text-lg font-semibold text-white transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5"
                         style={{ backgroundColor: "#206dc5" }}
                         onMouseEnter={(e) =>
                           (e.currentTarget.style.backgroundColor = "#1a5ba3")
@@ -58,7 +56,7 @@ export function HeroSection() {
                     </Link>
                     <Link href="/dashboard/annonces/new">
                       <button
-                        className="inline-flex items-center justify-center rounded-md px-8 py-3 text-lg font-semibold text-white transition-colors shadow-lg"
+                        className="inline-flex items-center justify-center rounded-md px-8 py-4 text-lg font-semibold text-white transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5"
                         style={{ backgroundColor: "#14b8a6" }}
                         onMouseEnter={(e) =>
                           (e.currentTarget.style.backgroundColor = "#0d9488")
@@ -71,9 +69,6 @@ export function HeroSection() {
                       </button>
                     </Link>
                   </div>
-                </div>
-                <div className="relative hidden flex-1 lg:block">
-                  <ConnectedTriangles />
                 </div>
               </div>
             </div>

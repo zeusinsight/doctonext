@@ -1,11 +1,11 @@
 import { type NextRequest, NextResponse } from "next/server"
 import { db } from "@/database/db"
 import { blogArticles } from "@/database/schema"
-import { eq, desc, and, ilike, or, sql } from "drizzle-orm"
-import { getCurrentUser, requireAdmin } from "@/lib/auth-utils"
+import { eq } from "drizzle-orm"
+import { requireAdmin } from "@/lib/auth-utils"
 import slugify from "slugify"
-import readingTime from "reading-time"
 import { z } from "zod"
+import { getBlogArticlesService } from "@/lib/services/blog-service"
 
 const createBlogSchema = z.object({
     title: z.string().min(1).max(200),
@@ -24,100 +24,20 @@ export async function GET(request: NextRequest) {
         const { searchParams } = new URL(request.url)
         const page = parseInt(searchParams.get("page") || "1")
         const limit = parseInt(searchParams.get("limit") || "12")
-        const search = searchParams.get("search")
-        const category = searchParams.get("category")
+        const search = searchParams.get("search") || undefined
+        const category = searchParams.get("category") || undefined
         const includeUnpublished =
             searchParams.get("includeUnpublished") === "true"
 
-        const offset = (page - 1) * limit
-
-        // Check if user is admin for unpublished content
-        const user = await getCurrentUser()
-        const isAdmin = (user as any)?.role === "admin"
-
-        const conditions = []
-
-        // Only show published articles unless user is admin and specifically requests unpublished
-        if (!includeUnpublished) {
-            conditions.push(eq(blogArticles.isPublished, true))
-        } else if (!isAdmin) {
-            // Non-admin users can never see unpublished articles
-            conditions.push(eq(blogArticles.isPublished, true))
-        }
-        // If includeUnpublished is true AND user is admin, show all articles (no filter)
-
-        // Search functionality
-        if (search) {
-            conditions.push(
-                or(
-                    ilike(blogArticles.title, `%${search}%`),
-                    ilike(blogArticles.content, `%${search}%`),
-                    ilike(blogArticles.excerpt, `%${search}%`)
-                )
-            )
-        }
-
-        // Category filtering (using tags)
-        if (category) {
-            // Use SQL array contains operator for PostgreSQL
-            conditions.push(
-                sql`${blogArticles.tags} @> ARRAY[${category}]::text[]`
-            )
-        }
-
-        const whereClause =
-            conditions.length > 0 ? and(...conditions) : undefined
-
-        const articles = await db
-            .select()
-            .from(blogArticles)
-            .where(whereClause)
-            .orderBy(
-                desc(blogArticles.publishedAt),
-                desc(blogArticles.createdAt)
-            )
-            .limit(limit)
-            .offset(offset)
-
-        // Get total count for pagination
-        const totalResult = await db
-            .select({ count: blogArticles.id })
-            .from(blogArticles)
-            .where(whereClause)
-
-        const total = totalResult.length
-        const totalPages = Math.ceil(total / limit)
-
-        // Add reading time to articles and transform field names
-        const articlesWithReadingTime = articles.map((article) => ({
-            id: article.id,
-            title: article.title,
-            slug: article.slug,
-            content: article.content,
-            excerpt: article.excerpt,
-            featuredImage: article.featuredImage,
-            authorId: article.authorId,
-            isPublished: article.isPublished,
-            seoTitle: article.seoTitle,
-            seoDescription: article.seoDescription,
-            tags: article.tags,
-            publishedAt: article.publishedAt,
-            createdAt: article.createdAt,
-            updatedAt: article.updatedAt,
-            readingTime: readingTime(article.content).text
-        }))
-
-        return NextResponse.json({
-            articles: articlesWithReadingTime,
-            pagination: {
-                page,
-                limit,
-                total,
-                totalPages,
-                hasNextPage: page < totalPages,
-                hasPreviousPage: page > 1
-            }
+        const result = await getBlogArticlesService({
+            page,
+            limit,
+            search,
+            category,
+            includeUnpublished
         })
+
+        return NextResponse.json(result)
     } catch (error) {
         console.error("Error fetching blog articles:", error)
         return NextResponse.json(

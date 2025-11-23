@@ -1,6 +1,6 @@
 "use client";
 
-import { FileText, Search } from "lucide-react";
+import { FileText, Search, UserPlus } from "lucide-react";
 import Link from "next/link";
 
 export const CtaSection = () => {
@@ -60,6 +60,22 @@ export const CtaSection = () => {
               >
                 <FileText className="h-5 w-5" />
                 Déposer une annonce
+              </button>
+            </Link>
+
+            <Link href="/register">
+              <button
+                className="flex items-center gap-2 px-8 py-6 font-semibold text-lg text-white transition-all duration-200 shadow-lg rounded-md"
+                style={{ backgroundColor: "#1e3a8a" }}
+                onMouseEnter={(e) =>
+                  (e.currentTarget.style.backgroundColor = "#1e40af")
+                }
+                onMouseLeave={(e) =>
+                  (e.currentTarget.style.backgroundColor = "#1e3a8a")
+                }
+              >
+                <UserPlus className="h-5 w-5" />
+                Créer un compte
               </button>
             </Link>
           </div>

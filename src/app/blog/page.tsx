@@ -4,6 +4,7 @@ import { BlogFilters } from "@/components/blog/blog-filters";
 import { BlogPagination } from "@/components/blog/blog-pagination";
 import { Card, CardContent } from "@/components/ui/card";
 import { FileText } from "lucide-react";
+import { getBlogArticlesService } from "@/lib/services/blog-service";
 
 interface BlogPageProps {
   searchParams: Promise<{
@@ -11,67 +12,6 @@ interface BlogPageProps {
     search?: string;
     category?: string;
   }>;
-}
-
-interface BlogArticle {
-  id: string;
-  title: string;
-  slug: string;
-  excerpt: string | null;
-  featuredImage: string | null;
-  publishedAt: Date | null;
-  tags: string[] | null;
-  readingTime?: string;
-}
-
-interface BlogResponse {
-  articles: BlogArticle[];
-  pagination: {
-    page: number;
-    limit: number;
-    total: number;
-    totalPages: number;
-    hasNextPage: boolean;
-    hasPreviousPage: boolean;
-  };
-}
-
-async function getBlogArticles(
-  searchParams: Awaited<BlogPageProps["searchParams"]>,
-): Promise<BlogResponse> {
-  const params = new URLSearchParams();
-
-  if (searchParams.page) params.set("page", searchParams.page);
-  if (searchParams.search) params.set("search", searchParams.search);
-  if (searchParams.category) params.set("category", searchParams.category);
-
-  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
-
-  try {
-    const response = await fetch(`${baseUrl}/api/blog?${params.toString()}`, {
-      next: { revalidate: 300 }, // Revalidate every 5 minutes
-    });
-
-    if (!response.ok) {
-      throw new Error("Failed to fetch blog articles");
-    }
-
-    const data: BlogResponse = await response.json();
-    return data;
-  } catch (error) {
-    console.error("Error fetching blog articles:", error);
-    return {
-      articles: [],
-      pagination: {
-        page: 1,
-        limit: 12,
-        total: 0,
-        totalPages: 0,
-        hasNextPage: false,
-        hasPreviousPage: false,
-      },
-    };
-  }
 }
 
 export async function generateMetadata({
@@ -118,7 +58,11 @@ export async function generateMetadata({
 
 export default async function BlogPage({ searchParams }: BlogPageProps) {
   const params = await searchParams;
-  const { articles, pagination } = await getBlogArticles(params);
+  const { articles, pagination } = await getBlogArticlesService({
+    page: params.page ? parseInt(params.page) : 1,
+    search: params.search,
+    category: params.category,
+  });
 
   const hasActiveFilters = params.search || params.category;
 
