@@ -115,12 +115,65 @@ export function ContractSigningModal({
     const [contract, setContract] = useState<Contract | null>(null)
     const [isLoading, setIsLoading] = useState(true)
     const [embedUrl, setEmbedUrl] = useState<string>()
+    const [isWaitingForPayment, setIsWaitingForPayment] = useState(false)
+    const [paymentPollCount, setPaymentPollCount] = useState(0)
+    const MAX_PAYMENT_POLLS = 15 // 15 polls * 2 seconds = 30 seconds max
 
     useEffect(() => {
         if (isOpen && contractId) {
             fetchContract()
         }
+        // Reset states when modal closes
+        if (!isOpen) {
+            setIsWaitingForPayment(false)
+            setPaymentPollCount(0)
+            setEmbedUrl(undefined)
+        }
     }, [isOpen, contractId])
+
+    // Poll for payment confirmation when status is pending_payment
+    useEffect(() => {
+        if (!isWaitingForPayment || !contractId) return
+
+        const pollInterval = setInterval(async () => {
+            try {
+                const response = await fetch(`/api/contracts/${contractId}/status`)
+                if (!response.ok) return
+
+                const contractData = await response.json()
+
+                if (contractData.status !== "pending_payment") {
+                    // Payment confirmed! Stop polling and proceed
+                    setIsWaitingForPayment(false)
+                    setContract(contractData)
+
+                    if (
+                        contractData.status === "pending_signature" &&
+                        !contractData.docusealSubmissionId
+                    ) {
+                        await createDocusealSubmission(contractId)
+                    }
+                    return
+                }
+
+                setPaymentPollCount((prev) => {
+                    if (prev >= MAX_PAYMENT_POLLS - 1) {
+                        // Timeout - stop polling
+                        setIsWaitingForPayment(false)
+                        toast.error(
+                            "Confirmation de paiement expirée. Veuillez réessayer ou contacter le support."
+                        )
+                        return prev
+                    }
+                    return prev + 1
+                })
+            } catch (error) {
+                console.error("Error polling payment status:", error)
+            }
+        }, 2000)
+
+        return () => clearInterval(pollInterval)
+    }, [isWaitingForPayment, contractId])
 
     const fetchContract = async () => {
         try {
@@ -133,6 +186,13 @@ export function ContractSigningModal({
 
             const contractData = await response.json()
             setContract(contractData)
+
+            // If payment is still pending, start polling
+            if (contractData.status === "pending_payment") {
+                setIsWaitingForPayment(true)
+                setPaymentPollCount(0)
+                return
+            }
 
             // If contract is ready for signing but no submission exists, create it
             if (
@@ -234,6 +294,45 @@ export function ContractSigningModal({
                         <div className="space-y-2 text-center">
                             <Clock className="mx-auto h-8 w-8 animate-spin text-primary" />
                             <p>Chargement du contrat...</p>
+                        </div>
+                    </div>
+                </DialogContent>
+            </Dialog>
+        )
+    }
+
+    // Show waiting for payment confirmation UI
+    if (isWaitingForPayment && contract?.status === "pending_payment") {
+        return (
+            <Dialog open={isOpen} onOpenChange={onClose}>
+                <DialogContent className="max-w-md">
+                    <div className="flex flex-col items-center justify-center py-8">
+                        <div className="space-y-4 text-center">
+                            <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-yellow-100">
+                                <Clock className="h-8 w-8 animate-spin text-yellow-600" />
+                            </div>
+                            <div>
+                                <h3 className="font-semibold text-lg">
+                                    Confirmation du paiement...
+                                </h3>
+                                <p className="mt-2 text-muted-foreground text-sm">
+                                    Nous vérifions votre paiement auprès de Stripe.
+                                    <br />
+                                    Cela peut prendre quelques secondes.
+                                </p>
+                            </div>
+                            <div className="flex items-center justify-center gap-1">
+                                {Array.from({ length: 3 }).map((_, i) => (
+                                    <div
+                                        key={i}
+                                        className="h-2 w-2 animate-bounce rounded-full bg-yellow-500"
+                                        style={{ animationDelay: `${i * 0.15}s` }}
+                                    />
+                                ))}
+                            </div>
+                            <p className="text-muted-foreground text-xs">
+                                Tentative {paymentPollCount + 1}/{MAX_PAYMENT_POLLS}
+                            </p>
                         </div>
                     </div>
                 </DialogContent>

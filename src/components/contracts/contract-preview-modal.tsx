@@ -43,19 +43,41 @@ interface ContractPreviewModalProps {
     onContractPaid: (contractId: string) => void
 }
 
+// DocuSeal template IDs by profession for replacement contracts
+const DOCUSEAL_REPLACEMENT_TEMPLATES: Record<string, string> = {
+    "Dentiste": "1750262",
+    "Infirmier(ère)": "2264112",
+    "Sage-femme": "2264083",
+    "Podologue": "2218623",
+    "Orthophoniste": "2218567",
+    "Médecin généraliste": "2264269",
+    "Kinésithérapeute": "2264290"
+}
+
+// Get profession display name for contract title
+const getProfessionDisplayName = (profession?: string): string => {
+    if (!profession) return "Professionnel de santé"
+    return profession
+}
+
 // Contract templates - now using hardcoded ones for better UX, but could be fetched from API
 const getContractTemplates = (
     listingType: string,
     profession?: string
 ): ContractTemplate[] => {
+    const professionName = getProfessionDisplayName(profession)
+    const replacementTemplateId = profession
+        ? DOCUSEAL_REPLACEMENT_TEMPLATES[profession] || DOCUSEAL_REPLACEMENT_TEMPLATES["Dentiste"]
+        : DOCUSEAL_REPLACEMENT_TEMPLATES["Dentiste"]
+
     const baseTemplates: ContractTemplate[] = [
         {
             id: "replacement",
-            name: "Contrat de remplacement Dentiste",
+            name: `Contrat de remplacement ${professionName}`,
             contractType: "replacement",
             description:
                 "Contrat officiel pour le remplacement temporaire d'un professionnel de santé",
-            docusealTemplateId: "1750262", // You'll need to create these templates in DocuSeal
+            docusealTemplateId: replacementTemplateId,
             icon: Users
         },
         {
@@ -64,7 +86,7 @@ const getContractTemplates = (
             contractType: "transfer",
             description:
                 "Contrat de cession de patientèle conforme aux réglementations professionnelles",
-            docusealTemplateId: "2", // You'll need to create these templates in DocuSeal
+            docusealTemplateId: "2", // TODO: Add DocuSeal template IDs for transfer contracts
             icon: Building
         },
         {
@@ -73,7 +95,7 @@ const getContractTemplates = (
             contractType: "collaboration",
             description:
                 "Accord de collaboration entre professionnels de santé",
-            docusealTemplateId: "3", // You'll need to create these templates in DocuSeal
+            docusealTemplateId: "3", // TODO: Add DocuSeal template IDs for collaboration contracts
             icon: Handshake
         }
     ]
@@ -193,13 +215,13 @@ export function ContractPreviewModal({
 
     return (
         <Dialog open={isOpen} onOpenChange={onClose}>
-            <DialogContent className="max-h-[90vh] w-full max-w-6xl overflow-y-auto">
+            <DialogContent className="max-h-[90vh] w-[95vw] max-w-lg overflow-y-auto p-4 sm:max-w-xl sm:p-6 md:max-w-2xl lg:max-w-4xl">
                 <DialogHeader>
-                    <DialogTitle className="flex items-center gap-2">
-                        <FileText className="h-5 w-5" />
+                    <DialogTitle className="flex items-center gap-2 text-base sm:text-lg">
+                        <FileText className="h-4 w-4 sm:h-5 sm:w-5" />
                         Créer un contrat officiel
                     </DialogTitle>
-                    <DialogDescription>
+                    <DialogDescription className="text-sm">
                         Sélectionnez le type de contrat que vous souhaitez
                         créer. Tous nos contrats sont conformes aux
                         réglementations des ordres professionnels.
@@ -207,7 +229,7 @@ export function ContractPreviewModal({
                 </DialogHeader>
 
                 <div className="space-y-4">
-                    <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+                    <div className="grid grid-cols-1 gap-3 sm:gap-4 md:grid-cols-2 lg:grid-cols-3">
                         {templates.map((template) => {
                             const Icon = template.icon
                             const isSelected =
@@ -225,21 +247,21 @@ export function ContractPreviewModal({
                                         setSelectedTemplate(template)
                                     }
                                 >
-                                    <CardHeader className="pb-3">
+                                    <CardHeader className="p-3 pb-2 sm:p-4 sm:pb-3">
                                         <div className="flex items-start justify-between">
-                                            <Icon className="h-8 w-8 text-primary" />
+                                            <Icon className="h-6 w-6 text-primary sm:h-8 sm:w-8" />
                                             {isSelected && (
-                                                <Badge variant="default">
+                                                <Badge variant="default" className="text-xs">
                                                     Sélectionné
                                                 </Badge>
                                             )}
                                         </div>
-                                        <CardTitle className="text-lg">
+                                        <CardTitle className="text-base sm:text-lg">
                                             {template.name}
                                         </CardTitle>
                                     </CardHeader>
-                                    <CardContent>
-                                        <p className="text-muted-foreground text-sm">
+                                    <CardContent className="p-3 pt-0 sm:p-4 sm:pt-0">
+                                        <p className="text-muted-foreground text-xs sm:text-sm">
                                             {template.description}
                                         </p>
                                     </CardContent>
@@ -250,18 +272,18 @@ export function ContractPreviewModal({
 
                     {selectedTemplate && (
                         <Card className="border-primary/20 bg-primary/5">
-                            <CardContent className="pt-4">
-                                <div className="flex items-center justify-between">
-                                    <div>
-                                        <h4 className="font-medium">
+                            <CardContent className="p-3 sm:p-4">
+                                <div className="flex items-center justify-between gap-2">
+                                    <div className="min-w-0 flex-1">
+                                        <h4 className="font-medium text-sm sm:text-base">
                                             Contrat sélectionné
                                         </h4>
-                                        <p className="text-muted-foreground text-sm">
+                                        <p className="truncate text-muted-foreground text-xs sm:text-sm">
                                             {selectedTemplate.name}
                                         </p>
                                     </div>
-                                    <div className="flex items-center gap-2 font-semibold text-lg">
-                                        <Euro className="h-5 w-5" />
+                                    <div className="flex shrink-0 items-center gap-1 font-semibold text-base sm:gap-2 sm:text-lg">
+                                        <Euro className="h-4 w-4 sm:h-5 sm:w-5" />
                                         5,00
                                     </div>
                                 </div>
@@ -269,18 +291,13 @@ export function ContractPreviewModal({
                         </Card>
                     )}
 
-                    <div className="rounded-lg bg-muted/50 p-4">
-                        <h4 className="mb-2 font-medium">
+                    <div className="rounded-lg bg-muted/50 p-3 sm:p-4">
+                        <h4 className="mb-2 font-medium text-sm sm:text-base">
                             Ce qui est inclus :
                         </h4>
-                        <ul className="space-y-1 text-muted-foreground text-sm">
-                            <li>
-                                • Modèle conforme aux réglementations
-                                professionnelles
-                            </li>
-                            <li>
-                                • Pré-remplissage automatique avec vos données
-                            </li>
+                        <ul className="space-y-1 text-muted-foreground text-xs sm:text-sm">
+                            <li>• Modèle conforme aux réglementations professionnelles</li>
+                            <li>• Pré-remplissage automatique avec vos données</li>
                             <li>• Signature électronique des deux parties</li>
                             <li>• Stockage sécurisé et téléchargement PDF</li>
                             <li>• Suivi du statut en temps réel</li>
@@ -288,8 +305,8 @@ export function ContractPreviewModal({
                     </div>
                 </div>
 
-                <DialogFooter className="gap-2">
-                    <Button variant="outline" onClick={onClose}>
+                <DialogFooter className="flex-col gap-2 sm:flex-row">
+                    <Button variant="outline" onClick={onClose} className="w-full sm:w-auto">
                         Annuler
                     </Button>
 
@@ -299,16 +316,16 @@ export function ContractPreviewModal({
                             variant="secondary"
                             onClick={handleDevBypass}
                             disabled={!selectedTemplate || isLoading}
-                            className="gap-2 border-2 border-orange-300 border-dashed bg-orange-50 text-orange-700 hover:bg-orange-100"
+                            className="w-full gap-2 border-2 border-orange-300 border-dashed bg-orange-50 text-orange-700 hover:bg-orange-100 sm:w-auto"
                         >
-                            {isLoading ? "Création..." : "DEV: Bypass Payment"}
+                            {isLoading ? "Création..." : "DEV: Bypass"}
                         </Button>
                     )}
 
                     <Button
                         onClick={handleContinue}
                         disabled={!selectedTemplate || isLoading}
-                        className="gap-2"
+                        className="w-full gap-2 sm:w-auto"
                     >
                         {isLoading ? (
                             "Traitement..."
