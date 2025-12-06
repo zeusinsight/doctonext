@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { site } from "@/config/site";
 import { Button } from "@/components/ui/button";
 import {
@@ -105,6 +106,62 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* Interactive Map Section */}
+      <section className="py-16 sm:py-24 bg-white">
+        <div className="container mx-auto px-4">
+          <div className="mx-auto max-w-6xl">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+              {/* Map Image */}
+              <div className="relative aspect-[4/3] overflow-hidden rounded-2xl shadow-xl">
+                <Image
+                  src="/map.png"
+                  alt="Carte interactive des zones sous-dotées"
+                  fill
+                  className="object-cover"
+                  quality={100}
+                  priority
+                />
+              </div>
+              {/* Content */}
+              <div>
+                <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl mb-6">
+                  Carte interactive des <span style={{ color: "#206dc5" }} className="whitespace-nowrap">zones d'activité médicale</span>
+                </h2>
+                <p className="text-lg text-gray-600 leading-relaxed mb-6">
+                  Visualisez en un coup d'œil les zones sous-dotées en professionnels de santé
+                  et identifiez facilement où vous installer pour répondre aux besoins du territoire.
+                </p>
+                <ul className="space-y-4 text-gray-600">
+                  <li className="flex items-start gap-3">
+                    <div className="h-6 w-6 rounded-full bg-green-500 flex-shrink-0 mt-0.5"></div>
+                    <span>Zones sous-dotées — installation facilitée</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <div className="h-6 w-6 rounded-full bg-orange-400 flex-shrink-0 mt-0.5"></div>
+                    <span>Zones intermédiaires</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <div className="h-6 w-6 rounded-full bg-red-500 flex-shrink-0 mt-0.5"></div>
+                    <span>Zones sur-dotées — installation plus difficile</span>
+                  </li>
+                </ul>
+                <div className="mt-8">
+                  <Link href="/annonces">
+                    <button
+                      className="inline-flex items-center justify-center rounded-md px-6 py-3 text-base font-semibold text-white transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5"
+                      style={{ backgroundColor: "#206dc5" }}
+                    >
+                      Explorer la carte
+                    </button>
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <SpecialtiesSection />
       <div className="bg-gradient-to-b from-blue-100/80 via-blue-50/40 to-blue-100/80">
         <section className="py-16 sm:py-24">
