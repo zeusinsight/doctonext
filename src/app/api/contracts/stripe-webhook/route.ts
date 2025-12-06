@@ -1,8 +1,10 @@
 import { type NextRequest, NextResponse } from "next/server"
 import Stripe from "stripe"
 import { db } from "@/database/db"
-import { contracts } from "@/database/schema"
+import { contracts, listings } from "@/database/schema"
 import { eq } from "drizzle-orm"
+import { revalidatePath } from "next/cache"
+import { checkNewListingAgainstSavedSearches } from "@/lib/services/alert-service"
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!)
 
@@ -65,6 +67,15 @@ export async function POST(req: NextRequest) {
 async function handleCheckoutSessionCompleted(
     session: Stripe.Checkout.Session
 ) {
+    const paymentType = session.metadata?.type
+
+    // Handle boost payment
+    if (paymentType === "boost") {
+        await handleBoostPaymentCompleted(session)
+        return
+    }
+
+    // Handle contract payment (existing logic)
     const contractId = session.metadata?.contractId
 
     if (!contractId) {
@@ -90,6 +101,47 @@ async function handleCheckoutSessionCompleted(
         // await sendContractReadyEmail(contractId)
     } catch (error) {
         console.error("Error updating contract after payment:", error)
+    }
+}
+
+async function handleBoostPaymentCompleted(session: Stripe.Checkout.Session) {
+    const listingId = session.metadata?.listingId
+
+    if (!listingId) {
+        console.error("No listing ID in boost payment session metadata")
+        return
+    }
+
+    try {
+        // Update listing: activate it with boost
+        await db
+            .update(listings)
+            .set({
+                status: "active",
+                isBoostPlus: true,
+                publishedAt: new Date(),
+                updatedAt: new Date()
+            })
+            .where(eq(listings.id, listingId))
+
+        console.log("Boost payment completed for listing:", listingId)
+
+        // Revalidate paths
+        revalidatePath("/dashboard/annonces")
+        revalidatePath("/annonces")
+
+        // Trigger alert checks asynchronously for the newly published listing
+        checkNewListingAgainstSavedSearches(listingId)
+            .then((alertResult) => {
+                if (alertResult.success && alertResult.stats) {
+                    console.log(`Alert check completed: ${alertResult.message}`)
+                }
+            })
+            .catch((error) => {
+                console.error("Error checking alerts for boosted listing:", error)
+            })
+    } catch (error) {
+        console.error("Error updating listing after boost payment:", error)
     }
 }
 

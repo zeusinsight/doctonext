@@ -4,6 +4,7 @@ import {
     alertNotifications,
     listings,
     listingLocations,
+    listingMedia,
     users
 } from "@/database/schema"
 import { eq, and } from "drizzle-orm"
@@ -22,6 +23,7 @@ interface ListingWithLocation {
     listingType: string
     specialty?: string
     createdAt: Date
+    imageUrl?: string
     location: {
         city: string
         region: string
@@ -32,7 +34,7 @@ export async function checkNewListingAgainstSavedSearches(
     newListingId: string
 ) {
     try {
-        // Get the new listing with location
+        // Get the new listing with location and first image
         const [newListing] = await db
             .select({
                 id: listings.id,
@@ -42,12 +44,20 @@ export async function checkNewListingAgainstSavedSearches(
                 createdAt: listings.createdAt,
                 isBoostPlus: listings.isBoostPlus,
                 city: listingLocations.city,
-                region: listingLocations.region
+                region: listingLocations.region,
+                imageUrl: listingMedia.fileUrl
             })
             .from(listings)
             .leftJoin(
                 listingLocations,
                 eq(listings.id, listingLocations.listingId)
+            )
+            .leftJoin(
+                listingMedia,
+                and(
+                    eq(listings.id, listingMedia.listingId),
+                    eq(listingMedia.displayOrder, 0)
+                )
             )
             .where(eq(listings.id, newListingId))
             .limit(1)
@@ -158,6 +168,7 @@ export async function checkNewListingAgainstSavedSearches(
                 listingType: newListing.listingType,
                 specialty: newListing.specialty || undefined,
                 createdAt: newListing.createdAt,
+                imageUrl: newListing.imageUrl || undefined,
                 location: {
                     city: newListing.city || "Non spécifié",
                     region: newListing.region || "Non spécifié"

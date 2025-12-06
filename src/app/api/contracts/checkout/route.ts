@@ -65,7 +65,7 @@ export async function POST(req: NextRequest) {
                             name: "Création de contrat professionnel",
                             description: `Contrat de ${contractType} - Care Evo`
                         },
-                        unit_amount: 500 // €5.00 in cents
+                        unit_amount: 990 // €9.90 in cents
                     },
                     quantity: 1
                 }

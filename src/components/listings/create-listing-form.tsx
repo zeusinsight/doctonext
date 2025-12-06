@@ -80,7 +80,6 @@ export function CreateListingForm() {
                           department: formData.location.department,
                           latitude: formData.location.latitude,
                           longitude: formData.location.longitude
-                          // medicalDensityZone and densityScore removed
                       }
                     : undefined,
                 transferDetails:
@@ -98,6 +97,33 @@ export function CreateListingForm() {
                 media: formData.media?.files || []
             }
 
+            // If boost is selected, redirect to Stripe checkout
+            if (formData.review?.isBoostPlus) {
+                const response = await fetch("/api/listings/boost-checkout", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(submissionData)
+                })
+
+                const result = await response.json()
+
+                if (result.checkoutUrl) {
+                    // Redirect to Stripe checkout
+                    window.location.href = result.checkoutUrl
+                    return
+                } else {
+                    toast.error(
+                        result.error ||
+                            "Erreur lors de la création du paiement"
+                    )
+                    setIsSubmitting(false)
+                    return
+                }
+            }
+
+            // Regular submit (without boost)
             const response = await fetch("/api/listings", {
                 method: "POST",
                 headers: {
@@ -263,7 +289,7 @@ export function CreateListingForm() {
             </div>
 
             {/* Step Content */}
-            <div className="min-h-[400px] ">
+            <div className="mt-6">
                 <div className="w-full min-w-4xl max-w-5xl">{renderStep()}</div>
             </div>
         </div>

@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Navbar } from "@/components/layout/navbar";
 import { FooterSection } from "@/components/layout/sections/footer";
 import { Button } from "@/components/ui/button";
+import { SmartJoinButton } from "@/components/ui/smart-join-button";
 import {
   ShieldCheck,
   Users,
@@ -46,9 +47,9 @@ export default function AboutPage() {
                 size="lg"
                 className="text-gray-900 hover:bg-gray-50 group h-12 text-base"
               >
-                <Link href="/register" className="flex items-center gap-2">
+                <SmartJoinButton className="flex items-center gap-2">
                   Nous rejoindre <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-                </Link>
+                </SmartJoinButton>
               </Button>
             </div>
           </div>

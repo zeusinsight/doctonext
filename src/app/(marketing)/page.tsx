@@ -106,7 +106,7 @@ export default function Home() {
         </div>
       </section>
       <SpecialtiesSection />
-      <div className="bg-gradient-to-b from-blue-50/50 via-white to-blue-50/50">
+      <div className="bg-gradient-to-b from-blue-100/80 via-blue-50/40 to-blue-100/80">
         <section className="py-16 sm:py-24">
           <div className="container mx-auto px-4">
             <SectionTitle
@@ -201,7 +201,7 @@ export default function Home() {
               subtitle="Comment ça marche?"
               title="Simple, rapide et efficace"
             />
-            <div className="mx-auto grid max-w-5xl grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-4">
+            <div className="mx-auto grid max-w-6xl grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
               {[
                 {
                   title: "Créez votre compte",
@@ -223,7 +223,14 @@ export default function Home() {
                   description:
                     "Signez électroniquement et finalisez votre accord en toute légalité.",
                 },
-              ].map((step, i) => (
+                {
+                  title: "Transmettez à l'Ordre",
+                  description:
+                    "Adressez une copie de votre contrat signé au conseil de l'Ordre.",
+                },
+              ].map((step, i) => {
+                const steps = 5;
+                return (
                 <div key={i} className="relative">
                   <Card className="h-full border border-gray-200 transition-shadow hover:shadow-xl">
                     <CardContent className="flex flex-col items-center p-6 text-center">
@@ -242,11 +249,12 @@ export default function Home() {
                     </CardContent>
                   </Card>
                   {/* Ligne entre les étapes */}
-                  {i < 3 && (
-                    <div className="absolute top-1/2 -right-8 hidden h-0.5 w-8 -translate-y-1/2 bg-gray-300 md:block" />
+                  {i < steps - 1 && (
+                    <div className="absolute top-1/2 -right-4 hidden h-0.5 w-4 -translate-y-1/2 bg-gray-300 lg:block" />
                   )}
                 </div>
-              ))}
+              );
+              })}
             </div>
           </div>
         </section>

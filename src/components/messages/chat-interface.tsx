@@ -213,8 +213,8 @@ export function ChatInterface({
                 ).toLocaleDateString("fr-FR")}
               </span>
             </div>
-            {/* Contract Generation Button */}
-            {selectedConversation && (
+            {/* Contract Generation Button - Only for replacement listings */}
+            {selectedConversation && listingDetails.listing.listingType === "replacement" && (
               <ContractButton
                 conversationId={selectedConversationId}
                 listingId={listingDetails.listing.id}

@@ -10,6 +10,7 @@ interface ListingAlertEmailProps {
     title: string;
     listingType: string;
     specialty?: string;
+    imageUrl?: string;
     location: {
       city: string;
       region: string;
@@ -26,7 +27,9 @@ export function ListingAlertEmail({
   listings,
   unsubscribeUrl,
 }: ListingAlertEmailProps) {
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://careevo.com";
+  // For emails, we need a public URL (not localhost)
+  const appUrl = process.env.NEXT_PUBLIC_APP_URL || "";
+  const siteUrl = appUrl.includes("localhost") ? "https://careevo.fr" : (appUrl || "https://careevo.fr");
 
   const formatListingType = (type: string) => {
     switch (type) {
@@ -86,67 +89,98 @@ export function ListingAlertEmail({
             key: listing.id,
             style: {
               backgroundColor: "#f9fafb",
-              padding: "16px",
               borderRadius: "8px",
               marginBottom: "16px",
               border: "1px solid #e5e7eb",
+              overflow: "hidden",
             },
           },
           [
-            React.createElement(
-              "h3",
-              {
-                style: {
-                  margin: "0 0 8px 0",
-                  fontSize: "18px",
-                  fontWeight: "600",
-                  color: "#111827",
-                },
-              },
-              listing.title,
-            ),
+            // Listing image (using table cell with background for better email compatibility)
+            listing.imageUrl
+              ? React.createElement(
+                  "div",
+                  {
+                    key: `img-container-${listing.id}`,
+                    style: {
+                      width: "100%",
+                      height: "150px",
+                      background: `url(${listing.imageUrl}) center center / cover no-repeat`,
+                      backgroundColor: "#e5e7eb",
+                    },
+                  }
+                )
+              : null,
+            // Content container
             React.createElement(
               "div",
               {
+                key: `content-${listing.id}`,
                 style: {
-                  fontSize: "14px",
-                  color: "#6b7280",
-                  marginBottom: "12px",
+                  padding: "16px",
                 },
               },
               [
-                `📍 ${listing.location.city}, ${listing.location.region}`,
-                ` • 📂 ${formatListingType(listing.listingType)}`,
-                listing.specialty ? ` • 👨‍⚕️ ${listing.specialty}` : "",
-              ].join(""),
-            ),
-            React.createElement(
-              "div",
-              {
-                style: {
-                  fontSize: "12px",
-                  color: "#9ca3af",
-                  marginBottom: "12px",
-                },
-              },
-              `Publiée le ${formatDate(listing.createdAt)}`,
-            ),
-            React.createElement(
-              "a",
-              {
-                href: `${siteUrl}/listings/${listing.id}`,
-                style: {
-                  display: "inline-block",
-                  backgroundColor: "#4a8dd9",
-                  color: "white",
-                  padding: "8px 16px",
-                  borderRadius: "6px",
-                  textDecoration: "none",
-                  fontSize: "14px",
-                  fontWeight: "500",
-                },
-              },
-              "Voir l'annonce →",
+                React.createElement(
+                  "h3",
+                  {
+                    key: `title-${listing.id}`,
+                    style: {
+                      margin: "0 0 8px 0",
+                      fontSize: "18px",
+                      fontWeight: "600",
+                      color: "#111827",
+                    },
+                  },
+                  listing.title,
+                ),
+                React.createElement(
+                  "div",
+                  {
+                    key: `meta-${listing.id}`,
+                    style: {
+                      fontSize: "14px",
+                      color: "#6b7280",
+                      marginBottom: "12px",
+                    },
+                  },
+                  [
+                    `📍 ${listing.location.city}, ${listing.location.region}`,
+                    ` • 📂 ${formatListingType(listing.listingType)}`,
+                    listing.specialty ? ` • 👨‍⚕️ ${listing.specialty}` : "",
+                  ].join(""),
+                ),
+                React.createElement(
+                  "div",
+                  {
+                    key: `date-${listing.id}`,
+                    style: {
+                      fontSize: "12px",
+                      color: "#9ca3af",
+                      marginBottom: "12px",
+                    },
+                  },
+                  `Publiée le ${formatDate(listing.createdAt)}`,
+                ),
+                React.createElement(
+                  "a",
+                  {
+                    key: `link-${listing.id}`,
+                    href: `${siteUrl}/annonces/${listing.id}`,
+                    style: {
+                      display: "inline-block",
+                      backgroundColor: "#4a8dd9",
+                      color: "white",
+                      padding: "8px 16px",
+                      borderRadius: "6px",
+                      textDecoration: "none",
+                      fontSize: "14px",
+                      fontWeight: "500",
+                    },
+                  },
+                  "Voir l'annonce →",
+                ),
+              ],
             ),
           ],
         ),
@@ -249,5 +283,8 @@ export function ListingAlertEmail({
     siteName: "Care Evo",
     baseUrl: siteUrl,
     imageUrl: `${siteUrl}/logo.png`,
+    classNames: {
+      image: "!rounded-none !w-auto !h-[40px]",
+    },
   });
 }

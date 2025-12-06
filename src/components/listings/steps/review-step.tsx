@@ -481,7 +481,7 @@ export function ReviewStep({
                                 htmlFor="isBoostPlus"
                                 className="font-medium"
                             >
-                                Option Boost+ (+10€ TTC)
+                                Option Boost+ (+5€ TTC)
                             </Label>
                             <p className="text-muted-foreground text-sm">
                                 Mise en avant continue, badge distinctif,
@@ -494,7 +494,7 @@ export function ReviewStep({
             </Card>
 
             {/* Action Buttons */}
-            <div className="flex justify-between pt-4">
+            <div className="flex justify-between pt-6 pb-4">
                 <Button type="button" variant="outline" onClick={onPrevious}>
                     <ArrowLeft className="mr-2 h-4 w-4" />
                     Précédent
@@ -502,10 +502,16 @@ export function ReviewStep({
                 <Button
                     onClick={onSubmit}
                     disabled={isSubmitting}
-                    className="bg-care-evo-primary hover:bg-care-evo-primary-dark"
                 >
                     {isSubmitting ? (
-                        "Publication..."
+                        reviewData.isBoostPlus
+                            ? "Redirection vers le paiement..."
+                            : "Publication..."
+                    ) : reviewData.isBoostPlus ? (
+                        <>
+                            <Euro className="mr-2 h-4 w-4" />
+                            Payer et publier (5€)
+                        </>
                     ) : (
                         <>
                             <CheckCircle className="mr-2 h-4 w-4" />

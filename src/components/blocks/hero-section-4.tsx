@@ -27,8 +27,8 @@ export function HeroSection() {
                     />
                   </div>
                   <h1 className="text-5xl font-bold md:text-6xl lg:text-7xl tracking-tight text-gray-900 mb-6">
-                    Réinventez votre
-                    <span className="block mt-2">carrière médicale</span>
+                    <span style={{ color: "#206dc5" }}>Réinventez</span>
+                    <span className="block mt-2">votre carrière médicale</span>
                   </h1>
                   <p className="mx-auto mt-6 max-w-2xl text-lg md:text-xl text-gray-600 font-medium leading-relaxed">
                     La plateforme qui connecte les professionnels de

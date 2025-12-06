@@ -16,7 +16,9 @@ export function ContractFirstSignatureEmail({
   listingTitle,
   location,
 }: ContractFirstSignatureEmailProps) {
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://careevo.com";
+  // For emails, we need a public URL (not localhost)
+  const appUrl = process.env.NEXT_PUBLIC_APP_URL || "";
+  const siteUrl = appUrl.includes("localhost") ? "https://careevo.fr" : (appUrl || "https://careevo.fr");
 
   const getContractTypeLabel = (type: string) => {
     switch (type) {
@@ -234,5 +236,8 @@ export function ContractFirstSignatureEmail({
     siteName: "Care Evo",
     baseUrl: siteUrl,
     imageUrl: `${siteUrl}/logo.png`,
+    classNames: {
+      image: "!rounded-none !w-auto !h-[40px]",
+    },
   });
 }

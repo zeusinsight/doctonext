@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import { useSearchParams, useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -27,12 +28,37 @@ import {
 import { toast } from "sonner"
 
 export default function ListingsPage() {
+    const searchParams = useSearchParams()
+    const router = useRouter()
     const [listings, setListings] = useState<UserListing[]>([])
     const [loading, setLoading] = useState(true)
     const [statusFilter, setStatusFilter] = useState<
         "all" | "active" | "inactive" | "sold" | "expired"
     >("all")
     const [query, setQuery] = useState("")
+
+    // Handle boost payment redirects from Stripe
+    useEffect(() => {
+        const boostSuccess = searchParams.get("boost_success")
+        const sessionId = searchParams.get("session_id")
+        const boostCancelled = searchParams.get("boost_cancelled")
+
+        if (boostSuccess && sessionId) {
+            toast.success(
+                "Paiement effectué avec succès ! Votre annonce est maintenant mise en avant."
+            )
+            // Clean up URL parameters
+            router.replace("/dashboard/annonces", { scroll: false })
+        }
+
+        if (boostCancelled) {
+            toast.error(
+                "Paiement annulé. Votre annonce n'a pas été publiée."
+            )
+            // Clean up URL parameters
+            router.replace("/dashboard/annonces", { scroll: false })
+        }
+    }, [searchParams, router])
 
     useEffect(() => {
         fetchUserListings()
