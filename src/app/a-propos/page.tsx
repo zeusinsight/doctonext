@@ -154,32 +154,32 @@ export default function AboutPage() {
       </section>
 
       {/* Services Highlights */}
-      <section className="py-20 bg-gray-700 text-white">
+      <section className="py-20 text-white" style={{ backgroundColor: "#206dc5" }}>
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-12">
              <div>
                <h2 className="text-3xl font-bold sm:text-4xl mb-4">Trois piliers pour votre réussite</h2>
-               <p className="text-gray-300 text-lg">
+               <p className="text-blue-100 text-lg">
                  Que vous soyez en début de carrière ou à l'heure de la transmission,
                  nous avons la solution adaptée.
                </p>
              </div>
              <div className="flex justify-start lg:justify-end">
-               <Button asChild variant="outline" className="bg-transparent border-gray-500 text-white hover:bg-gray-600 hover:text-white">
+               <Button asChild variant="outline" className="bg-transparent border-white/50 text-white hover:bg-white/10 hover:text-white">
                  <Link href="/annonces">Voir toutes les catégories</Link>
                </Button>
              </div>
            </div>
 
-           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 border-t border-gray-600 pt-12">
+           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 border-t border-white/20 pt-12">
               <div className="group">
                 <div className="flex items-center gap-4 mb-4">
-                  <div className="p-3 rounded-lg bg-gray-600 group-hover:bg-care-evo-primary transition-colors duration-300">
+                  <div className="p-3 rounded-lg bg-white/20 group-hover:bg-white/30 transition-colors duration-300">
                     <Building2 className="h-6 w-6 text-white" />
                   </div>
                   <h3 className="text-xl font-medium">Cession</h3>
                 </div>
-                <p className="text-gray-300 leading-relaxed">
+                <p className="text-blue-100 leading-relaxed">
                   Transmission de cabinet, vente de patientèle ou de parts de SCM/SEL.
                   Valorisez votre patrimoine professionnel.
                 </p>
@@ -187,12 +187,12 @@ export default function AboutPage() {
 
               <div className="group">
                 <div className="flex items-center gap-4 mb-4">
-                  <div className="p-3 rounded-lg bg-gray-600 group-hover:bg-care-evo-accent transition-colors duration-300">
+                  <div className="p-3 rounded-lg bg-white/20 group-hover:bg-white/30 transition-colors duration-300">
                     <UserRound className="h-6 w-6 text-white" />
                   </div>
                   <h3 className="text-xl font-medium">Remplacement</h3>
                 </div>
-                <p className="text-gray-300 leading-relaxed">
+                <p className="text-blue-100 leading-relaxed">
                   Gérez vos absences ou trouvez des opportunités flexibles.
                   Un matching intelligent par spécialité et géographie.
                 </p>
@@ -200,12 +200,12 @@ export default function AboutPage() {
 
               <div className="group">
                 <div className="flex items-center gap-4 mb-4">
-                  <div className="p-3 rounded-lg bg-gray-600 group-hover:bg-blue-500 transition-colors duration-300">
+                  <div className="p-3 rounded-lg bg-white/20 group-hover:bg-white/30 transition-colors duration-300">
                     <Handshake className="h-6 w-6 text-white" />
                   </div>
                   <h3 className="text-xl font-medium">Collaboration</h3>
                 </div>
-                <p className="text-gray-300 leading-relaxed">
+                <p className="text-blue-100 leading-relaxed">
                   Rejoignez une équipe ou recrutez un associé.
                   Construisez l'avenir de la médecine de ville, ensemble.
                 </p>

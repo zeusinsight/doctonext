@@ -6,7 +6,8 @@ import {
     contracts,
     contractTemplates,
     listings,
-    users
+    users,
+    replacementDetails
 } from "@/database/schema"
 import { eq, and } from "drizzle-orm"
 import { nanoid } from "nanoid"
@@ -51,6 +52,8 @@ export interface ContractData {
     endDate?: string
     price?: number
     additionalTerms?: string
+    feeSharePercentage?: number
+    submitterEmbedUrls?: Record<string, string>
 }
 
 export async function getContractTemplates(
@@ -99,12 +102,26 @@ export async function createContract(params: {
         throw new Error("Required data not found")
     }
 
+    // Récupérer les détails de remplacement si c'est un contrat de remplacement
+    let replacementData = null
+    if (params.contractType === "replacement") {
+        const [details] = await db
+            .select()
+            .from(replacementDetails)
+            .where(eq(replacementDetails.listingId, params.listingId))
+        replacementData = details
+    }
+
     // Prepare contract data
     const contractData: ContractData = {
         listingId: params.listingId,
         listingTitle: listing.title,
-        location: "Location TBD" // Will be filled from listing location
-        // Additional fields will be populated from listing details
+        location: "Location TBD", // Will be filled from listing location
+        startDate: replacementData?.startDate || undefined,
+        endDate: replacementData?.endDate || undefined,
+        feeSharePercentage: replacementData?.feeSharePercentage
+            ? parseFloat(replacementData.feeSharePercentage)
+            : undefined
     }
 
     // Prepare parties data
@@ -169,6 +186,37 @@ export async function createDocusealSubmission(contractId: string) {
     )
     console.log("Submitters:", parties)
 
+    // Préparer les champs pré-remplis pour le contrat de remplacement
+    const prefillFieldsFirstParty: { name: string; default_value: string }[] = []
+    const prefillFieldsSecondParty: { name: string; default_value: string }[] = []
+
+    // Champs de l'annonce (pour First Party)
+    if (contractData.startDate) {
+        prefillFieldsFirstParty.push({ name: "DATE_DEBUT", default_value: contractData.startDate })
+    }
+    if (contractData.endDate) {
+        prefillFieldsFirstParty.push({ name: "DATE_FIN", default_value: contractData.endDate })
+    }
+    if (contractData.feeSharePercentage) {
+        prefillFieldsFirstParty.push({ name: "POURCENTAGE", default_value: contractData.feeSharePercentage.toString() })
+    }
+
+    // Nom pour chaque partie
+    if (parties.initiator.name) {
+        prefillFieldsFirstParty.push({ name: "NOM", default_value: parties.initiator.name })
+    }
+    if (parties.recipient.name) {
+        prefillFieldsSecondParty.push({ name: "NOM", default_value: parties.recipient.name })
+    }
+
+    // RPPS pour chaque partie
+    if (parties.initiator.rppsNumber) {
+        prefillFieldsFirstParty.push({ name: "RPPS", default_value: parties.initiator.rppsNumber })
+    }
+    if (parties.recipient.rppsNumber) {
+        prefillFieldsSecondParty.push({ name: "RPPS", default_value: parties.recipient.rppsNumber })
+    }
+
     const submission = await docuseal.createSubmission({
         template_id: parseInt(contract.docusealTemplateId),
         send_email: false, // We'll handle this manually
@@ -176,12 +224,14 @@ export async function createDocusealSubmission(contractId: string) {
             {
                 role: "First Party",
                 email: parties.initiator.email,
-                name: parties.initiator.name
+                name: parties.initiator.name,
+                fields: prefillFieldsFirstParty.length > 0 ? prefillFieldsFirstParty : undefined
             },
             {
                 role: "Second Party",
                 email: parties.recipient.email,
-                name: parties.recipient.name
+                name: parties.recipient.name,
+                fields: prefillFieldsSecondParty.length > 0 ? prefillFieldsSecondParty : undefined
             }
         ]
     })
