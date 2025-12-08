@@ -16,6 +16,7 @@ import {
     Search,
     Check
 } from "lucide-react"
+import { getDefaultListingImage } from "@/lib/utils/default-images"
 import Link from "next/link"
 import Image from "next/image"
 import type { UserListing } from "@/types/listing"
@@ -357,23 +358,22 @@ export default function ListingsPage() {
                             >
                                 <div className="relative">
                                     <div className="relative m-0 aspect-[16/10] w-full bg-muted">
-                                        {listing.firstImage ? (
-                                            <Image
-                                                src={listing.firstImage.fileUrl}
-                                                alt={
-                                                    listing.firstImage
-                                                        .fileName ||
-                                                    listing.title
-                                                }
-                                                fill
-                                                sizes="(max-width: 768px) 100vw, 33vw"
-                                                className="object-cover"
-                                            />
-                                        ) : (
-                                            <div className="flex h-full w-full items-center justify-center text-muted-foreground/50">
-                                                <Eye className="h-8 w-8" />
-                                            </div>
-                                        )}
+                                        <Image
+                                            src={
+                                                listing.firstImage?.fileUrl ||
+                                                getDefaultListingImage(
+                                                    listing.listingType as "transfer" | "replacement" | "collaboration",
+                                                    listing.specialty
+                                                )
+                                            }
+                                            alt={
+                                                listing.firstImage?.fileName ||
+                                                listing.title
+                                            }
+                                            fill
+                                            sizes="(max-width: 768px) 100vw, 33vw"
+                                            className="object-cover"
+                                        />
                                     </div>
                                     <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/60 via-black/0 to-transparent opacity-0 transition-opacity group-hover:opacity-60" />
                                     <div className="absolute top-2 left-2 flex gap-2">

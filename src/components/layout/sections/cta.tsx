@@ -31,9 +31,9 @@ export const CtaSection = () => {
           </p>
 
           <div className="flex flex-col justify-center gap-4 sm:flex-row">
-            <Link href="/annonces">
+            <Link href="/annonces" className="w-full sm:w-auto">
               <button
-                className="flex items-center gap-2 px-8 py-6 font-semibold text-lg transition-all duration-200 shadow-lg rounded-md"
+                className="flex w-full items-center justify-center gap-2 px-8 py-6 font-semibold text-lg transition-all duration-200 shadow-lg rounded-md sm:w-auto"
                 style={{ backgroundColor: "#ffffff", color: "#206dc5" }}
                 onMouseEnter={(e) =>
                   (e.currentTarget.style.backgroundColor = "#f3f4f6")
@@ -47,9 +47,9 @@ export const CtaSection = () => {
               </button>
             </Link>
 
-            <Link href="/dashboard/annonces/new">
+            <Link href="/dashboard/annonces/new" className="w-full sm:w-auto">
               <button
-                className="flex items-center gap-2 px-8 py-6 font-semibold text-lg text-white transition-all duration-200 shadow-lg rounded-md"
+                className="flex w-full items-center justify-center gap-2 px-8 py-6 font-semibold text-lg text-white transition-all duration-200 shadow-lg rounded-md sm:w-auto"
                 style={{ backgroundColor: "#14b8a6" }}
                 onMouseEnter={(e) =>
                   (e.currentTarget.style.backgroundColor = "#2dd4bf")
@@ -63,9 +63,9 @@ export const CtaSection = () => {
               </button>
             </Link>
 
-            <Link href="/register">
+            <Link href="/register" className="w-full sm:w-auto">
               <button
-                className="flex items-center gap-2 px-8 py-6 font-semibold text-lg text-white transition-all duration-200 shadow-lg rounded-md"
+                className="flex w-full items-center justify-center gap-2 px-8 py-6 font-semibold text-lg text-white transition-all duration-200 shadow-lg rounded-md sm:w-auto"
                 style={{ backgroundColor: "#1e3a8a" }}
                 onMouseEnter={(e) =>
                   (e.currentTarget.style.backgroundColor = "#1e40af")

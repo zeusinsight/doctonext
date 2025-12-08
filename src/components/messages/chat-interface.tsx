@@ -225,7 +225,7 @@ export function ChatInterface({
                 }
                 senderId={currentUser.id}
                 listingType={listingDetails.listing.listingType}
-                userProfession={(currentUser as any).profession}
+                userProfession={listingDetails.listing.specialty}
               />
             )}
             <Button asChild size="sm" className="w-full">

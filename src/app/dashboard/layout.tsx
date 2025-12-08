@@ -34,7 +34,7 @@ export default function ProtectedPage({
                     alt="Care Evo"
                     width={130}
                     height={20}
-                    className=" w-auto"
+                    className="max-h-9 w-auto md:max-h-none"
                   />
                 </Link>
 

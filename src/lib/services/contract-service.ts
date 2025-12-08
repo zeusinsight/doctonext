@@ -187,8 +187,8 @@ export async function createDocusealSubmission(contractId: string) {
     console.log("Submitters:", parties)
 
     // Préparer les champs pré-remplis pour le contrat de remplacement
-    const prefillFieldsFirstParty: { name: string; default_value: string }[] = []
-    const prefillFieldsSecondParty: { name: string; default_value: string }[] = []
+    let prefillFieldsFirstParty: { name: string; default_value: string }[] = []
+    let prefillFieldsSecondParty: { name: string; default_value: string }[] = []
 
     // Champs de l'annonce (pour First Party)
     if (contractData.startDate) {
@@ -201,14 +201,6 @@ export async function createDocusealSubmission(contractId: string) {
         prefillFieldsFirstParty.push({ name: "POURCENTAGE", default_value: contractData.feeSharePercentage.toString() })
     }
 
-    // Nom pour chaque partie
-    if (parties.initiator.name) {
-        prefillFieldsFirstParty.push({ name: "NOM", default_value: parties.initiator.name })
-    }
-    if (parties.recipient.name) {
-        prefillFieldsSecondParty.push({ name: "NOM", default_value: parties.recipient.name })
-    }
-
     // RPPS pour chaque partie
     if (parties.initiator.rppsNumber) {
         prefillFieldsFirstParty.push({ name: "RPPS", default_value: parties.initiator.rppsNumber })
@@ -217,24 +209,56 @@ export async function createDocusealSubmission(contractId: string) {
         prefillFieldsSecondParty.push({ name: "RPPS", default_value: parties.recipient.rppsNumber })
     }
 
-    const submission = await docuseal.createSubmission({
-        template_id: parseInt(contract.docusealTemplateId),
-        send_email: false, // We'll handle this manually
-        submitters: [
-            {
-                role: "First Party",
-                email: parties.initiator.email,
-                name: parties.initiator.name,
-                fields: prefillFieldsFirstParty.length > 0 ? prefillFieldsFirstParty : undefined
-            },
-            {
-                role: "Second Party",
-                email: parties.recipient.email,
-                name: parties.recipient.name,
-                fields: prefillFieldsSecondParty.length > 0 ? prefillFieldsSecondParty : undefined
+    // Fonction pour créer la soumission avec retry en cas de champ inconnu
+    const createSubmissionWithRetry = async (
+        fieldsFirst: typeof prefillFieldsFirstParty,
+        fieldsSecond: typeof prefillFieldsSecondParty
+    ): Promise<any> => {
+        try {
+            return await docuseal.createSubmission({
+                template_id: parseInt(contract.docusealTemplateId!),
+                send_email: false,
+                submitters: [
+                    {
+                        role: "First Party",
+                        email: parties.initiator.email,
+                        name: parties.initiator.name,
+                        fields: fieldsFirst.length > 0 ? fieldsFirst : undefined
+                    },
+                    {
+                        role: "Second Party",
+                        email: parties.recipient.email,
+                        name: parties.recipient.name,
+                        fields: fieldsSecond.length > 0 ? fieldsSecond : undefined
+                    }
+                ]
+            })
+        } catch (error: any) {
+            // Vérifier si c'est une erreur de champ inconnu
+            const errorMessage = error?.message || error?.toString() || ""
+            const unknownFieldMatch = errorMessage.match(/Unknown field: (\w+)/)
+
+            if (unknownFieldMatch) {
+                const unknownField = unknownFieldMatch[1]
+                console.log(`Champ inconnu "${unknownField}", retry sans ce champ...`)
+
+                // Retirer le champ inconnu des deux listes
+                const newFieldsFirst = fieldsFirst.filter(f => f.name !== unknownField)
+                const newFieldsSecond = fieldsSecond.filter(f => f.name !== unknownField)
+
+                // Retry récursivement
+                return createSubmissionWithRetry(newFieldsFirst, newFieldsSecond)
             }
-        ]
-    })
+
+            // Si ce n'est pas une erreur de champ, propager l'erreur
+            throw error
+        }
+    }
+
+    const submission = await createSubmissionWithRetry(
+        prefillFieldsFirstParty,
+        prefillFieldsSecondParty
+    )
 
     // Update contract with DocuSeal submission ID
     await db

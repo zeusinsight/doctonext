@@ -32,11 +32,11 @@ export default function AboutPage() {
               Nous simplifions les transitions, sécurisons les opportunités et connectons 
               les talents du monde médical.
             </p>
-            <div className="mt-10 flex items-center justify-center gap-x-6">
+            <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row sm:gap-x-6">
               <Button
                 asChild
                 size="lg"
-                className="hover:opacity-90 px-8 h-12 text-base"
+                className="w-full hover:opacity-90 px-8 h-12 text-base sm:w-auto"
                 style={{ backgroundColor: "#206dc5", color: "white" }}
               >
                 <Link href="/annonces">Découvrir les opportunités</Link>
@@ -45,9 +45,9 @@ export default function AboutPage() {
                 asChild
                 variant="ghost"
                 size="lg"
-                className="text-gray-900 hover:bg-gray-50 group h-12 text-base"
+                className="w-full text-gray-900 hover:bg-gray-50 group h-12 text-base sm:w-auto"
               >
-                <SmartJoinButton className="flex items-center gap-2">
+                <SmartJoinButton className="flex items-center justify-center gap-2">
                   Nous rejoindre <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
                 </SmartJoinButton>
               </Button>

@@ -8,7 +8,7 @@ import { NotificationDropdown } from "./notification-dropdown"
 import { cn } from "@/lib/utils"
 
 interface NotificationButtonProps {
-    layout?: "vertical" | "horizontal"
+    layout?: "vertical" | "horizontal" | "responsive"
     hideLabelOnSmall?: boolean
     className?: string
     buttonClassName?: string
@@ -71,16 +71,20 @@ export function NotificationButton({
     const orientationClasses =
         layout === "horizontal"
             ? "flex-row items-center gap-2"
-            : "flex-col items-center gap-1"
+            : layout === "responsive"
+              ? "flex-row items-center gap-3 md:flex-col md:gap-1"
+              : "flex-col items-center gap-1"
 
     return (
-        <div className={cn("relative", className)}>
+        <div className={cn("relative", layout === "responsive" && "w-full md:w-auto", className)}>
             <button
                 ref={buttonRef}
                 onClick={() => setIsOpen(!isOpen)}
                 className={cn(
                     "group relative flex cursor-pointer p-2 transition-colors",
                     orientationClasses,
+                    layout === "responsive" &&
+                        "w-full rounded-md px-3 py-2 text-base hover:bg-gray-100 md:w-auto md:hover:bg-transparent md:p-2",
                     buttonClassName
                 )}
                 aria-label="Notifications"
@@ -88,7 +92,10 @@ export function NotificationButton({
                 <div className="relative">
                     <Bell
                         className={cn(
-                            "h-6 w-6 transition-colors",
+                            "transition-colors",
+                            layout === "responsive"
+                                ? "h-5 w-5 md:h-6 md:w-6"
+                                : "h-6 w-6",
                             isOpen
                                 ? "text-blue-600"
                                 : "text-muted-foreground group-hover:text-foreground"
@@ -105,7 +112,8 @@ export function NotificationButton({
 
                 <span
                     className={cn(
-                        "text-sm transition-colors",
+                        "transition-colors",
+                        layout === "responsive" ? "text-base md:text-sm" : "text-sm",
                         hideLabelOnSmall && "hidden sm:inline",
                         isOpen
                             ? "font-medium text-blue-600"
@@ -115,10 +123,11 @@ export function NotificationButton({
                     Notifications
                 </span>
 
-                {/* Active indicator */}
+                {/* Active indicator - hidden on mobile for responsive layout */}
                 <div
                     className={cn(
                         "absolute bottom-0 left-1/2 h-0.5 bg-blue-600 transition-all duration-300 ease-out",
+                        layout === "responsive" && "hidden md:block",
                         isOpen
                             ? "-translate-x-1/2 w-full"
                             : "group-hover:-translate-x-1/2 w-0 group-hover:w-full"
