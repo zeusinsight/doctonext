@@ -121,12 +121,59 @@ export default async function ListingPage({ params }: ListingPageProps) {
 
     const price = getPrice()
 
+    const getDefaultImage = () => {
+        // First try specialty-based image
+        const specialtyMap: Record<string, string> = {
+            "Médecin généraliste": "/default-images/specialties/medecine-generale.jpg",
+            "Cardiologue": "/default-images/specialties/cardiologie.jpg",
+            "Dermatologue": "/default-images/specialties/dermatologie.jpg",
+            "Gynécologue": "/default-images/specialties/gynecologie.jpg",
+            "Neurologue": "/default-images/specialties/neurologie.jpg",
+            "Ophtalmologue": "/default-images/specialties/ophtalmologie.jpg",
+            "Orthopédiste": "/default-images/specialties/orthopedie.jpg",
+            "Pédiatre": "/default-images/specialties/pediatrie.jpg",
+            "Psychiatre": "/default-images/specialties/psychiatrie.jpg",
+            "Radiologue": "/default-images/specialties/radiologie.jpg",
+            "Chirurgien": "/default-images/specialties/chirurgie.jpg",
+            "Anesthésiste": "/default-images/specialties/anesthesie.jpg",
+            "Endocrinologue": "/default-images/specialties/endocrinologie.jpg",
+            "Gastro-entérologue": "/default-images/specialties/gastro-enterologie.jpg",
+            "Pneumologue": "/default-images/specialties/pneumologie.jpg",
+            "Rhumatologue": "/default-images/specialties/rhumatologie.jpg",
+            "Urologue": "/default-images/specialties/urologie.jpg",
+            "ORL": "/default-images/specialties/orl.jpg",
+            "Dentiste": "/default-images/specialties/dentistes.jpg",
+            "Pharmacien": "/default-images/specialties/pharmacies.jpg",
+            "Kinésithérapeute": "/default-images/specialties/kinesitherapie.jpg",
+            "Infirmier(ère)": "/default-images/specialties/infirmier.jpg",
+            "Sage-femme": "/default-images/specialties/sage-femme.jpg",
+            "Ostéopathe": "/default-images/specialties/osteopathe.jpg",
+            "Podologue": "/default-images/specialties/podologie.jpg",
+            "Orthophoniste": "/default-images/specialties/orthophoniste.jpg",
+            "Psychologue": "/default-images/specialties/psychologie.jpg",
+            "Diététicien(ne)": "/default-images/specialties/dietetique.jpg",
+        }
+
+        if (listing.specialty && specialtyMap[listing.specialty]) {
+            return specialtyMap[listing.specialty]
+        }
+
+        // Fallback to listing type image
+        const typeMap: Record<string, string> = {
+            transfer: "/default-images/transfer.jpeg",
+            replacement: "/default-images/replacement.jpeg",
+            collaboration: "/default-images/collaboration.jpeg",
+        }
+
+        return typeMap[listing.listingType] || "/default-images/transfer.jpeg"
+    }
+
     return (
         <div className="container mx-auto max-w-7xl px-4 py-8">
             <div className="grid gap-8 lg:grid-cols-3">
                 <div className="space-y-6 lg:col-span-2">
                     {/* Image Gallery */}
-                    {listing.media && listing.media.length > 0 && (
+                    {listing.media && listing.media.length > 0 ? (
                         <div className="space-y-4">
                             <div className="relative aspect-[16/9] w-full overflow-hidden rounded-lg bg-muted">
                                 <Image
@@ -173,6 +220,16 @@ export default async function ListingPage({ params }: ListingPageProps) {
                                         ))}
                                 </div>
                             )}
+                        </div>
+                    ) : (
+                        <div className="relative aspect-[16/9] w-full overflow-hidden rounded-lg bg-muted">
+                            <Image
+                                src={getDefaultImage()}
+                                alt={listing.title}
+                                fill
+                                className="object-cover"
+                                priority
+                            />
                         </div>
                     )}
 

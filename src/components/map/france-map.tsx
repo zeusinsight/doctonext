@@ -795,15 +795,12 @@ export function FranceMap({
             if (!isNaN(lat) && !isNaN(lng)) {
               return (
                 <Marker key={listing.id} position={[lat, lng]}>
-                  <Popup className="p-0 !m-0 [&_.leaflet-popup-content-wrapper]:p-0 [&_.leaflet-popup-content]:m-0 [&_.leaflet-popup-content]:w-auto" maxWidth={320}>
-                    <div className="w-[280px]">
-                      <SponsoredListingCard
-                        listing={listing}
-                        orientation="horizontal"
-                        compact={true}
-                        className="border-0 shadow-none"
-                      />
-                    </div>
+                  <Popup className="listing-popup" maxWidth={280} minWidth={250}>
+                    <SponsoredListingCard
+                      listing={listing}
+                      orientation="popup"
+                      className="border-0 shadow-none"
+                    />
                   </Popup>
                 </Marker>
               );
@@ -956,6 +953,39 @@ export function FranceMap({
 
         .department-shimmer {
           animation: department-shimmer 1.5s ease-in-out infinite !important;
+        }
+
+        /* Listing popup styles */
+        .listing-popup .leaflet-popup-content-wrapper {
+          padding: 0 !important;
+          border-radius: 12px !important;
+          overflow: hidden !important;
+          box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1) !important;
+        }
+        .listing-popup .leaflet-popup-content {
+          margin: 0 !important;
+          width: 100% !important;
+        }
+        .listing-popup .leaflet-popup-tip {
+          background: white !important;
+        }
+        .listing-popup .leaflet-popup-close-button {
+          top: 8px !important;
+          right: 8px !important;
+          width: 24px !important;
+          height: 24px !important;
+          font-size: 18px !important;
+          color: #6b7280 !important;
+          background: rgba(255, 255, 255, 0.9) !important;
+          border-radius: 50% !important;
+          display: flex !important;
+          align-items: center !important;
+          justify-content: center !important;
+          z-index: 10 !important;
+        }
+        .listing-popup .leaflet-popup-close-button:hover {
+          color: #111827 !important;
+          background: white !important;
         }
       `}</style>
     </div>

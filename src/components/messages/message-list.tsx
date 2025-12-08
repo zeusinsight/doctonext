@@ -1,12 +1,15 @@
 "use client"
 
 import { useQuery, useQueryClient } from "@tanstack/react-query"
-import { Avatar } from "@/components/ui/avatar"
 import { ScrollArea } from "@/components/ui/scroll-area"
-import { formatDistanceToNow } from "date-fns"
-import { fr } from "date-fns/locale"
-import { useEffect, useRef } from "react"
-import { Check, CheckCheck } from "lucide-react"
+import { Skeleton } from "@/components/ui/skeleton"
+import { useEffect, useRef, useState, useCallback, useMemo } from "react"
+import { cn } from "@/lib/utils"
+import { isSameDay, parseISO } from "date-fns"
+import { MessageBubble } from "./message-bubble"
+import { DateSeparator } from "./date-separator"
+import { EmptyState } from "./empty-state"
+import { ScrollToBottom } from "./scroll-to-bottom"
 
 interface Message {
     id: string
@@ -31,6 +34,13 @@ interface MessageListProps {
     currentUserId: string
 }
 
+interface MessageGroup {
+    type: "date" | "messages"
+    date?: Date
+    messages?: Message[]
+    senderId?: string
+}
+
 async function fetchMessages(
     conversationId: string
 ): Promise<{ success: boolean; data: Message[] }> {
@@ -53,12 +63,29 @@ async function markMessageAsRead(messageId: string) {
     return response.json()
 }
 
+function MessageSkeleton({ isOwn }: { isOwn: boolean }) {
+    return (
+        <div className={cn("flex gap-2 mb-3", isOwn ? "justify-end" : "justify-start")}>
+            {!isOwn && <Skeleton className="h-8 w-8 rounded-full flex-shrink-0" />}
+            <div className={cn("space-y-1", isOwn ? "items-end" : "items-start")}>
+                <Skeleton className={cn("h-16 rounded-2xl", isOwn ? "w-48" : "w-56")} />
+                <Skeleton className="h-3 w-12" />
+            </div>
+            {isOwn && <div className="w-8 flex-shrink-0" />}
+        </div>
+    )
+}
+
 export function MessageList({
     conversationId,
     currentUserId
 }: MessageListProps) {
     const scrollRef = useRef<HTMLDivElement>(null)
+    const scrollAreaRef = useRef<HTMLDivElement>(null)
     const queryClient = useQueryClient()
+    const [showScrollButton, setShowScrollButton] = useState(false)
+    const [isNearBottom, setIsNearBottom] = useState(true)
+    const prevMessageCountRef = useRef(0)
 
     const {
         data: response,
@@ -67,18 +94,112 @@ export function MessageList({
     } = useQuery({
         queryKey: ["messages", conversationId],
         queryFn: () => fetchMessages(conversationId),
-        refetchInterval: 3000, // Poll every 3 seconds for new messages
+        refetchInterval: 3000,
         enabled: !!conversationId
     })
 
-    const messages = response?.data || []
+    const messages = useMemo(() => response?.data || [], [response?.data])
 
-    // Auto-scroll to bottom when new messages arrive
-    useEffect(() => {
-        if (scrollRef.current) {
-            scrollRef.current.scrollTop = scrollRef.current.scrollHeight
+    // Group messages by date and sender for visual grouping
+    const groupedMessages = useMemo(() => {
+        if (messages.length === 0) return []
+
+        const reversed = [...messages].reverse() // oldest first
+        const groups: MessageGroup[] = []
+        let currentDate: Date | null = null
+        let currentSenderId: string | null = null
+        let currentMessages: Message[] = []
+
+        reversed.forEach((message, index) => {
+            const messageDate = parseISO(message.createdAt)
+
+            // Check if we need a date separator
+            if (!currentDate || !isSameDay(currentDate, messageDate)) {
+                // Push existing messages group if any
+                if (currentMessages.length > 0) {
+                    groups.push({
+                        type: "messages",
+                        messages: currentMessages,
+                        senderId: currentSenderId!
+                    })
+                    currentMessages = []
+                }
+
+                // Add date separator
+                groups.push({
+                    type: "date",
+                    date: messageDate
+                })
+                currentDate = messageDate
+                currentSenderId = null
+            }
+
+            // Check if sender changed (start new group)
+            if (currentSenderId !== message.senderId) {
+                if (currentMessages.length > 0) {
+                    groups.push({
+                        type: "messages",
+                        messages: currentMessages,
+                        senderId: currentSenderId!
+                    })
+                }
+                currentMessages = [message]
+                currentSenderId = message.senderId
+            } else {
+                currentMessages.push(message)
+            }
+        })
+
+        // Push final group
+        if (currentMessages.length > 0) {
+            groups.push({
+                type: "messages",
+                messages: currentMessages,
+                senderId: currentSenderId!
+            })
         }
+
+        return groups
     }, [messages])
+
+    // Scroll handling
+    const scrollToBottom = useCallback((behavior: ScrollBehavior = "smooth") => {
+        if (scrollRef.current) {
+            scrollRef.current.scrollTo({
+                top: scrollRef.current.scrollHeight,
+                behavior
+            })
+        }
+    }, [])
+
+    const handleScroll = useCallback(() => {
+        if (!scrollRef.current) return
+
+        const { scrollTop, scrollHeight, clientHeight } = scrollRef.current
+        const distanceFromBottom = scrollHeight - scrollTop - clientHeight
+        const threshold = 100
+
+        setIsNearBottom(distanceFromBottom < threshold)
+        setShowScrollButton(distanceFromBottom > threshold)
+    }, [])
+
+    // Auto-scroll on new messages (only if near bottom)
+    useEffect(() => {
+        const messageCount = messages.length
+        if (messageCount > prevMessageCountRef.current) {
+            if (isNearBottom) {
+                scrollToBottom()
+            }
+        }
+        prevMessageCountRef.current = messageCount
+    }, [messages, isNearBottom, scrollToBottom])
+
+    // Initial scroll to bottom
+    useEffect(() => {
+        if (!isLoading && messages.length > 0) {
+            setTimeout(() => scrollToBottom("instant"), 50)
+        }
+    }, [isLoading, conversationId])
 
     // Mark unread messages as read
     useEffect(() => {
@@ -86,153 +207,128 @@ export function MessageList({
             (msg) => !msg.isRead && msg.recipientId === currentUserId
         )
 
-        unreadMessages.forEach(async (msg) => {
-            try {
-                await markMessageAsRead(msg.id)
-                // Refresh the messages to update read status
-                queryClient.invalidateQueries({
-                    queryKey: ["messages", conversationId]
-                })
-                queryClient.invalidateQueries({ queryKey: ["conversations"] })
-                queryClient.invalidateQueries({
-                    queryKey: ["messages", "unread-count"]
-                })
-            } catch (error) {
-                console.error("Error marking message as read:", error)
+        if (unreadMessages.length === 0) return
+
+        const markAsRead = async () => {
+            for (const msg of unreadMessages) {
+                try {
+                    await markMessageAsRead(msg.id)
+                } catch (error) {
+                    console.error("Error marking message as read:", error)
+                }
             }
-        })
+            // Batch invalidate after all marks
+            queryClient.invalidateQueries({
+                queryKey: ["messages", conversationId]
+            })
+            queryClient.invalidateQueries({ queryKey: ["conversations"] })
+            queryClient.invalidateQueries({
+                queryKey: ["messages", "unread-count"]
+            })
+        }
+
+        markAsRead()
     }, [messages, currentUserId, conversationId, queryClient])
 
     if (error) {
         return (
-            <div className="flex flex-1 items-center justify-center text-red-600">
-                Erreur lors du chargement des messages
-            </div>
-        )
-    }
-
-    if (isLoading) {
-        return (
-            <div className="flex flex-1 items-center justify-center">
+            <div className="flex flex-1 items-center justify-center p-6">
                 <div className="text-center">
-                    <div className="mx-auto mb-2 h-6 w-6 animate-spin rounded-full border-blue-600 border-b-2" />
-                    <p className="text-gray-500 text-sm">
-                        Chargement des messages...
+                    <p className="text-red-600 font-medium">Erreur de chargement</p>
+                    <p className="text-sm text-gray-500 mt-1">
+                        Impossible de charger les messages
                     </p>
                 </div>
             </div>
         )
     }
 
-    return (
-        <ScrollArea className="flex-1 p-4" ref={scrollRef}>
-            <div className="space-y-4">
-                {messages.length === 0 ? (
-                    <div className="py-8 text-center text-gray-500">
-                        <p>Aucun message dans cette conversation</p>
-                        <p className="mt-1 text-sm">
-                            Envoyez votre premier message !
-                        </p>
-                    </div>
-                ) : (
-                    messages
-                        .slice()
-                        .reverse() // Reverse to show oldest first
-                        .map((message) => {
-                            const isOwnMessage =
-                                message.senderId === currentUserId
-
-                            return (
-                                <div
-                                    key={message.id}
-                                    className={`flex ${isOwnMessage ? "justify-end" : "justify-start"}`}
-                                >
-                                    <div
-                                        className={`flex max-w-[70%] gap-3 ${
-                                            isOwnMessage
-                                                ? "flex-row-reverse"
-                                                : "flex-row"
-                                        }`}
-                                    >
-                                        {!isOwnMessage && (
-                                            <Avatar className="h-8 w-8 flex-shrink-0">
-                                                {message.sender?.avatarUrl ||
-                                                message.sender?.avatar ||
-                                                (message.sender?.name &&
-                                                    `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(message.sender.name)}`) ? (
-                                                    <img
-                                                        src={
-                                                            message.sender
-                                                                .avatarUrl ||
-                                                            message.sender
-                                                                .avatar ||
-                                                            `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(message.sender?.name || "User")}`
-                                                        }
-                                                        alt={
-                                                            message.sender
-                                                                ?.name ||
-                                                            "Avatar"
-                                                        }
-                                                        className="h-full w-full rounded-full object-cover"
-                                                    />
-                                                ) : (
-                                                    <div className="flex h-full w-full items-center justify-center rounded-full bg-gray-300 font-medium text-gray-600 text-xs">
-                                                        {message.sender?.name
-                                                            ?.charAt(0)
-                                                            .toUpperCase() ||
-                                                            "?"}
-                                                    </div>
-                                                )}
-                                            </Avatar>
-                                        )}
-
-                                        <div
-                                            className={`rounded-lg p-3 ${
-                                                isOwnMessage
-                                                    ? "bg-blue-600 text-white"
-                                                    : "bg-gray-100 text-gray-900"
-                                            }`}
-                                        >
-                                            <p className="whitespace-pre-wrap text-sm">
-                                                {message.content}
-                                            </p>
-
-                                            <div
-                                                className={`mt-1 flex items-center gap-1 text-xs ${
-                                                    isOwnMessage
-                                                        ? "text-blue-100"
-                                                        : "text-gray-500"
-                                                }`}
-                                            >
-                                                <span>
-                                                    {formatDistanceToNow(
-                                                        new Date(
-                                                            message.createdAt
-                                                        ),
-                                                        {
-                                                            addSuffix: true,
-                                                            locale: fr
-                                                        }
-                                                    )}
-                                                </span>
-
-                                                {isOwnMessage && (
-                                                    <div className="ml-1">
-                                                        {message.isRead ? (
-                                                            <CheckCheck className="h-3 w-3" />
-                                                        ) : (
-                                                            <Check className="h-3 w-3" />
-                                                        )}
-                                                    </div>
-                                                )}
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            )
-                        })
-                )}
+    if (isLoading) {
+        return (
+            <div className="flex-1 p-4 space-y-4">
+                <MessageSkeleton isOwn={false} />
+                <MessageSkeleton isOwn={true} />
+                <MessageSkeleton isOwn={false} />
+                <MessageSkeleton isOwn={true} />
             </div>
-        </ScrollArea>
+        )
+    }
+
+    if (messages.length === 0) {
+        return <EmptyState variant="no-messages" />
+    }
+
+    return (
+        <div className="relative flex-1 overflow-hidden">
+            {/* Live region for screen readers */}
+            <div
+                role="log"
+                aria-live="polite"
+                aria-label="Messages de la conversation"
+                className="sr-only"
+            >
+                {messages.length} messages
+            </div>
+
+            <ScrollArea
+                className="h-full"
+                ref={scrollAreaRef}
+            >
+                <div
+                    ref={scrollRef}
+                    className="h-full overflow-y-auto px-4 py-6"
+                    onScroll={handleScroll}
+                >
+                    <div className="space-y-1 max-w-3xl mx-auto">
+                        {groupedMessages.map((group, groupIndex) => {
+                            if (group.type === "date" && group.date) {
+                                return (
+                                    <DateSeparator
+                                        key={`date-${group.date.toISOString()}`}
+                                        date={group.date}
+                                    />
+                                )
+                            }
+
+                            if (group.type === "messages" && group.messages) {
+                                const isOwnMessages = group.senderId === currentUserId
+
+                                return (
+                                    <div key={`group-${groupIndex}`} className="space-y-0.5">
+                                        {group.messages.map((message, messageIndex) => {
+                                            const isFirst = messageIndex === 0
+                                            const isLast = messageIndex === group.messages!.length - 1
+
+                                            return (
+                                                <MessageBubble
+                                                    key={message.id}
+                                                    content={message.content}
+                                                    timestamp={message.createdAt}
+                                                    isOwn={isOwnMessages}
+                                                    isRead={message.isRead}
+                                                    sender={message.sender}
+                                                    showAvatar={!isOwnMessages}
+                                                    isFirstInGroup={isFirst}
+                                                    isLastInGroup={isLast}
+                                                />
+                                            )
+                                        })}
+                                    </div>
+                                )
+                            }
+
+                            return null
+                        })}
+                    </div>
+                </div>
+            </ScrollArea>
+
+            {/* Scroll to bottom button */}
+            <ScrollToBottom
+                visible={showScrollButton}
+                onClick={() => scrollToBottom()}
+                unreadCount={0}
+            />
+        </div>
     )
 }

@@ -14,7 +14,12 @@ import {
     Calendar,
     Euro,
     FileText,
-    Handshake
+    Handshake,
+    Sparkles,
+    Zap,
+    Bell,
+    Mail,
+    Star
 } from "lucide-react"
 import type { CreateListingFormData, ReviewStepData } from "@/types/listing"
 
@@ -458,40 +463,89 @@ export function ReviewStep({
             <Separator />
 
             {/* Publishing Options */}
-            <Card>
-                <CardHeader className="pb-3">
-                    <CardTitle className="text-base">
-                        Options de publication
-                    </CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                    <div className="flex items-center space-x-2">
-                        <Checkbox
-                            id="isBoostPlus"
-                            checked={reviewData.isBoostPlus}
-                            onCheckedChange={(checked) =>
-                                handleOptionChange(
-                                    "isBoostPlus",
-                                    checked === true
-                                )
-                            }
-                        />
-                        <div>
-                            <Label
-                                htmlFor="isBoostPlus"
-                                className="font-medium"
-                            >
-                                Option Boost+ (+5€ TTC)
-                            </Label>
-                            <p className="text-muted-foreground text-sm">
-                                Mise en avant continue, badge distinctif,
-                                priorité d'affichage, notifications automatiques
-                                aux abonnés, alerte instantanée par email
-                            </p>
+            <div className="space-y-4">
+                <h3 className="font-semibold text-lg">Options de publication</h3>
+
+                {/* Boost+ Option Card */}
+                <div
+                    className={`relative cursor-pointer overflow-hidden rounded-xl border-2 transition-all duration-300 ${
+                        reviewData.isBoostPlus
+                            ? "border-amber-400 bg-gradient-to-br from-amber-50 to-orange-50 shadow-lg shadow-amber-100"
+                            : "border-gray-200 bg-white hover:border-amber-200 hover:shadow-md"
+                    }`}
+                    onClick={() => handleOptionChange("isBoostPlus", !reviewData.isBoostPlus)}
+                >
+                    {/* Decorative gradient background */}
+                    <div className="absolute inset-0 bg-gradient-to-r from-amber-400/10 via-orange-400/10 to-yellow-400/10" />
+
+                    <div className="relative p-5">
+                        <div className="flex items-start gap-4">
+                            <div className="mt-1">
+                                <Checkbox
+                                    id="isBoostPlus"
+                                    checked={reviewData.isBoostPlus}
+                                    onCheckedChange={(checked) =>
+                                        handleOptionChange("isBoostPlus", checked === true)
+                                    }
+                                    className="h-5 w-5 border-2 border-amber-400 data-[state=checked]:bg-amber-500 data-[state=checked]:text-white"
+                                />
+                            </div>
+
+                            <div className="flex-1 space-y-3">
+                                <div className="flex flex-wrap items-center gap-2">
+                                    <div className="flex items-center gap-2">
+                                        <Sparkles className="h-5 w-5 text-amber-500" />
+                                        <Label
+                                            htmlFor="isBoostPlus"
+                                            className="cursor-pointer font-bold text-lg text-gray-900"
+                                        >
+                                            Option Boost+
+                                        </Label>
+                                    </div>
+                                    <Badge className="bg-gradient-to-r from-amber-500 to-orange-500 text-white border-0 font-semibold">
+                                        +5€ TTC
+                                    </Badge>
+                                </div>
+
+                                {/* Features grid */}
+                                <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+                                    <div className="flex items-center gap-2 text-sm text-gray-700">
+                                        <div className="flex h-6 w-6 items-center justify-center rounded-full bg-amber-100">
+                                            <Zap className="h-3.5 w-3.5 text-amber-600" />
+                                        </div>
+                                        <span>Mise en avant continue</span>
+                                    </div>
+                                    <div className="flex items-center gap-2 text-sm text-gray-700">
+                                        <div className="flex h-6 w-6 items-center justify-center rounded-full bg-amber-100">
+                                            <Star className="h-3.5 w-3.5 text-amber-600" />
+                                        </div>
+                                        <span>Badge distinctif</span>
+                                    </div>
+                                    <div className="flex items-center gap-2 text-sm text-gray-700">
+                                        <div className="flex h-6 w-6 items-center justify-center rounded-full bg-amber-100">
+                                            <Bell className="h-3.5 w-3.5 text-amber-600" />
+                                        </div>
+                                        <span>Notifications aux abonnés</span>
+                                    </div>
+                                    <div className="flex items-center gap-2 text-sm text-gray-700">
+                                        <div className="flex h-6 w-6 items-center justify-center rounded-full bg-amber-100">
+                                            <Mail className="h-3.5 w-3.5 text-amber-600" />
+                                        </div>
+                                        <span>Alerte email instantanée</span>
+                                    </div>
+                                </div>
+
+                                {reviewData.isBoostPlus && (
+                                    <div className="flex items-center gap-2 rounded-lg bg-green-50 px-3 py-2 text-sm font-medium text-green-700">
+                                        <CheckCircle className="h-4 w-4" />
+                                        Option sélectionnée - Vous serez redirigé vers le paiement
+                                    </div>
+                                )}
+                            </div>
                         </div>
                     </div>
-                </CardContent>
-            </Card>
+                </div>
+            </div>
 
             {/* Action Buttons */}
             <div className="flex justify-between pt-6 pb-4">

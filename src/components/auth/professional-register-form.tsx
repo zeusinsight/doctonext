@@ -206,17 +206,19 @@ export function ProfessionalRegisterForm() {
         style={{ backgroundColor: "#14b8a6" }}
       />
 
-      <div className="container mx-auto flex min-h-screen grow flex-col items-center justify-center gap-4 self-center py-8 sm:py-12">
-        <Link href="/" className="absolute top-6 left-8">
-          <Button
-            variant="outline"
-            className="border-white/20 bg-white/10 text-white backdrop-blur-sm hover:bg-white/20 hover:text-white"
-            size="sm"
-          >
-            <ArrowLeft className="mr-2 h-4 w-4" />
-            Retour
-          </Button>
-        </Link>
+      <div className="container mx-auto flex min-h-screen grow flex-col items-center justify-center gap-4 self-center px-4 py-8 sm:px-6 sm:py-12">
+        <div className="mb-2 w-full max-w-4xl">
+          <Link href="/">
+            <Button
+              variant="outline"
+              className="border-white/20 bg-white/10 text-white backdrop-blur-sm hover:bg-white/20 hover:text-white"
+              size="sm"
+            >
+              <ArrowLeft className="mr-2 h-4 w-4" />
+              Retour
+            </Button>
+          </Link>
+        </div>
 
         <Card className="w-full max-w-4xl bg-white/95 shadow-2xl backdrop-blur-md">
           <CardHeader className="text-center">

@@ -12,7 +12,7 @@ import type { ListingWithDetails, PublicListing } from "@/types/listing";
 interface SponsoredListingCardProps {
   listing: PublicListing | ListingWithDetails;
   className?: string;
-  orientation?: "horizontal" | "vertical";
+  orientation?: "horizontal" | "vertical" | "popup";
   compact?: boolean;
 }
 
@@ -58,6 +58,75 @@ export function SponsoredListingCard({
   };
 
   const price = getPrice();
+
+  // Popup orientation for map markers
+  if (orientation === "popup") {
+    return (
+      <Link href={`/annonces/${listing.id}`} className="group block">
+        <div className={cn("overflow-hidden rounded-lg bg-white", className)}>
+          {/* Image */}
+          <div className="relative aspect-[16/10] w-full overflow-hidden bg-gray-100">
+            <Image
+              src={imageUrl}
+              alt={listing.title}
+              fill
+              className="object-cover transition-transform duration-300 group-hover:scale-105"
+            />
+            {"isBoostPlus" in listing && listing.isBoostPlus && (
+              <div className="absolute top-2 right-2">
+                <Badge className="border-0 bg-gradient-to-r from-amber-500 to-orange-500 px-2 py-0.5 text-[10px] font-semibold text-white">
+                  Boost+
+                </Badge>
+              </div>
+            )}
+          </div>
+
+          {/* Content */}
+          <div className="space-y-2 p-3">
+            {/* Type badge and price row */}
+            <div className="flex items-center justify-between gap-2">
+              <Badge
+                variant="secondary"
+                className={cn(
+                  "px-2 py-0.5 text-[10px] font-medium",
+                  listing.listingType === "transfer"
+                    ? "bg-blue-50 text-blue-700"
+                    : listing.listingType === "replacement"
+                      ? "bg-purple-50 text-purple-700"
+                      : "bg-emerald-50 text-emerald-700",
+                )}
+              >
+                {listing.listingType === "transfer"
+                  ? "Cession"
+                  : listing.listingType === "replacement"
+                    ? "Remplacement"
+                    : "Collaboration"}
+              </Badge>
+              {price && (
+                <span className="font-bold text-gray-900 text-sm">{price}</span>
+              )}
+            </div>
+
+            {/* Title */}
+            <h3 className="line-clamp-1 font-semibold text-gray-900 text-sm transition-colors group-hover:text-blue-600">
+              {listing.title || "Cabinet médical"}
+            </h3>
+
+            {/* Specialty */}
+            {listing.specialty && (
+              <p className="text-gray-500 text-xs">{listing.specialty}</p>
+            )}
+
+            {/* Location */}
+            <div className="flex items-center gap-1.5 text-gray-500 text-xs">
+              <MapPin className="h-3.5 w-3.5" />
+              <span>{listing.location?.city || "France"}</span>
+            </div>
+          </div>
+        </div>
+      </Link>
+    );
+  }
 
   if (orientation === "vertical") {
     return (

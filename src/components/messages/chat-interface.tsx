@@ -6,9 +6,12 @@ import { useRouter, useParams } from "next/navigation";
 import { ConversationList } from "./conversation-list";
 import { MessageList } from "./message-list";
 import { MessageInput } from "./message-input";
+import { EmptyState } from "./empty-state";
+import { OnlineStatus } from "./online-status";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Avatar } from "@/components/ui/avatar";
 import {
   ArrowLeft,
   MessageSquare,
@@ -21,6 +24,7 @@ import {
   CheckCircle,
   Clock,
   Briefcase,
+  Info,
 } from "lucide-react";
 import { authClient } from "@/lib/auth-client";
 import Link from "next/link";
@@ -32,6 +36,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import { cn } from "@/lib/utils";
 
 interface ChatInterfaceProps {
   initialConversationId?: string;
@@ -66,14 +71,11 @@ export function ChatInterface({
 
   const handleSelectConversation = (conversationId: string) => {
     setSelectedConversationId(conversationId);
-    setShowMobileConversations(false); // Hide conversation list on mobile
-
-    // Update URL to reflect selected conversation
+    setShowMobileConversations(false);
     router.push(`/dashboard/messages/${conversationId}`);
   };
 
   const handleMessageSent = () => {
-    // Refresh conversations and messages
     queryClient.invalidateQueries({ queryKey: ["conversations"] });
     queryClient.invalidateQueries({
       queryKey: ["messages", "unread-count"],
@@ -121,8 +123,6 @@ export function ChatInterface({
   const handleBackToConversations = () => {
     setShowMobileConversations(true);
     setSelectedConversationId(undefined);
-
-    // Navigate back to messages list
     router.push("/dashboard/messages");
   };
 
@@ -137,30 +137,39 @@ export function ChatInterface({
 
   if (!session?.data?.user) {
     return (
-      <div className="flex h-64 items-center justify-center">
-        <p className="text-gray-500">
-          Vous devez être connecté pour accéder aux messages
-        </p>
+      <div className="flex h-[calc(100vh-12rem)] items-center justify-center">
+        <div className="text-center">
+          <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-gray-100">
+            <MessageSquare className="h-8 w-8 text-gray-400" />
+          </div>
+          <p className="text-gray-600 font-medium">
+            Vous devez être connecté pour accéder aux messages
+          </p>
+        </div>
       </div>
     );
   }
 
-  // Safe current user after auth guard
   const currentUser = session!.data!.user!;
 
   // Shared listing details content for desktop panel and mobile sheet
   const ListingDetailsContent = () => {
     if (!selectedConversationId || !listingDetails) return null;
     return (
-      <>
+      <div className="space-y-4">
         {/* Main listing info */}
-        <Card>
+        <Card className="border-0 shadow-sm bg-white/80 backdrop-blur-sm">
           <CardHeader className="pb-3">
             <CardTitle className="text-base leading-tight">
               {listingDetails.listing.title}
             </CardTitle>
             <div className="flex flex-wrap gap-2">
-              <Badge variant="outline">
+              <Badge variant="outline" className={cn(
+                "text-xs font-medium",
+                listingDetails.listing.listingType === "transfer" && "bg-emerald-50 text-emerald-700 border-emerald-200",
+                listingDetails.listing.listingType === "replacement" && "bg-amber-50 text-amber-700 border-amber-200",
+                listingDetails.listing.listingType === "collaboration" && "bg-violet-50 text-violet-700 border-violet-200"
+              )}>
                 {listingDetails.listing.listingType === "transfer"
                   ? "Cession"
                   : listingDetails.listing.listingType === "replacement"
@@ -175,45 +184,37 @@ export function ChatInterface({
             </div>
           </CardHeader>
           <CardContent className="space-y-3">
-            {/* Description */}
             {listingDetails.listing.description && (
-              <div>
-                <p className="line-clamp-4 text-gray-700 text-sm">
-                  {listingDetails.listing.description}
-                </p>
-              </div>
+              <p className="line-clamp-4 text-gray-600 text-sm leading-relaxed">
+                {listingDetails.listing.description}
+              </p>
             )}
 
-            {/* Location */}
             {listingDetails.location && (
               <div className="flex items-start gap-2">
-                <MapPin className="mt-0.5 h-4 w-4 flex-shrink-0 text-gray-500" />
+                <MapPin className="mt-0.5 h-4 w-4 flex-shrink-0 text-blue-500" />
                 <div className="text-sm">
-                  <p className="font-medium">
-                    {listingDetails.location.city} (
-                    {listingDetails.location.postalCode})
+                  <p className="font-medium text-gray-900">
+                    {listingDetails.location.city} ({listingDetails.location.postalCode})
                   </p>
-                  <p className="text-gray-600">
+                  <p className="text-gray-500">
                     {listingDetails.location.region}
-                    {listingDetails.location.department &&
-                      `, ${listingDetails.location.department}`}
+                    {listingDetails.location.department && `, ${listingDetails.location.department}`}
                   </p>
                 </div>
               </div>
             )}
 
-            {/* Published date */}
             <div className="flex items-center gap-2">
-              <Calendar className="h-4 w-4 text-gray-500" />
-              <span className="text-gray-600 text-sm">
+              <Calendar className="h-4 w-4 text-gray-400" />
+              <span className="text-gray-500 text-sm">
                 Publié le{" "}
                 {new Date(
-                  listingDetails.listing.publishedAt ||
-                    listingDetails.listing.createdAt,
+                  listingDetails.listing.publishedAt || listingDetails.listing.createdAt,
                 ).toLocaleDateString("fr-FR")}
               </span>
             </div>
-            {/* Contract Generation Button - Only for replacement listings */}
+
             {selectedConversation && listingDetails.listing.listingType === "replacement" && (
               <ContractButton
                 conversationId={selectedConversationId}
@@ -228,7 +229,8 @@ export function ChatInterface({
                 userProfession={listingDetails.listing.specialty}
               />
             )}
-            <Button asChild size="sm" className="w-full">
+
+            <Button asChild size="sm" className="w-full shadow-sm">
               <Link href={`/annonces/${listingDetails.listing.id}`}>
                 Voir l'annonce complète
               </Link>
@@ -238,38 +240,37 @@ export function ChatInterface({
 
         {/* Owner info */}
         {listingDetails.owner && (
-          <Card>
+          <Card className="border-0 shadow-sm bg-white/80 backdrop-blur-sm">
             <CardHeader className="pb-3">
-              <CardTitle className="text-sm">Propriétaire</CardTitle>
+              <CardTitle className="text-sm text-gray-600">Propriétaire</CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
               <div className="flex items-center gap-3">
-                <div className="flex h-10 w-10 items-center justify-center overflow-hidden rounded-full bg-gray-300">
+                <Avatar className="h-10 w-10 ring-2 ring-white shadow-sm">
                   {listingDetails.owner.avatarUrl ||
                   listingDetails.owner.avatar ||
-                  (listingDetails.owner.name &&
-                    `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(listingDetails.owner.name)}`) ? (
+                  listingDetails.owner.name ? (
                     <img
                       src={
                         listingDetails.owner.avatarUrl ||
                         listingDetails.owner.avatar ||
                         `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(listingDetails.owner.name || "User")}`
                       }
-                      alt={listingDetails.owner.name || "Avatar"}
-                      className="h-full w-full object-cover"
+                      alt=""
+                      className="h-full w-full object-cover rounded-full"
                     />
                   ) : (
-                    <span className="font-medium text-gray-600 text-sm">
+                    <div className="flex h-full w-full items-center justify-center rounded-full bg-gradient-to-br from-blue-100 to-blue-200 font-semibold text-blue-700 text-sm">
                       {listingDetails.owner.name?.charAt(0).toUpperCase()}
-                    </span>
+                    </div>
                   )}
-                </div>
+                </Avatar>
                 <div>
-                  <p className="font-medium text-sm">
+                  <p className="font-medium text-sm text-gray-900">
                     {listingDetails.owner.name}
                   </p>
                   {listingDetails.owner.profession && (
-                    <p className="text-gray-600 text-xs">
+                    <p className="text-gray-500 text-xs">
                       {listingDetails.owner.profession}
                     </p>
                   )}
@@ -277,20 +278,16 @@ export function ChatInterface({
               </div>
 
               {listingDetails.owner.isVerifiedProfessional && (
-                <div className="flex items-center gap-2 rounded-lg bg-green-50 p-2 text-green-700">
+                <div className="flex items-center gap-2 rounded-lg bg-emerald-50 p-2.5 text-emerald-700 border border-emerald-100">
                   <CheckCircle className="h-4 w-4" />
-                  <span className="font-medium text-xs">
-                    Professionnel vérifié
-                  </span>
+                  <span className="font-medium text-xs">Professionnel vérifié</span>
                 </div>
               )}
 
               {listingDetails.owner.specialty && (
-                <div className="flex items-center gap-2">
-                  <Stethoscope className="h-4 w-4 text-gray-500" />
-                  <span className="text-sm">
-                    {listingDetails.owner.specialty}
-                  </span>
+                <div className="flex items-center gap-2 text-gray-600">
+                  <Stethoscope className="h-4 w-4 text-gray-400" />
+                  <span className="text-sm">{listingDetails.owner.specialty}</span>
                 </div>
               )}
             </CardContent>
@@ -299,9 +296,9 @@ export function ChatInterface({
 
         {/* Type-specific details */}
         {listingDetails.details && (
-          <Card>
+          <Card className="border-0 shadow-sm bg-white/80 backdrop-blur-sm">
             <CardHeader className="pb-3">
-              <CardTitle className="text-sm">
+              <CardTitle className="text-sm text-gray-600">
                 {listingDetails.listing.listingType === "transfer"
                   ? "Détails de la cession"
                   : listingDetails.listing.listingType === "replacement"
@@ -312,13 +309,13 @@ export function ChatInterface({
             <CardContent className="space-y-3">
               {/* Transfer details */}
               {listingDetails.listing.listingType === "transfer" && (
-                <div className="space-y-3">
+                <>
                   {listingDetails.details.practiceType && (
                     <div className="flex items-start gap-2">
-                      <Building className="mt-0.5 h-4 w-4 text-gray-500" />
+                      <Building className="mt-0.5 h-4 w-4 text-gray-400" />
                       <div>
-                        <p className="font-medium text-xs">Type de pratique</p>
-                        <p className="text-gray-600 text-xs">
+                        <p className="font-medium text-xs text-gray-600">Type de pratique</p>
+                        <p className="text-gray-900 text-sm">
                           {listingDetails.details.practiceType === "solo"
                             ? "Cabinet individuel"
                             : listingDetails.details.practiceType === "group"
@@ -328,54 +325,51 @@ export function ChatInterface({
                       </div>
                     </div>
                   )}
-
                   {listingDetails.details.salePrice && (
                     <div className="flex items-start gap-2">
-                      <Euro className="mt-0.5 h-4 w-4 text-gray-500" />
+                      <Euro className="mt-0.5 h-4 w-4 text-gray-400" />
                       <div>
-                        <p className="font-medium text-xs">Prix de cession</p>
-                        <p className="text-gray-600 text-xs">
+                        <p className="font-medium text-xs text-gray-600">Prix de cession</p>
+                        <p className="text-gray-900 text-sm font-semibold">
                           {formatPrice(listingDetails.details.salePrice)}
                         </p>
                       </div>
                     </div>
                   )}
-
                   {listingDetails.details.annualTurnover && (
                     <div className="flex items-start gap-2">
-                      <Euro className="mt-0.5 h-4 w-4 text-gray-500" />
+                      <Euro className="mt-0.5 h-4 w-4 text-gray-400" />
                       <div>
-                        <p className="font-medium text-xs">CA annuel</p>
-                        <p className="text-gray-600 text-xs">
+                        <p className="font-medium text-xs text-gray-600">CA annuel</p>
+                        <p className="text-gray-900 text-sm">
                           {formatPrice(listingDetails.details.annualTurnover)}
                         </p>
                       </div>
                     </div>
                   )}
-
                   {listingDetails.details.patientBaseSize && (
                     <div className="flex items-start gap-2">
-                      <Users className="mt-0.5 h-4 w-4 text-gray-500" />
+                      <Users className="mt-0.5 h-4 w-4 text-gray-400" />
                       <div>
-                        <p className="font-medium text-xs">Patientèle</p>
-                        <p className="text-gray-600 text-xs">
+                        <p className="font-medium text-xs text-gray-600">Patientèle</p>
+                        <p className="text-gray-900 text-sm">
                           {listingDetails.details.patientBaseSize} patients
                         </p>
                       </div>
                     </div>
                   )}
-                </div>
+                </>
               )}
 
               {/* Replacement details */}
               {listingDetails.listing.listingType === "replacement" && (
-                <div className="space-y-3">
+                <>
                   {listingDetails.details.replacementType && (
                     <div className="flex items-start gap-2">
-                      <Clock className="mt-0.5 h-4 w-4 text-gray-500" />
+                      <Clock className="mt-0.5 h-4 w-4 text-gray-400" />
                       <div>
-                        <p className="font-medium text-xs">Type</p>
-                        <p className="text-gray-600 text-xs">
+                        <p className="font-medium text-xs text-gray-600">Type</p>
+                        <p className="text-gray-900 text-sm">
                           {listingDetails.details.replacementType === "temporary"
                             ? "Temporaire"
                             : listingDetails.details.replacementType === "long_term"
@@ -385,13 +379,12 @@ export function ChatInterface({
                       </div>
                     </div>
                   )}
-
                   {listingDetails.details.startDate && (
                     <div className="flex items-start gap-2">
-                      <Calendar className="mt-0.5 h-4 w-4 text-gray-500" />
+                      <Calendar className="mt-0.5 h-4 w-4 text-gray-400" />
                       <div>
-                        <p className="font-medium text-xs">Période</p>
-                        <p className="text-gray-600 text-xs">
+                        <p className="font-medium text-xs text-gray-600">Période</p>
+                        <p className="text-gray-900 text-sm">
                           Du {new Date(listingDetails.details.startDate).toLocaleDateString("fr-FR")}
                           {listingDetails.details.endDate &&
                             ` au ${new Date(listingDetails.details.endDate).toLocaleDateString("fr-FR")}`}
@@ -399,30 +392,29 @@ export function ChatInterface({
                       </div>
                     </div>
                   )}
-
                   {listingDetails.details.dailyRate && (
                     <div className="flex items-start gap-2">
-                      <Euro className="mt-0.5 h-4 w-4 text-gray-500" />
+                      <Euro className="mt-0.5 h-4 w-4 text-gray-400" />
                       <div>
-                        <p className="font-medium text-xs">Tarif journalier</p>
-                        <p className="text-gray-600 text-xs">
+                        <p className="font-medium text-xs text-gray-600">Tarif journalier</p>
+                        <p className="text-gray-900 text-sm font-semibold">
                           {formatPrice(listingDetails.details.dailyRate)}
                         </p>
                       </div>
                     </div>
                   )}
-                </div>
+                </>
               )}
 
               {/* Collaboration details */}
               {listingDetails.listing.listingType === "collaboration" && (
-                <div className="space-y-3">
+                <>
                   {listingDetails.details.collaborationType && (
                     <div className="flex items-start gap-2">
-                      <Briefcase className="mt-0.5 h-4 w-4 text-gray-500" />
+                      <Briefcase className="mt-0.5 h-4 w-4 text-gray-400" />
                       <div>
-                        <p className="font-medium text-xs">Type de collaboration</p>
-                        <p className="text-gray-600 text-xs">
+                        <p className="font-medium text-xs text-gray-600">Type de collaboration</p>
+                        <p className="text-gray-900 text-sm">
                           {listingDetails.details.collaborationType === "association"
                             ? "Association"
                             : listingDetails.details.collaborationType === "partnership"
@@ -434,13 +426,12 @@ export function ChatInterface({
                       </div>
                     </div>
                   )}
-
                   {listingDetails.details.durationExpectation && (
                     <div className="flex items-start gap-2">
-                      <Clock className="mt-0.5 h-4 w-4 text-gray-500" />
+                      <Clock className="mt-0.5 h-4 w-4 text-gray-400" />
                       <div>
-                        <p className="font-medium text-xs">Durée attendue</p>
-                        <p className="text-gray-600 text-xs">
+                        <p className="font-medium text-xs text-gray-600">Durée attendue</p>
+                        <p className="text-gray-900 text-sm">
                           {listingDetails.details.durationExpectation === "short_term"
                             ? "Court terme"
                             : listingDetails.details.durationExpectation === "long_term"
@@ -450,59 +441,39 @@ export function ChatInterface({
                       </div>
                     </div>
                   )}
-                </div>
+                </>
               )}
             </CardContent>
           </Card>
         )}
-
-        {/* Other participant info */}
-        {selectedConversation?.otherParticipant && (
-          <Card>
-            <CardHeader className="pb-3">
-              <CardTitle className="text-sm">Conversation avec</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="font-medium text-gray-900 text-sm">
-                {selectedConversation.otherParticipant.name}
-              </p>
-              <div className="mt-2 space-y-1 text-gray-600 text-xs">
-                <p>
-                  Conversation créée le{" "}
-                  {new Date(selectedConversation.createdAt).toLocaleDateString("fr-FR")}
-                </p>
-                {selectedConversation.lastMessageAt && (
-                  <p>
-                    Dernier message le{" "}
-                    {new Date(selectedConversation.lastMessageAt).toLocaleDateString("fr-FR")}
-                  </p>
-                )}
-              </div>
-            </CardContent>
-          </Card>
-        )}
-
-        {/* Actions */}
-        <div className="space-y-2"></div>
-      </>
+      </div>
     );
   };
 
   return (
     <div className="relative w-full">
-      <div className="flex h-[800px] overflow-hidden rounded-lg border bg-white w-full">
+      <div className={cn(
+        "flex overflow-hidden rounded-2xl border bg-gray-50/50 w-full",
+        "h-[calc(100vh-12rem)] min-h-[600px]",
+        "shadow-xl shadow-gray-200/50"
+      )}>
         {/* Conversation List - Hidden on mobile when a conversation is selected */}
         <div
-          className={`flex w-full flex-col border-r md:w-72 lg:w-80 ${
+          className={cn(
+            "flex w-full flex-col border-r border-gray-100 bg-white md:w-72 lg:w-80",
             !showMobileConversations && selectedConversationId
               ? "hidden md:flex"
               : "flex"
-          }`}
+          )}
         >
-          <div className="border-b bg-gray-50 p-4">
-            <h2 className="flex items-center gap-2 font-semibold text-gray-900">
-              <MessageSquare className="h-5 w-5" />
-              Conversations
+          {/* Conversations header with glassmorphism */}
+          <div className="relative border-b border-gray-100 bg-white/80 backdrop-blur-xl p-4">
+            <div className="absolute inset-0 bg-gradient-to-b from-blue-50/30 to-transparent pointer-events-none" />
+            <h2 className="relative flex items-center gap-2 font-semibold text-gray-900">
+              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-blue-600 to-blue-700 shadow-lg shadow-blue-500/30">
+                <MessageSquare className="h-4 w-4 text-white" />
+              </div>
+              Messages
             </h2>
           </div>
 
@@ -514,40 +485,112 @@ export function ChatInterface({
 
         {/* Chat Area */}
         <div
-          className={`flex flex-1 flex-col ${
+          className={cn(
+            "flex flex-1 flex-col bg-gradient-to-b from-gray-50 to-white",
             showMobileConversations && !selectedConversationId
               ? "hidden md:flex"
               : "flex"
-          }`}
+          )}
         >
           {selectedConversationId ? (
             <>
-              {/* Mobile header with back button */}
-              <div className="flex items-center gap-3 border-b bg-gray-50 p-4 md:hidden">
+              {/* Mobile header with back button and glassmorphism */}
+              <div className="flex items-center gap-3 border-b border-gray-100 bg-white/80 backdrop-blur-xl p-4 md:hidden">
                 <Button
                   variant="ghost"
-                  size="sm"
+                  size="icon"
                   onClick={handleBackToConversations}
-                  className="p-1"
+                  className="h-8 w-8 rounded-lg hover:bg-gray-100"
+                  aria-label="Retour aux conversations"
                 >
                   <ArrowLeft className="h-4 w-4" />
                 </Button>
-                <h3 className="font-semibold">Messages</h3>
-                <div className="ml-auto" />
+
+                {selectedConversation?.otherParticipant && (
+                  <div className="flex items-center gap-3 flex-1 min-w-0">
+                    <Avatar className="h-9 w-9 ring-2 ring-white shadow-sm">
+                      {selectedConversation.otherParticipant.avatarUrl ||
+                      selectedConversation.otherParticipant.avatar ? (
+                        <img
+                          src={
+                            selectedConversation.otherParticipant.avatarUrl ||
+                            selectedConversation.otherParticipant.avatar ||
+                            `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(selectedConversation.otherParticipant.name || "User")}`
+                          }
+                          alt=""
+                          className="h-full w-full object-cover rounded-full"
+                        />
+                      ) : (
+                        <div className="flex h-full w-full items-center justify-center rounded-full bg-gradient-to-br from-blue-100 to-blue-200 font-semibold text-blue-700 text-sm">
+                          {selectedConversation.otherParticipant.name?.charAt(0).toUpperCase()}
+                        </div>
+                      )}
+                    </Avatar>
+                    <div className="min-w-0 flex-1">
+                      <h3 className="font-semibold text-sm text-gray-900 truncate">
+                        {selectedConversation.otherParticipant.name}
+                      </h3>
+                      <OnlineStatus
+                        isOnline={selectedConversation.otherParticipant.isOnline}
+                        lastSeen={selectedConversation.otherParticipant.lastSeen}
+                        size="sm"
+                      />
+                    </div>
+                  </div>
+                )}
+
                 {listingDetails && (
                   <Sheet>
                     <SheetTrigger asChild>
-                      <Button variant="outline" size="sm">Détails</Button>
+                      <Button variant="outline" size="icon" className="h-8 w-8 rounded-lg">
+                        <Info className="h-4 w-4" />
+                      </Button>
                     </SheetTrigger>
-                    <SheetContent side="right" className="w-full sm:max-w-sm">
+                    <SheetContent side="right" className="w-full sm:max-w-sm overflow-y-auto">
                       <SheetHeader>
                         <SheetTitle>Détails de l'annonce</SheetTitle>
                       </SheetHeader>
-                      <div className="mt-4 flex-1 space-y-4 overflow-y-auto pb-6">
+                      <div className="mt-4 pb-6">
                         <ListingDetailsContent />
                       </div>
                     </SheetContent>
                   </Sheet>
+                )}
+              </div>
+
+              {/* Desktop header */}
+              <div className="hidden md:flex items-center gap-4 border-b border-gray-100 bg-white/80 backdrop-blur-xl p-4">
+                {selectedConversation?.otherParticipant && (
+                  <div className="flex items-center gap-3 flex-1">
+                    <Avatar className="h-10 w-10 ring-2 ring-white shadow-sm">
+                      {selectedConversation.otherParticipant.avatarUrl ||
+                      selectedConversation.otherParticipant.avatar ? (
+                        <img
+                          src={
+                            selectedConversation.otherParticipant.avatarUrl ||
+                            selectedConversation.otherParticipant.avatar ||
+                            `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(selectedConversation.otherParticipant.name || "User")}`
+                          }
+                          alt=""
+                          className="h-full w-full object-cover rounded-full"
+                        />
+                      ) : (
+                        <div className="flex h-full w-full items-center justify-center rounded-full bg-gradient-to-br from-blue-100 to-blue-200 font-semibold text-blue-700">
+                          {selectedConversation.otherParticipant.name?.charAt(0).toUpperCase()}
+                        </div>
+                      )}
+                    </Avatar>
+                    <div>
+                      <h3 className="font-semibold text-gray-900">
+                        {selectedConversation.otherParticipant.name}
+                      </h3>
+                      <OnlineStatus
+                        isOnline={selectedConversation.otherParticipant.isOnline}
+                        lastSeen={selectedConversation.otherParticipant.lastSeen}
+                        size="sm"
+                      />
+                    </div>
+                  </div>
                 )}
               </div>
 
@@ -564,29 +607,28 @@ export function ChatInterface({
               />
             </>
           ) : (
-            <div className="flex flex-1 items-center justify-center text-gray-500">
-              <div className="text-center">
-                <MessageSquare className="mx-auto mb-4 h-12 w-12 text-gray-300" />
-                <p>Sélectionnez une conversation pour commencer</p>
-              </div>
-            </div>
+            <EmptyState variant="no-selection" />
           )}
         </div>
 
-        {/* Listing Details Panel - Always reserve space */}
-        <div className="hidden md:block md:w-72 lg:w-80">
+        {/* Listing Details Panel - Desktop only */}
+        <div className="hidden lg:block lg:w-80 border-l border-gray-100 bg-gray-50/80 overflow-y-auto">
           {selectedConversationId && listingDetails ? (
-            <div className="flex flex-col h-full border-l bg-gray-50">
-              <div className="border-b bg-white p-4">
-                <h2 className="flex items-center gap-2 font-semibold text-gray-900">
-                  <Building className="h-5 w-5" />
-                  Détails de l'annonce
-                </h2>
+            <div className="p-4">
+              {/* Panel header */}
+              <div className="mb-4 flex items-center gap-2">
+                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gray-100">
+                  <Building className="h-4 w-4 text-gray-600" />
+                </div>
+                <h2 className="font-semibold text-gray-900 text-sm">Détails de l'annonce</h2>
               </div>
-
-              <div className="flex-1 space-y-4 overflow-y-auto p-4">
-                <ListingDetailsContent />
-              </div>
+              <ListingDetailsContent />
+            </div>
+          ) : selectedConversationId ? (
+            <div className="flex h-full items-center justify-center p-4">
+              <p className="text-sm text-gray-400 text-center">
+                Chargement des détails...
+              </p>
             </div>
           ) : null}
         </div>

@@ -95,7 +95,7 @@ export default function ProtectedPage({
                           asChild
                           variant="secondary"
                           className="w-full"
-                          style={{ backgroundColor: "#e5e7eb", color: "#111827" }}
+                        style={{ backgroundColor: "#14b8a6", color: "#ffffff" }}
                         >
                           <Link href="/annonces">Annonces</Link>
                         </Button>

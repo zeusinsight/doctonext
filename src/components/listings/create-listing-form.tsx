@@ -290,7 +290,7 @@ export function CreateListingForm() {
 
             {/* Step Content */}
             <div className="mt-6">
-                <div className="w-full min-w-4xl max-w-5xl">{renderStep()}</div>
+                <div className="w-full">{renderStep()}</div>
             </div>
         </div>
     )

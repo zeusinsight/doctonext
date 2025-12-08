@@ -11,18 +11,18 @@ import {
 
 export default function NewListingPage() {
     return (
-        <div className="flex min-w-5xl flex-col items-center justify-center ">
-            <div className="flex flex-col items-center py-6">
-                <h1 className="font-bold text-3xl text-white tracking-tight">
+        <div className="flex w-full flex-col items-center justify-center px-4 sm:px-6">
+            <div className="flex flex-col items-center py-6 text-center">
+                <h1 className="font-bold text-2xl text-white tracking-tight sm:text-3xl">
                     Créer une nouvelle annonce
                 </h1>
-                <p className="text-white">
+                <p className="text-white text-sm sm:text-base">
                     Remplissez les informations pour publier votre annonce de
                     cession ou de remplacement
                 </p>
             </div>
 
-            <Card className="max-w-5xl border-blue-200 py-6">
+            <Card className="w-full max-w-5xl border-blue-200 py-6">
                 <CardHeader className="py-6">
                     <CardTitle>Nouvelle annonce</CardTitle>
                     <CardDescription>
