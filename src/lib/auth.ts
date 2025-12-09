@@ -10,6 +10,7 @@ import { db } from "@/database/db"
 import * as schema from "@/database/schema"
 import { type Plan, plans } from "@/lib/payments/plans"
 import { site } from "@/config/site"
+import { claimListingsByEmail } from "@/lib/actions/listings"
 
 const stripeClient = new Stripe(process.env.STRIPE_SECRET_KEY!, {
     typescript: true
@@ -95,7 +96,28 @@ export const auth = betterAuth({
                 }
             }
         })
-    ]
+    ],
+    // Hooks for post-signup actions
+    databaseHooks: {
+        user: {
+            create: {
+                after: async (user) => {
+                    // Claim any listings assigned to this user's email
+                    if (user.email) {
+                        try {
+                            const result = await claimListingsByEmail(user.id, user.email)
+                            if (result.success && result.claimedCount && result.claimedCount > 0) {
+                                console.log(`User ${user.email} claimed ${result.claimedCount} listing(s) on signup`)
+                            }
+                        } catch (error) {
+                            console.error("Error claiming listings on signup:", error)
+                            // Don't fail signup if listing claim fails
+                        }
+                    }
+                }
+            }
+        }
+    }
 })
 
 export async function getActiveSubscription() {

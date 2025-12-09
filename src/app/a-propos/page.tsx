@@ -1,9 +1,12 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { Navbar } from "@/components/layout/navbar";
 import { FooterSection } from "@/components/layout/sections/footer";
 import { Button } from "@/components/ui/button";
 import { SmartJoinButton } from "@/components/ui/smart-join-button";
+import { SimpleBreadcrumb } from "@/components/seo";
+import { site } from "@/config/site";
 import {
   ShieldCheck,
   Users,
@@ -14,10 +17,43 @@ import {
   Handshake,
 } from "lucide-react";
 
+export const metadata: Metadata = {
+  title: "À propos de CareEvo | Plateforme pour Professionnels de Santé",
+  description: "CareEvo est la plateforme premium dédiée aux professionnels de santé. Découvrez notre mission : simplifier les transitions, sécuriser les opportunités et connecter les talents du monde médical.",
+  keywords: ["CareEvo", "professionnels de santé", "cession cabinet médical", "remplacement médecin", "collaboration médicale", "plateforme santé"],
+  openGraph: {
+    title: "À propos de CareEvo | Plateforme pour Professionnels de Santé",
+    description: "CareEvo est la plateforme premium dédiée aux professionnels de santé. Simplifier les transitions, sécuriser les opportunités, connecter les talents.",
+    url: `${site.url}/a-propos`,
+    siteName: site.name,
+    type: "website",
+    locale: "fr_FR",
+    images: [
+      {
+        url: site.ogImage,
+        width: 1200,
+        height: 630,
+        alt: "CareEvo - À propos",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "À propos de CareEvo | Plateforme pour Professionnels de Santé",
+    description: "CareEvo est la plateforme premium dédiée aux professionnels de santé.",
+    images: [site.ogImage],
+  },
+  alternates: {
+    canonical: `${site.url}/a-propos`,
+  },
+};
+
 export default function AboutPage() {
   return (
-    <div className="min-h-screen bg-white font-sans text-gray-900">
-      <Navbar />
+    <>
+      <SimpleBreadcrumb pageName="À propos" />
+      <div className="min-h-screen bg-white font-sans text-gray-900">
+        <Navbar />
 
       {/* Hero Section - Clean & Minimal */}
       <section className="relative pt-24 pb-20 sm:pt-32 sm:pb-24 bg-white">
@@ -239,7 +275,8 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <FooterSection />
-    </div>
+        <FooterSection />
+      </div>
+    </>
   );
 }

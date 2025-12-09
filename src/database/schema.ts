@@ -99,7 +99,6 @@ export const subscriptions = pgTable("subscriptions", {
 export const listings = pgTable("listings", {
     id: text("id").primaryKey(),
     userId: text("user_id")
-        .notNull()
         .references(() => users.id, { onDelete: "cascade" }),
     title: text("title").notNull(),
     description: text("description"),
@@ -122,7 +121,12 @@ export const listings = pgTable("listings", {
         .$defaultFn(() => new Date())
         .notNull(),
     publishedAt: timestamp("published_at"),
-    expiresAt: timestamp("expires_at")
+    expiresAt: timestamp("expires_at"),
+    // Admin assignment fields
+    assignedEmail: text("assigned_email"),
+    createdByAdmin: boolean("created_by_admin")
+        .$defaultFn(() => false)
+        .notNull()
 })
 
 export const listingLocations = pgTable("listing_locations", {

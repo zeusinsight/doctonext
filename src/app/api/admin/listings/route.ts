@@ -2,7 +2,10 @@ import { type NextRequest, NextResponse } from "next/server"
 import { requireAdmin } from "@/lib/auth-utils"
 import { db } from "@/database/db"
 import { listings, users, listingLocations } from "@/database/schema"
-import { eq, ilike, sql, desc, asc, and, or } from "drizzle-orm"
+import { eq, ilike, sql, desc, asc, and, or, isNull } from "drizzle-orm"
+import { createAdminListing } from "@/lib/actions/listings"
+import { createListingSchema } from "@/lib/validations/listing"
+import { z } from "zod"
 
 export async function GET(request: NextRequest) {
     try {
@@ -39,7 +42,10 @@ export async function GET(request: NextRequest) {
                 userName: users.name,
                 userEmail: users.email,
                 city: listingLocations.city,
-                region: listingLocations.region
+                region: listingLocations.region,
+                // Admin assignment fields
+                assignedEmail: listings.assignedEmail,
+                createdByAdmin: listings.createdByAdmin
             })
             .from(listings)
             .leftJoin(users, eq(listings.userId, users.id))
@@ -143,6 +149,75 @@ export async function GET(request: NextRequest) {
             {
                 success: false,
                 error: "Erreur lors de la récupération des annonces"
+            },
+            { status: 500 }
+        )
+    }
+}
+
+// Admin schema for creating listings with email assignment
+const adminCreateListingSchema = createListingSchema.extend({
+    assignedEmail: z.string().email("Email invalide")
+})
+
+export async function POST(request: NextRequest) {
+    try {
+        await requireAdmin()
+
+        const body = await request.json()
+
+        // Validate request body
+        const validatedData = adminCreateListingSchema.parse(body)
+        const { assignedEmail, ...listingData } = validatedData
+
+        // Create listing using admin action
+        const result = await createAdminListing(listingData, assignedEmail)
+
+        if (result.success) {
+            return NextResponse.json(
+                {
+                    success: true,
+                    data: {
+                        listingId: result.listingId,
+                        assignedToExistingUser: result.assignedToExistingUser,
+                        message: result.assignedToExistingUser
+                            ? "Annonce créée et assignée à l'utilisateur existant"
+                            : "Annonce créée et en attente de réclamation par l'utilisateur"
+                    }
+                },
+                { status: 201 }
+            )
+        } else {
+            return NextResponse.json(
+                { success: false, error: result.error },
+                { status: 400 }
+            )
+        }
+    } catch (error) {
+        console.error("Error creating admin listing:", error)
+
+        if (error instanceof z.ZodError) {
+            return NextResponse.json(
+                {
+                    success: false,
+                    error: "Données invalides",
+                    details: error.issues
+                },
+                { status: 400 }
+            )
+        }
+
+        if (error instanceof Error) {
+            return NextResponse.json(
+                { success: false, error: error.message },
+                { status: 400 }
+            )
+        }
+
+        return NextResponse.json(
+            {
+                success: false,
+                error: "Erreur lors de la création de l'annonce"
             },
             { status: 500 }
         )

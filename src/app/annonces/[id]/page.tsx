@@ -1,6 +1,8 @@
 import { notFound } from "next/navigation"
 import type { Metadata } from "next"
 import { getListingById, incrementListingViews } from "@/lib/actions/listings"
+import { site } from "@/config/site"
+import { ListingSchema, ListingBreadcrumb } from "@/components/seo"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
@@ -32,6 +34,12 @@ interface ListingPageProps {
     params: Promise<{ id: string }>
 }
 
+const listingTypeLabelsForMeta: Record<string, string> = {
+    transfer: "Cession",
+    replacement: "Remplacement",
+    collaboration: "Collaboration"
+}
+
 export async function generateMetadata({
     params
 }: ListingPageProps): Promise<Metadata> {
@@ -40,15 +48,60 @@ export async function generateMetadata({
 
     if (!listing) {
         return {
-            title: "Annonce non trouvée"
+            title: "Annonce non trouvée | CareEvo"
         }
     }
 
+    const typeLabel = listingTypeLabelsForMeta[listing.listingType] || listing.listingType
+    const location = listing.location?.city ? ` à ${listing.location.city}` : ""
+    const specialty = listing.specialty ? ` - ${listing.specialty}` : ""
+
+    const title = `${listing.title} | ${typeLabel}${specialty} | CareEvo`
+    const description = listing.description
+        ? listing.description.slice(0, 160)
+        : `${typeLabel}${specialty}${location}. Découvrez cette opportunité sur CareEvo, la plateforme des professionnels de santé.`
+
+    // Get image for OG
+    const ogImage = listing.media && listing.media.length > 0
+        ? listing.media[0].fileUrl
+        : site.ogImage
+
     return {
-        title: listing.title,
-        description:
-            listing.description ||
-            `${listing.listingType === "transfer" ? "Cession" : listing.listingType === "replacement" ? "Remplacement" : "Collaboration"} - ${listing.specialty || "Médical"}`
+        title,
+        description,
+        keywords: [
+            typeLabel.toLowerCase(),
+            listing.specialty,
+            listing.location?.city,
+            listing.location?.region,
+            "professionnel de santé",
+            "annonce médicale"
+        ].filter(Boolean) as string[],
+        openGraph: {
+            title: listing.title,
+            description,
+            url: `${site.url}/annonces/${id}`,
+            siteName: site.name,
+            type: "website",
+            locale: "fr_FR",
+            images: [
+                {
+                    url: ogImage,
+                    width: 1200,
+                    height: 630,
+                    alt: listing.title
+                }
+            ]
+        },
+        twitter: {
+            card: "summary_large_image",
+            title: listing.title,
+            description,
+            images: [ogImage]
+        },
+        alternates: {
+            canonical: `${site.url}/annonces/${id}`
+        }
     }
 }
 
@@ -169,7 +222,13 @@ export default async function ListingPage({ params }: ListingPageProps) {
     }
 
     return (
-        <div className="container mx-auto max-w-7xl px-4 py-8">
+        <>
+            <ListingSchema listing={listing} />
+            <ListingBreadcrumb
+                listingType={listing.listingType}
+                title={listing.title}
+            />
+            <div className="container mx-auto max-w-7xl px-4 py-8">
             <div className="grid gap-8 lg:grid-cols-3">
                 <div className="space-y-6 lg:col-span-2">
                     {/* Image Gallery */}
@@ -1061,15 +1120,17 @@ export default async function ListingPage({ params }: ListingPageProps) {
                                 </div>
                             )}
 
-                            <ContactSellerButton
-                                listingId={listing.id}
-                                sellerId={listing.userId}
-                                sellerName={
-                                    listing.user?.name || "Professionnel"
-                                }
-                                listingTitle={listing.title}
-                                className="w-full"
-                            />
+                            {listing.userId && (
+                                <ContactSellerButton
+                                    listingId={listing.id}
+                                    sellerId={listing.userId}
+                                    sellerName={
+                                        listing.user?.name || "Professionnel"
+                                    }
+                                    listingTitle={listing.title}
+                                    className="w-full"
+                                />
+                            )}
                         </CardContent>
                     </Card>
 
@@ -1107,5 +1168,6 @@ export default async function ListingPage({ params }: ListingPageProps) {
                 </div>
             </div>
         </div>
+        </>
     )
 }

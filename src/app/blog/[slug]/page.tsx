@@ -11,6 +11,8 @@ import { Separator } from "@/components/ui/separator"
 import { ArrowLeft, Clock, Calendar } from "lucide-react"
 import { formatDistanceToNow, format } from "date-fns"
 import { fr } from "date-fns/locale"
+import { ArticleSchema, BlogBreadcrumb } from "@/components/seo"
+import { site } from "@/config/site"
 
 interface BlogArticlePageProps {
     params: Promise<{
@@ -154,6 +156,9 @@ export async function generateMetadata({
             title,
             description,
             images: article.featuredImage ? [article.featuredImage] : undefined
+        },
+        alternates: {
+            canonical: `${site.url}/blog/${slug}`
         }
     }
 }
@@ -173,7 +178,18 @@ export default async function BlogArticlePage({
         : null
 
     return (
-        <div className="container mx-auto px-4 py-8">
+        <>
+            <ArticleSchema
+                title={article.title}
+                description={article.excerpt || article.seoDescription || "Article de blog CareEvo"}
+                slug={article.slug}
+                featuredImage={article.featuredImage}
+                publishedAt={article.publishedAt}
+                updatedAt={article.updatedAt}
+                tags={article.tags}
+            />
+            <BlogBreadcrumb title={article.title} />
+            <div className="container mx-auto px-4 py-8">
             {/* Back Button */}
             <div className="mb-6">
                 <Link href="/blog">
@@ -295,5 +311,6 @@ export default async function BlogArticlePage({
                     )}
             </div>
         </div>
+        </>
     )
 }

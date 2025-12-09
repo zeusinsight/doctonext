@@ -55,6 +55,8 @@ export async function createListing(data: CreateListingData) {
           expiresAt: validatedData.expiresAt
             ? new Date(validatedData.expiresAt)
             : null,
+          assignedEmail: null,
+          createdByAdmin: false,
         })
         .returning();
 
@@ -809,5 +811,231 @@ export async function getListingCountsBySpecialty() {
   } catch (error) {
     console.error("Error fetching listing counts by specialty:", error);
     return {};
+  }
+}
+
+// Admin function to create a listing and assign it to an email
+export async function createAdminListing(
+  data: CreateListingData,
+  assignedEmail: string,
+) {
+  try {
+    const validatedData = createListingSchema.parse(data);
+
+    // Check if a user with this email already exists
+    const [existingUser] = await db
+      .select({ id: users.id })
+      .from(users)
+      .where(eq(users.email, assignedEmail.toLowerCase()))
+      .limit(1);
+
+    const result = await db.transaction(async (tx) => {
+      // Create main listing
+      const [listing] = await tx
+        .insert(listings)
+        .values({
+          id: crypto.randomUUID(),
+          // If user exists, assign directly; otherwise leave null and set assignedEmail
+          userId: existingUser?.id || null,
+          title: validatedData.title,
+          description: validatedData.description,
+          listingType: validatedData.listingType,
+          specialty: validatedData.specialty,
+          status: "active",
+          isBoostPlus: validatedData.isBoostPlus || false,
+          publishedAt: new Date(),
+          expiresAt: validatedData.expiresAt
+            ? new Date(validatedData.expiresAt)
+            : null,
+          // Set assignedEmail only if user doesn't exist yet
+          assignedEmail: existingUser ? null : assignedEmail.toLowerCase(),
+          createdByAdmin: true,
+        })
+        .returning();
+
+      // Create location
+      if (validatedData.location) {
+        let lat: string | null = validatedData.location.latitude ?? null;
+        let lng: string | null = validatedData.location.longitude ?? null;
+
+        if (!lat || !lng) {
+          try {
+            const approx = await geocodeByPostalCode(
+              validatedData.location.postalCode,
+              validatedData.location.city,
+            );
+            if (!("error" in approx)) {
+              lat = approx.latitude.toString();
+              lng = approx.longitude.toString();
+            }
+          } catch (e) {
+            console.warn("Approx geocoding failed (postal code)", e);
+          }
+        }
+
+        await tx.insert(listingLocations).values({
+          id: crypto.randomUUID(),
+          listingId: listing.id,
+          address: validatedData.location.address,
+          postalCode: validatedData.location.postalCode,
+          city: validatedData.location.city,
+          region: validatedData.location.region,
+          department: validatedData.location.department,
+          latitude: lat,
+          longitude: lng,
+        });
+      }
+
+      // Create type-specific details
+      if (
+        validatedData.listingType === "transfer" &&
+        validatedData.transferDetails
+      ) {
+        await tx.insert(transferDetails).values({
+          id: crypto.randomUUID(),
+          listingId: listing.id,
+          ...validatedData.transferDetails,
+        });
+      }
+
+      if (
+        validatedData.listingType === "replacement" &&
+        validatedData.replacementDetails
+      ) {
+        await tx.insert(replacementDetails).values({
+          id: crypto.randomUUID(),
+          listingId: listing.id,
+          ...validatedData.replacementDetails,
+        });
+      }
+
+      if (
+        validatedData.listingType === "collaboration" &&
+        validatedData.collaborationDetails
+      ) {
+        const cd = validatedData.collaborationDetails;
+        await tx.insert(collaborationDetails).values({
+          id: crypto.randomUUID(),
+          listingId: listing.id,
+          collaborationType: cd.collaborationType,
+          durationExpectation: cd.durationExpectation,
+          activityDistribution: cd.activityDistribution,
+          activityDistributionDetails: cd.activityDistributionDetails,
+          spaceArrangement: cd.spaceArrangement,
+          patientManagement: cd.patientManagement,
+          investmentRequired: cd.investmentRequired ?? false,
+          investmentAmount:
+            cd.investmentAmount == null ? null : String(cd.investmentAmount),
+          remunerationModel: cd.remunerationModel,
+          specialtiesWanted: cd.specialtiesWanted,
+          experienceRequired: cd.experienceRequired,
+          valuesAndGoals: cd.valuesAndGoals,
+        });
+      }
+
+      // Create media files
+      if (validatedData.media && validatedData.media.length > 0) {
+        const mediaToInsert = validatedData.media.map((file, index) => ({
+          id: crypto.randomUUID(),
+          listingId: listing.id,
+          fileUrl: file.url,
+          fileName: file.name,
+          fileType: file.type,
+          fileSize: file.size,
+          displayOrder: index,
+          uploadKey: null,
+        }));
+
+        await tx.insert(listingMedia).values(mediaToInsert);
+      }
+
+      return listing;
+    });
+
+    revalidatePath("/dashboard/annonces");
+    revalidatePath("/annonces");
+    revalidatePath("/dashboard/admin/annonces");
+
+    // Trigger alert checks asynchronously
+    checkNewListingAgainstSavedSearches(result.id)
+      .then((alertResult) => {
+        if (alertResult.success && alertResult.stats) {
+          console.log(`Alert check completed: ${alertResult.message}`);
+        }
+      })
+      .catch((error) => {
+        console.error("Error checking alerts for new listing:", error);
+      });
+
+    // Fire-and-forget precise geocoding
+    (async () => {
+      try {
+        if (validatedData.location) {
+          const precise = await geocodeAddress(
+            validatedData.location.address || "",
+            validatedData.location.city,
+            validatedData.location.postalCode,
+          );
+          if (!("error" in precise)) {
+            await updateListingCoordinates(result.id, precise);
+          }
+        }
+      } catch (e) {
+        console.warn(
+          "Background precise geocoding failed for listing",
+          result.id,
+          e,
+        );
+      }
+    })();
+
+    return {
+      success: true,
+      listingId: result.id,
+      assignedToExistingUser: !!existingUser,
+    };
+  } catch (error) {
+    console.error("Error creating admin listing:", error);
+    if (error instanceof Error) {
+      return { success: false, error: error.message };
+    }
+    return {
+      success: false,
+      error: "Erreur lors de la création de l'annonce",
+    };
+  }
+}
+
+// Function to claim listings for a user by email (called during registration)
+export async function claimListingsByEmail(userId: string, email: string) {
+  try {
+    const normalizedEmail = email.toLowerCase();
+
+    // Find all listings assigned to this email
+    const unclaimedListings = await db
+      .select({ id: listings.id })
+      .from(listings)
+      .where(eq(listings.assignedEmail, normalizedEmail));
+
+    if (unclaimedListings.length === 0) {
+      return { success: true, claimedCount: 0 };
+    }
+
+    // Update all listings to assign them to the new user
+    await db
+      .update(listings)
+      .set({
+        userId: userId,
+        assignedEmail: null,
+        updatedAt: new Date(),
+      })
+      .where(eq(listings.assignedEmail, normalizedEmail));
+
+    revalidatePath("/dashboard/annonces");
+
+    return { success: true, claimedCount: unclaimedListings.length };
+  } catch (error) {
+    console.error("Error claiming listings by email:", error);
+    return { success: false, error: "Erreur lors de la réclamation des annonces" };
   }
 }

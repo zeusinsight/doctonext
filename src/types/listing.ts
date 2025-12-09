@@ -19,7 +19,7 @@ import type {
 // Database types (inferred from schema)
 export type Listing = {
     id: string
-    userId: string
+    userId: string | null
     title: string
     description: string | null
     listingType: "transfer" | "replacement" | "collaboration"
@@ -32,6 +32,9 @@ export type Listing = {
     updatedAt: Date
     publishedAt: Date | null
     expiresAt: Date | null
+    // Admin assignment fields
+    assignedEmail: string | null
+    createdByAdmin: boolean
 }
 
 export type ListingLocation = {
@@ -210,6 +213,31 @@ export type CreateListingFormData = {
     collaborationDetails?: CollaborationDetailsStepData
     media?: MediaUploadData
     review?: ReviewStepData
+}
+
+// Admin listing type (includes assignment info)
+export type AdminListing = {
+    id: string
+    title: string
+    listingType: "transfer" | "replacement" | "collaboration"
+    specialty: string | null
+    status: "active" | "inactive" | "sold" | "expired"
+    isBoostPlus: boolean
+    viewsCount: number
+    contactsCount: number
+    createdAt: Date
+    publishedAt: Date | null
+    assignedEmail: string | null
+    createdByAdmin: boolean
+    user: {
+        id: string
+        name: string
+        email: string
+    } | null
+    location: {
+        city: string | null
+        region: string | null
+    } | null
 }
 
 // API response types

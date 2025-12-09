@@ -12,6 +12,10 @@ import { ReplacementDetailsStep } from "./steps/replacement-details-step"
 import { CollaborationDetailsStep } from "./steps/collaboration-details-step"
 import { MediaUploadStep } from "./steps/media-upload-step"
 import { ReviewStep } from "./steps/review-step"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Mail, UserPlus } from "lucide-react"
 
 const STEPS: FormStep[] = [
     "basic-info",
@@ -29,11 +33,17 @@ const STEP_NAMES = {
     review: "Révision & Publication"
 }
 
-export function CreateListingForm() {
+interface CreateListingFormProps {
+    isAdminMode?: boolean
+}
+
+export function CreateListingForm({ isAdminMode = false }: CreateListingFormProps) {
     const router = useRouter()
     const [currentStep, setCurrentStep] = useState<FormStep>("basic-info")
     const [formData, setFormData] = useState<CreateListingFormData>({})
     const [isSubmitting, setIsSubmitting] = useState(false)
+    const [assignedEmail, setAssignedEmail] = useState("")
+    const [emailError, setEmailError] = useState("")
 
     const currentStepIndex = STEPS.indexOf(currentStep)
     const progress = ((currentStepIndex + 1) / STEPS.length) * 100
@@ -59,8 +69,28 @@ export function CreateListingForm() {
         }
     }
 
+    const validateEmail = (email: string) => {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+        return emailRegex.test(email)
+    }
+
     const handleSubmit = async () => {
         try {
+            // Validate email for admin mode
+            if (isAdminMode) {
+                if (!assignedEmail.trim()) {
+                    setEmailError("L'email est requis")
+                    toast.error("Veuillez saisir l'email de l'utilisateur")
+                    return
+                }
+                if (!validateEmail(assignedEmail)) {
+                    setEmailError("Email invalide")
+                    toast.error("Veuillez saisir un email valide")
+                    return
+                }
+                setEmailError("")
+            }
+
             setIsSubmitting(true)
 
             // Prepare the data for API submission
@@ -94,7 +124,36 @@ export function CreateListingForm() {
                     formData.basicInfo?.listingType === "collaboration"
                         ? formData.collaborationDetails
                         : undefined,
-                media: formData.media?.files || []
+                media: formData.media?.files || [],
+                // Add assigned email for admin mode
+                ...(isAdminMode && { assignedEmail: assignedEmail.trim().toLowerCase() })
+            }
+
+            // Admin mode - submit to admin API
+            if (isAdminMode) {
+                const response = await fetch("/api/admin/listings", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(submissionData)
+                })
+
+                const result = await response.json()
+
+                if (result.success) {
+                    if (result.data.assignedToExistingUser) {
+                        toast.success("Annonce créée et assignée à l'utilisateur existant !")
+                    } else {
+                        toast.success("Annonce créée ! Elle sera visible par l'utilisateur dès son inscription.")
+                    }
+                    router.push("/dashboard/admin/annonces")
+                } else {
+                    toast.error(
+                        result.error || "Erreur lors de la création de l'annonce"
+                    )
+                }
+                return
             }
 
             // If boost is selected, redirect to Stripe checkout
@@ -262,6 +321,49 @@ export function CreateListingForm() {
 
     return (
         <div className="">
+            {/* Admin Email Assignment Section */}
+            {isAdminMode && (
+                <Card className="mb-6 border-amber-200 bg-amber-50">
+                    <CardHeader className="pb-3">
+                        <CardTitle className="flex items-center gap-2 text-amber-800">
+                            <UserPlus className="h-5 w-5" />
+                            Assigner à un utilisateur
+                        </CardTitle>
+                        <CardDescription className="text-amber-700">
+                            L'annonce sera visible par cet utilisateur dès son inscription
+                        </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                        <div className="space-y-2">
+                            <Label htmlFor="assignedEmail" className="text-amber-800">
+                                Email de l'utilisateur
+                            </Label>
+                            <div className="relative">
+                                <Mail className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-amber-600" />
+                                <Input
+                                    id="assignedEmail"
+                                    type="email"
+                                    placeholder="email@exemple.com"
+                                    value={assignedEmail}
+                                    onChange={(e) => {
+                                        setAssignedEmail(e.target.value)
+                                        if (emailError) setEmailError("")
+                                    }}
+                                    className={`pl-10 ${emailError ? "border-red-500" : "border-amber-300"}`}
+                                />
+                            </div>
+                            {emailError && (
+                                <p className="text-red-500 text-sm">{emailError}</p>
+                            )}
+                            <p className="text-amber-600 text-xs">
+                                Si l'utilisateur existe déjà, l'annonce lui sera directement assignée.
+                                Sinon, elle lui sera assignée lors de son inscription avec cet email.
+                            </p>
+                        </div>
+                    </CardContent>
+                </Card>
+            )}
+
             {/* Progress Bar */}
             <div className="space-y-2">
                 <div className="flex justify-between text-muted-foreground text-sm">

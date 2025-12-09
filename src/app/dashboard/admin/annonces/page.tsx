@@ -19,7 +19,10 @@ import {
     RiEyeLine,
     RiDeleteBin7Line,
     RiMoreLine,
-    RiExternalLinkLine
+    RiExternalLinkLine,
+    RiAddLine,
+    RiMailLine,
+    RiCheckLine
 } from "@remixicon/react"
 import { authClient } from "@/lib/auth-client"
 import { redirect } from "next/navigation"
@@ -47,11 +50,14 @@ interface AdminListing {
     publishedAt: string
     expiresAt: string | null
     isBoostPlus: boolean
-    userId: string
-    userName: string
-    userEmail: string
+    userId: string | null
+    userName: string | null
+    userEmail: string | null
     city: string | null
     region: string | null
+    // Admin assignment fields
+    assignedEmail: string | null
+    createdByAdmin: boolean
 }
 
 interface ListingsResponse {
@@ -236,20 +242,28 @@ export default function AdminListingsPage() {
 
     return (
         <div className="space-y-6">
-            <div>
-                <h1 className="mb-2 font-bold text-3xl text-white">
-                    Gestion des annonces
-                    {userInfo && (
-                        <span className="ml-2 text-blue-100 text-xl">
-                            - {userInfo.name} ({userInfo.email})
-                        </span>
-                    )}
-                </h1>
-                <p className="text-blue-100">
-                    {userId
-                        ? "Annonces de cet utilisateur"
-                        : "Administrer toutes les annonces"}
-                </p>
+            <div className="flex items-start justify-between">
+                <div>
+                    <h1 className="mb-2 font-bold text-3xl text-white">
+                        Gestion des annonces
+                        {userInfo && (
+                            <span className="ml-2 text-blue-100 text-xl">
+                                - {userInfo.name} ({userInfo.email})
+                            </span>
+                        )}
+                    </h1>
+                    <p className="text-blue-100">
+                        {userId
+                            ? "Annonces de cet utilisateur"
+                            : "Administrer toutes les annonces"}
+                    </p>
+                </div>
+                <Button asChild className="bg-amber-500 hover:bg-amber-600">
+                    <Link href="/dashboard/admin/annonces/new" className="flex items-center gap-2">
+                        <RiAddLine className="h-4 w-4" />
+                        Créer une annonce
+                    </Link>
+                </Button>
             </div>
 
             <Card>
@@ -384,12 +398,41 @@ export default function AdminListingsPage() {
                                                 </td>
                                                 <td className="px-2 py-3">
                                                     <div className="text-sm">
-                                                        <div className="font-medium">
-                                                            {listing.userName}
-                                                        </div>
-                                                        <div className="text-gray-500">
-                                                            {listing.userEmail}
-                                                        </div>
+                                                        {listing.userId ? (
+                                                            // User exists - show their info
+                                                            <>
+                                                                <div className="flex items-center gap-1 font-medium">
+                                                                    {listing.userName}
+                                                                    {listing.createdByAdmin && (
+                                                                        <Badge className="ml-1 bg-green-100 text-green-800 text-xs">
+                                                                            <RiCheckLine className="mr-1 h-3 w-3" />
+                                                                            Réclamée
+                                                                        </Badge>
+                                                                    )}
+                                                                </div>
+                                                                <div className="text-gray-500">
+                                                                    {listing.userEmail}
+                                                                </div>
+                                                            </>
+                                                        ) : listing.assignedEmail ? (
+                                                            // No user but assigned email - pending claim
+                                                            <>
+                                                                <div className="flex items-center gap-1">
+                                                                    <RiMailLine className="h-4 w-4 text-amber-500" />
+                                                                    <Badge className="bg-amber-100 text-amber-800 text-xs">
+                                                                        En attente
+                                                                    </Badge>
+                                                                </div>
+                                                                <div className="text-amber-600">
+                                                                    {listing.assignedEmail}
+                                                                </div>
+                                                            </>
+                                                        ) : (
+                                                            // No user and no assigned email - orphaned
+                                                            <span className="text-gray-400 italic">
+                                                                Non assignée
+                                                            </span>
+                                                        )}
                                                     </div>
                                                 </td>
                                                 <td className="px-2 py-3">
