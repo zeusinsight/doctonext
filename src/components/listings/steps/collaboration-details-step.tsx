@@ -41,6 +41,8 @@ const MEDICAL_SPECIALTIES = [
     "ORL",
     "Dentiste",
     "Pharmacien",
+    "Médecin biologiste",
+    "Pharmacien biologiste",
     "Kinésithérapeute",
     "Infirmier(ère)",
     "Sage-femme",

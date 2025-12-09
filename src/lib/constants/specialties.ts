@@ -6,6 +6,8 @@ export const SPECIALTY_SLUG_TO_LABEL: Record<string, string> = {
   "medecine-generale": "Médecin généraliste",
   dentistes: "Dentiste",
   pharmacies: "Pharmacien",
+  "medecin-biologiste": "Médecin biologiste",
+  "pharmacien-biologiste": "Pharmacien biologiste",
   kinesitherapie: "Kinésithérapeute",
   orthophoniste: "Orthophoniste",
   infirmier: "Infirmier(ère)",
